@@ -16,6 +16,9 @@ PORT = 24790
 results = []
 
 
+RESULTS_NOTES = []
+
+
 def check(name, cond, detail=""):
     results.append({"check": name, "pass": bool(cond), "detail": str(detail)[:400]})
     print(("PASS " if cond else "FAIL ") + name + ("" if cond else f"  -> {detail}"))
@@ -1393,7 +1396,14 @@ def scenario_slice():
         s.cmd("walk_to 540 296 4"); s.cmd("press_interact"); s.cmd("walk_to 480 600"); s.cmd("press_interact")
         s.cmd("dev grant wood:12")  # compresses another round of felling for the defences
         s.cmd("walk_to 1150 760"); s.cmd("walk_to 960 760"); s.cmd("walk_to 960 600")
-        s.cmd("build barricade 934 480"); s.cmd("build barricade 998 480"); s.cmd("walk_to 1150 760"); s.cmd("build spike_trap 1250 790")
+        for bx2 in (934, 998):
+            for _try in range(4):  # a zombie standing on the spot is a valid refusal: wait and retry
+                before = len(objs(s.state()))
+                s.cmd(f"build barricade {bx2} 480")
+                if len(objs(s.state())) > before:
+                    break
+                heal_if_low(s); s.cmd("wait 2")
+        s.cmd("walk_to 1150 760"); s.cmd("build spike_trap 1250 790")
         s.cmd("walk_to 1360 760"); s.cmd("build crate 1300 840")
         s.cmd("wait 3.5")
         defs = [v["def"] for v in objs(s.state()).values()]
@@ -1436,7 +1446,35 @@ def scenario_slice():
         s.kill()
 
 
-SCENARIOS = {"slice": scenario_slice, "settlement_multi": scenario_settlement_multi, "world_multi": scenario_world_multi, "craft_multi": scenario_craft_multi, "build_multi": scenario_build_multi, "accept": scenario_accept, "infra_multi": scenario_infra_multi, "dig_multi": scenario_dig_multi, "danger_single": scenario_danger_single, "danger_multi": scenario_danger_multi, "settings": scenario_settings, "bunker_single": scenario_bunker_single, "bunker_multi": scenario_bunker_multi, "single": scenario_single, "multiplayer": scenario_multiplayer,
+
+def scenario_perf_multi():
+    """Two connected players, a horde plus extra groups active around them: measure host simulation cost."""
+    host = Instance("t_phost"); c = Instance("t_pclient")
+    for i in (host, c):
+        i.wipe()
+    try:
+        host.start(); c.start()
+        host.cmd(f"host {PORT} new 70 Hosty"); host.cmd("tips off")
+        c.cmd(f"join 127.0.0.1 {PORT} Cleo"); c.cmd("tips off")
+        host.cmd("walk_to 1150 960"); c.cmd("walk_to 1190 960")
+        host.cmd("dev siege 1"); host.cmd("wait 2")
+        host.cmd("dev spawn_group"); host.cmd("dev spawn_group")
+        samples = []
+        for _ in range(10):
+            st = host.state()
+            samples.append((st.get("sim_ms", 0), len(zs(st))))
+            time.sleep(2)
+        worst = max(m for m, _ in samples)
+        peak = max(n for _, n in samples)
+        RESULTS_NOTES.append(f"perf_multi: host sim_ms max {worst:.2f}, zombies up to {peak}, client zombies {len(zs(c.state()))}")
+        check(f"perf: {peak} zombies with two players — host simulation {worst:.2f} ms/frame (< 8 ms)", peak >= 12 and worst < 8.0, samples)
+        check("perf: client mirrors the horde", abs(len(zs(c.state())) - len(zs(host.state()))) <= 2, (len(zs(c.state())), len(zs(host.state()))))
+    finally:
+        for i in (host, c):
+            i.kill()
+
+
+SCENARIOS = {"perf_multi": scenario_perf_multi, "slice": scenario_slice, "settlement_multi": scenario_settlement_multi, "world_multi": scenario_world_multi, "craft_multi": scenario_craft_multi, "build_multi": scenario_build_multi, "accept": scenario_accept, "infra_multi": scenario_infra_multi, "dig_multi": scenario_dig_multi, "danger_single": scenario_danger_single, "danger_multi": scenario_danger_multi, "settings": scenario_settings, "bunker_single": scenario_bunker_single, "bunker_multi": scenario_bunker_multi, "single": scenario_single, "multiplayer": scenario_multiplayer,
              "netfail": scenario_connection_failure, "assets": scenario_assets}
 
 if __name__ == "__main__":
@@ -1448,6 +1486,8 @@ if __name__ == "__main__":
         except Exception as e:
             check(f"{n}: scenario ran without harness error", False, repr(e))
     os.makedirs(LOG_DIR, exist_ok=True)
+    for note in RESULTS_NOTES:
+        print("NOTE", note)
     with open(os.path.join(LOG_DIR, "mp_results.json"), "w") as f:
         json.dump(results, f, indent=1)
     failed = [r for r in results if not r["pass"]]
