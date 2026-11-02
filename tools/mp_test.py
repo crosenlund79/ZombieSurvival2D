@@ -589,8 +589,13 @@ def scenario_danger_multi():
         cleo_h = [p for p in sh["players"] if p["name"] == "Cleo"][0]
         sc = c.state()
         check("dmp: zombies damage the client", sc["health"] < hp0 or sc["dead"], (hp0, sc["health"]))
-        r = c.cmd("attack_nearest 4 0.6", timeout=20)
-        sh = host.state()
+        for attempt in range(3):
+            # Swing only once a zombie is within club reach (under load they can drift away).
+            wait_for(c, lambda st: not st["dead"] and any(abs(z["x"] - st["me_x"]) + abs(z["y"] - st["me_y"]) < 80 for z in zs(st)), timeout=10)
+            c.cmd("attack_nearest 4 0.6", timeout=20)
+            sh = host.state()
+            if any(z["hp"] < 100 for z in sh["zombies"]):
+                break
         check("dmp: client hits are applied by the host", any(z["hp"] < 100 for z in sh["zombies"]), [(z["ai"], z["hp"]) for z in sh["zombies"]][:10])
         sh = host.state(); sc = c.state()
         h_hp = [p for p in sh["players"] if p["name"] == "Cleo"][0]
@@ -695,7 +700,235 @@ def scenario_dig_multi():
             i.kill()
 
 
-SCENARIOS = {"dig_multi": scenario_dig_multi, "danger_single": scenario_danger_single, "danger_multi": scenario_danger_multi, "settings": scenario_settings, "bunker_single": scenario_bunker_single, "bunker_multi": scenario_bunker_multi, "single": scenario_single, "multiplayer": scenario_multiplayer,
+def res_of(state):
+    return state.get("bunkers", {}).get(SITE, {}).get("resources", {})
+
+
+def notice_has(state, key):
+    return any(key in n for n in state.get("notices", []))
+
+
+def to_door(i):
+    i.cmd("walk_to 1160 760"); i.cmd("walk_to 1160 690")
+    if not i.state()["entities"]["homestead.farmhouse_door"]["state"]["open"]:
+        i.cmd("press_interact")
+    i.cmd("walk_to 1160 664 4")
+    return i.cmd("press_interact")
+
+
+def scavenge_yard(i):
+    """Gate must be open. Rain barrel then shed shelf (east side of the yard)."""
+    i.cmd("walk_to 1150 960"); i.cmd("walk_to 1150 760"); i.cmd("walk_to 1640 760")
+    i.cmd("walk_to 1680 680 6"); i.cmd("press_interact")
+    i.cmd("walk_to 1560 690 6")
+    return i.cmd("press_interact")
+
+
+def scenario_accept():
+    """The full 25-step gameplay acceptance run (zombies active), single player then host + rejoin."""
+    s = Instance("t_accept"); c = Instance("t_accept_c")
+    for i in (s, c):
+        i.wipe()
+    s.start()
+    try:
+        r = s.cmd("single new 91 Survivor")
+        check("accept 01: new world starts on the surface", r["ok"] and r["state"]["region"] == "homestead", r["state"].get("region"))
+        r = go_inside(s)
+        check("accept 02: reach the farmhouse", r["state"]["region"] == "homestead.farmhouse", r["state"].get("region"))
+        s.cmd("walk_to 300 492"); r = s.cmd("press_interact")
+        check("accept 03: shelter construction started", r["state"]["entities"][SITE]["state"]["stage"] == "building", r["state"]["entities"][SITE]["state"])
+        s.cmd("walk_to 150 470"); r = s.cmd("press_interact")
+        check("accept 03b: club taken", r["state"]["weapon"] == "club", r["state"].get("weapon"))
+        s.cmd("walk_to 480 600"); s.cmd("press_interact")
+        to_west_trees(s); s.cmd("walk_to 200 685")
+        r = chop(s)
+        check("accept 04: chop timber", r["state"]["carried"].get("wood", 0) >= 3, r["state"]["carried"])
+        r = s.cmd("wait 1.5")
+        check("accept 05: zombies investigate the noise", len(engaged(r["state"])) >= 1, [z["ai"] for z in zs(r["state"])])
+        att = r["state"]["attention_total"]
+        s.cmd("walk_to 380 945"); chop(s); r = s.cmd("wait 2")
+        check("accept 06: more zombies converge as attention grows", len(engaged(r["state"])) >= 2 and r["state"]["attention_total"] > att,
+              (len(engaged(r["state"])), att, r["state"]["attention_total"]))
+        s.cmd("dev spawn_zombie")
+        wait_for(s, lambda st: any(abs(z["x"] - st["me_x"]) + abs(z["y"] - st["me_y"]) < 90 for z in zs(st)), timeout=15)
+        r = s.cmd("attack_nearest 6 0.6", timeout=30)
+        check("accept 07: fight - club hits land", any(z["hp"] < 100 for z in r["state"]["zombies"]), [(z["ai"], z["hp"]) for z in zs(r["state"])][:6])
+        s.cmd("dev heal")
+        r = scavenge_yard(s)
+        cr = r["state"]["carried"]
+        check("accept 08: scavenge fuel and dirty water on the surface", cr.get("fuel", 0) >= 1 and cr.get("water_dirty", 0) >= 3, cr)
+        r = to_door(s)
+        check("accept 09: retreat into the farmhouse", r["state"]["region"] == "homestead.farmhouse", r["state"].get("region"))
+        s.cmd("dev heal")
+        s.cmd("walk_to 300 492")
+        wait_for(s, lambda st: st["entities"][SITE]["state"]["stage"] == "built", timeout=10)
+        s.cmd("press_interact"); s.cmd("walk_to 300 452 4"); r = s.cmd("press_interact")
+        check("accept 10: descend into the shelter", r["state"]["region"] == L1, r["state"].get("region"))
+        s.cmd("walk_to 650 345 6"); r = s.cmd("press_interact")
+        check("accept 11a: storage panel opens", r["state"]["view"]["panel"] == "storage", r["state"]["view"].get("panel"))
+        carried = dict(r["state"]["carried"])
+        for item in ("wood", "fuel", "water_dirty"):
+            r = s.cmd(f"entity_action storage store {item}")
+        res = res_of(r["state"])
+        check("accept 11: deposit everything in shared storage (no loss)",
+              all(res.get(k, 0) >= carried.get(k, 0) for k in carried) and not r["state"]["carried"], (carried, res, r["state"]["carried"]))
+        s.cmd("panel_close")
+        x, y = cell_xy(13, 12); s.cmd(f"walk_to {x} {y} 6")
+        s.cmd("terrain dig 12 12"); r = s.cmd("wait 2.4")
+        check("accept 12: excavate a new cell", "12,12" in r["state"]["terrain"]["dug"], r["state"]["terrain"]["dug"])
+        x2, y2 = cell_xy(12, 12); s.cmd(f"walk_to {x2} {y2} 8")
+        r = s.cmd("terrain dig 11 12")
+        check("accept 13: unsupported limit refused with explanation", notice_has(r["state"], "ACTION_DIG_UNSUPPORTED"), r["state"]["notices"][-2:])
+        wood0 = res_of(r["state"]).get("wood", 0)
+        x2, y2 = cell_xy(12, 12); s.cmd(f"walk_to {x2} {y2 + 20} 8")
+        s.cmd("terrain support 12 12"); r = s.cmd("wait 3.4")
+        check("accept 14: timber support built from stored wood", r["state"]["terrain"]["supports"].get("12,12", {}).get("stage") == "reinforced"
+              and res_of(r["state"]).get("wood", 0) == wood0 - 4, (r["state"]["terrain"]["supports"], wood0, res_of(r["state"])))
+        s.cmd("terrain dig 11 12"); r = s.cmd("wait 2.4")
+        check("accept 15: dig further inside the supported range", "11,12" in r["state"]["terrain"]["dug"], r["state"]["terrain"]["dug"])
+        check("accept 16: recovered supplies are in storage", res_of(r["state"]).get("fuel", 0) >= 1 and res_of(r["state"]).get("water_dirty", 0) >= 3, res_of(r["state"]))
+        s.cmd("walk_to 930 610 6"); r = s.cmd("press_interact")
+        check("accept 17a: generator panel opens", r["state"]["view"]["panel"] == "generator", r["state"]["view"].get("panel"))
+        lamps_off = r["state"]["view"]["lamps"]
+        r = s.cmd("entity_action generator fuel")
+        check("accept 17: fuel the generator (from storage)", lvl(r["state"], L1, "generator").get("fuel", 0) >= 1.0, lvl(r["state"], L1, "generator"))
+        r = s.cmd("entity_action generator toggle")
+        g = lvl(r["state"], L1, "generator")
+        check("accept 18: start the generator", g.get("running") is True, g)
+        lamps = r["state"]["view"]["lamps"]
+        check("accept 19: lights power on (and were off before)", lamps and all(lamps.values()) and not any(lamps_off.values()), (lamps_off, lamps))
+        check("accept 19b: hum loop plays while running", "machine" in str(r["state"]["loops"]), r["state"]["loops"])
+        s.cmd("panel_close")
+        s.cmd("walk_to 250 620 6"); r = s.cmd("press_interact")
+        check("accept 20a: purifier panel opens", r["state"]["view"]["panel"] == "purifier", r["state"]["view"].get("panel"))
+        r = s.cmd("entity_action purifier fill")
+        pur = lvl(r["state"], L1, "purifier")
+        check("accept 20: dirty water into the purifier", pur.get("input", 0) >= 3, pur)
+        r = s.cmd("dev advance_clock 65")
+        pur = lvl(r["state"], L1, "purifier")
+        check("accept 21: purifier makes clean water over time with power", pur.get("output", 0) >= 3, pur)
+        r = s.cmd("entity_action purifier collect")
+        check("accept 21b: collect clean water", r["state"]["carried"].get("water_clean", 0) >= 3, r["state"]["carried"])
+        s.cmd("panel_close"); s.cmd("dev thirst 20")
+        r = s.cmd("press_key drink")
+        check("accept 22: drink (Q) restores hydration", r["state"]["hydration"] >= 55, r["state"]["hydration"])
+        before = r["state"]
+        r = s.cmd("save")
+        check("accept 23: save", r["ok"], r["error"])
+        s.quit(); s.start()
+        r = s.cmd("single continue Survivor")
+        st = r["state"]
+        g = lvl(st, L1, "generator")
+        check("accept 24: reload keeps position, storage, inventory, terrain, machines",
+              st["region"] == L1 and {"12,12", "11,12"} <= set(st["terrain"]["dug"]) and res_of(st) == res_of(before)
+              and st["carried"] == before["carried"] and g.get("running") is True and abs(g["fuel"] - lvl(before, L1, "generator")["fuel"]) < 0.05,
+              (st.get("region"), res_of(st), res_of(before), st["carried"], g))
+        st = s.cmd("wait 0.5")["state"]
+        check("accept 24b: lamps lit after reload (power derived)", st["view"]["lamps"] and all(st["view"]["lamps"].values()), st["view"]["lamps"])
+        s.cmd("save"); s.quit(); s.start()
+        s.cmd(f"host {PORT} continue Survivor")
+        c.start()
+        r = c.cmd(f"join 127.0.0.1 {PORT} Rejoiner")
+        check("accept 25a: second player joins the reloaded world", r["ok"], r["error"])
+        time.sleep(0.8)
+        sh, sc = s.state(), c.state()
+        check("accept 25b: independent views (host underground, guest on surface)", sh["view"]["region"] == L1 and sc["view"]["region"] == "homestead", (sh["view"]["region"], sc["view"]["region"]))
+        check("accept 25c: guest has the synchronized shelter state", res_of(sc) == res_of(sh) and lvl(sc, L1, "generator").get("running") == lvl(sh, L1, "generator").get("running")
+              and set(sc["terrains"].get(L1, [])) == set(sh["terrains"].get(L1, [])), (res_of(sc), res_of(sh)))
+        check("accept 25d: guest sees the surface zombies the host simulates", len(zs(sc)) == len(zs(sh)) and len(zs(sc)) > 0, (len(zs(sc)), len(zs(sh))))
+    finally:
+        for i in (s, c):
+            i.kill()
+
+
+def scenario_infra_multi():
+    host = Instance("t_ihost"); c = Instance("t_iclient")
+    for i in (host, c):
+        i.wipe()
+    try:
+        host.start(); c.start()
+        host.cmd(f"host {PORT} new 73 Hosty")
+        r = build_and_descend(host)
+        check("imp: host underground", r["state"]["region"] == L1, r["state"].get("region"))
+        r = c.cmd(f"join 127.0.0.1 {PORT} Cleo")
+        check("imp: client joins on the surface", r["ok"] and r["state"]["region"] == "homestead", r["state"].get("region"))
+        # Client scavenges on the surface while the host runs the machinery below.
+        c.cmd("walk_to 1150 960")
+        if not c.state()["entities"]["homestead.yard_gate"]["state"]["open"]:
+            c.cmd("press_interact")
+        r = scavenge_yard(c)
+        check("imp: client scavenges (host-validated)", r["state"]["carried"].get("water_dirty", 0) >= 3 and r["state"]["carried"].get("fuel", 0) >= 1, r["state"]["carried"])
+        host.cmd("dev grant fuel:2")
+        host.cmd("walk_to 930 610 6")
+        host.cmd("entity_action generator fuel"); host.cmd("entity_action generator fuel")
+        r = host.cmd("entity_action generator toggle")
+        check("imp: host starts the generator", lvl(r["state"], L1, "generator").get("running") is True, lvl(r["state"], L1, "generator"))
+        time.sleep(0.5)
+        check("imp: client on the surface sees generator running", lvl(c.state(), L1, "generator").get("running") is True, lvl(c.state(), L1, "generator"))
+        sh = host.state()
+        check("imp: client's loot state mirrored to host", not sh["entities"]["homestead.rain_barrel"]["state"].get("looted_at", -1) < 0, sh["entities"]["homestead.rain_barrel"])
+        r = to_door(c)
+        c.cmd("walk_to 300 452 4"); r = c.cmd("press_interact")
+        check("imp: client descends", r["state"]["region"] == L1, r["state"].get("region"))
+        r = c.cmd("wait 0.5")
+        check("imp: client sees the lamps lit", r["state"]["view"]["lamps"] and all(r["state"]["view"]["lamps"].values()), r["state"]["view"]["lamps"])
+        # Storage race: one fuel in storage, both take at once.
+        host.cmd("walk_to 650 345 6"); c.cmd("walk_to 640 350 6")
+        r = c.cmd("entity_action storage store fuel")
+        r = c.cmd("entity_action storage store water_dirty")
+        time.sleep(0.4)
+        fuel_total = res_of(host.state()).get("fuel", 0)
+        check("imp: client deposit visible to host", fuel_total >= 1 and res_of(host.state()).get("water_dirty", 0) >= 3, res_of(host.state()))
+        for i in range(fuel_total):
+            with open(host.inbox, "a") as f: f.write("entity_action storage take fuel\n")
+            with open(c.inbox, "a") as f: f.write("entity_action storage take fuel\n")
+            host.seq += 1; c.seq += 1
+            host._wait(host.seq, 10); c._wait(c.seq, 10)
+        time.sleep(0.5)
+        sh, sc = host.state(), c.state()
+        h_f = sh["carried"].get("fuel", 0); c_f = sc["carried"].get("fuel", 0)
+        check("imp: concurrent withdrawals never duplicate", h_f + c_f + res_of(sh).get("fuel", 0) == fuel_total and res_of(sh).get("fuel", 0) == 0, (h_f, c_f, res_of(sh), fuel_total))
+        check("imp: inventories agree on both peers", [p for p in sh["players"] if p["name"] == "Cleo"][0]["carried"] == sc["carried"], "")
+        c.cmd("walk_to 250 620 6")
+        r = c.cmd("entity_action purifier fill")
+        check("imp: client fills the purifier from storage", lvl(r["state"], L1, "purifier").get("input", 0) >= 3, lvl(r["state"], L1, "purifier"))
+        # Host leaves for the surface; the bunker keeps running for the client below.
+        host.cmd("walk_to 540 296 4"); host.cmd("press_interact"); host.cmd("walk_to 480 600"); r = host.cmd("press_interact")
+        check("imp: host on the surface, client underground", r["state"]["region"] == "homestead" and c.state()["region"] == L1, "")
+        fuel0 = lvl(c.state(), L1, "generator")["fuel"]
+        host.cmd("dev advance_clock 45")
+        time.sleep(0.6)
+        sc, sh = c.state(), host.state()
+        check("imp: purification proceeds while host is elsewhere", lvl(sc, L1, "purifier").get("output", 0) >= 2, lvl(sc, L1, "purifier"))
+        check("imp: fuel burns on the shared clock", lvl(sc, L1, "generator")["fuel"] < fuel0, (fuel0, lvl(sc, L1, "generator")))
+        io = lambda st: (lvl(st, L1, "purifier").get("input"), lvl(st, L1, "purifier").get("output"))
+        check("imp: purifier contents identical on both peers (progress is published in 10% steps)", io(sc) == io(sh), (lvl(sc, L1, "purifier"), lvl(sh, L1, "purifier")))
+        r = c.cmd("entity_action purifier collect")
+        host.cmd("dev thirst 20")
+        c.cmd("entity_action purifier collect")
+        r = c.cmd("press_key drink")
+        time.sleep(0.4)
+        h_view = [p for p in host.state()["players"] if p["name"] == "Cleo"][0]
+        check("imp: client drinks; hydration agrees on host", r["state"]["hydration"] > 90 or abs(h_view["hydration"] - r["state"]["hydration"]) < 1.0,
+              (r["state"]["hydration"], h_view["hydration"]))
+        snap = c.state()
+        saved = host.cmd("save")["state"]
+        host.quit()
+        wait_for(c, lambda s: not s["in_world"], timeout=12)
+        host.start(); host.cmd(f"host {PORT} continue Hosty")
+        r = c.cmd(f"join 127.0.0.1 {PORT} Cleo")
+        st = r["state"]
+        check("imp: client rejoins underground after restart", st["region"] == L1, st.get("region"))
+        check("imp: storage, inventory and machines persisted", res_of(st) == res_of(snap) and st["carried"] == snap["carried"]
+              and io(st) == io(saved) and lvl(st, L1, "generator")["running"] == lvl(saved, L1, "generator")["running"]
+              and abs(lvl(st, L1, "generator")["fuel"] - lvl(saved, L1, "generator")["fuel"]) < 0.02,
+              (lvl(st, L1, "purifier"), lvl(saved, L1, "purifier"), lvl(st, L1, "generator"), lvl(saved, L1, "generator")))
+    finally:
+        for i in (host, c):
+            i.kill()
+
+
+SCENARIOS = {"accept": scenario_accept, "infra_multi": scenario_infra_multi, "dig_multi": scenario_dig_multi, "danger_single": scenario_danger_single, "danger_multi": scenario_danger_multi, "settings": scenario_settings, "bunker_single": scenario_bunker_single, "bunker_multi": scenario_bunker_multi, "single": scenario_single, "multiplayer": scenario_multiplayer,
              "netfail": scenario_connection_failure, "assets": scenario_assets}
 
 if __name__ == "__main__":

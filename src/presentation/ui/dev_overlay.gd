@@ -40,6 +40,13 @@ func _ready() -> void:
 	_btn(g, "DEV_NOISE", func() -> void: Session.request_dev_command("noise", 1.0))
 	_btn(g, "DEV_HURT", func() -> void: Session.request_dev_command("hurt", 25.0))
 	_btn(g, "DEV_HEAL", func() -> void: Session.request_dev_command("heal"))
+	_btn(g, "DEV_PEACEFUL", func() -> void:
+		Session.request_dev_command("peaceful", 1.0 if Session.world != null and Session.world.threat.enabled else 0.0))
+	_btn(g, "DEV_GRANT_TIMBER", func() -> void: Session.request_dev_command("grant_stock", 12.0))
+	_btn(g, "DEV_GRANT_SUPPLIES", func() -> void:
+		Session.request_dev_command("grant", "fuel:2")
+		Session.request_dev_command("grant", "water_dirty:3"))
+	_btn(g, "DEV_THIRST", func() -> void: Session.request_dev_command("thirst", 20.0))
 	_btn(g, "DEV_AI_LABELS", func() -> void: ZombieView.show_debug = not ZombieView.show_debug)
 
 

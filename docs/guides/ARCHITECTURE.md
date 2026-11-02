@@ -267,7 +267,94 @@ the view stay centred.
 plus live state (trees, bunkers, players). `MapPanel.surface_point()` walks interiors (`surface` anchor)
 and bunker levels (entrance → anchor) to a surface position and depth. The map is local and never pauses.
 
-## 16. Dependency direction
+## 16. The survival slice (iteration 003)
+
+Three host-only simulations were added. All of them hang off `Simulation.advance`, in this order:
+construction/terrain jobs → `ZombieSim.step` → `SurvivalSim.step` → `InfraSim.step`. Each returns
+`WorldActions`-style result dictionaries, and `GameSession._publish_result` sends them in a fixed order:
+bunkers → terrain → entities → carried → vitals → events → region moves. Clients never run these
+simulations. They only display what the host publishes.
+
+### 16.1 Danger: zombies, noise, attention, combat, health
+
+- **State.** `WorldState.zombies: {id → ZombieState}` holds the region, position, facing, AI state, health,
+  target, last known position and a `persistent` flag. `WorldState.threat` (`ThreatState`) holds the noise
+  queue, the per-zone attention values, reinforcement cooldowns and `enabled` (the developer's peaceful
+  switch). Threat state is transient and never saved.
+- **AI** (`ZombieSim`, tuning in `content/tuning/zombies.json`): `WANDER → INVESTIGATE → CHASE → WINDUP
+  → RECOVER`, plus `STAGGER` when hit and `DEAD`. A zombie detects a player by proximity (omni radius),
+  by sight cone with line of sight (`NavGrid.clear_line`), or by hearing. Hearing sends it to the noise
+  position, not to the player. After losing sight it searches the last known position and then wanders
+  again. Movement uses A* on a `NavGrid` (24 px cells) built from authored collision plus trees and
+  closed doors, with a per-tick path budget.
+- **Safety boundary.** Zombies exist only in surface regions that have a `zombies` content block.
+  Interiors and bunker levels have none, and attacks need line of sight and reach, so nothing hits
+  through walls or across regions.
+- **Noise and hordes.** `ZombieSim.make_noise(world, region, pos, category)` queues a noise event.
+  The categories (chop, fell, melee, run, door, dig, machine, dev) set the radius and the attention
+  weight. Attention builds per zone, decays with a half-life, and crosses escalation thresholds that
+  recruit nearby zombies and spawn capped reinforcements off-screen (minimum spawn distance, cooldown,
+  per-wave and total caps, maximum active zombies).
+- **Combat and health.** `WorldActions.request_attack(aim)` resolves a melee arc against zombies on the
+  host (weapon table: bare hands, club). Zombies use a visible wind-up, so a player can step out of
+  reach. `SurvivalSim` handles health regeneration (blocked while thirsty), defeat, and a forgiving
+  respawn inside the farmhouse. Health, hydration, dead and weapon are replicated by `_rpc_vitals`.
+- **Persistence.** The base population (id, region, position, health) and `next_zombie` are saved.
+  Reinforcements and attention are deliberately dropped, so a reload starts calm without duplicating a horde.
+
+### 16.2 Expansion: excavation grid and supports
+
+- `RegionState.terrain` (optional; saved; schema 3) holds `dug` cells, in-progress `digging` cells and
+  `supports`. The rules live in `Terrain` and the grid comes from the level template's `excavation` block:
+  origin, cell size 64, size, `initial_open`, `permanent` and the support parameters.
+- **Support rule.** A cell can be dug if it touches open space and lies within the safe margin of the
+  original chamber, or within `support_radius_cells` of a reinforced support. Supports must keep
+  `support_min_gap` cells between them. Refusals carry a reason key such as `ACTION_DIG_UNSUPPORTED`.
+- `WorldActions.request_terrain` validates reach and the rule, then schedules a job
+  (`terrain:dig:c,r` / `terrain:support:c,r`). Wood for a support is spent from the bunker's storage in the
+  same step. `_rpc_terrain` replicates the region's terrain block, and `TerrainView` redraws and rebuilds
+  collision from it.
+
+### 16.3 Living underground: items, storage, scavenging, power, water, hydration
+
+- **Items** (`content/items.json`, `Items`): `wood`, `fuel`, `water_dirty`, `water_clean`. A bag is a plain
+  `{item_id: amount}` dictionary. `PlayerState.carried` is the player's bag (30 slots, one unit per slot)
+  and `BunkerState.resources` is the bunker's **shared storage**. The timber stockpile and the storage
+  locker are two views of that one store. `Items.move` changes both bags in the same step, and the host
+  applies requests one at a time, so concurrent withdrawals can never duplicate items.
+- **Scavenging** (`type: loot`, homestead car trunk, shed shelf and rain barrel): a search gives the
+  authored `loot` once and records `looted_at`. The spot restocks after `restock_minutes` of simulated time,
+  so the loop cannot soft-lock. A full bag refuses the search and leaves the loot in place.
+- **Machines** (`WorldActions.request_entity_action(eid, action, arg)`, `_rpc_request_entity_action`):
+  - `storage:store|take <item>`
+  - `generator:fuel` (uses fuel from your hands first, then from storage; capacity 4) and `generator:toggle`
+  - `purifier:fill` (dirty water from your hands, then from storage), `purifier:collect` and
+    `purifier:drink_tap`
+
+  All of these are range-checked, validated and committed by the host. The results go out as normal
+  `entity_changed` / `bunker` / `carried` / `vitals` messages.
+- **Generator and power** (`InfraSim`, tuning in `content/tuning/infrastructure.json`): while running, a
+  generator burns fuel at `generator_seconds_per_fuel` and stops itself at zero. It also makes periodic
+  `machine` noise. Power is logical: `InfraSim.is_powered(world, region)` is true while any generator in
+  that bunker runs with fuel. Nothing stores a "powered" flag, so power is always consistent after a load
+  or rejoin. Consumers: `LampView` (lights) and the purifier. The bunker never goes black when power is
+  off: warm lanterns and the ladder shaft stay lit, and `Atmosphere.powered_tint` only brightens the scene.
+- **Water.** The purifier turns one dirty unit into one clean unit every `purifier_seconds_per_unit` while
+  powered. It has input and output capacities, and `progress` is published in 10 % steps.
+- **Hydration.** Hydration falls at `hydration_loss_per_minute` for online, living players. Below
+  `thirsty_below` the player is thirsty and health regeneration stops. At zero, health drains slowly but
+  never below `dehydrated_health_floor`. Drinking clean water (Q, `_rpc_request_drink`) restores
+  `hydration_per_drink`. Large clock jumps use elapsed time, not per-tick loops.
+- **Persistence.** Machine state is ordinary entity state (fuel, running, input, output, progress,
+  looted_at), so it is saved with the region changes. Bags and hydration are saved with players. This
+  needed no schema change (schema 3; new fields are optional with safe defaults).
+- **Presentation.** `MachineView` (storage, generator, purifier, loot spots) opens a `MachinePanel` that is
+  built from world data. Panel buttons only send requests. `LampView` reads `is_powered`. The HUD shows the
+  bag, the shared storage, power, the water bar, a thirsty warning and the drink hint.
+
+Protocol version 4 (adds `_rpc_request_entity_action` and `_rpc_request_drink`).
+
+## 17. Dependency direction
 
 ```
 presentation (main, ui, world views) ──reads/requests──▶ Session ──▶ WorldActions / Simulation ──▶ state

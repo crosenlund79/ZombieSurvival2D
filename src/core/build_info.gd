@@ -9,7 +9,7 @@ const ITERATION := "003"
 const STAGE := "survival-slice"
 const STATUS := "DEV"
 ## Bumped whenever the network protocol changes incompatibly.
-const PROTOCOL_VERSION := 3
+const PROTOCOL_VERSION := 4
 
 static var _commit := ""
 

@@ -30,6 +30,7 @@ static func advance(world: WorldState, ticks: int) -> Array:
 			results.append(res)
 	results.append_array(ZombieSim.step(world, ticks))
 	results.append_array(SurvivalSim.step(world, ticks))
+	results.append_array(InfraSim.step(world, ticks))
 	return results
 
 

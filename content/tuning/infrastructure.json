@@ -1,0 +1,13 @@
+{
+	"_comment": "Generator, purifier, hydration and scavenging tuning (prototype values, all configurable). Times in seconds of game time.",
+	"generator_fuel_capacity": 4,
+	"generator_seconds_per_fuel": 180,
+	"purifier_seconds_per_unit": 20,
+	"purifier_input_capacity": 6,
+	"purifier_output_capacity": 6,
+	"hydration_loss_per_minute": 2.5,
+	"hydration_per_drink": 40,
+	"thirsty_below": 25,
+	"dehydrated_health_loss_per_minute": 3,
+	"dehydrated_health_floor": 25
+}

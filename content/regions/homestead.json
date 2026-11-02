@@ -185,6 +185,59 @@
 				"chops": 0,
 				"felled": false
 			}
+		},
+		{
+			"id": "homestead.car_trunk",
+			"type": "loot",
+			"position": [
+				650,
+				1410
+			],
+			"interact_range": 75,
+			"prompt_key": "PROMPT_SEARCH_CAR",
+			"loot": {
+				"fuel": 2,
+				"water_dirty": 1
+			},
+			"restock_minutes": 15,
+			"initial": {
+				"looted_at": -1
+			}
+		},
+		{
+			"id": "homestead.shed_shelf",
+			"type": "loot",
+			"position": [
+				1560,
+				646
+			],
+			"interact_range": 75,
+			"prompt_key": "PROMPT_SEARCH_SHED",
+			"loot": {
+				"fuel": 1,
+				"water_dirty": 1
+			},
+			"restock_minutes": 20,
+			"initial": {
+				"looted_at": -1
+			}
+		},
+		{
+			"id": "homestead.rain_barrel",
+			"type": "loot",
+			"position": [
+				1680,
+				640
+			],
+			"interact_range": 70,
+			"prompt_key": "PROMPT_FILL_WATER",
+			"loot": {
+				"water_dirty": 2
+			},
+			"restock_minutes": 4,
+			"initial": {
+				"looted_at": -1
+			}
 		}
 	],
 	"map": {

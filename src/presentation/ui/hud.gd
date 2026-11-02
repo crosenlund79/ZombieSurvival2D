@@ -139,14 +139,28 @@ func _bar(at: Vector2, frac: float, col: Color, label: String) -> void:
 	_vitals.draw_string(font, at + Vector2(0, 13), label, HORIZONTAL_ALIGNMENT_LEFT, -1, 13, UITheme.PAPER)
 
 
+static func _bag_text(bag: Dictionary) -> String:
+	var bits: Array[String] = []
+	for item in Items.ids():
+		if Items.amount(bag, item) > 0:
+			bits.append("%s %d" % [TranslationServer.translate(Items.name_key(item)), Items.amount(bag, item)])
+	return " · ".join(bits) if not bits.is_empty() else "—"
+
+
 func _resource_line(me: PlayerState) -> String:
 	var parts: Array[String] = []
-	parts.append(UITheme.fmt("HUD_CARRYING", [me.carrying("wood"), WorldActions.CARRY_LIMIT]))
+	parts.append(UITheme.fmt("HUD_CARRYING", [Items.total(me.carried), Items.carry_slots()]) + "  " + _bag_text(me.carried))
+	if me.carrying("water_clean") > 0:
+		parts.append(UITheme.fmt("HUD_DRINK_HINT", [me.carrying("water_clean")]))
+	if InfraSim.is_thirsty(me):
+		parts.append(tr("HUD_THIRSTY"))
 	var b := Session.world.bunker_for_region(me.region_id)
 	if b == null and Session.world.bunkers.size() == 1:
 		b = Session.world.bunkers.values()[0]
 	if b != null:
-		parts.append(UITheme.fmt("HUD_STOCKPILE", [b.amount("wood")]))
+		parts.append(UITheme.fmt("HUD_STOCKPILE", [_bag_text(b.resources)]))
+		if not BunkerState.parse_region_id(me.region_id).is_empty():
+			parts.append(tr("HUD_POWER_ON") if InfraSim.is_powered(Session.world, me.region_id) else tr("HUD_POWER_OFF"))
 	var r := Session.world.region(me.region_id)
 	if r != null and not BunkerState.parse_region_id(me.region_id).is_empty():
 		var total := 0

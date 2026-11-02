@@ -31,6 +31,11 @@ func _built_world() -> WorldState:
 	return w
 
 
+## Construction completions only (other sims, e.g. hydration, also publish results).
+func _jobs_done(results: Array) -> Array:
+	return results.filter(func(r): return not r.get("changes", []).is_empty())
+
+
 func test_shelter_construction_is_timed_and_creates_bunker() -> void:
 	var w := WorldState.create_new("w1", 1)
 	_player(w, PID, INTERIOR, _site_pos() + Vector2(0, 40))
@@ -43,13 +48,13 @@ func test_shelter_construction_is_timed_and_creates_bunker() -> void:
 	var r3 := WorldActions.request_interact(w, PID2, SITE, 1)
 	eq(r3["reason"], "ACTION_BUSY", "request during construction refused as busy")
 	var need := int(w.region(INTERIOR).entity_state(SITE)["ticks"])
-	eq(Simulation.advance(w, need - 1).size(), 0, "not finished one tick early")
-	var done := Simulation.advance(w, 1)
+	eq(_jobs_done(Simulation.advance(w, need - 1)).size(), 0, "not finished one tick early")
+	var done := _jobs_done(Simulation.advance(w, 1))
 	eq(done.size(), 1, "finishes exactly on time")
 	eq(w.region(INTERIOR).entity_state(SITE)["stage"], "built", "built")
 	check(w.bunker(SITE) != null and w.bunker(SITE).has_level(-1), "bunker with level -1 exists")
 	check(w.region("bunker:%s:-1" % SITE) != null, "level -1 region exists")
-	eq(Simulation.advance(w, 100).size(), 0, "completes only once")
+	eq(_jobs_done(Simulation.advance(w, 100)).size(), 0, "completes only once")
 
 
 func test_hatch_portal_needs_open_hatch_and_moves_player() -> void:

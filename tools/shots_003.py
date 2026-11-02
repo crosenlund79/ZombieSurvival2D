@@ -83,6 +83,73 @@ def dig():
         s.quit()
 
 
+def infra():
+    s = Instance("shots_003c", headless=False); s.wipe(); s.start()
+    try:
+        s.cmd("window 1600 900")
+        s.cmd("single new 64 Keeper")
+        s.cmd("dev peaceful 1")
+        build_shelter(s)
+        s.cmd("dev grant fuel:3"); s.cmd("dev grant water_dirty:4"); s.cmd("dev grant wood:5")
+        s.cmd("walk_to 700 560 6"); s.cmd("zoom 0.75")
+        shot(s, "f1_bunker_unpowered", 1.0)
+        s.cmd("zoom 1.0")
+        s.cmd("walk_to 650 345 6"); s.cmd("press_interact")
+        s.cmd("entity_action storage store wood"); s.cmd("entity_action storage store water_dirty")
+        shot(s, "f2_storage_panel", 0.4)
+        s.cmd("panel_close")
+        s.cmd("walk_to 930 610 6"); s.cmd("press_interact")
+        s.cmd("entity_action generator fuel"); s.cmd("entity_action generator fuel")
+        s.cmd("entity_action generator toggle")
+        shot(s, "f3_generator_running_panel", 0.4)
+        s.cmd("panel_close")
+        s.cmd("walk_to 700 560 6"); s.cmd("zoom 0.75")
+        shot(s, "f4_bunker_powered_lights", 1.0)
+        s.cmd("zoom 1.0")
+        s.cmd("walk_to 250 620 6"); s.cmd("press_interact")
+        s.cmd("entity_action purifier fill")
+        s.cmd("dev advance_clock 50")
+        shot(s, "f5_purifier_water_panel", 0.6)
+        s.cmd("entity_action purifier collect")
+        s.cmd("panel_close")
+        s.cmd("dev thirst 18")
+        shot(s, "f6_hud_thirsty_inventory", 0.6)
+        s.cmd("press_key drink")
+        shot(s, "f7_hud_after_drink", 0.6)
+    finally:
+        s.quit()
+
+
+def duo():
+    h = Instance("shots_003h", headless=False); c = Instance("shots_003g", headless=False)
+    for i in (h, c):
+        i.wipe()
+    try:
+        h.start(); c.start()
+        for i in (h, c):
+            i.cmd("window 1100 700")
+        h.cmd("host 47911 new 65 Hosty")
+        h.cmd("dev peaceful 1")
+        build_shelter(h)
+        h.cmd("dev grant fuel:2")
+        h.cmd("walk_to 930 610 6")
+        h.cmd("entity_action generator fuel"); h.cmd("entity_action generator fuel"); h.cmd("entity_action generator toggle")
+        c.cmd("join 127.0.0.1 47911 Cleo")
+        c.cmd("walk_to 1150 960"); c.cmd("walk_to 1150 760"); c.cmd("walk_to 1640 760"); c.cmd("walk_to 1680 680 6")
+        c.cmd("press_interact")
+        h.cmd("walk_to 700 560 6")
+        h.cmd("zoom 0.8"); c.cmd("zoom 0.8")
+        shot(h, "g1_mp_host_underground_powered", 0.6)
+        shot(c, "g2_mp_client_surface_scavenging", 0.2)
+    finally:
+        for i in (h, c):
+            i.quit()
+
+
+if not only or "infra" in only:
+    infra()
+if not only or "duo" in only:
+    duo()
 if not only or "danger" in only:
     danger()
 if not only or "dig" in only:

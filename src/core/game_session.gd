@@ -334,6 +334,42 @@ func request_attack(aim: Vector2) -> void:
 		_rpc_request_attack.rpc_id(1, aim)
 
 
+## Panel action on storage / generator / purifier.
+func request_entity_action(entity_id: String, action: String, arg: Variant = "") -> void:
+	if not in_world():
+		return
+	if is_authority():
+		_host_handle_entity_action(1, entity_id, action, str(arg))
+	else:
+		_rpc_request_entity_action.rpc_id(1, entity_id, action, str(arg))
+
+
+func request_drink() -> void:
+	if not in_world():
+		return
+	if is_authority():
+		_host_handle_drink(1)
+	else:
+		_rpc_request_drink.rpc_id(1)
+
+
+func _host_handle_entity_action(peer_id: int, entity_id: String, action: String, arg: String) -> void:
+	var pid: String = _peer_to_player.get(peer_id, "")
+	var res := WorldActions.request_entity_action(world, pid, entity_id, action, arg)
+	if res["ok"]:
+		SessionLog.info("world", "entity_action", {"entity": entity_id, "action": action, "arg": arg, "by": pid.substr(0, 6)})
+		_publish_result(res)
+	_send_action_result(peer_id, 0, res["ok"], res["reason"], res["reason_args"])
+
+
+func _host_handle_drink(peer_id: int) -> void:
+	var pid: String = _peer_to_player.get(peer_id, "")
+	var res := WorldActions.request_drink(world, pid)
+	if res["ok"]:
+		_publish_result(res)
+	_send_action_result(peer_id, 0, res["ok"], res["reason"], res["reason_args"])
+
+
 ## Excavation request: action "dig" (a solid cell) or "support" (an open cell).
 func request_terrain(action: String, cell: Vector2i) -> void:
 	if not in_world():
@@ -555,6 +591,22 @@ func _host_dev_command(peer_id: int, cmd: String, arg: Variant) -> void:
 					z.ai = ZombieState.AI.INVESTIGATE
 					z.goal = p3.position
 					z.last_known = p3.position
+		"grant":
+			# Developer: give the player items, arg "item:amount" (e.g. "fuel:4").
+			var p7: PlayerState = world.players.get(pid)
+			var parts := str(arg).split(":")
+			if p7 != null and Items.exists(parts[0]):
+				p7.carried[parts[0]] = p7.carrying(parts[0]) + (int(parts[1]) if parts.size() > 1 else 1)
+				var gi := WorldActions._ok()
+				gi["players"] = [pid]
+				_publish_result(gi)
+		"thirst":
+			var p8: PlayerState = world.players.get(pid)
+			if p8 != null:
+				p8.hydration = float(arg) if arg != null else 20.0
+				var th := WorldActions._ok()
+				th["vitals"] = [pid]
+				_publish_result(th)
 		"grant_stock":
 			# Developer: add wood to the shelter stockpile of the player's bunker (or the first one).
 			var p6: PlayerState = world.players.get(pid)
@@ -801,6 +853,18 @@ func _rpc_request_interact(request_id: int, entity_id: String, expected_rev: int
 func _rpc_action_result(_request_id: int, ok: bool, reason_key: String, args: Array) -> void:
 	if not ok:
 		notice.emit(reason_key, args)
+
+
+@rpc("any_peer", "call_remote", "reliable")
+func _rpc_request_entity_action(entity_id: String, action: String, arg: String) -> void:
+	if mode == Mode.HOST:
+		_host_handle_entity_action(multiplayer.get_remote_sender_id(), entity_id, action, arg)
+
+
+@rpc("any_peer", "call_remote", "reliable")
+func _rpc_request_drink() -> void:
+	if mode == Mode.HOST:
+		_host_handle_drink(multiplayer.get_remote_sender_id())
 
 
 @rpc("any_peer", "call_remote", "reliable")

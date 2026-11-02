@@ -4,7 +4,7 @@ A 2D co-op zombie-survival and underground bunker-management game, built in Godo
 
 > Danger above. Security below. But security must be earned and can be threatened.
 
-**Status:** iteration 002 — dig a shelter under the farmhouse, chop timber, reinforce the bunker, world map (no zombies/survival stats yet).
+**Status:** iterations 003–005 "The Survival Slice": zombies, noise and hordes, a club, health and respawn; excavating the bunker with timber supports; scavenging, shared storage, generator power, water purification and hydration. Windows acceptance pending.
 Godot 4.7.2 · open `project.godot` · press F5. Two players: see the testing guide.
 
 - Design context and inherited engineering lessons: [`docs/HANDOVER.md`](docs/HANDOVER.md)
@@ -13,5 +13,6 @@ Godot 4.7.2 · open `project.godot` · press F5. Two players: see the testing gu
 - Launch, multiplayer and test instructions: [`docs/guides/TESTING_AND_LAUNCH.md`](docs/guides/TESTING_AND_LAUNCH.md)
 - Replacing art and sound: [`docs/guides/ASSET_REPLACEMENT.md`](docs/guides/ASSET_REPLACEMENT.md)
 - Script guides: [English](docs/guides/SCRIPT_GUIDE_EN.md) · [Dansk](docs/guides/SCRIPT_GUIDE_DA.md)
+- Gameplay design decision register (APPROVED / EXPLORING / DEFERRED): [`docs/DESIGN_DECISIONS.md`](docs/DESIGN_DECISIONS.md)
 - Iteration reports: [`docs/iterations/`](docs/iterations/)
 - Permanent project rules for contributors and AI agents: [`CLAUDE.md`](CLAUDE.md)

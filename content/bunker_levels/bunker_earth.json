@@ -115,6 +115,69 @@
 			"initial": {
 				"stage": "exposed"
 			}
+		},
+		{
+			"id": "storage",
+			"type": "storage",
+			"position": [
+				650,
+				304
+			],
+			"interact_range": 80,
+			"prompt_key": "PROMPT_STORAGE"
+		},
+		{
+			"id": "generator",
+			"type": "generator",
+			"position": [
+				930,
+				650
+			],
+			"interact_range": 90,
+			"prompt_key": "PROMPT_GENERATOR",
+			"initial": {
+				"fuel": 0.0,
+				"running": false
+			}
+		},
+		{
+			"id": "purifier",
+			"type": "purifier",
+			"position": [
+				250,
+				670
+			],
+			"interact_range": 85,
+			"prompt_key": "PROMPT_PURIFIER",
+			"initial": {
+				"input": 0,
+				"output": 0,
+				"progress": 0.0
+			}
+		},
+		{
+			"id": "lamp_1",
+			"type": "lamp",
+			"position": [
+				330,
+				470
+			]
+		},
+		{
+			"id": "lamp_2",
+			"type": "lamp",
+			"position": [
+				730,
+				470
+			]
+		},
+		{
+			"id": "lamp_3",
+			"type": "lamp",
+			"position": [
+				560,
+				640
+			]
 		}
 	],
 	"excavation": {

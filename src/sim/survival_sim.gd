@@ -22,7 +22,8 @@ static func step(world: WorldState, ticks: int) -> Array:
 			if world.tick >= p.respawn_tick:
 				results.append(respawn(world, p))
 			continue
-		if p.health < 100.0 and world.tick - p.last_hurt_tick >= int(REGEN_DELAY_SECONDS * Simulation.TICK_RATE):
+		# No recovery while thirsty: clean water matters.
+		if p.health < 100.0 and not InfraSim.is_thirsty(p) and world.tick - p.last_hurt_tick >= int(REGEN_DELAY_SECONDS * Simulation.TICK_RATE):
 			var before := floorf(p.health)
 			p.health = minf(100.0, p.health + REGEN_PER_SECOND * seconds)
 			if floorf(p.health) != before and int(p.health) % 5 == 0:

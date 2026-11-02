@@ -9,6 +9,7 @@
 [ext_resource type="Script" path="res://src/presentation/world/atmosphere.gd" id="atmo"]
 [ext_resource type="Script" path="res://src/presentation/world/tree_view.gd" id="treev"]
 [ext_resource type="Script" path="res://src/presentation/world/portal_view.gd" id="portalv"]
+[ext_resource type="Script" path="res://src/presentation/world/machine_view.gd" id="machinev"]
 
 [sub_resource type="RectangleShape2D" id="b0"]
 size = Vector2(2440, 40)
@@ -94,6 +95,18 @@ fade_with = NodePath("../Farmhouse")
 [node name="FarmhouseEntry" type="Node2D" parent="YSort"]
 script = ExtResource("portalv")
 entity_id = "homestead.farmhouse_entry"
+
+[node name="CarTrunk" type="Node2D" parent="YSort"]
+script = ExtResource("machinev")
+entity_id = "homestead.car_trunk"
+
+[node name="ShedShelf" type="Node2D" parent="YSort"]
+script = ExtResource("machinev")
+entity_id = "homestead.shed_shelf"
+
+[node name="RainBarrel" type="Node2D" parent="YSort"]
+script = ExtResource("machinev")
+entity_id = "homestead.rain_barrel"
 
 [node name="YardGate" type="Node2D" parent="YSort"]
 script = ExtResource("door")

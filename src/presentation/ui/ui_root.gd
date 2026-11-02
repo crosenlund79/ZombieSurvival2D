@@ -7,6 +7,7 @@ extends Control
 
 func _ready() -> void:
 	theme = UITheme.get_theme()
+	add_to_group("ui_root")
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	get_viewport().size_changed.connect(_fit)
 	Settings.changed.connect(func(section: String, key: String) -> void:

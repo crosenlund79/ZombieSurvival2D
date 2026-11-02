@@ -4,7 +4,7 @@
 
 1. Install **Godot 4.7.2 (standard, not .NET)** from godotengine.org. Newer 4.7.x patch releases
    should work; do not open the project in an older version.
-2. On GitHub choose the branch (latest: `iteration/002-bunker`; iteration 001: `iteration/001-foundation`) → **Code → Download ZIP**.
+2. On GitHub choose the branch (latest: `iteration/003-survival-slice`; earlier: `iteration/002-bunker`, `iteration/001-foundation`) → **Code → Download ZIP**.
 3. Extract the ZIP, start Godot, **Import** → select `project.godot` → **Import & Edit**.
    The first open imports all art (a few seconds). No other tools or steps are needed.
 4. Press **F5** (Run Project).
@@ -14,7 +14,8 @@
 Main menu → **Single Player** → **New World** (seed optional) or **Continue**.
 Move with **WASD / arrows**, zoom with **mouse wheel / + −**, interact with **E** when a prompt
 shows. **Esc** = menu (the world keeps running), **F5** = save, **F3** = developer overlay,
-**F12** = screenshot. Walking behind the farmhouse or a tree fades it so you stay visible.
+**F12** = screenshot. **Shift** = sprint (noisy), **F / left mouse** = melee swing,
+**Q** = drink clean water, **M** = map. Walking behind the farmhouse or a tree fades it so you stay visible.
 
 ## 3. Two players on one computer
 
@@ -58,6 +59,53 @@ aside to get "open/close" instead.
 **Create underground test level**. Each press adds one concrete level below the deepest level of your
 shelter (−2, −3, −4 …) and opens a ladder down to it. Clients cannot use it.
 
+## 3c. The survival slice (iteration 003)
+
+**Danger (surface).**
+1. Six zombies wander the edges of the homestead map. Inside the farmhouse and underground you are
+   safe: zombies never enter, and nothing hits through walls.
+2. Take the **club** from the rack inside the farmhouse (left wall, **E**).
+3. Noise attracts zombies to where it was made: chopping (loud), a falling tree (louder), melee, sprinting,
+   and doors. (Digging and the generator also make noise, but underground noise does not reach the
+   surface yet.) The HUD threat line goes *Quiet → Restless → Hunted*.
+   Keep making noise in one area and more zombies converge. Reinforcements arrive from off-screen, capped.
+   Attention fades when you stop.
+4. A zombie raises its arms (red wind-up) before it strikes. Step away, or swing with **F / left mouse**.
+   About 3 club hits kill one.
+5. At 0 health you go down and wake up inside the farmhouse after 5 s with 70 health. Carried items stay
+   with you.
+
+**Expansion (underground).**
+6. In level −1, aim at an earth wall next to the open floor. The outline shows **green** when you can dig
+   (**E**, 2 s) and **red** with a reason when you can't.
+7. Near the original chamber you may dig one cell beyond its edge. Further out, the prompt says the cell
+   needs a support. Stand on a dug cell → **E** "Place timber support" (4 wood from storage, 3 s). A support
+   lets you dig within about 3 cells of it. Supports must be at least 2 cells apart.
+
+**Living underground.**
+8. Scavenge on the surface (east side of the yard): the **rain barrel** (2 dirty water), the **shed shelf**
+   (1 fuel, 1 dirty water), and the **car trunk** south of the driveway (2 fuel, 1 dirty water). Searched
+   spots refill after 4 / 20 / 15 minutes of game time.
+9. In level −1:
+   - **Storage locker** (next to the ladder, **E**) opens a panel to store or take items. Timber you store
+     here is the same stock the timber pile and supports use.
+   - **Generator** (right side): **Add 1 fuel** (from your hands, otherwise from storage), then **Start**.
+     The three ceiling lamps light up and the room brightens. One fuel lasts 3 minutes of game time, and
+     the generator stops by itself when empty. With the power off the bunker is dim but never black.
+   - **Water purifier** (left side): **Pour in dirty water**. While the power is on it makes one clean
+     water every 20 s. **Collect clean water**, or **Drink from the tap**.
+10. The water bar falls slowly (about 2.5 per minute). Below 25 you are *thirsty* and health stops
+    recovering. Press **Q** to drink carried clean water (+40). At 0 water, health drains slowly, but
+    never below 25.
+
+**Two players.** One player can scavenge or fight on the surface while the other runs the generator
+or digs below. Both see the same storage, machines and terrain. The bunker keeps running even when
+nobody is down there.
+
+**Developer commands** (F3 overlay, host or single player only): peaceful (no zombies), spawn zombie /
+group, make noise, hurt / heal, grant timber, grant fuel / dirty water, set thirst, advance the clock,
+create a test level.
+
 ## 4. Saves
 
 Only the host (or single player) saves. Locations (Windows):
@@ -88,5 +136,8 @@ godot --headless --path . res://tests/run_tests.tscn      # unit tests + content
 python3 tools/mp_test.py                                  # real multi-process host/client tests
 python3 tools/check_script_guides.py                      # docs freshness: every script documented
 xvfb-run -a python3 tools/shots_phase_b.py                # rendered screenshots of the homestead (Linux)
+python3 tools/mp_test.py accept                           # the 25-step survival-slice acceptance run
+python3 tools/mp_test.py infra_multi dig_multi danger_multi   # iteration 003 two-process scenarios
+xvfb-run -a -s "-screen 0 1700x1000x24" python3 tools/shots_003.py   # iteration 003 screenshots
 ```
 Results are written to `tests/_out/` (ignored by git).

@@ -38,6 +38,8 @@ Plain-language description of every GDScript file. Identifiers and paths are exa
 | `src/sim/nav_grid.gd` | Content, Prop, FenceLine | Host-side walkability grid built from the region scene's authored collision data, plus live trees/gates; A* paths and line-of-sight checks for zombies and attacks. |
 | `src/sim/zombie_sim.gd` | NavGrid, ThreatState, WorldState | Host-only zombie simulation: hearing, attention escalation/decay, reinforcements from map entries within caps, the AI state machine, movement, attacks, corpses and population top-up. |
 | `src/sim/survival_sim.gd` | WorldActions | Host-only player vitals: slow health recovery and the forgiving respawn rule (keep everything, wake in the farmhouse). |
+| `src/content/items.gd` | SafeFile | Item catalogue (`content/items.json`): stable item ids, name keys, carrying slots, and `move()` which transfers between two bags in one step so nothing duplicates. |
+| `src/sim/infra_sim.gd` | Simulation, WorldActions, ZombieSim, Content | Host-only infrastructure on the shared clock: generator fuel burn and auto-stop, logical bunker power (`is_powered`), purifier conversion over time when powered, hydration decay and mild dehydration. |
 | `src/sim/terrain.gd` | Content, RegionState | Excavation rules for a region's earth-cell grid: open/solid cells, permanent cells, the support rule (safe margin + reinforced supports' radius), validation reasons. |
 | `src/sim/simulation.gd` | WorldState | The one shared clock (10 ticks per second). Future timed systems attach here. |
 | `src/sim/world_actions.gd` | WorldState, Content | Host-side rules: checks an interaction request (who, where, how far, which revision) and applies it; checks that reported movement is physically possible. |
@@ -54,6 +56,7 @@ Plain-language description of every GDScript file. Identifiers and paths are exa
 | `src/presentation/ui/settings_panel.gd` | Settings, Assets | Settings window: volumes, display, UI scale, language, key rebinding, override folder and reload. Saves immediately; never pauses the world. |
 | `src/presentation/ui/map_panel.gd` | Session, Assets, Hud | World map (M): roads, areas, landmarks from content; trees, shelters and players from live state; depth when underground. |
 | `src/presentation/ui/hud.gd` | Session, InteractionSensor | In-game overlay: status line, the interaction prompt, short notices. |
+| `src/presentation/ui/machine_panel.gd` | UITheme, Session | Small in-world panel for one machine (storage, generator, purifier): title, status lines and buttons built by the machine view; refreshes from world data, closes when out of reach or on Esc. Buttons only send requests to the host. |
 | `src/presentation/ui/pause_menu.gd` | Session | Esc menu: resume, save (host), settings, leave. The shared world keeps running. |
 | `src/presentation/ui/dev_overlay.gd` | Session, Net, Assets, Audio, SessionLog | F3 developer panel: build, network and world state, players, entity states, save status, overrides, log path, and a few host-checked commands. |
 
@@ -82,6 +85,8 @@ Plain-language description of every GDScript file. Identifiers and paths are exa
 | `src/presentation/world/light_spot.gd` | LightFactory | A scene light (lantern, window, ladder shaft) using the shared radial texture. |
 | `src/presentation/world/zombie_view.gd` | Session, Assets, Audio | Shows one zombie from world data: interpolation, shamble, ?/! cues, red wind-up pose, hit flash, health bar, fall on death, local groans. |
 | `src/presentation/world/weapon_rack_view.gd` | EntityView | The club rack in the farmhouse; taking a club equips the player (one each, never runs out). |
+| `src/presentation/world/machine_view.gd` | EntityView, MachinePanel, InfraSim, Items, Audio | Storage locker, generator, water purifier and surface scavenge spots: art for on/off/empty, the machine panel contents, direct searching of loot spots, generator hum loop while running. |
+| `src/presentation/world/lamp_view.gd` | EntityView, InfraSim, LightSpot | Electric bunker lamp: lit with a light while the bunker has power, dark otherwise. Only reads the logical power state. |
 | `src/presentation/world/terrain_view.gd` | Terrain, Session, Assets | Draws dug floor, solid earth, 3/4 wall faces and inked edges from the grid; rebuilds collision on changes; places support posts; the contextual dig/support prompt with a coloured target outline. |
 | `src/presentation/world/placeholder_block.gd` | — | Greybox helper (used in Phase A, kept for blocking out new areas): a coloured rectangle with matching collision. |
 | `src/presentation/world/placeholder_ground.gd` | — | Greybox ground with a 100 px grid (unused in the current scene). |
@@ -95,6 +100,7 @@ Plain-language description of every GDScript file. Identifiers and paths are exa
 | `tests/test_case.gd` | — | Tiny base class for unit tests (`check`, `eq`). |
 | `tests/test_runner.gd` | TestCase, ContentCheck | Runs every test file in tests/unit and the content check, writes results, exits with an error code on failure. |
 | `tests/unit/test_threat.gd` | ZombieSim, WorldActions, NavGrid | Tests navigation, sight, hearing, attention growth/decay, escalation caps, melee authority, walls, wind-up damage, respawn, the farmhouse boundary and the persistence policy. |
+| `tests/unit/test_infra.gd` | Items, InfraSim, WorldActions, SaveCodec | Tests item moves, shared storage races, scavenging and restock, generator fuel/power, purifier needing power and time, hydration/drinking and save round trip. |
 | `tests/unit/test_terrain.gd` | Terrain, WorldActions, SaveCodec | Tests the grid, dig validation and timing, concurrent digs, support spending/radius/spacing, persistence and interrupted digs. |
 | `tests/unit/test_world.gd` | WorldState, WorldActions, Simulation | Tests world creation, change storage, seeded randomness, the clock, interaction validation, simultaneous requests, movement plausibility. |
 | `tests/unit/test_bunker.gd` | WorldActions, Simulation, SaveCodec | Tests shelter timing, no duplicate hatch, portals, wood given once, cooldown, spend-once reinforcement, unlimited developer levels, saves, migration. |

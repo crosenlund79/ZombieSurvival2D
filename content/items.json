@@ -1,0 +1,10 @@
+{
+	"_comment": "Item definitions (iteration 003). Quantities are whole units; every unit takes one carrying slot.",
+	"carry_slots": 30,
+	"items": {
+		"wood": {"name_key": "ITEM_WOOD"},
+		"fuel": {"name_key": "ITEM_FUEL"},
+		"water_dirty": {"name_key": "ITEM_WATER_DIRTY"},
+		"water_clean": {"name_key": "ITEM_WATER_CLEAN"}
+	}
+}

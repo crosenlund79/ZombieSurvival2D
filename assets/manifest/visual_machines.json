@@ -1,0 +1,160 @@
+{
+	"kind": "visual",
+	"category": "machines",
+	"assets": [
+		{
+			"id": "world.generator_off",
+			"name": "Generator \u2014 stopped",
+			"template": "res://assets/templates/world/machines/template_generator_off.png",
+			"display_size": [
+				120,
+				100
+			],
+			"source_size": [
+				240,
+				200
+			],
+			"pivot": [
+				0.5,
+				0.93
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_infra.py) \u2014 replace with tablet art."
+		},
+		{
+			"id": "world.generator_on",
+			"name": "Generator \u2014 running",
+			"template": "res://assets/templates/world/machines/template_generator_on.png",
+			"display_size": [
+				120,
+				100
+			],
+			"source_size": [
+				240,
+				200
+			],
+			"pivot": [
+				0.5,
+				0.93
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Green lamp + exhaust; the hum is a separate sound. Generated placeholder (tools/art/gen_infra.py) \u2014 replace with tablet art."
+		},
+		{
+			"id": "world.purifier_off",
+			"name": "Water purifier \u2014 idle",
+			"template": "res://assets/templates/world/machines/template_purifier_off.png",
+			"display_size": [
+				90,
+				130
+			],
+			"source_size": [
+				180,
+				260
+			],
+			"pivot": [
+				0.5,
+				0.954
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_infra.py) \u2014 replace with tablet art."
+		},
+		{
+			"id": "world.purifier_on",
+			"name": "Water purifier \u2014 working",
+			"template": "res://assets/templates/world/machines/template_purifier_on.png",
+			"display_size": [
+				90,
+				130
+			],
+			"source_size": [
+				180,
+				260
+			],
+			"pivot": [
+				0.5,
+				0.954
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_infra.py) \u2014 replace with tablet art."
+		},
+		{
+			"id": "world.storage_locker",
+			"name": "Shared storage locker",
+			"template": "res://assets/templates/world/machines/template_storage_locker.png",
+			"display_size": [
+				100,
+				140
+			],
+			"source_size": [
+				200,
+				280
+			],
+			"pivot": [
+				0.5,
+				0.957
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_infra.py) \u2014 replace with tablet art."
+		},
+		{
+			"id": "world.lamp_off",
+			"name": "Electric lamp \u2014 off",
+			"template": "res://assets/templates/world/machines/template_lamp_off.png",
+			"display_size": [
+				40,
+				60
+			],
+			"source_size": [
+				80,
+				120
+			],
+			"pivot": [
+				0.5,
+				1.0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Hangs from the ceiling; its light is a separate 2D light. Generated placeholder (tools/art/gen_infra.py) \u2014 replace with tablet art."
+		},
+		{
+			"id": "world.lamp_on",
+			"name": "Electric lamp \u2014 lit",
+			"template": "res://assets/templates/world/machines/template_lamp_on.png",
+			"display_size": [
+				40,
+				60
+			],
+			"source_size": [
+				80,
+				120
+			],
+			"pivot": [
+				0.5,
+				1.0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_infra.py) \u2014 replace with tablet art."
+		}
+	]
+}

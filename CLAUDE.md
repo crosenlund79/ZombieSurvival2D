@@ -3,8 +3,10 @@
 Single source of permanent project rules. Full design context: `docs/HANDOVER.md`.
 
 ## Status
-Working title **Aftergrowth**. Iteration 002 (farmhouse shelter, timber, reinforcement, map, dev levels) implemented on
-`iteration/002-bunker`; Windows acceptance pending for 001 and 002.
+Working title **Aftergrowth**. Iterations 003–005 "The Survival Slice" (zombies/noise/hordes/combat, bunker
+excavation with supports, items/storage/scavenging/generator/power/water/hydration) implemented on
+`iteration/003-survival-slice`; Windows acceptance pending for 001–003.
+Gameplay decision register: `docs/DESIGN_DECISIONS.md` (keep it updated each iteration).
 Do not implement anything that has not been explicitly approved as an assignment by the
 creator. Brainstorms are not feature requests.
 

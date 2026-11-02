@@ -51,9 +51,17 @@
 		"da": "For ustabilt: sæt først en tømmerstøtte inden for rækkevidde.",
 		"en": "Too unstable: place a timber support within reach first."
 	},
+	"ACTION_DRINK": {
+		"da": "Drik rent vand",
+		"en": "Drink clean water"
+	},
 	"ACTION_INTERACT": {
 		"da": "Interager",
 		"en": "Interact"
+	},
+	"ACTION_LOOT_EMPTY": {
+		"da": "Her er intet tilbage lige nu.",
+		"en": "Nothing left here for now."
 	},
 	"ACTION_MOVE_DOWN": {
 		"da": "Gå ned",
@@ -71,9 +79,25 @@
 		"da": "Gå op",
 		"en": "Move up"
 	},
+	"ACTION_NEED_DIRTY_WATER": {
+		"da": "Intet snavset vand at hælde i.",
+		"en": "No dirty water to pour in."
+	},
+	"ACTION_NEED_FUEL": {
+		"da": "Intet brændstof — bær noget eller læg det på lageret.",
+		"en": "No fuel — carry some or store it in the shelter."
+	},
+	"ACTION_NEED_SLOTS": {
+		"da": "Du skal have %s ledige bærepladser.",
+		"en": "You need %s free carrying slots."
+	},
 	"ACTION_NEED_WOOD": {
 		"da": "Kræver %s træ — lageret har %s.",
 		"en": "Needs %s wood — the stockpile has %s."
+	},
+	"ACTION_NOTHING_THERE": {
+		"da": "Der er intet at tage.",
+		"en": "There is nothing to take."
 	},
 	"ACTION_NOTHING_TO_DEPOSIT": {
 		"da": "Du bærer ikke noget træ.",
@@ -86,6 +110,10 @@
 	"ACTION_NOT_SUPPORTED": {
 		"da": "Det kan ikke bruges.",
 		"en": "Nothing to do with that."
+	},
+	"ACTION_NO_CLEAN_WATER": {
+		"da": "Du har intet rent vand.",
+		"en": "You have no clean water."
 	},
 	"ACTION_NO_SHELTER": {
 		"da": "Der er endnu intet tilflugtsrum her.",
@@ -118,6 +146,10 @@
 	"ACTION_SUPPORT_TOO_CLOSE": {
 		"da": "For tæt på en anden støtte — grav længere ud først.",
 		"en": "Too close to another support — dig further first."
+	},
+	"ACTION_TANK_FULL": {
+		"da": "Den er fuld.",
+		"en": "It's full."
 	},
 	"ACTION_TOO_FAR": {
 		"da": "For langt væk.",
@@ -267,13 +299,57 @@
 		"da": "tilfældig",
 		"en": "random"
 	},
+	"GENERATOR_EMPTY": {
+		"da": "Generatoren dør ud — tør for brændstof.",
+		"en": "The generator sputters out — out of fuel."
+	},
+	"GEN_ADD_FUEL": {
+		"da": "Påfyld 1 brændstof (%s til rådighed)",
+		"en": "Add 1 fuel (%s available)"
+	},
+	"GEN_EMPTY": {
+		"da": "Tør for brændstof.",
+		"en": "Out of fuel."
+	},
+	"GEN_FUEL": {
+		"da": "Brændstof %s %% (ca. %s min drift)",
+		"en": "Fuel %s %% (about %s min of running)"
+	},
+	"GEN_POWER_OFF": {
+		"da": "Ingen strøm i tilflugtsrummet.",
+		"en": "No power in the bunker."
+	},
+	"GEN_POWER_ON": {
+		"da": "Lys og vandrenser får strøm.",
+		"en": "Lights and purifier powered."
+	},
+	"GEN_RUNNING": {
+		"da": "Kører — tilflugtsrummet har strøm.",
+		"en": "Running — the bunker has power."
+	},
+	"GEN_START": {
+		"da": "Start",
+		"en": "Start"
+	},
+	"GEN_STOP": {
+		"da": "Stop",
+		"en": "Stop"
+	},
+	"GEN_STOPPED": {
+		"da": "Standset.",
+		"en": "Stopped."
+	},
 	"HUD_CARRYING": {
-		"da": "Bærer %s / %s træ",
-		"en": "Carrying %s / %s wood"
+		"da": "Bærer %s/%s:",
+		"en": "Carrying %s/%s:"
 	},
 	"HUD_DOWNED": {
 		"da": "Du blev overmandet… vågner op i stuehuset.",
 		"en": "You were overwhelmed… waking up in the farmhouse."
+	},
+	"HUD_DRINK_HINT": {
+		"da": "[Q] Drik rent vand (%s)",
+		"en": "[Q] Drink clean water (%s)"
 	},
 	"HUD_HEALTH": {
 		"da": "Helbred",
@@ -291,13 +367,25 @@
 		"da": "spillere",
 		"en": "players"
 	},
+	"HUD_POWER_OFF": {
+		"da": "Strøm: fra",
+		"en": "Power: off"
+	},
+	"HUD_POWER_ON": {
+		"da": "Strøm: TIL",
+		"en": "Power: ON"
+	},
 	"HUD_REINFORCED": {
 		"da": "Tømmerstøtter på plads: %s",
 		"en": "Timber supports in place: %s"
 	},
 	"HUD_STOCKPILE": {
-		"da": "Tilflugtsrummets lager: %s træ",
-		"en": "Shelter stockpile: %s wood"
+		"da": "Tilflugtsrummets lager: %s",
+		"en": "Shelter storage: %s"
+	},
+	"HUD_THIRSTY": {
+		"da": "Tørstig — intet helbred genvindes før du drikker",
+		"en": "Thirsty — no health recovery until you drink"
 	},
 	"HUD_THREAT_CALM": {
 		"da": "Stille",
@@ -326,6 +414,22 @@
 	"HUD_TIME": {
 		"da": "tid",
 		"en": "time"
+	},
+	"ITEM_FUEL": {
+		"da": "Brændstof",
+		"en": "Fuel"
+	},
+	"ITEM_WATER_CLEAN": {
+		"da": "Rent vand",
+		"en": "Clean water"
+	},
+	"ITEM_WATER_DIRTY": {
+		"da": "Snavset vand",
+		"en": "Dirty water"
+	},
+	"ITEM_WOOD": {
+		"da": "Træ",
+		"en": "Wood"
 	},
 	"JOIN_BAD_SNAPSHOT": {
 		"da": "Værten sendte verdensdata, som spillet ikke kunne læse.",
@@ -374,6 +478,10 @@
 	"LANG_EN": {
 		"da": "English",
 		"en": "English"
+	},
+	"LOOT_FOUND": {
+		"da": "Fundet: %s",
+		"en": "Found: %s"
 	},
 	"MAP_CAR": {
 		"da": "Efterladt bil",
@@ -491,6 +599,38 @@
 		"da": "Kunne ikke være vært på den port (allerede i brug?).",
 		"en": "Could not host on that port (already in use?)."
 	},
+	"PANEL_CARRY": {
+		"da": "Du bærer %s/%s",
+		"en": "You carry %s/%s"
+	},
+	"PANEL_EMPTY": {
+		"da": "Tomt.",
+		"en": "Empty."
+	},
+	"PANEL_GENERATOR": {
+		"da": "Generator",
+		"en": "Generator"
+	},
+	"PANEL_ITEM_LINE": {
+		"da": "%s — på lager %s, båret %s",
+		"en": "%s — stored %s, carried %s"
+	},
+	"PANEL_PURIFIER": {
+		"da": "Vandrenser",
+		"en": "Water purifier"
+	},
+	"PANEL_STORAGE": {
+		"da": "Fælles lager",
+		"en": "Shared storage"
+	},
+	"PANEL_STORE_ALL": {
+		"da": "Læg al %s (%s)",
+		"en": "Store all %s (%s)"
+	},
+	"PANEL_TAKE": {
+		"da": "Tag 1 %s",
+		"en": "Take 1 %s"
+	},
 	"PAUSE_HINT": {
 		"da": "Den fælles verden kører videre, mens menuen er åben.",
 		"en": "The shared world keeps running while this menu is open."
@@ -567,6 +707,14 @@
 		"da": "Gå udenfor",
 		"en": "Go outside"
 	},
+	"PROMPT_FILL_WATER": {
+		"da": "Fyld flasker ved regntønden",
+		"en": "Fill bottles at the rain barrel"
+	},
+	"PROMPT_GENERATOR": {
+		"da": "Generator",
+		"en": "Generator"
+	},
 	"PROMPT_OPEN_DOOR": {
 		"da": "Åbn dør",
 		"en": "Open door"
@@ -583,9 +731,29 @@
 		"da": "For ustabilt at grave — sæt en tømmerstøtte her (%s træ, %s på lager)",
 		"en": "Too unstable to dig — place a timber support here (%s wood, %s in stock)"
 	},
+	"PROMPT_PURIFIER": {
+		"da": "Vandrenser",
+		"en": "Water purifier"
+	},
 	"PROMPT_REINFORCE": {
 		"da": "Forstærk med tømmer (%s træ, %s på lager)",
 		"en": "Reinforce with timber (%s wood, %s in stock)"
+	},
+	"PROMPT_SEARCH": {
+		"da": "Gennemsøg",
+		"en": "Search"
+	},
+	"PROMPT_SEARCH_CAR": {
+		"da": "Gennemsøg bilen (brændstof)",
+		"en": "Search the car (fuel)"
+	},
+	"PROMPT_SEARCH_SHED": {
+		"da": "Gennemsøg skurets hylde",
+		"en": "Search the shed shelf"
+	},
+	"PROMPT_STORAGE": {
+		"da": "Åbn fælles lager",
+		"en": "Open shared storage"
 	},
 	"PROMPT_TAKE_CLUB": {
 		"da": "Tag en trækølle",
@@ -594,6 +762,38 @@
 	"PROMPT_USE": {
 		"da": "Brug",
 		"en": "Use"
+	},
+	"PUR_COLLECT": {
+		"da": "Tag rent vand",
+		"en": "Collect clean water"
+	},
+	"PUR_DRINK": {
+		"da": "Drik fra hanen",
+		"en": "Drink from the tap"
+	},
+	"PUR_FILL": {
+		"da": "Hæld snavset vand i (%s til rådighed)",
+		"en": "Pour in dirty water (%s available)"
+	},
+	"PUR_FULL": {
+		"da": "Tanken med rent vand er fuld — tøm den.",
+		"en": "Clean-water tank full — collect it."
+	},
+	"PUR_LEVELS": {
+		"da": "Snavset ind %s/%s · rent ud %s/%s · %s %%",
+		"en": "Dirty in %s/%s · clean out %s/%s · %s %%"
+	},
+	"PUR_NO_POWER": {
+		"da": "Ingen strøm — start generatoren.",
+		"en": "No power — start the generator."
+	},
+	"PUR_WAITING": {
+		"da": "Venter på snavset vand.",
+		"en": "Waiting for dirty water."
+	},
+	"PUR_WORKING": {
+		"da": "Renser…",
+		"en": "Purifying…"
 	},
 	"REGION_FARMHOUSE": {
 		"da": "Stuehuset",
@@ -718,5 +918,21 @@
 	"WOOD_GAINED": {
 		"da": "+%s træ (bærer %s)",
 		"en": "+%s wood (carrying %s)"
+	},
+	"DEV_PEACEFUL": {
+		"da": "Zombier til/fra (fredelig)",
+		"en": "Zombies on/off (peaceful)"
+	},
+	"DEV_GRANT_TIMBER": {
+		"da": "Giv 12 tømmer til lageret",
+		"en": "Grant 12 timber to storage"
+	},
+	"DEV_GRANT_SUPPLIES": {
+		"da": "Giv brændstof + beskidt vand",
+		"en": "Grant fuel + dirty water"
+	},
+	"DEV_THIRST": {
+		"da": "Gør tørstig",
+		"en": "Make thirsty"
 	}
 }

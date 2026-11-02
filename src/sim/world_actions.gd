@@ -60,6 +60,8 @@ static func request_interact(world: WorldState, player_id: String, entity_id: St
 			return _deposit(world, p, region, def)
 		"support_site":
 			return _support(world, region, entity_id, def, state, expected_rev)
+		"loot":
+			return _loot(world, p, region, entity_id, def)
 	return _fail("ACTION_NOT_SUPPORTED")
 
 
@@ -179,8 +181,8 @@ static func _chop(world: WorldState, p: PlayerState, region: RegionState, eid: S
 	var key := p.player_id + ":chop"
 	if world.tick - int(world.cooldowns.get(key, -1000)) < CHOP_COOLDOWN_TICKS:
 		return _fail("ACTION_TOO_FAST")
-	if p.carrying("wood") >= CARRY_LIMIT:
-		return _fail("ACTION_CARRY_FULL", [CARRY_LIMIT])
+	if Items.free_slots(p.carried) <= 0:
+		return _fail("ACTION_CARRY_FULL", [Items.carry_slots()])
 	world.cooldowns[key] = world.tick
 	var chops := int(state.get("chops", 0)) + 1
 	ZombieSim.make_noise(world, region.region_id, Content.entity_position(def), "chop")
@@ -190,7 +192,7 @@ static func _chop(world: WorldState, p: PlayerState, region: RegionState, eid: S
 	# The felling blow: the tree's wood goes to whoever landed it, once.
 	region.set_fields(eid, {"chops": chops, "felled": true})
 	ZombieSim.make_noise(world, region.region_id, Content.entity_position(def), "fell")
-	var gained := mini(int(def.get("wood", 4)), CARRY_LIMIT - p.carrying("wood"))
+	var gained := mini(int(def.get("wood", 4)), Items.free_slots(p.carried))
 	p.carried["wood"] = p.carrying("wood") + gained
 	var res := _changed(region, eid, "felled")
 	res["players"] = [p.player_id]
@@ -241,6 +243,141 @@ static func _support(world: WorldState, region: RegionState, eid: String, def: D
 	var res := _changed(region, eid, "build_started")
 	res["bunkers"] = [b.bunker_id]
 	return res
+
+
+# ------------------------------------------------------------------ items, scavenging, machines
+
+## Scavenging spots restock after their documented game-time interval, so the
+## prototype can always be replayed (renewable fuel and water).
+static func loot_ready(world: WorldState, region: RegionState, eid: String) -> bool:
+	if world == null or region == null:
+		return false
+	var at := int(region.entity_state(eid).get("looted_at", -1))
+	if at < 0:
+		return true
+	var mins := float(region.entity_def(eid).get("restock_minutes", 15))
+	return world.tick - at >= int(mins * 60.0 * Simulation.TICK_RATE)
+
+
+static func _loot(world: WorldState, p: PlayerState, region: RegionState, eid: String, def: Dictionary) -> Dictionary:
+	if not loot_ready(world, region, eid):
+		return _fail("ACTION_LOOT_EMPTY")
+	var loot: Dictionary = def.get("loot", {})
+	var need := 0
+	for item in loot:
+		need += int(loot[item])
+	if Items.free_slots(p.carried) < need:
+		return _fail("ACTION_NEED_SLOTS", [need])
+	var found: Array[String] = []
+	for item in loot:
+		p.carried[item] = p.carrying(item) + int(loot[item])
+		found.append("%d %s" % [int(loot[item]), TranslationServer.translate(Items.name_key(item))])
+	region.set_fields(eid, {"looted_at": world.tick})
+	ZombieSim.make_noise(world, region.region_id, Content.entity_position(def), "door")
+	var res := _changed(region, eid, "looted")
+	res["players"] = [p.player_id]
+	res["notice"] = {"key": "LOOT_FOUND", "args": [", ".join(found)]}
+	return res
+
+
+## Panel actions on storage, generator and purifier (host-validated; every
+## transfer moves items between two bags in one step, so nothing duplicates).
+static func request_entity_action(world: WorldState, player_id: String, eid: String, action: String, arg: String) -> Dictionary:
+	var p: PlayerState = world.players.get(player_id, null)
+	if p == null or not p.online or p.dead:
+		return _fail("ACTION_UNKNOWN_PLAYER")
+	var region := world.region(p.region_id)
+	if region == null or not region.has_entity(eid):
+		return _fail("ACTION_UNKNOWN_OBJECT")
+	var def := region.entity_def(eid)
+	if p.position.distance_to(Content.entity_position(def)) > float(def.get("interact_range", 80.0)) + RANGE_TOLERANCE + 40.0:
+		return _fail("ACTION_TOO_FAR")
+	var b := world.bunker_for_region(region.region_id)
+	var store: Dictionary = b.resources if b != null else {}
+	var st := region.entity_state(eid)
+	var res := _ok()
+	res["players"] = [p.player_id]
+	if b != null:
+		res["bunkers"] = [b.bunker_id]
+	match str(def.get("type", "")) + ":" + action:
+		"storage:store":
+			if Items.move(p.carried, store, arg, 9999) <= 0:
+				return _fail("ACTION_NOTHING_TO_DEPOSIT")
+		"storage:take":
+			if Items.move(store, p.carried, arg, 1, Items.carry_slots()) <= 0:
+				return _fail("ACTION_CARRY_FULL" if Items.amount(store, arg) > 0 else "ACTION_NOTHING_THERE", [Items.carry_slots()])
+		"generator:fuel":
+			var cap := float(InfraSim.c("generator_fuel_capacity", 4))
+			if float(st.get("fuel", 0.0)) > cap - 1.0:
+				return _fail("ACTION_TANK_FULL")
+			var src := p.carried if Items.amount(p.carried, "fuel") > 0 else store
+			if Items.amount(src, "fuel") <= 0:
+				return _fail("ACTION_NEED_FUEL")
+			src["fuel"] = Items.amount(src, "fuel") - 1
+			if int(src["fuel"]) == 0:
+				src.erase("fuel")
+			region.set_fields(eid, {"fuel": float(st.get("fuel", 0.0)) + 1.0})
+			res["changes"] = [{"region_id": region.region_id, "entity_id": eid, "cause": "fuelled"}]
+		"generator:toggle":
+			var running := not bool(st.get("running", false))
+			if running and float(st.get("fuel", 0.0)) <= 0.0:
+				return _fail("ACTION_NEED_FUEL")
+			region.set_fields(eid, {"running": running})
+			res["changes"] = [{"region_id": region.region_id, "entity_id": eid, "cause": "started" if running else "stopped"}]
+		"purifier:fill":
+			var room := int(InfraSim.c("purifier_input_capacity", 6)) - int(st.get("input", 0))
+			var moved := 0
+			for src2 in [p.carried, store]:
+				var n := mini(room - moved, Items.amount(src2, "water_dirty"))
+				if n > 0:
+					src2["water_dirty"] = Items.amount(src2, "water_dirty") - n
+					if int(src2["water_dirty"]) == 0:
+						src2.erase("water_dirty")
+					moved += n
+			if moved <= 0:
+				return _fail("ACTION_NEED_DIRTY_WATER" if room > 0 else "ACTION_TANK_FULL")
+			region.set_fields(eid, {"input": int(st.get("input", 0)) + moved})
+			res["changes"] = [{"region_id": region.region_id, "entity_id": eid, "cause": "filled"}]
+		"purifier:collect":
+			var n2 := mini(int(st.get("output", 0)), Items.free_slots(p.carried))
+			if n2 <= 0:
+				return _fail("ACTION_NOTHING_THERE" if int(st.get("output", 0)) == 0 else "ACTION_CARRY_FULL", [Items.carry_slots()])
+			p.carried["water_clean"] = p.carrying("water_clean") + n2
+			region.set_fields(eid, {"output": int(st.get("output", 0)) - n2})
+			res["changes"] = [{"region_id": region.region_id, "entity_id": eid, "cause": "collected"}]
+		"purifier:drink_tap":
+			if int(st.get("output", 0)) <= 0:
+				return _fail("ACTION_NOTHING_THERE")
+			region.set_fields(eid, {"output": int(st.get("output", 0)) - 1})
+			_drink_effect(p)
+			res["changes"] = [{"region_id": region.region_id, "entity_id": eid, "cause": "collected"}]
+			res["vitals"] = [p.player_id]
+			res["events"] = [{"kind": "drank", "player_id": p.player_id}]
+		_:
+			return _fail("ACTION_NOT_SUPPORTED")
+	return res
+
+
+## Drink one clean water from what the player carries.
+static func request_drink(world: WorldState, player_id: String) -> Dictionary:
+	var p: PlayerState = world.players.get(player_id, null)
+	if p == null or p.dead:
+		return _fail("ACTION_UNKNOWN_PLAYER")
+	if p.carrying("water_clean") <= 0:
+		return _fail("ACTION_NO_CLEAN_WATER")
+	p.carried["water_clean"] = p.carrying("water_clean") - 1
+	if int(p.carried["water_clean"]) == 0:
+		p.carried.erase("water_clean")
+	_drink_effect(p)
+	var res := _ok()
+	res["players"] = [p.player_id]
+	res["vitals"] = [p.player_id]
+	res["events"] = [{"kind": "drank", "player_id": p.player_id}]
+	return res
+
+
+static func _drink_effect(p: PlayerState) -> void:
+	p.hydration = minf(100.0, p.hydration + float(InfraSim.c("hydration_per_drink", 40)))
 
 
 # ------------------------------------------------------------------ excavation

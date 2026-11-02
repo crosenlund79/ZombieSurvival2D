@@ -64,6 +64,7 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	var focus := get_viewport().gui_get_focus_owner()
 	PlayerAvatar.input_blocked = pause_menu.visible or settings_panel != null or menu.visible or map_panel.visible \
+		or (MachinePanel.current != null and is_instance_valid(MachinePanel.current)) \
 		or (focus is LineEdit)
 
 
@@ -82,6 +83,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		pause_menu.visible = not pause_menu.visible
 	elif event.is_action_pressed("quick_save"):
 		Session.save_world()
+	elif event.is_action_pressed("drink") and not PlayerAvatar.input_blocked:
+		Session.request_drink()
 
 
 func _on_world_started() -> void:
@@ -121,6 +124,7 @@ func build_region_view() -> void:
 
 
 func clear_region_view() -> void:
+	MachinePanel.close_current()
 	if region_view != null and is_instance_valid(region_view):
 		world_layer.remove_child(region_view)
 		region_view.free()

@@ -221,6 +221,46 @@
 			"loop": false,
 			"status": "READY",
 			"notes": "Shares the iteration-002 dig placeholder; replace separately if wanted."
+		},
+		{
+			"id": "amb.generator",
+			"name": "Generator hum (loop)",
+			"template": "res://assets/templates/audio/environment/template_generator_loop.wav",
+			"bus": "Ambience",
+			"volume_db": -10.0,
+			"loop": true,
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_infra_audio.py)."
+		},
+		{
+			"id": "sfx.water_pour",
+			"name": "Water pouring",
+			"template": "res://assets/templates/audio/world/template_water_pour.wav",
+			"bus": "SFX",
+			"volume_db": -6.0,
+			"loop": false,
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_infra_audio.py)."
+		},
+		{
+			"id": "sfx.rummage",
+			"name": "Searching / scavenging",
+			"template": "res://assets/templates/audio/world/template_rummage.wav",
+			"bus": "SFX",
+			"volume_db": -4.0,
+			"loop": false,
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_infra_audio.py)."
+		},
+		{
+			"id": "sfx.drink",
+			"name": "Drinking",
+			"template": "res://assets/templates/audio/world/template_drink.wav",
+			"bus": "SFX",
+			"volume_db": -4.0,
+			"loop": false,
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_infra_audio.py)."
 		}
 	]
 }

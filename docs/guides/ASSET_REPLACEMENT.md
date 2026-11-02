@@ -68,6 +68,15 @@ Special cases:
   hatch picture's opening should stay centred where the manifest pivot says.
 - **Trees** that can be chopped use the same tree pictures as decoration, plus `env.tree_stump`.
 - **Lantern light** is a separate light, not part of the lantern picture.
+- **Zombies** (`char.zombie*`, iteration 003) are placeholder figures only: zombie visual design is
+  deferred. Front, back and side poses, two lunge (wind-up) poses and a fallen pose. The red wind-up
+  tint and the hit flash are applied by the game, so don't paint them in.
+- **Machines** come in pairs where the state is visible: `world.generator_off` / `_on`,
+  `world.purifier_off` / `_on` and `world.lamp_off` / `_on`, plus `world.storage_locker`. The lamp's glow is
+  a separate game light, so `lamp_on` only needs the lit bulb. Keep the machine's footprint (its bottom
+  edge) where the template has it, because collision is set in the scene, not taken from the art.
+- **New sounds** (iteration 003): zombie groan / alert / attack / hit / death, swing, player hurt,
+  dig earth, the looping generator hum (`amb.generator`, a seamless loop), water pour, rummage and drink.
 
 ## 4. Sounds
 

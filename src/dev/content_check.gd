@@ -7,7 +7,7 @@ extends RefCounted
 
 var lines: Array[Dictionary] = []
 ## Entity types whose state is stored (they need an "initial" block).
-const STATEFUL: Array[String] = ["door", "shelter_site", "tree", "support_site"]
+const STATEFUL: Array[String] = ["door", "shelter_site", "tree", "support_site", "generator", "purifier", "loot"]
 
 
 func run() -> Array[Dictionary]:

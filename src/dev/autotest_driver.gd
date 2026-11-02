@@ -111,6 +111,24 @@ func _run(line: String) -> void:
 					main.region_view.local_avatar.play_swing(aim)
 				Session.request_attack(aim)
 				await get_tree().create_timer(float(a[1]) if a.size() > 1 else 0.7).timeout
+		"entity_action":
+			Session.request_entity_action(a[0], a[1], a[2] if a.size() > 2 else "")
+			await get_tree().create_timer(0.5).timeout
+		"press_key":
+			# Tap an input action (e.g. drink) the way a player would.
+			var kd := InputEventAction.new()
+			kd.action = a[0]
+			kd.pressed = true
+			Input.parse_input_event(kd)
+			await get_tree().create_timer(0.05).timeout
+			var ku := InputEventAction.new()
+			ku.action = a[0]
+			ku.pressed = false
+			Input.parse_input_event(ku)
+			await get_tree().create_timer(0.5).timeout
+		"panel_close":
+			MachinePanel.close_current()
+			await get_tree().create_timer(0.2).timeout
 		"terrain":
 			Session.request_terrain(a[0], Vector2i(int(a[1]), int(a[2])))
 			await get_tree().create_timer(0.4).timeout
@@ -155,7 +173,7 @@ func _run(line: String) -> void:
 			if a.size() >= 3:
 				arg = Vector2(float(a[1]), float(a[2]))
 			elif a.size() == 2:
-				arg = float(a[1])
+				arg = float(a[1]) if a[1].is_valid_float() else a[1]
 			Session.request_dev_command(a[0], arg)
 			await get_tree().create_timer(0.3).timeout
 		"zoom":
@@ -249,7 +267,7 @@ func _state() -> Dictionary:
 			var p: PlayerState = w.players[pid]
 			players.append({"id": pid, "name": p.display_name, "online": p.online,
 				"x": p.position.x, "y": p.position.y, "region": p.region_id, "carried": p.carried,
-				"health": p.health, "dead": p.dead})
+				"health": p.health, "dead": p.dead, "hydration": p.hydration})
 		s["players"] = players
 		var ents := {}
 		var levels := {}
@@ -268,7 +286,9 @@ func _state() -> Dictionary:
 			var b: BunkerState = w.bunkers[bid]
 			var depths := b.levels.keys()
 			depths.sort()
-			bunkers[bid] = {"levels": depths, "wood": b.amount("wood"), "entrance": b.entrance_region}
+			bunkers[bid] = {"levels": depths, "wood": b.amount("wood"), "entrance": b.entrance_region,
+				"resources": b.resources.duplicate(),
+				"powered": InfraSim.is_powered(w, b.level_region(depths[0])) if not depths.is_empty() else false}
 		s["bunkers"] = bunkers
 		var terrains := {}
 		for rid in w.regions:
@@ -332,6 +352,11 @@ func _state() -> Dictionary:
 			var dv := n as DoorView
 			doors[dv.entity_id] = {"open_visual": dv.is_open()}
 		v["doors"] = doors
+		var lamps := {}
+		for n in view.find_children("*", "LampView", true, false):
+			lamps[(n as LampView).entity_id] = (n as LampView)._powered
+		v["lamps"] = lamps
+		v["panel"] = MachinePanel.current.entity_id if MachinePanel.current != null and is_instance_valid(MachinePanel.current) else ""
 		var sensor := get_tree().get_first_node_in_group("local_sensor") as InteractionSensor
 		v["focused"] = sensor.focused.entity_id if sensor != null and sensor.focused != null else ""
 	s["view"] = v

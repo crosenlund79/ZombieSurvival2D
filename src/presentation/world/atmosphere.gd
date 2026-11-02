@@ -5,6 +5,8 @@ extends Node2D
 ## Never affects gameplay or visibility of interactable objects.
 
 @export var tint := Color(1.0, 0.97, 0.9)
+## Tint while the bunker this region belongs to has power (electric lights on).
+@export var powered_tint := Color(0, 0, 0, 0)
 @export var grain_strength := 0.07
 @export var vignette_strength := 0.28
 @export var drift_amount := 36
@@ -30,10 +32,14 @@ void fragment() {
 var _overlay: ColorRect
 
 
+var _cm: CanvasModulate
+
+
 func _ready() -> void:
 	var cm := CanvasModulate.new()
 	cm.color = tint
 	add_child(cm)
+	_cm = cm
 	if drift_amount > 0:
 		_add_drift()
 	_add_overlay()
@@ -78,5 +84,9 @@ func _add_overlay() -> void:
 	layer.add_child(_overlay)
 
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	(_overlay.material as ShaderMaterial).set_shader_parameter("screen_size", get_viewport().get_visible_rect().size)
+	if powered_tint.a > 0.0 and Session.world != null:
+		var view := RegionView.find_for(self)
+		var on := view != null and InfraSim.is_powered(Session.world, view.region_id)
+		_cm.color = _cm.color.lerp(powered_tint if on else tint, 1.0 - exp(-3.0 * delta))
