@@ -7,6 +7,12 @@ Working title **Aftergrowth**. Iteration 001 (foundation + first visual prototyp
 Do not implement anything that has not been explicitly approved as an assignment by the
 creator. Brainstorms are not feature requests.
 
+## Mandatory repository verification (every implementation task)
+Before modifying any file — including after context compaction or a new session — verify:
+local repo path, Git remote (`github.com/crosenlund79/ZombieSurvival2D`), active branch,
+`project.godot` name (`Aftergrowth`) and the relevant project files. If anything is wrong,
+ambiguous or unverifiable, STOP and ask. Never modify files belonging to another project.
+
 ## Stack
 Godot **4.7.2 stable**, GDScript, Compatibility renderer, target Windows desktop.
 Do not upgrade the engine version silently.
