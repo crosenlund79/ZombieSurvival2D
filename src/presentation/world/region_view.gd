@@ -21,6 +21,7 @@ var local_avatar: PlayerAvatar
 var _avatars := {}  # player_id -> PlayerAvatar
 var _zombies := {}  # zombie_id -> ZombieView
 var _objects := {}  # object_id -> StructureView
+var _npcs := {}     # npc_id -> NpcView
 var _actors: Node2D
 
 
@@ -83,6 +84,27 @@ func _sync_avatars() -> void:
 
 func _process(_delta: float) -> void:
 	_sync_zombies()
+	_sync_npcs()
+
+
+func _sync_npcs() -> void:
+	if Session.world == null:
+		return
+	for n in Session.world.npcs.values():
+		if n.region_id == region_id and not _npcs.has(n.npc_id):
+			var v := NpcView.create(n.npc_id)
+			_actors.add_child(v)
+			_npcs[n.npc_id] = v
+	for id in _npcs.keys():
+		var n2: NpcState = Session.world.npcs.get(id)
+		if n2 == null or n2.region_id != region_id or not is_instance_valid(_npcs[id]):
+			if is_instance_valid(_npcs[id]):
+				(_npcs[id] as Node).queue_free()
+			_npcs.erase(id)
+
+
+func npc_count() -> int:
+	return _npcs.size()
 
 
 ## Keeps one ZombieView per zombie in this region (world data is the truth).

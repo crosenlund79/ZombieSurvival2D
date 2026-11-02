@@ -33,6 +33,7 @@ signal terrain_changed(region_id: String)
 signal object_changed(region_id: String, object_id: String)
 ## Weather, threat heat, defence event, discoveries or settlement data changed.
 signal world_meta_changed
+signal npcs_updated
 
 enum Mode { NONE, SINGLE, HOST, CLIENT }
 
@@ -640,6 +641,10 @@ func _publish_result(res: Dictionary) -> void:
 		object_changed.emit(ro[0], ro[1])
 		if mode == Mode.HOST and not multiplayer.get_peers().is_empty():
 			_rpc_object.rpc(ro[0], ro[1], data)
+	if res.get("npcs", false):
+		npcs_updated.emit()
+		if mode == Mode.HOST and not multiplayer.get_peers().is_empty():
+			_rpc_npcs.rpc(NpcSim.rows(world))
 	if res.get("env", false) or res.get("meta", false):
 		world_meta_changed.emit()
 		if mode == Mode.HOST and not multiplayer.get_peers().is_empty():
@@ -774,6 +779,19 @@ func _host_dev_command(peer_id: int, cmd: String, arg: Variant) -> void:
 						var de := Build.damage_entity(world, reg9, eid, float(arg) if arg != null else 40.0)
 						out["changes"].append_array(de["changes"])
 				_publish_result(out)
+		"recruit":
+			# Developer: the test survivor moves into the shelter now (needs a shelter).
+			var rr := NpcSim.dev_recruit(world, str(arg) if arg != null and str(arg) != "" else "mara")
+			_publish_result(rr)
+			if not rr["ok"]:
+				_send_action_result(peer_id, 0, false, rr["reason"])
+		"npc_job":
+			for n12 in world.npcs.values():
+				if n12.recruit == "home":
+					n12.job = str(arg) if arg != null else ""
+			var nj := WorldActions._ok()
+			nj["npcs"] = true
+			_publish_result(nj)
 		"siege":
 			# Developer: start the homestead defence event now (arg = warning seconds).
 			var sr: Array = []
@@ -1175,6 +1193,14 @@ func _rpc_object(region_id: String, object_id: String, data: Dictionary) -> void
 	else:
 		r.objects[object_id] = data.duplicate(true)
 	object_changed.emit(region_id, object_id)
+
+
+@rpc("authority", "call_remote", "unreliable_ordered")
+func _rpc_npcs(rows: Array) -> void:
+	if mode != Mode.CLIENT or world == null:
+		return
+	NpcSim.apply_rows(world, rows)
+	npcs_updated.emit()
 
 
 @rpc("authority", "call_remote", "reliable")

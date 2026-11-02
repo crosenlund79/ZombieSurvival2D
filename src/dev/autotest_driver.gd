@@ -349,6 +349,11 @@ func _state() -> Dictionary:
 			objs[rid2] = row
 		s["objects"] = objs
 		s["env"] = w.env
+		var npcs := {}
+		for n in w.npcs.values():
+			npcs[n.npc_id] = {"region": n.region_id, "x": n.position.x, "y": n.position.y, "recruit": n.recruit, "job": n.job,
+				"activity": n.activity, "status": n.status, "fed": n.fed}
+		s["npcs"] = npcs
 		s["meta"] = w.meta
 		s["jobs"] = w.jobs.size()
 		var zs := []
@@ -415,6 +420,7 @@ func _state() -> Dictionary:
 			lamps[(n as LampView).entity_id] = (n as LampView)._powered
 		v["lamps"] = lamps
 		v["objects"] = view.object_count()
+		v["npcs"] = view.npc_count()
 		v["placing"] = BuildMode.placing
 		v["build_problem"] = main.build_mode.problem if BuildMode.placing != "" else ""
 		v["panel"] = MachinePanel.current.entity_id if MachinePanel.current != null and is_instance_valid(MachinePanel.current) else ""

@@ -139,8 +139,11 @@ static func step(world: WorldState, ticks: int) -> Array:
 	for n in world.npcs.values():
 		match n.recruit:
 			"travelling":
-				if world.tick >= n.arrive_tick:
-					changed = _arrive(world, n) or changed
+				if world.tick >= n.arrive_tick and _arrive(world, n):
+					changed = true
+					var ar := WorldActions._ok()
+					ar["events"] = [{"kind": "npc_arrived", "npc_id": n.npc_id, "name": n.name}]
+					results.append(ar)
 			"home":
 				changed = _upkeep(world, n, results) or changed
 				changed = _live(world, n, seconds, results) or changed
@@ -149,6 +152,25 @@ static func step(world: WorldState, ticks: int) -> Array:
 		r["npcs"] = true
 		results.append(r)
 	return results
+
+
+static func dev_recruit(world: WorldState, id: String) -> Dictionary:
+	ensure(world)
+	var n: NpcState = world.npcs.get(id)
+	if n == null:
+		return WorldActions._fail("ACTION_UNKNOWN_OBJECT")
+	if world.bunkers.is_empty():
+		return WorldActions._fail("NPC_NEEDS_SHELTER", [n.name])
+	var ids := world.bunkers.keys()
+	ids.sort()
+	n.bunker_id = str(ids[0])
+	n.recruit = "travelling"
+	n.arrive_tick = world.tick
+	_arrive(world, n)
+	n.upkeep_tick = world.tick
+	var res := WorldActions._ok()
+	res["npcs"] = true
+	return res
 
 
 static func _arrive(world: WorldState, n: NpcState) -> bool:

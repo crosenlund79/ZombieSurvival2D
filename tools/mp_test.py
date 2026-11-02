@@ -1215,7 +1215,72 @@ def scenario_world_multi():
             i.kill()
 
 
-SCENARIOS = {"world_multi": scenario_world_multi, "craft_multi": scenario_craft_multi, "build_multi": scenario_build_multi, "accept": scenario_accept, "infra_multi": scenario_infra_multi, "dig_multi": scenario_dig_multi, "danger_single": scenario_danger_single, "danger_multi": scenario_danger_multi, "settings": scenario_settings, "bunker_single": scenario_bunker_single, "bunker_multi": scenario_bunker_multi, "single": scenario_single, "multiplayer": scenario_multiplayer,
+
+def scenario_settlement_multi():
+    host = Instance("t_shost"); c = Instance("t_sclient")
+    for i in (host, c):
+        i.wipe()
+    try:
+        host.start(); c.start()
+        host.cmd(f"host {PORT} new 69 Hosty"); host.cmd("dev peaceful 1")
+        r = build_and_descend(host)
+        check("settle: host shelter built", r["state"]["region"] == L1, r["state"].get("region"))
+        r = c.cmd(f"join 127.0.0.1 {PORT} Cleo")
+        check("settle: client joins; survivor exists at the station", r["ok"] and r["state"]["npcs"].get("mara", {}).get("region") == "service_station", r["state"].get("npcs"))
+        # Host prepares the bunker: dirty water in storage, generator running.
+        host.cmd("dev grant water_dirty:3"); host.cmd("dev grant fuel:2")
+        host.cmd("walk_to 650 345 6"); host.cmd("entity_action storage store water_dirty")
+        host.cmd("walk_to 930 610 6"); host.cmd("entity_action generator fuel"); host.cmd("entity_action generator fuel"); host.cmd("entity_action generator toggle")
+        # Host travels to the service station to find the survivor.
+        host.cmd("walk_to 540 296 4"); host.cmd("press_interact"); host.cmd("walk_to 480 600"); host.cmd("press_interact")
+        host.cmd("dev teleport 2340 1400"); r = host.cmd("interact homestead.road_east")
+        check("settle: host reaches the station", r["state"]["region"] == "service_station", r["state"].get("region"))
+        host.cmd("walk_to 1530 560 10")
+        r = host.cmd("npc mara talk")
+        check("settle: host meets Mara", r["state"]["npcs"]["mara"]["recruit"] == "met", r["state"]["npcs"]["mara"])
+        r = host.cmd("npc mara talk")
+        check("settle: she still needs food and water", r["state"]["npcs"]["mara"]["recruit"] == "met" and any("NPC_STILL_NEEDS" in n for n in r["state"]["notices"]), r["state"]["notices"][-2:])
+        host.cmd("dev grant canned_food:1"); host.cmd("dev grant water_clean:1")
+        r = host.cmd("npc mara talk")
+        check("settle: recruited", r["state"]["npcs"]["mara"]["recruit"] == "travelling", r["state"]["npcs"]["mara"])
+        time.sleep(0.4)
+        check("settle: client sees her leave the station", c.state()["npcs"]["mara"]["recruit"] == "travelling", c.state()["npcs"]["mara"])
+        # Client goes down into the shelter and waits for her.
+        go_inside(c); c.cmd("walk_to 300 452 4"); r = c.cmd("press_interact")
+        check("settle: client underground", r["state"]["region"] == L1, r["state"].get("region"))
+        host.cmd("dev advance_clock 65")
+        time.sleep(1.0)
+        sc = c.state()
+        check("settle: she arrives and the client sees her in the bunker", sc["npcs"]["mara"]["recruit"] == "home" and sc["npcs"]["mara"]["region"] == L1 and sc["view"]["npcs"] == 1,
+              (sc["npcs"]["mara"], sc["view"].get("npcs")))
+        r = c.cmd("npc mara assign water")
+        time.sleep(0.4)
+        check("settle: client assigns the water job; host (far away) sees it", host.state()["npcs"]["mara"]["job"] == "water", host.state()["npcs"]["mara"])
+        # Client leaves too: nobody views the bunker; work continues on the shared clock.
+        c.cmd("walk_to 540 296 4"); c.cmd("press_interact")
+        check("settle: nobody is in the bunker", c.state()["region"] != L1 and host.state()["region"] == "service_station", "")
+        host.cmd("dev advance_clock 30")
+        time.sleep(0.5)
+        host.cmd("dev advance_clock 90")
+        time.sleep(1.0)
+        res = c.state()["bunkers"][SITE]["resources"]
+        lvl1 = c.state()["level_entities"][L1]["purifier"]["state"]
+        moved = res.get("water_dirty", 0) == 0 and lvl1.get("input", 0) + lvl1.get("output", 0) + res.get("water_clean", 0) == 3
+        check("settle: she filled the purifier from storage while nobody watched (water conserved)", moved, (res, lvl1))
+        check("settle: client sees the same storage as the host", c.state()["bunkers"][SITE]["resources"] == host.state()["bunkers"][SITE]["resources"], "")
+        host.cmd("save"); host.quit()
+        wait_for(c, lambda s: not s["in_world"], timeout=12)
+        host.start(); host.cmd(f"host {PORT} continue Hosty"); host.cmd("dev peaceful 1")
+        r = c.cmd(f"join 127.0.0.1 {PORT} Cleo")
+        m = r["state"]["npcs"].get("mara", {})
+        check("settle: after restart she still lives in the bunker with her job", m.get("recruit") == "home" and m.get("job") == "water" and m.get("region") == L1, m)
+        check("settle: exactly one survivor after restart", len(r["state"]["npcs"]) == 1, r["state"]["npcs"])
+    finally:
+        for i in (host, c):
+            i.kill()
+
+
+SCENARIOS = {"settlement_multi": scenario_settlement_multi, "world_multi": scenario_world_multi, "craft_multi": scenario_craft_multi, "build_multi": scenario_build_multi, "accept": scenario_accept, "infra_multi": scenario_infra_multi, "dig_multi": scenario_dig_multi, "danger_single": scenario_danger_single, "danger_multi": scenario_danger_multi, "settings": scenario_settings, "bunker_single": scenario_bunker_single, "bunker_multi": scenario_bunker_multi, "single": scenario_single, "multiplayer": scenario_multiplayer,
              "netfail": scenario_connection_failure, "assets": scenario_assets}
 
 if __name__ == "__main__":

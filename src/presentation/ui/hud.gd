@@ -139,6 +139,8 @@ func _on_world_event(ev: Dictionary) -> void:
 			show_notice("SIEGE_REPELLED", [])
 		"siege_dispersed":
 			show_notice("SIEGE_DISPERSED", [])
+		"npc_arrived":
+			show_notice("NPC_ARRIVED", [str(ev.get("name", ""))])
 
 
 ## "The Homestead", "The Farmhouse", "Shelter · Level -2" …
