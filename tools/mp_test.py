@@ -1417,7 +1417,7 @@ def scenario_slice():
         r = s.cmd("wait 1")
         check("slice 17b: survivor lives in the bunker", r["state"]["npcs"]["mara"]["recruit"] == "home" and r["state"]["view"]["npcs"] == 1, r["state"]["npcs"]["mara"])
         r = s.cmd("npc mara assign farm")
-        s.cmd("dev advance_clock 30"); r = s.cmd("wait 1")
+        r = {"state": wait_for(s, lambda st: any(v["crop"] in ("growing", "ripe") for v in obj_of(st, "planter", L1).values()), timeout=25)}
         planter = list(obj_of(r["state"], "planter", L1).values())[0]
         check("slice 18: survivor tends the planter with stored water (crop growing)", r["state"]["npcs"]["mara"]["job"] == "farm" and planter["crop"] in ("growing", "ripe"),
               (r["state"]["npcs"]["mara"], planter))
