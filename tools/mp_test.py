@@ -1147,7 +1147,74 @@ def scenario_craft_multi():
             i.kill()
 
 
-SCENARIOS = {"craft_multi": scenario_craft_multi, "build_multi": scenario_build_multi, "accept": scenario_accept, "infra_multi": scenario_infra_multi, "dig_multi": scenario_dig_multi, "danger_single": scenario_danger_single, "danger_multi": scenario_danger_multi, "settings": scenario_settings, "bunker_single": scenario_bunker_single, "bunker_multi": scenario_bunker_multi, "single": scenario_single, "multiplayer": scenario_multiplayer,
+
+def scenario_world_multi():
+    host = Instance("t_whost"); c = Instance("t_wclient")
+    for i in (host, c):
+        i.wipe()
+    try:
+        host.start(); c.start()
+        host.cmd(f"host {PORT} new 68 Hosty")
+        r = c.cmd(f"join 127.0.0.1 {PORT} Cleo")
+        check("world: client joins", r["ok"], r["error"])
+        host.cmd("dev weather rain")
+        time.sleep(0.4)
+        sh, sc = host.state(), c.state()
+        check("world: weather is shared", sh["env"].get("weather") == "rain" and sc["env"].get("weather") == "rain", (sh["env"], sc["env"]))
+        check("world: one clock (ticks agree)", abs(sh["tick"] - sc["tick"]) <= 5, (sh["tick"], sc["tick"]))
+        # Client walks east along the road to the service station; host stays home.
+        c.cmd("dev teleport 2300 1400")
+        st = c.state()
+        check("world: client dev teleport refused (dev is host-only)", st["me_x"] < 2000, st["me_x"])
+        c.cmd("walk_to 1150 1400"); c.cmd("walk_to 2340 1400 10")
+        r = c.cmd("interact homestead.road_east")
+        check("world: client travels to the service station", r["state"]["region"] == "service_station", r["state"].get("region"))
+        time.sleep(0.3)
+        check("world: discovery recorded for everyone", "service_station" in host.state()["meta"].get("discoveries", {}), host.state()["meta"])
+        check("world: host stays at the homestead (independent regions)", host.state()["region"] == "homestead" and host.state()["view"]["region"] == "homestead", "")
+        c.cmd("walk_to 1700 720"); c.cmd("walk_to 2000 580 10")
+        r = c.cmd("interact service_station.tool_locker")
+        items = [g["item"] for g in r["state"]["gear"]]
+        check("world: client finds the carburetor and the manual", "carburetor" in items and "workshop_manual" in items, items)
+        r = c.cmd("interact service_station.tool_locker")
+        check("world: the unique find cannot be taken twice", any("ACTION_LOOT_GONE" in n for n in r["state"]["notices"]), r["state"]["notices"][-2:])
+        uid = [g["uid"] for g in r["state"]["gear"] if g["item"] == "workshop_manual"][0]
+        c.cmd(f"inv use {uid}")
+        time.sleep(0.3)
+        check("world: reading the manual unlocks the felling axe for the whole world", host.state()["unlocks"].get("felling_axe") is True, host.state().get("unlocks"))
+        # A horde comes to the homestead; both players see the event.
+        host.cmd("walk_to 1150 960")
+        host.cmd("dev siege 2")
+        time.sleep(0.4)
+        check("world: horde warning reaches the remote player", c.state()["meta"].get("siege", {}).get("phase") == "warning", c.state()["meta"].get("siege"))
+        time.sleep(2.6)
+        sh = host.state()
+        horde = [z for z in zs(sh) if z["region"] == "homestead" and not z["persistent"]]
+        check("world: horde spawned at the homestead", sh["meta"]["siege"]["phase"] == "active" and len(horde) >= 6, (sh["meta"].get("siege"), len(horde)))
+        check("world: client (far away) mirrors the horde", len([z for z in zs(c.state()) if z["region"] == "homestead"]) >= len(horde), "")
+        sid = sh["meta"]["siege"]["id"]
+        host.cmd("dev advance_clock 200")
+        time.sleep(0.5)
+        sh, sc = host.state(), c.state()
+        check("world: the event ends with a defined outcome on both peers", sh["meta"]["siege"]["phase"] == "idle" and sc["meta"]["siege"].get("outcome") in ("repelled", "dispersed"),
+              (sh["meta"]["siege"], sc["meta"]["siege"]))
+        snap = host.state()
+        host.cmd("save"); host.quit()
+        wait_for(c, lambda s: not s["in_world"], timeout=12)
+        host.start(); host.cmd(f"host {PORT} continue Hosty")
+        r = c.cmd(f"join 127.0.0.1 {PORT} Cleo")
+        st = r["state"]
+        check("world: client rejoins at the service station", st["region"] == "service_station", st.get("region"))
+        check("world: discoveries, unlocks and weather persist", "workshop_locker" in st["meta"].get("discoveries", {}) and st["meta"].get("unlocks", {}).get("felling_axe")
+              and st["env"].get("weather") == snap["env"].get("weather"), (st["meta"], st["env"]))
+        check("world: the finished event does not come back after restart", st["meta"]["siege"]["phase"] == "idle" and st["meta"]["siege"]["id"] == sid, st["meta"].get("siege"))
+        check("world: carburetor still carried (no loss, no duplicate)", [g["item"] for g in st["gear"]].count("carburetor") == 1, st["gear"])
+    finally:
+        for i in (host, c):
+            i.kill()
+
+
+SCENARIOS = {"world_multi": scenario_world_multi, "craft_multi": scenario_craft_multi, "build_multi": scenario_build_multi, "accept": scenario_accept, "infra_multi": scenario_infra_multi, "dig_multi": scenario_dig_multi, "danger_single": scenario_danger_single, "danger_multi": scenario_danger_multi, "settings": scenario_settings, "bunker_single": scenario_bunker_single, "bunker_multi": scenario_bunker_multi, "single": scenario_single, "multiplayer": scenario_multiplayer,
              "netfail": scenario_connection_failure, "assets": scenario_assets}
 
 if __name__ == "__main__":

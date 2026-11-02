@@ -141,6 +141,10 @@ func _run(line: String) -> void:
 		"npc":
 			Session.request_npc(a[0], a[1], a[2] if a.size() > 2 else "")
 			await get_tree().create_timer(0.5).timeout
+		"tips":
+			Settings.set_value("guide", "tips", a[0] == "on")
+			if a[0] != "on":
+				main.guide.dismiss()
 		"panel":
 			# Open a UI panel: inventory / guide / settlement (screenshots).
 			var pnl: Control = {"inventory": main.inventory_panel, "guide": main.guide, "settlement": main.settlement_panel}.get(a[0])

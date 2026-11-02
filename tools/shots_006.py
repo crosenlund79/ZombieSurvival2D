@@ -39,7 +39,7 @@ def build():
     s = Instance("shots_006a", headless=False); s.wipe(); s.start()
     try:
         s.cmd("window 1600 900")
-        s.cmd("single new 61 Builder"); s.cmd("dev peaceful 1")
+        s.cmd("single new 61 Builder"); s.cmd("dev peaceful 1"); s.cmd("tips off")
         for g in ("wood:16", "scrap_metal:8", "cement:3", "spike_kit:2"):
             s.cmd(f"dev grant {g}")
         to_yard(s)
@@ -112,6 +112,39 @@ def craft():
         s.quit()
 
 
+def world():
+    s = Instance("shots_006c", headless=False); s.wipe(); s.start()
+    try:
+        s.cmd("window 1600 900")
+        s.cmd("single new 63 Wanderer"); s.cmd("dev peaceful 1"); s.cmd("tips off")
+        s.cmd("teleport_to 2300 1400") if False else None
+        s.cmd("dev teleport 2300 1400"); s.cmd("walk_to 2350 1400 8"); s.cmd("press_interact")
+        s.cmd("walk_to 900 700"); s.cmd("zoom 0.6")
+        shot(s, "j1_service_station", 1.0)
+        s.cmd("ui map on"); shot(s, "j2_world_map_two_regions", 0.6); s.cmd("ui map off")
+        s.cmd("walk_to 1700 700"); s.cmd("walk_to 2000 580 8"); s.cmd("zoom 0.9")
+        s.cmd("press_interact")
+        shot(s, "j3_workshop_discovery", 0.6)
+        s.cmd("dev weather rain"); s.cmd("dev time 21.5"); s.cmd("walk_to 1500 700")
+        s.cmd("zoom 0.7")
+        shot(s, "j4_night_rain_station", 2.5)
+        s.cmd("dev weather clear"); s.cmd("dev time 10")
+        s.cmd("walk_to 90 710 8"); s.cmd("press_interact")
+        s.cmd("dev grant wood:12"); s.cmd("dev grant scrap_metal:4")
+        to_yard(s)
+        s.cmd("walk_to 1360 760"); s.cmd("build rain_collector 1400 700"); s.cmd("build crate 1300 840"); s.cmd("wait 3.5")
+        s.cmd("walk_to 1150 760"); s.cmd("walk_to 1160 690"); s.cmd("press_interact") if not s.state()["entities"]["homestead.farmhouse_door"]["state"]["open"] else None
+        s.cmd("dev peaceful 0"); s.cmd("dev siege 3"); s.cmd("wait 1.0")
+        shot(s, "j5_horde_warning", 0.3)
+        s.cmd("wait 25")
+        s.cmd("zoom 0.6")
+        shot(s, "j6_horde_at_homestead", 0.3)
+    finally:
+        s.quit()
+
+
+if not only or "world" in only:
+    world()
 if not only or "craft" in only:
     craft()
 if not only or "build" in only:

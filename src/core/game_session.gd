@@ -173,6 +173,8 @@ func _open_world(world_id: String, new_seed: int) -> Dictionary:
 func _begin() -> void:
 	if is_authority():
 		var added := ZombieSim.ensure_population(world)
+		EventSim.resume_after_load(world)
+		NpcSim.ensure(world)
 		SessionLog.info("threat", "population_ready", {"zombies": world.zombies.size(), "added": added})
 	_tick_accum = 0.0
 	_snapshot_accum = 0.0
@@ -772,6 +774,26 @@ func _host_dev_command(peer_id: int, cmd: String, arg: Variant) -> void:
 						var de := Build.damage_entity(world, reg9, eid, float(arg) if arg != null else 40.0)
 						out["changes"].append_array(de["changes"])
 				_publish_result(out)
+		"siege":
+			# Developer: start the homestead defence event now (arg = warning seconds).
+			var sr: Array = []
+			EventSim.start_warning(world, float(arg) if arg != null else 10.0, sr)
+			for r11 in sr:
+				_publish_result(r11)
+		"heat":
+			world.meta["home_heat"] = float(arg) if arg != null else 60.0
+			var hm: Dictionary = world.meta.get("heat", {})
+			hm["homestead"] = float(arg) if arg != null else 60.0
+			world.meta["heat"] = hm
+			var hr2 := WorldActions._ok()
+			hr2["meta"] = true
+			_publish_result(hr2)
+		"time":
+			# Developer: jump the clock to an hour of the day (game time passes normally).
+			var target := fmod(float(arg) if arg != null else 22.0, 24.0)
+			var now := EnvSim.hour(world)
+			var hours := fmod(target - now + 24.0, 24.0)
+			_advance(int(hours / 24.0 * float(EnvSim.c("day_seconds", 1440)) * Simulation.TICK_RATE))
 		"weather":
 			EnvSim.set_weather(world, "rain" if str(arg) == "rain" else "clear")
 			var wr := WorldActions._ok()

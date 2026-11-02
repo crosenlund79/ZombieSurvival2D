@@ -28,6 +28,15 @@ static func c(key: String, fallback: Variant) -> Variant:
 ## Queues a noise event of a configured category at a world position.
 static func make_noise(world: WorldState, region_id: String, pos: Vector2, category: String, scale: float = 1.0) -> void:
 	var n: Dictionary = c("noise", {}).get(category, {"radius": 200, "attention": 0.2})
+	if region_cfg(region_id, world).is_empty():
+		# Nobody hears it in here, but part of the sound reaches the surface
+		# (through the hatch for bunker levels; a steel hatch keeps most in).
+		var leak := EventSim.leak_target(world, region_id)
+		if leak.is_empty() or float(leak[2]) < 0.05 or region_cfg(str(leak[0]), world).is_empty():
+			return
+		world.threat.add_noise(str(leak[0]), leak[1], float(n["radius"]) * scale * float(leak[2]),
+			float(n["attention"]) * scale * float(leak[2]), category + "_leak")
+		return
 	world.threat.add_noise(region_id, pos, float(n["radius"]) * scale, float(n["attention"]) * scale, category)
 
 
@@ -136,6 +145,7 @@ static func _process_noise(world: WorldState) -> void:
 	for ev in th.queue:
 		var key := ThreatState.zone_key(ev["region_id"], ev["position"])
 		th.zones[key] = float(th.zones.get(key, 0.0)) + float(ev["attention"])
+		EventSim.on_noise(world, ev["region_id"], ev["position"], float(ev["attention"]))
 		th.recent.append({"tick": world.tick, "category": ev["category"], "zone": key})
 		if th.recent.size() > 12:
 			th.recent.pop_front()

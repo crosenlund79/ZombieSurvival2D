@@ -265,6 +265,24 @@
 			"initial": {
 				"looted_at": -1
 			}
+		},
+		{
+			"id": "homestead.road_east",
+			"type": "portal",
+			"position": [
+				2360,
+				1400
+			],
+			"interact_range": 80,
+			"priority": 2,
+			"target": {
+				"region": "service_station",
+				"position": [
+					150,
+					710
+				]
+			},
+			"prompt_key": "PROMPT_ROAD_EAST"
 		}
 	],
 	"map": {
@@ -473,6 +491,10 @@
 				],
 				"label_key": "MAP_TRACTOR"
 			}
+		],
+		"offset": [
+			0,
+			0
 		]
 	},
 	"zombies": {

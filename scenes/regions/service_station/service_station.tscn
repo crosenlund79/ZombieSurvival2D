@@ -1,0 +1,291 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://src/presentation/world/region_view.gd" id="region"]
+[ext_resource type="Script" path="res://src/presentation/world/prop.gd" id="prop"]
+[ext_resource type="Script" path="res://src/presentation/world/ground_patch.gd" id="ground"]
+[ext_resource type="Script" path="res://src/presentation/world/scatter.gd" id="scatter"]
+[ext_resource type="Script" path="res://src/presentation/world/atmosphere.gd" id="atmo"]
+[ext_resource type="Script" path="res://src/presentation/world/portal_view.gd" id="portalv"]
+[ext_resource type="Script" path="res://src/presentation/world/machine_view.gd" id="machinev"]
+
+[sub_resource type="RectangleShape2D" id="b0"]
+size = Vector2(2440, 40)
+
+[sub_resource type="RectangleShape2D" id="b1"]
+size = Vector2(2440, 40)
+
+[sub_resource type="RectangleShape2D" id="b2"]
+size = Vector2(40, 1440)
+
+[sub_resource type="RectangleShape2D" id="b3"]
+size = Vector2(40, 1440)
+
+[node name="ServiceStation" type="Node2D"]
+script = ExtResource("region")
+region_id = "service_station"
+ambience_id = "amb.countryside"
+
+[node name="Ground" type="Node2D" parent="."]
+z_index = -10
+
+[node name="Meadow" type="Polygon2D" parent="Ground"]
+script = ExtResource("ground")
+polygon = PackedVector2Array(-400, -400, 2600, -400, 2600, 1800, -400, 1800)
+asset_id = "env.ground_grass"
+
+[node name="Road" type="Polygon2D" parent="Ground"]
+script = ExtResource("ground")
+polygon = PackedVector2Array(-400, 658, 0, 650, 400, 658, 800, 650, 1200, 658, 1600, 650, 2000, 658, 2400, 650, 2600, 773, 2200, 779, 1800, 773, 1400, 779, 1000, 773, 600, 779, 200, 773, -200, 779)
+asset_id = "env.ground_asphalt"
+
+[node name="Forecourt" type="Polygon2D" parent="Ground"]
+script = ExtResource("ground")
+polygon = PackedVector2Array(860, 380, 1740, 380, 1760, 655, 850, 655)
+asset_id = "env.ground_asphalt"
+color = Color(0.92, 0.9, 0.86, 1)
+
+[node name="WorkshopYard" type="Polygon2D" parent="Ground"]
+script = ExtResource("ground")
+polygon = PackedVector2Array(1720, 390, 2120, 400, 2140, 700, 1700, 690)
+asset_id = "env.ground_dirt"
+color = Color(1, 1, 1, 0.9)
+
+[node name="Bounds" type="StaticBody2D" parent="."]
+
+[node name="Edge0" type="CollisionShape2D" parent="Bounds"]
+position = Vector2(1100, -20)
+shape = SubResource("b0")
+
+[node name="Edge1" type="CollisionShape2D" parent="Bounds"]
+position = Vector2(1100, 1420)
+shape = SubResource("b1")
+
+[node name="Edge2" type="CollisionShape2D" parent="Bounds"]
+position = Vector2(-20, 700)
+shape = SubResource("b2")
+
+[node name="Edge3" type="CollisionShape2D" parent="Bounds"]
+position = Vector2(2220, 700)
+shape = SubResource("b3")
+
+[node name="YSort" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="Shop" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(1450, 420)
+asset_id = "world.station_shop"
+footprint = Vector2(280, 70)
+occlude = true
+
+[node name="Canopy" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(1150, 600)
+asset_id = "world.station_canopy"
+footprint = Vector2(220, 26)
+occlude = true
+
+[node name="Workshop" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(1900, 470)
+asset_id = "world.station_workshop"
+footprint = Vector2(260, 70)
+occlude = true
+
+[node name="Sign" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(820, 640)
+asset_id = "world.station_sign"
+footprint = Vector2(14, 8)
+occlude = true
+
+[node name="Tyres" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(1720, 640)
+asset_id = "world.station_tyres"
+footprint = Vector2(60, 20)
+
+[node name="ToolLockerArt" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(2000, 525)
+asset_id = "world.station_locker"
+footprint = Vector2(50, 16)
+
+[node name="WreckA" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(600, 905)
+asset_id = "prop.car_sedan"
+footprint = Vector2(200, 34)
+occlude = true
+
+[node name="WreckB" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(1600, 990)
+asset_id = "prop.car_sedan"
+footprint = Vector2(200, 34)
+occlude = true
+flip_h = true
+
+[node name="Drum1" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(1780, 560)
+asset_id = "prop.barrel"
+footprint = Vector2(30, 14)
+
+[node name="Drum2" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(1812, 585)
+asset_id = "prop.barrel"
+footprint = Vector2(30, 14)
+
+[node name="Tree00" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(150, 250)
+asset_id = "env.tree_oak_a"
+footprint = Vector2(36, 14)
+occlude = true
+sway = true
+
+[node name="Tree01" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(420, 180)
+asset_id = "env.tree_birch"
+footprint = Vector2(26, 14)
+occlude = true
+sway = true
+flip_h = true
+
+[node name="Tree02" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(700, 260)
+asset_id = "env.tree_oak_a"
+footprint = Vector2(36, 14)
+occlude = true
+sway = true
+
+[node name="Tree03" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(2080, 200)
+asset_id = "env.tree_birch"
+footprint = Vector2(26, 14)
+occlude = true
+sway = true
+flip_h = true
+
+[node name="Tree04" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(220, 1100)
+asset_id = "env.tree_oak_a"
+footprint = Vector2(36, 14)
+occlude = true
+sway = true
+
+[node name="Tree05" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(900, 1150)
+asset_id = "env.tree_birch"
+footprint = Vector2(26, 14)
+occlude = true
+sway = true
+flip_h = true
+
+[node name="Tree06" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(1300, 1200)
+asset_id = "env.tree_oak_a"
+footprint = Vector2(36, 14)
+occlude = true
+sway = true
+
+[node name="Tree07" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(1980, 1150)
+asset_id = "env.tree_oak_a"
+footprint = Vector2(36, 14)
+occlude = true
+sway = true
+flip_h = true
+
+[node name="Tree08" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(2120, 900)
+asset_id = "env.tree_birch"
+footprint = Vector2(26, 14)
+occlude = true
+sway = true
+
+[node name="Tree09" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(90, 520)
+asset_id = "env.tree_birch"
+footprint = Vector2(26, 14)
+occlude = true
+sway = true
+flip_h = true
+
+[node name="Tree10" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(560, 1300)
+asset_id = "env.tree_oak_a"
+footprint = Vector2(36, 14)
+occlude = true
+sway = true
+
+[node name="Tree11" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(1700, 1300)
+asset_id = "env.tree_birch"
+footprint = Vector2(26, 14)
+occlude = true
+sway = true
+flip_h = true
+
+[node name="Pump" type="Node2D" parent="YSort"]
+script = ExtResource("machinev")
+entity_id = "service_station.pump"
+
+[node name="ShopShelves" type="Node2D" parent="YSort"]
+script = ExtResource("machinev")
+entity_id = "service_station.shop_shelves"
+
+[node name="Storeroom" type="Node2D" parent="YSort"]
+script = ExtResource("machinev")
+entity_id = "service_station.storeroom"
+
+[node name="WreckScrap" type="Node2D" parent="YSort"]
+script = ExtResource("machinev")
+entity_id = "service_station.wreck"
+
+[node name="WorkshopBench" type="Node2D" parent="YSort"]
+script = ExtResource("machinev")
+entity_id = "service_station.workshop_bench"
+
+[node name="ToolLocker" type="Node2D" parent="YSort"]
+script = ExtResource("machinev")
+entity_id = "service_station.tool_locker"
+
+[node name="RoadWest" type="Node2D" parent="YSort"]
+script = ExtResource("portalv")
+entity_id = "service_station.road_west"
+
+[node name="Grass" type="Node2D" parent="YSort"]
+script = ExtResource("scatter")
+area = Rect2(20, 40, 2160, 1320)
+avoid = Array[Rect2]([Rect2(-60, 630, 2320, 160), Rect2(840, 360, 1300, 340), Rect2(480, 860, 260, 80), Rect2(1480, 950, 260, 80)])
+asset_ids = Array[String](["env.grass_a", "env.grass_b", "env.grass_c"])
+count = 140
+layout_seed = 23
+min_spacing = 60.0
+
+[node name="RoadEdge" type="Node2D" parent="YSort"]
+script = ExtResource("scatter")
+area = Rect2(0, 780, 2200, 40)
+asset_ids = Array[String](["env.grass_a", "env.grass_b"])
+count = 40
+layout_seed = 29
+min_spacing = 34.0
+
+[node name="Atmosphere" type="Node2D" parent="."]
+script = ExtResource("atmo")
+area = Rect2(0, 0, 2200, 1400)
+tint = Color(0.97, 0.94, 0.88, 1)

@@ -47,6 +47,11 @@ static func create(state: PlayerState, local: bool, bounds: Rect2, light: bool =
 	a._build(state.display_name, bounds)
 	if light:
 		a.add_child(LightFactory.lantern_light(Color(1.0, 0.86, 0.6), 1.5 if local else 1.0, 0.9 if local else 0.55))
+	else:
+		# Outdoors a small torch fades in at night so players stay readable.
+		var torch := LightFactory.lantern_light(Color(1.0, 0.88, 0.66), 1.6 if local else 1.1, 0.0)
+		torch.name = "NightTorch"
+		a.add_child(torch)
 	return a
 
 
@@ -108,6 +113,7 @@ func _apply_art() -> void:
 
 
 func _physics_process(delta: float) -> void:
+	_night_torch(delta)
 	if is_local:
 		_local_move(delta)
 		_update_camera(delta)
@@ -226,6 +232,15 @@ func play_swing(aim: Vector2) -> void:
 	_swing_tween.tween_property(_weapon, "rotation", base + 1.2, 0.14).set_trans(Tween.TRANS_QUAD)
 	_swing_tween.tween_interval(0.12)
 	_swing_tween.tween_callback(refresh_weapon)
+
+
+func _night_torch(delta: float) -> void:
+	var t := get_node_or_null("NightTorch") as PointLight2D
+	if t == null or Session.world == null:
+		return
+	var want := (1.0 - EnvSim.daylight(Session.world)) * (0.85 if is_local else 0.5)
+	t.energy = move_toward(t.energy, want, delta)
+	t.visible = t.energy > 0.01
 
 
 func refresh_weapon() -> void:

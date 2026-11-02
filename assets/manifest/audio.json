@@ -301,6 +301,26 @@
 			"loop": false,
 			"status": "READY",
 			"notes": "Generated placeholder (tools/art/gen_build_audio.py)."
+		},
+		{
+			"id": "amb.rain",
+			"name": "Rain (loop)",
+			"template": "res://assets/templates/audio/environment/template_rain_loop.wav",
+			"bus": "Ambience",
+			"volume_db": -6.0,
+			"loop": true,
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_world_audio.py)."
+		},
+		{
+			"id": "sfx.horde_warning",
+			"name": "Distant horde gathering",
+			"template": "res://assets/templates/audio/world/template_horde_warning.wav",
+			"bus": "SFX",
+			"volume_db": -2.0,
+			"loop": false,
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_world_audio.py)."
 		}
 	]
 }

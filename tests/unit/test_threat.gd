@@ -198,7 +198,8 @@ func test_base_population_topped_up_away_from_players() -> void:
 	_player(w, PID, "homestead", Vector2(1150, 1000))
 	ZombieSim.ensure_population(w)
 	var want := int(w.region_def("homestead")["zombies"]["base_population"])
-	eq(w.zombies.size(), want, "base population created")
-	for z in w.zombies.values():
+	var home := w.zombies.values().filter(func(z): return z.region_id == "homestead")
+	eq(home.size(), want, "base population created")
+	for z in home:
 		check(z.position.distance_to(Vector2(1150, 1000)) >= 700.0, "spawned far from the player")
 	eq(ZombieSim.ensure_population(w), 0, "no duplicates when topped up again")

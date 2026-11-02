@@ -33,6 +33,20 @@ Update this file whenever an iteration adds or settles a decision.
 | GD-16 | Logical power for lights and the water purifier; losing power must never give a black screen | Iteration 003 assignment (C) |
 | GD-17 | A water chain: dirty water → purifier (needs power, takes time) → clean water → drink | Iteration 003 assignment (C) |
 | GD-18 | A mild hydration mechanic | Iteration 003 assignment (C) |
+| GD-19 | A small construction system: choose, preview, validate, check materials, host-commit, spend once, persist, dismantle, repair, synchronise | Commission 006–009 (I006) |
+| GD-20 | Material progression wood → metal → concrete, with at least one structure upgraded in tiers; the hatch is upgradable | Commission (I006) |
+| GD-21 | Defensive structures have condition, armour, repair cost and persistent damage; one active defensive mechanism besides barricades | Commission (I006) |
+| GD-22 | GD-07 stays in force: zombies do not enter the farmhouse or the bunker; base threats target exterior defences | Commission (I006, protected farmhouse rule) |
+| GD-23 | No arbitrary maximum bunker depth; deeper-level construction gameplay, load-bearing floors and collapse stay deferred | Commission (I006) |
+| GD-24 | A practical inventory (stacks + gear with identity), drop/pick up, equip, shared storage, no duplication | Commission (I007) |
+| GD-25 | Data-driven crafting at one workbench with a small useful recipe set; persistent jobs | Commission (I007) |
+| GD-26 | Forgiving hunger with one scavenged food, one repeatable food production method and one way to eat | Commission (I007) |
+| GD-27 | Progression through capabilities (tools, weapons, defences, food security, unlocks) — no XP, levels or currencies | Commission (I007) |
+| GD-28 | A regional threat that responds to player activity, with quiet periods and recovery, never omniscient zombies | Commission (I008) |
+| GD-29 | One configurable base-threatening defence event with cause, warning, real zombies, damage and a defined end; no fixed horde schedule; no forced house/bunker invasion | Commission (I008) |
+| GD-30 | A day/night cycle and one weather condition on the shared clock that affect atmosphere and play | Commission (I008) |
+| GD-31 | One additional small point of interest with scavenging, risk and a useful discovery; map integration; no fast travel | Commission (I008) |
+| GD-32 | One recruitable persistent survivor who lives in the bunker and does two useful jobs with real resources; light settlement overview | Commission (I009) |
 
 ## EXPLORING (prototype choices awaiting a creator decision)
 
@@ -53,17 +67,32 @@ Update this file whenever an iteration adds or settles a decision.
 | GX-13 | Hydration | −2.5 per minute; +40 per drink; thirsty below 25 (no health regeneration); at 0, −3 health per minute down to a floor of 25 | `infrastructure.json` |
 | GX-14 | Storage | One shared store per bunker, reachable from the locker and the timber piles; no per-player storage | `BunkerState.resources` |
 
+| GX-15 | Construction set and numbers | Barricade tiers 3 wood (120 hp) / 3 metal (260 hp, armour 3) / 2 cement + 1 metal (480 hp, armour 6); door, spike trap (16 dmg/s, slows, wears), crate (20 slots), workbench, planter, rain collector; build 2–4 s; dismantle refunds half | `content/buildables.json` |
+| GX-16 | Where you may build | Homestead build zone around the yard; bunker levels on dug cells (one structure per cell; never wall off dug floor); not inside the farmhouse; nothing at the service station | region `build_zones`, `Build` |
+| GX-17 | Paying | Your bag first, then shelter storage when you are underground or in the farmhouse; on the open surface only what you carry | `Inv.sources` |
+| GX-18 | Hatch upgrade value | Steel hatch (4 metal + 1 cement) lets far less bunker noise reach the surface (leak 0.08 vs 0.3 closed) — i.e. fewer hordes drawn home | `content/tuning/threat.json` |
+| GX-19 | Recipes | 9 recipes (bandage, club, hatchet, machete, felling axe [needs the manual], padded jacket, timber frame, spike kit, grow light), 3–12 s | `content/recipes.json` |
+| GX-20 | Equipment | Machete 55 dmg; hatchet chop ×2; felling axe chop ×4 +2 wood; jacket −35 % zombie damage; ~120–220 uses before repair | `content/items.json` |
+| GX-21 | Hunger | −1.4 per minute; hungry below 25 (no regeneration); at 0, −3 health/min down to 20 | `content/tuning/infrastructure.json` |
+| GX-22 | Planter | 1 clean water starts a 150 s crop, needs power while growing, yields 3 potatoes | `content/tuning/farming.json` |
+| GX-23 | Threat heat | Heat from noise attention and kills, half-life 10 min, levels 15/40/70 add 1/3/5 roaming zombies; home heat ≥ 55 (after 15 min of play, 25 min cooldown) starts the defence event | `content/tuning/threat.json` |
+| GX-24 | Defence event | 60 s warning, horde of 6 (+2 per extra player) for up to 180 s, targets exposed structures and the gate, ends repelled/dispersed | `content/tuning/threat.json` |
+| GX-25 | Day/night and weather | 24 min days starting 08:00; night cuts zombie sight to 60 % and adds 2 wanderers; rain spells 3–6 min between 10–18 min clear, rain masks noise (75 %) and fills collectors fast | `content/tuning/environment.json` |
+| GX-26 | Service station | Pumps (fuel, 12 min), shop shelves (food, cloth), storeroom (cement), wreck and workshop (metal, electrical parts), a one-time tool locker with the tuned carburetor (halves generator fuel use) and the workshop manual; 5 resident zombies | `content/regions/service_station.json` |
+
 ## DEFERRED
 
 | ID | Item | Notes |
 |---|---|---|
 | GF-01 | Zombie visual design and further zombie types | Visual design deferred (VF-01); one placeholder figure exists |
 | GF-02 | Rogue AI / drones as an antagonist | Open design question (visual register C-3) |
-| GF-03 | Threats to the bunker itself (raids, breaches, cave-ins) | The handover says security "can be threatened"; there is no collapse or raid simulation |
-| GF-04 | Hunger, food, cooking, sickness | Only hydration exists |
-| GF-05 | Crafting, tools, weapon durability, ranged weapons | One club only |
+| GF-03 | Zombies entering the farmhouse or bunker, raids, cave-ins | Defence events stay outside (GD-22); no collapse simulation |
+| GF-04 | Cooking, nutrition, sickness, food spoilage | Only simple hunger exists |
+| GF-05 | Ranged weapons, item rarities, skill trees | Small fixed equipment set |
 | GF-06 | Power wiring, capacity, multiple machine loads | The power model is logical (GX-11) |
-| GF-07 | Day/night, weather, seasons | The clock is raw simulated seconds |
-| GF-08 | Inventory UI beyond panels and the HUD line (drag and drop, item art) | Items have no icons yet |
-| GF-09 | More surface regions, travel, biomes | Only the homestead exists |
+| GF-07 | Seasons, temperature, further weather kinds | One weather condition (rain) |
+| GF-08 | Item icons, drag-and-drop inventory | Text-based inventory panel |
+| GF-09 | More regions, biomes, fast travel (incl. ambushes) | Homestead + service station only |
+| GF-11 | Lower-level construction gameplay, load-bearing floors | Developer levels only |
+| GF-12 | Survivor relationships, morale, schedules, more survivors and jobs | One survivor, two jobs |
 | GF-10 | Dedicated server, relay/matchmaking | LAN/IP only |

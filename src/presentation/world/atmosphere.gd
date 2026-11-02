@@ -10,6 +10,11 @@ extends Node2D
 @export var grain_strength := 0.07
 @export var vignette_strength := 0.28
 @export var drift_amount := 36
+## Night colour grade for outdoor regions (day/night follows the shared clock).
+@export var night_tint := Color(0.30, 0.34, 0.52)
+var _outdoor := false
+var _rain: Control
+var _rain_on := false
 @export var area := Rect2(0, 0, 2400, 1700)
 
 const OVERLAY_SHADER := """
@@ -43,6 +48,10 @@ func _ready() -> void:
 	if drift_amount > 0:
 		_add_drift()
 	_add_overlay()
+	var view := RegionView.find_for(self)
+	_outdoor = view != null and Session.world != null and Session.world.region_def(view.region_id).has("zombies")
+	if _outdoor:
+		_add_rain()
 
 
 func _add_drift() -> void:
@@ -84,8 +93,50 @@ func _add_overlay() -> void:
 	layer.add_child(_overlay)
 
 
+func _add_rain() -> void:
+	var layer := CanvasLayer.new()
+	layer.layer = 4
+	add_child(layer)
+	_rain = Control.new()
+	_rain.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_rain.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_rain.draw.connect(_draw_rain)
+	_rain.hide()
+	layer.add_child(_rain)
+
+
+func _draw_rain() -> void:
+	var sz := _rain.size
+	var t := Time.get_ticks_msec() / 1000.0
+	var col := Color(0.78, 0.84, 0.9, 0.35)
+	for i in 160:
+		var x := fmod(float(i) * 97.3 + t * 90.0, sz.x + 60.0) - 30.0
+		var y := fmod(float(i) * 61.7 + t * (620.0 + float(i % 7) * 30.0), sz.y + 40.0) - 20.0
+		_rain.draw_line(Vector2(x, y), Vector2(x - 5.0, y + 18.0), col, 1.2)
+
+
+func _exit_tree() -> void:
+	if _rain_on:
+		Audio.stop_loop("weather", 0.5)
+
+
 func _process(delta: float) -> void:
 	(_overlay.material as ShaderMaterial).set_shader_parameter("screen_size", get_viewport().get_visible_rect().size)
+	if _outdoor and Session.world != null:
+		var col := night_tint.lerp(tint, EnvSim.daylight(Session.world))
+		var raining := EnvSim.is_raining(Session.world)
+		if raining:
+			col *= Color(0.8, 0.84, 0.9)
+		_cm.color = _cm.color.lerp(col, 1.0 - exp(-1.5 * delta))
+		if raining != _rain_on:
+			_rain_on = raining
+			_rain.visible = raining
+			if raining:
+				Audio.play_loop("weather", "amb.rain", 1.5)
+			else:
+				Audio.stop_loop("weather", 2.0)
+		if _rain_on:
+			_rain.queue_redraw()
 	if powered_tint.a > 0.0 and Session.world != null:
 		var view := RegionView.find_for(self)
 		var on := view != null and InfraSim.is_powered(Session.world, view.region_id)

@@ -1,0 +1,323 @@
+{
+	"region_id": "service_station",
+	"display_key": "REGION_SERVICE_STATION",
+	"scene": "res://scenes/regions/service_station/service_station.tscn",
+	"bounds": [
+		0,
+		0,
+		2200,
+		1400
+	],
+	"spawn_points": [
+		[
+			140,
+			710
+		]
+	],
+	"zombies": {
+		"base_population": 5,
+		"spawns": [
+			[
+				300,
+				250
+			],
+			[
+				2050,
+				260
+			],
+			[
+				2100,
+				1250
+			],
+			[
+				350,
+				1250
+			],
+			[
+				1300,
+				1300
+			],
+			[
+				1950,
+				760
+			]
+		],
+		"entries": [
+			[
+				20,
+				300
+			],
+			[
+				20,
+				1200
+			],
+			[
+				2180,
+				300
+			],
+			[
+				2180,
+				1200
+			],
+			[
+				1100,
+				20
+			],
+			[
+				1100,
+				1380
+			]
+		]
+	},
+	"map": {
+		"offset": [
+			2400,
+			685
+		],
+		"areas": [
+			{
+				"kind": "woods",
+				"polygon": [
+					[
+						0,
+						0
+					],
+					[
+						2200,
+						0
+					],
+					[
+						2200,
+						330
+					],
+					[
+						0,
+						330
+					]
+				]
+			},
+			{
+				"kind": "woods",
+				"polygon": [
+					[
+						0,
+						1050
+					],
+					[
+						2200,
+						1050
+					],
+					[
+						2200,
+						1400
+					],
+					[
+						0,
+						1400
+					]
+				]
+			},
+			{
+				"kind": "yard",
+				"polygon": [
+					[
+						860,
+						380
+					],
+					[
+						2120,
+						380
+					],
+					[
+						2120,
+						700
+					],
+					[
+						860,
+						700
+					]
+				]
+			}
+		],
+		"roads": [
+			{
+				"kind": "road",
+				"width": 120,
+				"points": [
+					[
+						0,
+						710
+					],
+					[
+						2200,
+						710
+					]
+				]
+			}
+		],
+		"landmarks": [
+			{
+				"kind": "building",
+				"position": [
+					1450,
+					385
+				],
+				"size": [
+					280,
+					80
+				],
+				"label_key": "MAP_STATION_SHOP"
+			},
+			{
+				"kind": "building",
+				"position": [
+					1900,
+					435
+				],
+				"size": [
+					260,
+					80
+				],
+				"label_key": "MAP_WORKSHOP"
+			},
+			{
+				"kind": "point",
+				"position": [
+					1150,
+					600
+				],
+				"label_key": "MAP_PUMPS"
+			}
+		]
+	},
+	"entities": [
+		{
+			"id": "service_station.road_west",
+			"type": "portal",
+			"position": [
+				60,
+				710
+			],
+			"interact_range": 80,
+			"priority": 2,
+			"target": {
+				"region": "homestead",
+				"position": [
+					2290,
+					1400
+				]
+			},
+			"prompt_key": "PROMPT_ROAD_HOME"
+		},
+		{
+			"id": "service_station.pump",
+			"type": "loot",
+			"position": [
+				1150,
+				615
+			],
+			"interact_range": 85,
+			"prompt_key": "PROMPT_PUMP_FUEL",
+			"loot": {
+				"fuel": 2
+			},
+			"restock_minutes": 12,
+			"initial": {
+				"looted_at": -1
+			}
+		},
+		{
+			"id": "service_station.shop_shelves",
+			"type": "loot",
+			"position": [
+				1420,
+				445
+			],
+			"interact_range": 80,
+			"prompt_key": "PROMPT_SEARCH_SHOP",
+			"loot": {
+				"canned_food": 2,
+				"cloth": 2
+			},
+			"restock_minutes": 18,
+			"initial": {
+				"looted_at": -1
+			}
+		},
+		{
+			"id": "service_station.storeroom",
+			"type": "loot",
+			"position": [
+				1560,
+				445
+			],
+			"interact_range": 80,
+			"prompt_key": "PROMPT_SEARCH_STOREROOM",
+			"loot": {
+				"cement": 2,
+				"water_dirty": 1
+			},
+			"restock_minutes": 30,
+			"initial": {
+				"looted_at": -1
+			}
+		},
+		{
+			"id": "service_station.wreck",
+			"type": "loot",
+			"position": [
+				600,
+				910
+			],
+			"interact_range": 95,
+			"prompt_key": "PROMPT_SALVAGE_WRECK",
+			"loot": {
+				"scrap_metal": 2,
+				"electrical_parts": 1
+			},
+			"restock_minutes": 20,
+			"initial": {
+				"looted_at": -1
+			}
+		},
+		{
+			"id": "service_station.workshop_bench",
+			"type": "loot",
+			"position": [
+				1840,
+				490
+			],
+			"interact_range": 80,
+			"prompt_key": "PROMPT_SEARCH_WORKSHOP",
+			"loot": {
+				"scrap_metal": 2,
+				"electrical_parts": 1
+			},
+			"restock_minutes": 25,
+			"initial": {
+				"looted_at": -1
+			}
+		},
+		{
+			"id": "service_station.tool_locker",
+			"type": "loot",
+			"position": [
+				2000,
+				530
+			],
+			"interact_range": 75,
+			"prompt_key": "PROMPT_FORCE_LOCKER",
+			"unique": true,
+			"gear": [
+				"carburetor",
+				"workshop_manual"
+			],
+			"loot": {},
+			"discovery": "workshop_locker",
+			"initial": {
+				"looted_at": -1
+			}
+		}
+	],
+	"discovery": "service_station"
+}

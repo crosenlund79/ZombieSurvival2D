@@ -98,23 +98,102 @@ func _map_rect(bounds: Rect2) -> Rect2:
 	return Rect2(area.position + (area.size - draw_size) * 0.5, draw_size)
 
 
+## Surface regions shown on the map: the start region and every discovered one.
+static func shown_regions(w: WorldState) -> Array:
+	var out := []
+	for rid in Content.region_ids():
+		var def := w.region_def(rid)
+		if not def.has("map") or w.region(rid) == null:
+			continue
+		var key := str(def.get("discovery", ""))
+		if key == "" or w.meta.get("discoveries", {}).has(key):
+			out.append(rid)
+	return out
+
+
+static func region_offset(w: WorldState, rid: String) -> Vector2:
+	var o: Array = w.region_def(rid).get("map", {}).get("offset", [0, 0])
+	return Vector2(float(o[0]), float(o[1]))
+
+
 func _draw() -> void:
 	var w := Session.world
 	var me := Session.local_player()
 	if w == null or me == null:
 		return
 	var here := surface_point(w, me.region_id, me.position)
-	var surface_id: String = here.get("region_id", Content.DEFAULT_REGION)
-	var def := w.region_def(surface_id)
-	var b: Array = def.get("bounds", [0, 0, 1600, 1100])
-	var bounds := Rect2(float(b[0]), float(b[1]), float(b[2]), float(b[3]))
+	var shown := shown_regions(w)
+	var bounds := Rect2()
+	for rid in shown:
+		var b: Array = w.region_def(rid).get("bounds", [0, 0, 1600, 1100])
+		var rb := Rect2(region_offset(w, rid) + Vector2(float(b[0]), float(b[1])), Vector2(float(b[2]), float(b[3])))
+		bounds = rb if bounds.size == Vector2.ZERO else bounds.merge(rb)
 	var rect := _map_rect(bounds)
 	var sc := rect.size.x / bounds.size.x
-	var to_map := func(p: Vector2) -> Vector2: return rect.position + (p - bounds.position) * sc
 	_paper.position = rect.position - Vector2(30, 50)
 	_paper.size = rect.size + Vector2(60, 130)
 	_title.position = rect.position + Vector2(0, -44)
-	_title.text = UITheme.fmt("MAP_TITLE", [tr(str(def.get("display_key", "")))])
+	_title.text = UITheme.fmt("MAP_TITLE", [tr(str(w.region_def(str(here.get("region_id", Content.DEFAULT_REGION))).get("display_key", "")))])
+	for rid in shown:
+		var off := region_offset(w, rid)
+		var to_map := func(p: Vector2) -> Vector2: return rect.position + (p + off - bounds.position) * sc
+		_draw_region(w, rid, to_map, sc)
+	# Undiscovered places reachable by road: a hint at the road's end.
+	for rid2 in Content.region_ids():
+		var def2 := w.region_def(rid2)
+		if def2.has("map") and not (rid2 in shown):
+			var home := Content.DEFAULT_REGION
+			var hb: Array = w.region_def(home).get("bounds", [0, 0, 1600, 1100])
+			var at: Vector2 = rect.position + (region_offset(w, home) + Vector2(float(hb[2]) - 80.0, float(hb[3]) * 0.82) - bounds.position) * sc
+			_label(at + Vector2(-40, -14), tr("MAP_UNEXPLORED"), 13)
+			draw_line(at + Vector2(-10, 0), at + Vector2(30, 0), INK, 3.0)
+			draw_colored_polygon(PackedVector2Array([at + Vector2(30, -7), at + Vector2(44, 0), at + Vector2(30, 7)]), INK)
+	# Shelters.
+	for bid in w.bunkers:
+		var bk: BunkerState = w.bunkers[bid]
+		var entrance := w.region(bk.entrance_region)
+		if entrance == null:
+			continue
+		var sp := surface_point(w, bk.entrance_region, Content.entity_position(entrance.entity_def(bk.entrance_entity)))
+		if sp.is_empty() or not (sp["region_id"] in shown):
+			continue
+		var bp: Vector2 = rect.position + (sp["position"] + region_offset(w, sp["region_id"]) - bounds.position) * sc + Vector2(46, 10)
+		var tri := PackedVector2Array([bp + Vector2(0, -12), bp + Vector2(11, 8), bp + Vector2(-11, 8)])
+		draw_colored_polygon(tri, BUNKER)
+		tri.append(tri[0])
+		draw_polyline(tri, INK, 2.0)
+		_label(bp + Vector2(70, 5), UITheme.fmt("MAP_SHELTER", [bk.levels.size()]), 13)
+	# Players.
+	for p in w.online_players():
+		var pp := surface_point(w, p.region_id, p.position)
+		if pp.is_empty() or not (pp["region_id"] in shown):
+			continue
+		var mp: Vector2 = rect.position + (pp["position"] + region_offset(w, pp["region_id"]) - bounds.position) * sc
+		var mine: bool = p.player_id == me.player_id
+		draw_circle(mp, 9.0 if mine else 7.0, ME if mine else OTHER)
+		draw_arc(mp, 9.0 if mine else 7.0, 0, TAU, 16, INK, 2.0)
+		var tag: String = p.display_name
+		if int(pp["depth"]) < 0:
+			tag += " (%d)" % int(pp["depth"])
+		elif pp["inside_key"] != "":
+			tag += " ⌂"
+		_label(mp + Vector2(0, -16), tag, 12)
+	# Legend / where am I.
+	var where := Hud.region_label(me.region_id)
+	if int(here.get("depth", 0)) < 0:
+		_legend.text = UITheme.fmt("MAP_YOU_UNDERGROUND", [where, int(here["depth"])])
+	elif str(here.get("inside_key", "")) != "":
+		_legend.text = UITheme.fmt("MAP_YOU_INSIDE", [where])
+	else:
+		_legend.text = UITheme.fmt("MAP_YOU_SURFACE", [where])
+	_legend.text += "\n" + tr("MAP_LEGEND")
+	_legend.position = Vector2(rect.position.x, rect.end.y + 12)
+	_legend.size = Vector2(rect.size.x, 60)
+	draw_rect(rect.grow(4), INK, false, 3.0)
+
+
+func _draw_region(w: WorldState, rid: String, to_map: Callable, sc: float) -> void:
+	var def := w.region_def(rid)
 	var map: Dictionary = def.get("map", {})
 	for area in map.get("areas", []):
 		var pts := PackedVector2Array()
@@ -140,67 +219,25 @@ func _draw() -> void:
 			"building":
 				draw_rect(r, Color(0.78, 0.70, 0.55))
 				draw_rect(r, INK, false, 2.0)
-			"tree":
-				draw_circle(c, 5.0, Color(0.30, 0.36, 0.18))
-				draw_arc(c, 5.0, 0, TAU, 12, INK, 1.0)
 			_:
 				draw_circle(c, 4.0, INK)
 		if lm.has("label_key"):
 			_label(c + Vector2(0, r.size.y * 0.5 + 14), tr(str(lm["label_key"])), 13)
-	# Harvestable trees from live world state (felled ones as stumps).
-	var surf := w.region(surface_id)
-	if surf != null:
-		for eid in Content.entity_ids(surf.def_id):
-			var ed := surf.entity_def(eid)
-			if str(ed.get("type", "")) == "tree":
-				var tp: Vector2 = to_map.call(Content.entity_position(ed))
-				if bool(surf.entity_state(eid).get("felled", false)):
-					draw_circle(tp, 2.5, TRACK)
-				else:
-					draw_circle(tp, 6.0, Color(0.30, 0.38, 0.18))
-					draw_arc(tp, 6.0, 0, TAU, 12, INK, 1.2)
-	# Shelters.
-	for bid in w.bunkers:
-		var bk: BunkerState = w.bunkers[bid]
-		var entrance := w.region(bk.entrance_region)
-		if entrance == null:
-			continue
-		var sp := surface_point(w, bk.entrance_region, Content.entity_position(entrance.entity_def(bk.entrance_entity)))
-		if sp.is_empty() or sp["region_id"] != surface_id:
-			continue
-		var bp: Vector2 = to_map.call(sp["position"]) + Vector2(46, 10)
-		var tri := PackedVector2Array([bp + Vector2(0, -12), bp + Vector2(11, 8), bp + Vector2(-11, 8)])
-		draw_colored_polygon(tri, BUNKER)
-		tri.append(tri[0])
-		draw_polyline(tri, INK, 2.0)
-		_label(bp + Vector2(70, 5), UITheme.fmt("MAP_SHELTER", [bk.levels.size()]), 13)
-	# Players.
-	for p in w.online_players():
-		var pp := surface_point(w, p.region_id, p.position)
-		if pp.is_empty() or pp["region_id"] != surface_id:
-			continue
-		var mp: Vector2 = to_map.call(pp["position"])
-		var mine: bool = p.player_id == me.player_id
-		draw_circle(mp, 9.0 if mine else 7.0, ME if mine else OTHER)
-		draw_arc(mp, 9.0 if mine else 7.0, 0, TAU, 16, INK, 2.0)
-		var tag: String = p.display_name
-		if int(pp["depth"]) < 0:
-			tag += " (%d)" % int(pp["depth"])
-		elif pp["inside_key"] != "":
-			tag += " ⌂"
-		_label(mp + Vector2(0, -16), tag, 12)
-	# Legend / where am I.
-	var where := Hud.region_label(me.region_id)
-	if int(here.get("depth", 0)) < 0:
-		_legend.text = UITheme.fmt("MAP_YOU_UNDERGROUND", [where, int(here["depth"])])
-	elif str(here.get("inside_key", "")) != "":
-		_legend.text = UITheme.fmt("MAP_YOU_INSIDE", [where])
-	else:
-		_legend.text = UITheme.fmt("MAP_YOU_SURFACE", [where])
-	_legend.text += "\n" + tr("MAP_LEGEND")
-	_legend.position = Vector2(rect.position.x, rect.end.y + 12)
-	_legend.size = Vector2(rect.size.x, 60)
-	draw_rect(rect.grow(4), INK, false, 3.0)
+	var surf := w.region(rid)
+	for eid in Content.entity_ids(surf.def_id):
+		var ed := surf.entity_def(eid)
+		if str(ed.get("type", "")) == "tree":
+			var tp: Vector2 = to_map.call(Content.entity_position(ed))
+			if bool(surf.entity_state(eid).get("felled", false)):
+				draw_circle(tp, 2.5, TRACK)
+			else:
+				draw_circle(tp, 6.0, Color(0.30, 0.38, 0.18))
+				draw_arc(tp, 6.0, 0, TAU, 12, INK, 1.2)
+	# Player-built structures as small marks (defences, machines).
+	for oid in surf.objects:
+		var o: Dictionary = surf.objects[oid]
+		if not Build.is_pile(o):
+			draw_rect(Rect2(to_map.call(Build.pos_of(o)) - Vector2(3, 3), Vector2(6, 6)), INK)
 
 
 func _label(at: Vector2, text: String, size: int) -> void:

@@ -136,7 +136,23 @@ static func _portal(world: WorldState, p: PlayerState, region: RegionState, eid:
 	p.position = t["position"]
 	var res := _ok()
 	res["transition"] = {"player_id": p.player_id, "region_id": p.region_id, "position": p.position}
+	# Arriving somewhere new for the first time records a world discovery.
+	var key := str(world.region_def(p.region_id).get("discovery", ""))
+	if key != "" and discover(world, key):
+		res["meta"] = true
+		res["notice"] = {"key": "DISCOVERED_REGION", "args": [TranslationServer.translate(str(world.region_def(p.region_id).get("display_key", "")))]}
 	return res
+
+
+## Records a discovery once. Returns true when it is new.
+static func discover(world: WorldState, key: String) -> bool:
+	var d: Dictionary = world.meta.get("discoveries", {})
+	if d.has(key):
+		return false
+	d[key] = world.tick
+	world.meta["discoveries"] = d
+	SessionLog.info("world", "discovery", {"key": key, "tick": world.tick})
+	return true
 
 
 ## Where a portal leads: {region_id, position} or {} if the destination does not exist (yet).
@@ -274,28 +290,37 @@ static func loot_ready(world: WorldState, region: RegionState, eid: String) -> b
 	var at := int(region.entity_state(eid).get("looted_at", -1))
 	if at < 0:
 		return true
+	if bool(region.entity_def(eid).get("unique", false)):
+		return false  # one-of-a-kind finds never come back
 	var mins := float(region.entity_def(eid).get("restock_minutes", 15))
 	return world.tick - at >= int(mins * 60.0 * Simulation.TICK_RATE)
 
 
 static func _loot(world: WorldState, p: PlayerState, region: RegionState, eid: String, def: Dictionary) -> Dictionary:
 	if not loot_ready(world, region, eid):
-		return _fail("ACTION_LOOT_EMPTY")
+		return _fail("ACTION_LOOT_GONE" if bool(def.get("unique", false)) else "ACTION_LOOT_EMPTY")
 	var loot: Dictionary = def.get("loot", {})
-	var need := 0
+	var gear: Array = def.get("gear", [])
+	var need := gear.size()
 	for item in loot:
 		need += int(loot[item])
-	if Items.free_slots(p.carried) < need:
+	if Inv.free_slots(p) < need:
 		return _fail("ACTION_NEED_SLOTS", [need])
 	var found: Array[String] = []
 	for item in loot:
 		p.carried[item] = p.carrying(item) + int(loot[item])
 		found.append("%d %s" % [int(loot[item]), TranslationServer.translate(Items.name_key(item))])
+	for g in gear:
+		p.gear.append(Inv.new_gear(world, str(g)))
+		found.append(TranslationServer.translate(Items.name_key(str(g))))
 	region.set_fields(eid, {"looted_at": world.tick})
 	ZombieSim.make_noise(world, region.region_id, Content.entity_position(def), "door")
 	var res := _changed(region, eid, "looted")
 	res["players"] = [p.player_id]
 	res["notice"] = {"key": "LOOT_FOUND", "args": [", ".join(found)]}
+	if def.has("discovery") and discover(world, str(def["discovery"])):
+		res["meta"] = true
+		res["notice"] = {"key": "DISCOVERY_FOUND", "args": [", ".join(found)]}
 	return res
 
 

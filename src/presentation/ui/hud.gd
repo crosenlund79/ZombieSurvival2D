@@ -10,6 +10,7 @@ var _resources: Label
 var _vitals: Control
 var _threat: Label
 var _down: Label
+var _banner: Label
 
 
 func _ready() -> void:
@@ -69,7 +70,21 @@ func _ready() -> void:
 	_down.offset_right = 400
 	_down.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	add_child(_down)
+	_banner = Label.new()
+	_banner.add_theme_font_size_override("font_size", 19)
+	_banner.add_theme_color_override("font_color", Color("#E2B9A8"))
+	_banner.add_theme_color_override("font_outline_color", Color(0, 0, 0, 0.9))
+	_banner.add_theme_constant_override("outline_size", 6)
+	_banner.set_anchors_preset(Control.PRESET_CENTER_TOP)
+	_banner.offset_left = -420
+	_banner.offset_right = 420
+	_banner.offset_top = 10
+	_banner.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_banner.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(_banner)
+	_notices.offset_top = 44
 	Session.notice.connect(show_notice)
+	Session.combat_event.connect(_on_world_event)
 
 
 func _process(_delta: float) -> void:
@@ -84,16 +99,46 @@ func _process(_delta: float) -> void:
 	var me := Session.local_player()
 	_status.text = "%s · %s · %s %d · %s %s" % [
 		tr("MODE_" + Session.mode_name()), region_label(me.region_id),
-		tr("HUD_PLAYERS"), w.online_players().size(), tr("HUD_TIME"), Simulation.format_time(w)]
+		tr("HUD_PLAYERS"), w.online_players().size(), UITheme.fmt("HUD_CLOCK", [EnvSim.day_number(w), EnvSim.clock_text(w)]),
+		tr("HUD_WEATHER_RAIN") if EnvSim.is_raining(w) else (tr("HUD_NIGHT") if EnvSim.is_night(w) else tr("HUD_WEATHER_CLEAR"))]
 	_resources.text = _resource_line(me)
 	_vitals.queue_redraw()
 	_threat.text = threat_label(me)
+	if w.region_def(me.region_id).has("zombies"):
+		_threat.text += " · " + tr("HUD_HEAT_%d" % EventSim.heat_level(w, me.region_id))
+	_banner.text = siege_text(w)
 	_down.text = tr("HUD_DOWNED") if me.dead else ""
 	var sensor := get_tree().get_first_node_in_group("local_sensor") as InteractionSensor
 	_prompt.text = sensor.focused.prompt_text() if sensor != null and sensor.focused != null and not PlayerAvatar.input_blocked else ""
 	var main := get_tree().root.get_node_or_null("Main")
 	if BuildMode.placing != "" and main != null and main.get("build_mode") != null:
 		_prompt.text = main.build_mode.hint_text()
+
+
+## Horde warning / attack banner from the replicated event record ("" = none).
+static func siege_text(w: WorldState) -> String:
+	var s := EventSim.siege(w)
+	match str(s.get("phase", "idle")):
+		"warning":
+			return UITheme.fmt("SIEGE_WARNING_HUD", [maxi(0, ceili(float(int(s.get("ends", 0)) - w.tick) / Simulation.TICK_RATE))])
+		"active":
+			return UITheme.fmt("SIEGE_ACTIVE_HUD", [int(s.get("remaining", 0))])
+	return ""
+
+
+func _on_world_event(ev: Dictionary) -> void:
+	match str(ev.get("kind", "")):
+		"weather":
+			show_notice("WEATHER_STARTS_RAIN" if str(ev.get("weather", "")) == "rain" else "WEATHER_STARTS_CLEAR", [])
+		"siege_warning":
+			show_notice("SIEGE_WARNING", [])
+			Audio.play("sfx.horde_warning")
+		"siege_started":
+			show_notice("SIEGE_STARTED", [])
+		"siege_repelled":
+			show_notice("SIEGE_REPELLED", [])
+		"siege_dispersed":
+			show_notice("SIEGE_DISPERSED", [])
 
 
 ## "The Homestead", "The Farmhouse", "Shelter · Level -2" …
