@@ -1,0 +1,32 @@
+{
+	"kind": "visual",
+	"category": "world",
+	"assets": [
+		{
+			"id": "world.door_closed",
+			"name": "Yard gate — closed",
+			"template": "res://assets/templates/world/doors/template_gate_closed.png",
+			"display_size": [96, 64],
+			"source_size": [192, 128],
+			"pivot": [0.5, 1.0],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Phase A technical placeholder. Collision is defined in code, not by the image."
+		},
+		{
+			"id": "world.door_open",
+			"name": "Yard gate — open",
+			"template": "res://assets/templates/world/doors/template_gate_open.png",
+			"display_size": [96, 64],
+			"source_size": [192, 128],
+			"pivot": [0.5, 1.0],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Phase A technical placeholder."
+		}
+	]
+}

@@ -1,0 +1,19 @@
+{
+	"schema_version": 1,
+	"game": "Aftergrowth",
+	"saved_unix": 1793577600,
+	"build": {"title": "Aftergrowth", "version": "0.1.0", "iteration": "001", "save_schema": 1},
+	"world": {
+		"world_id": "world_fixture_v1",
+		"seed": 4242,
+		"tick": 3600,
+		"created_unix": 1793570000,
+		"content_fingerprint": "fixture",
+		"regions": {
+			"homestead": {"entities": {"homestead.yard_gate": {"state": {"open": true}, "rev": 3}}}
+		}
+	},
+	"players": {
+		"0123456789abcdef01234567": {"name": "Fixture", "region_id": "homestead", "position": [800, 700], "facing": 0, "last_seen_unix": 1793577600}
+	}
+}

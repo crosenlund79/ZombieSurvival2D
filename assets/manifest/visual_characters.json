@@ -1,0 +1,19 @@
+{
+	"kind": "visual",
+	"category": "characters",
+	"assets": [
+		{
+			"id": "char.player",
+			"name": "Player survivor (single pose)",
+			"template": "res://assets/templates/characters/player/template_body_01.png",
+			"display_size": [48, 64],
+			"source_size": [96, 128],
+			"pivot": [0.5, 1.0],
+			"transparency": "required",
+			"directions": "one pose; flipped horizontally in code",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Phase A technical placeholder. Pivot = feet."
+		}
+	]
+}

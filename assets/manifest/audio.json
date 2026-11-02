@@ -1,0 +1,36 @@
+{
+	"kind": "audio",
+	"category": "audio",
+	"assets": [
+		{
+			"id": "sfx.door_open",
+			"name": "Gate/door opens",
+			"template": "res://assets/templates/audio/world/template_door_open.wav",
+			"bus": "SFX",
+			"volume_db": -4.0,
+			"loop": false,
+			"status": "READY",
+			"notes": "Generated technical placeholder. WAV or OGG override accepted."
+		},
+		{
+			"id": "sfx.door_close",
+			"name": "Gate/door closes",
+			"template": "res://assets/templates/audio/world/template_door_close.wav",
+			"bus": "SFX",
+			"volume_db": -4.0,
+			"loop": false,
+			"status": "READY",
+			"notes": "Generated technical placeholder."
+		},
+		{
+			"id": "ui.click",
+			"name": "Menu click",
+			"template": "res://assets/templates/audio/ui/template_click.wav",
+			"bus": "UI",
+			"volume_db": -8.0,
+			"loop": false,
+			"status": "READY",
+			"notes": "Generated technical placeholder."
+		}
+	]
+}

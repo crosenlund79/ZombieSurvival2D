@@ -1,0 +1,7 @@
+# Godot 4 generated cache — regenerated when the project is opened.
+.godot/
+/android/
+*.tmp
+# Local test output
+/tests/_out/
+__pycache__/

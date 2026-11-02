@@ -1,0 +1,418 @@
+{
+	"ACTION_DEV_OVERLAY": {
+		"da": "Udvikleroverblik",
+		"en": "Developer overlay"
+	},
+	"ACTION_INTERACT": {
+		"da": "Interager",
+		"en": "Interact"
+	},
+	"ACTION_MOVE_DOWN": {
+		"da": "Gå ned",
+		"en": "Move down"
+	},
+	"ACTION_MOVE_LEFT": {
+		"da": "Gå til venstre",
+		"en": "Move left"
+	},
+	"ACTION_MOVE_RIGHT": {
+		"da": "Gå til højre",
+		"en": "Move right"
+	},
+	"ACTION_MOVE_UP": {
+		"da": "Gå op",
+		"en": "Move up"
+	},
+	"ACTION_NOT_SUPPORTED": {
+		"da": "Det kan ikke bruges.",
+		"en": "Nothing to do with that."
+	},
+	"ACTION_PAUSE_MENU": {
+		"da": "Menu",
+		"en": "Menu"
+	},
+	"ACTION_QUICK_SAVE": {
+		"da": "Hurtig gem (vært)",
+		"en": "Quick save (host)"
+	},
+	"ACTION_SCREENSHOT": {
+		"da": "Skærmbillede",
+		"en": "Screenshot"
+	},
+	"ACTION_STALE": {
+		"da": "En anden nåede at ændre det først.",
+		"en": "Someone else changed it first."
+	},
+	"ACTION_TOO_FAR": {
+		"da": "For langt væk.",
+		"en": "Too far away."
+	},
+	"ACTION_UNKNOWN_OBJECT": {
+		"da": "Den genstand er her ikke.",
+		"en": "That object is not here."
+	},
+	"ACTION_UNKNOWN_PLAYER": {
+		"da": "Du er ikke registreret i denne verden.",
+		"en": "You are not registered in this world."
+	},
+	"ACTION_ZOOM_IN": {
+		"da": "Zoom ind",
+		"en": "Zoom in"
+	},
+	"ACTION_ZOOM_OUT": {
+		"da": "Zoom ud",
+		"en": "Zoom out"
+	},
+	"BUS_AMBIENCE": {
+		"da": "Omgivelser",
+		"en": "Ambience"
+	},
+	"BUS_MASTER": {
+		"da": "Samlet lydstyrke",
+		"en": "Master volume"
+	},
+	"BUS_MUSIC": {
+		"da": "Musik",
+		"en": "Music"
+	},
+	"BUS_SFX": {
+		"da": "Lydeffekter",
+		"en": "Sound effects"
+	},
+	"BUS_UI": {
+		"da": "Brugerflade",
+		"en": "Interface"
+	},
+	"DEV_CLOCK": {
+		"da": "Ur +1 t",
+		"en": "Clock +1 h"
+	},
+	"DEV_HOST_ONLY": {
+		"da": "Udviklerkommandoer kører kun hos værten.",
+		"en": "Developer commands run only on the host."
+	},
+	"DEV_REBUILD_VIEW": {
+		"da": "Genopbyg visning",
+		"en": "Rebuild view"
+	},
+	"DEV_RELOAD_ASSETS": {
+		"da": "Genindlæs grafik & lyd",
+		"en": "Reload art & sound"
+	},
+	"DEV_SAVE": {
+		"da": "Gem verden",
+		"en": "Save world"
+	},
+	"DEV_SCREENSHOT": {
+		"da": "Skærmbillede",
+		"en": "Screenshot"
+	},
+	"DEV_SCREENSHOT_SAVED": {
+		"da": "Skærmbillede gemt: %s",
+		"en": "Screenshot saved: %s"
+	},
+	"DEV_SPAWN": {
+		"da": "Tilbage til start",
+		"en": "Back to spawn"
+	},
+	"DEV_TITLE": {
+		"da": "Udvikler (F3)",
+		"en": "Developer (F3)"
+	},
+	"DEV_UNKNOWN_COMMAND": {
+		"da": "Ukendt udviklerkommando.",
+		"en": "Unknown developer command."
+	},
+	"FIELD_ADDRESS": {
+		"da": "Værtsadresse",
+		"en": "Host address"
+	},
+	"FIELD_PLAYER_NAME": {
+		"da": "Spillernavn",
+		"en": "Player name"
+	},
+	"FIELD_PORT": {
+		"da": "Port",
+		"en": "Port"
+	},
+	"FIELD_SEED": {
+		"da": "Seed (valgfri)",
+		"en": "Seed (optional)"
+	},
+	"FIELD_SEED_HINT": {
+		"da": "tilfældig",
+		"en": "random"
+	},
+	"HUD_PLAYERS": {
+		"da": "spillere",
+		"en": "players"
+	},
+	"HUD_TIME": {
+		"da": "tid",
+		"en": "time"
+	},
+	"JOIN_BAD_SNAPSHOT": {
+		"da": "Værten sendte verdensdata, som spillet ikke kunne læse.",
+		"en": "The host sent world data this game could not read."
+	},
+	"JOIN_CANCELLED": {
+		"da": "Annulleret.",
+		"en": "Cancelled."
+	},
+	"JOIN_CONNECTING": {
+		"da": "Forbinder…",
+		"en": "Connecting…"
+	},
+	"JOIN_HANDSHAKE": {
+		"da": "Forbundet. Går ind i verdenen…",
+		"en": "Connected. Joining the world…"
+	},
+	"JOIN_NEED_ADDRESS": {
+		"da": "Indtast værtens adresse.",
+		"en": "Enter the host's address."
+	},
+	"JOIN_REJECT_CONTENT": {
+		"da": "Værtens spilindhold er anderledes end dit (anden branch eller filer?).",
+		"en": "The host's game content differs from yours (different branch or files?)."
+	},
+	"JOIN_REJECT_DUPLICATE": {
+		"da": "En spiller med denne identitet er allerede i spillet. Brug et andet spillernavn på samme computer.",
+		"en": "A player with this identity is already in the game. On the same computer, use a different player name."
+	},
+	"JOIN_REJECT_IDENTITY": {
+		"da": "Værten afviste din spilleridentitet.",
+		"en": "The host refused your player identity."
+	},
+	"JOIN_REJECT_VERSION": {
+		"da": "Værten kører en anden version af spillet.",
+		"en": "The host runs a different game version."
+	},
+	"JOIN_TIMEOUT": {
+		"da": "Værten svarede ikke på anmodningen i tide.",
+		"en": "The host did not answer the join request in time."
+	},
+	"LANG_DA": {
+		"da": "Dansk",
+		"en": "Dansk"
+	},
+	"LANG_EN": {
+		"da": "English",
+		"en": "English"
+	},
+	"MENU_BACK": {
+		"da": "Tilbage",
+		"en": "Back"
+	},
+	"MENU_CLOSE": {
+		"da": "Luk",
+		"en": "Close"
+	},
+	"MENU_CONNECT": {
+		"da": "Forbind",
+		"en": "Connect"
+	},
+	"MENU_CONTINUE": {
+		"da": "Fortsæt",
+		"en": "Continue"
+	},
+	"MENU_CONTINUE_NONE": {
+		"da": "Fortsæt (ingen gemt verden endnu)",
+		"en": "Continue (no saved world yet)"
+	},
+	"MENU_CONTINUE_WORLD": {
+		"da": "Fortsæt: %s",
+		"en": "Continue: %s"
+	},
+	"MENU_HOST": {
+		"da": "Vær vært",
+		"en": "Host Game"
+	},
+	"MENU_JOIN": {
+		"da": "Deltag i spil",
+		"en": "Join Game"
+	},
+	"MENU_NEW_WORLD": {
+		"da": "Ny verden",
+		"en": "New World"
+	},
+	"MENU_QUIT": {
+		"da": "Afslut",
+		"en": "Quit"
+	},
+	"MENU_SETTINGS": {
+		"da": "Indstillinger",
+		"en": "Settings"
+	},
+	"MENU_SINGLE": {
+		"da": "Enspiller",
+		"en": "Single Player"
+	},
+	"MENU_SUBTITLE": {
+		"da": "En farlig verden ovenover. Et hjem nedenunder.",
+		"en": "A dangerous world above. A home beneath."
+	},
+	"MODE_CLIENT": {
+		"da": "Forbundet",
+		"en": "Connected"
+	},
+	"MODE_HOST": {
+		"da": "Vært",
+		"en": "Hosting"
+	},
+	"MODE_NONE": {
+		"da": "",
+		"en": ""
+	},
+	"MODE_SINGLE": {
+		"da": "Enspiller",
+		"en": "Single player"
+	},
+	"NET_CONNECT_FAILED": {
+		"da": "Kunne ikke forbinde. Tjek adresse, port og firewall, og at værten kører.",
+		"en": "Could not connect. Check the address, port and firewall, and that the host is running."
+	},
+	"NET_HOST_FAILED": {
+		"da": "Kunne ikke være vært på den port (allerede i brug?).",
+		"en": "Could not host on that port (already in use?)."
+	},
+	"PAUSE_HINT": {
+		"da": "Den fælles verden kører videre, mens menuen er åben.",
+		"en": "The shared world keeps running while this menu is open."
+	},
+	"PAUSE_LEAVE": {
+		"da": "Forlad til hovedmenu",
+		"en": "Leave to main menu"
+	},
+	"PAUSE_RESUME": {
+		"da": "Fortsæt",
+		"en": "Resume"
+	},
+	"PAUSE_SAVE": {
+		"da": "Gem verden (vært)",
+		"en": "Save world (host)"
+	},
+	"PAUSE_TITLE": {
+		"da": "Menu",
+		"en": "Menu"
+	},
+	"PLAYER_JOINED": {
+		"da": "%s kom med.",
+		"en": "%s joined."
+	},
+	"PLAYER_LEFT": {
+		"da": "%s gik.",
+		"en": "%s left."
+	},
+	"PROMPT_CLOSE_DOOR": {
+		"da": "Luk dør",
+		"en": "Close door"
+	},
+	"PROMPT_CLOSE_GATE": {
+		"da": "Luk låge",
+		"en": "Close gate"
+	},
+	"PROMPT_OPEN_DOOR": {
+		"da": "Åbn dør",
+		"en": "Open door"
+	},
+	"PROMPT_OPEN_GATE": {
+		"da": "Åbn låge",
+		"en": "Open gate"
+	},
+	"PROMPT_USE": {
+		"da": "Brug",
+		"en": "Use"
+	},
+	"REGION_HOMESTEAD": {
+		"da": "Husmandsstedet",
+		"en": "The Homestead"
+	},
+	"SAVE_FAILED": {
+		"da": "Gemning mislykkedes: %s",
+		"en": "Saving failed: %s"
+	},
+	"SAVE_HOST_ONLY": {
+		"da": "Kun værten gemmer den fælles verden.",
+		"en": "Only the host saves the shared world."
+	},
+	"SAVE_LOAD_FAILED": {
+		"da": "Den gemte verden kunne ikke indlæses.",
+		"en": "The saved world could not be loaded."
+	},
+	"SAVE_LOAD_WARNING": {
+		"da": "Bemærkning om gemt spil: %s",
+		"en": "Save note: %s"
+	},
+	"SAVE_OK": {
+		"da": "Verden gemt.",
+		"en": "World saved."
+	},
+	"SESSION_ALREADY_RUNNING": {
+		"da": "En session kører allerede.",
+		"en": "A session is already running."
+	},
+	"SESSION_HOST_CLOSED": {
+		"da": "Værten lukkede sessionen.",
+		"en": "The host closed the session."
+	},
+	"SESSION_LEFT": {
+		"da": "Du forlod sessionen.",
+		"en": "You left the session."
+	},
+	"SETTINGS_ASSETS": {
+		"da": "Udskiftning af grafik & lyd",
+		"en": "Art & sound replacements"
+	},
+	"SETTINGS_ASSETS_HINT": {
+		"da": "Udskiftningsfiler i %s bruges i stedet for den indbyggede grafik og lyd. Spejl skabelonstien og fjern template_-præfikset.",
+		"en": "Replacement files placed in %s are used instead of the built-in art and sound. Mirror the template path and drop the template_ prefix."
+	},
+	"SETTINGS_AUDIO": {
+		"da": "Lyd",
+		"en": "Audio"
+	},
+	"SETTINGS_CONTROLS": {
+		"da": "Styring (klik, og tryk derefter på en tast)",
+		"en": "Controls (click, then press a key)"
+	},
+	"SETTINGS_DISPLAY": {
+		"da": "Skærm",
+		"en": "Display"
+	},
+	"SETTINGS_FULLSCREEN": {
+		"da": "Fuld skærm",
+		"en": "Fullscreen"
+	},
+	"SETTINGS_LANGUAGE": {
+		"da": "Sprog",
+		"en": "Language"
+	},
+	"SETTINGS_OPEN_OVERRIDES": {
+		"da": "Åbn mappe til udskiftninger",
+		"en": "Open overrides folder"
+	},
+	"SETTINGS_PRESS_KEY": {
+		"da": "Tryk på en tast…",
+		"en": "Press a key…"
+	},
+	"SETTINGS_RELOAD_ASSETS": {
+		"da": "Genindlæs grafik & lyd",
+		"en": "Reload art & sound"
+	},
+	"SETTINGS_RESET_CONTROLS": {
+		"da": "Nulstil styring",
+		"en": "Reset controls"
+	},
+	"SETTINGS_TITLE": {
+		"da": "Indstillinger",
+		"en": "Settings"
+	},
+	"SETTINGS_UI_SCALE": {
+		"da": "Skalering af brugerflade",
+		"en": "Interface scale"
+	},
+	"SETTINGS_WINDOW_SIZE": {
+		"da": "Vinduesstørrelse",
+		"en": "Window size"
+	}
+}

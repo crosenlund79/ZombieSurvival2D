@@ -1,0 +1,16 @@
+{
+	"region_id": "homestead",
+	"display_key": "REGION_HOMESTEAD",
+	"scene": "res://scenes/regions/homestead/homestead.tscn",
+	"bounds": [0, 0, 1600, 1100],
+	"spawn_points": [[760, 700], [840, 700], [720, 740], [880, 740]],
+	"entities": [
+		{
+			"id": "homestead.yard_gate",
+			"type": "door",
+			"position": [800, 600],
+			"interact_range": 100,
+			"initial": {"open": false}
+		}
+	]
+}

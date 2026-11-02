@@ -3,12 +3,21 @@
 Single source of permanent project rules. Full design context: `docs/HANDOVER.md`.
 
 ## Status
-Pre-production. No game code exists yet. Do not implement anything that has not been
-explicitly approved as an assignment by the creator. Brainstorms are not feature requests.
+Working title **Aftergrowth**. Iteration 001 in progress: Phase A technical foundation implemented.
+Do not implement anything that has not been explicitly approved as an assignment by the
+creator. Brainstorms are not feature requests.
 
 ## Stack
-Godot + GDScript (exact version to be confirmed and recorded here when the project is created).
+Godot **4.7.2 stable**, GDScript, Compatibility renderer, target Windows desktop.
+Do not upgrade the engine version silently.
 Creator tests on Windows: GitHub → branch → Download ZIP → open `project.godot` → run.
+Architecture: `docs/guides/ARCHITECTURE.md`. Tests/launch: `docs/guides/TESTING_AND_LAUNCH.md`.
+
+## Checks before pushing
+- `godot --headless --path . --import` (refreshes class cache after new `class_name` scripts)
+- `godot --headless --path . res://tests/run_tests.tscn` (unit tests + content check)
+- `python3 tools/mp_test.py` when networking, saves, sessions or interactions change
+- `python3 tools/check_script_guides.py`; update EN + DA script guides for new/removed scripts
 
 ## Architecture rules
 - Game state lives in plain data; scenes display it and request changes. Never store
