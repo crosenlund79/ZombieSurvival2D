@@ -2030,5 +2030,69 @@
 	"TIP_SIEGE": {
 		"da": "En horde er på vej til gården. Luk lågen, forsvar barrikaderne, eller vent det af nedenunder — men alt bygget udenfor kan blive beskadiget. Det slutter, når horden er slået eller giver op.",
 		"en": "A horde is coming to the homestead. Close the gate, man the barricades, or wait it out below — but anything built outside may be damaged. It ends when the horde is beaten or gives up."
+	},
+	"MENU_DEV_WORLD": {
+		"da": "Udviklerens testverden",
+		"en": "Developer Test World"
+	},
+	"DEV_NIGHT": {
+		"da": "Tid: nat",
+		"en": "Time: night"
+	},
+	"DEV_DAY": {
+		"da": "Tid: dag",
+		"en": "Time: day"
+	},
+	"DEV_RAIN": {
+		"da": "Regn til/fra",
+		"en": "Rain on/off"
+	},
+	"DEV_HEAT": {
+		"da": "Øg varmen ved hjemmet",
+		"en": "Raise home heat"
+	},
+	"DEV_SIEGE": {
+		"da": "Start en horde (15 s)",
+		"en": "Start a horde (15 s)"
+	},
+	"DEV_HUNGER": {
+		"da": "Gør sulten",
+		"en": "Make hungry"
+	},
+	"DEV_GRANT_KIT": {
+		"da": "Giv byggesæt",
+		"en": "Grant construction kit"
+	},
+	"DEV_DAMAGE": {
+		"da": "Skad konstruktioner her",
+		"en": "Damage structures here"
+	},
+	"DEV_REPAIR_ALL": {
+		"da": "Reparér alt her",
+		"en": "Repair all here"
+	},
+	"DEV_RECRUIT": {
+		"da": "Rekruttér overlevende",
+		"en": "Recruit survivor"
+	},
+	"DEV_JOB_WATER": {
+		"da": "Overlevende: vandjob",
+		"en": "Survivor: water job"
+	},
+	"DEV_JOB_FARM": {
+		"da": "Overlevende: dyrkningsjob",
+		"en": "Survivor: farm job"
+	},
+	"DEV_REPORT": {
+		"da": "Skriv fejlrapport",
+		"en": "Write problem report"
+	},
+	"DEV_REPORT_WRITTEN": {
+		"da": "Fejlrapport skrevet: %s",
+		"en": "Problem report written: %s"
+	},
+	"HUD_DEV_WORLD": {
+		"da": "UDVIKLERENS TESTVERDEN",
+		"en": "DEVELOPER TEST WORLD"
 	}
 }

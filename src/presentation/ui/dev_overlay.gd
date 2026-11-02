@@ -47,6 +47,22 @@ func _ready() -> void:
 		Session.request_dev_command("grant", "fuel:2")
 		Session.request_dev_command("grant", "water_dirty:3"))
 	_btn(g, "DEV_THIRST", func() -> void: Session.request_dev_command("thirst", 20.0))
+	_btn(g, "DEV_NIGHT", func() -> void: Session.request_dev_command("time", 22.0))
+	_btn(g, "DEV_DAY", func() -> void: Session.request_dev_command("time", 9.0))
+	_btn(g, "DEV_RAIN", func() -> void:
+		Session.request_dev_command("weather", "clear" if Session.world != null and EnvSim.is_raining(Session.world) else "rain"))
+	_btn(g, "DEV_HEAT", func() -> void: Session.request_dev_command("heat", 60.0))
+	_btn(g, "DEV_SIEGE", func() -> void: Session.request_dev_command("siege", 15.0))
+	_btn(g, "DEV_HUNGER", func() -> void: Session.request_dev_command("hunger", 20.0))
+	_btn(g, "DEV_GRANT_KIT", func() -> void:
+		for it in ["scrap_metal:8", "cement:4", "spike_kit:2", "timber_frame:1", "grow_light:1", "cloth:4", "electrical_parts:2"]:
+			Session.request_dev_command("grant", it))
+	_btn(g, "DEV_DAMAGE", func() -> void: Session.request_dev_command("damage_structures", 60.0))
+	_btn(g, "DEV_REPAIR_ALL", func() -> void: Session.request_dev_command("repair_structures"))
+	_btn(g, "DEV_RECRUIT", func() -> void: Session.request_dev_command("recruit", "mara"))
+	_btn(g, "DEV_JOB_WATER", func() -> void: Session.request_dev_command("npc_job", "water"))
+	_btn(g, "DEV_JOB_FARM", func() -> void: Session.request_dev_command("npc_job", "farm"))
+	_btn(g, "DEV_REPORT", func() -> void: Session.request_dev_command("report"))
 	_btn(g, "DEV_AI_LABELS", func() -> void: ZombieView.show_debug = not ZombieView.show_debug)
 
 
@@ -99,6 +115,27 @@ func _process(_delta: float) -> void:
 				hot.append("%s=%.1f" % [key.substr(key.find("|") + 1), w.threat.zones[key]])
 			if not hot.is_empty():
 				lines.append("zones " + ", ".join(hot.slice(0, 6)))
+			lines.append("hunger %d · gear %s · equipped %s" % [me.hunger, JSON.stringify(me.gear.map(func(g): return "%s:%d" % [g["item"], g["cond"]])), JSON.stringify(me.equipped)])
+			lines.append("heat %s · home %.1f · event %s" % [JSON.stringify(w.meta.get("heat", {})), EventSim.home_heat(w), JSON.stringify(EventSim.siege(w))])
+			lines.append("day %d %s · %s until %d · sim %.2f ms" % [EnvSim.day_number(w), EnvSim.clock_text(w), EnvSim.weather(w), int(w.env.get("until", 0)), Session.sim_ms])
+			for bid2 in w.bunkers:
+				var lv := (w.bunkers[bid2] as BunkerState).level_region(-1)
+				var lr := w.region(lv)
+				if lr != null:
+					lines.append("storage %s" % JSON.stringify((w.bunkers[bid2] as BunkerState).resources))
+					lines.append("generator %s · purifier %s · power %s" % [JSON.stringify(lr.entity_state("generator")), JSON.stringify(lr.entity_state("purifier")), str(InfraSim.is_powered(w, lv))])
+			var rr := w.region(me.region_id)
+			if rr != null and not rr.objects.is_empty():
+				var objs := []
+				for oid in rr.objects:
+					var o: Dictionary = rr.objects[oid]
+					objs.append("%s:%s hp%s%s" % [oid, o.get("def"), str(o.get("hp", "-")), (" job" if o.has("job") else "") + (" " + str(o.get("crop", "")) if o.has("crop") else "")])
+				lines.append("objects " + ", ".join(objs.slice(0, 10)))
+			for n in w.npcs.values():
+				lines.append("survivor %s %s %s job '%s' %s %s" % [n.name, n.recruit, n.region_id, n.job, n.activity, n.status])
+			for e in SessionLog.recent(6):
+				if str(e.get("cat", "")) in ["inventory", "world", "settlement", "threat"]:
+					lines.append("· %s %s %s" % [e.get("cat"), e.get("ev"), JSON.stringify(e.get("data", {})).substr(0, 90)])
 	var s := Session.last_save
 	lines.append("last save: %s" % ("—" if s.is_empty() else ("OK" if s["ok"] else "FAILED " + str(s["error"]))))
 	lines.append("art/sound overrides active: %d · loops %s" % [Assets.override_count(), str(Audio.active_loops())])

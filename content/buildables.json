@@ -41,7 +41,7 @@
 			"where": ["surface", "bunker"], "size": [80, 34], "blocks": true, "build_seconds": 4,
 			"station": "workbench", "refund": 0.5, "repair_fraction": 0.5,
 			"tiers": [
-				{"id": "wood", "name_key": "TIER_WOOD", "cost": {"wood": 6, "scrap_metal": 2}, "hp": 150, "armor": 1, "repair_item": "wood", "art": "build.workbench"}
+				{"id": "wood", "name_key": "TIER_WOOD", "cost": {"wood": 5, "scrap_metal": 2}, "hp": 150, "armor": 1, "repair_item": "wood", "art": "build.workbench"}
 			]
 		},
 		"planter": {

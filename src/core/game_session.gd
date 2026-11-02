@@ -46,6 +46,10 @@ var mode: int = Mode.NONE
 var world: WorldState = null
 var local_player_id := ""
 var last_save := {}            # {ok, error, unix}
+## Set by the menu before starting: "dev" prepares a Developer Test World (new worlds only).
+var pending_preset := ""
+## Average milliseconds spent in Simulation.advance per frame (diagnostics).
+var sim_ms := 0.0
 
 var _peer_to_player := {}      # host: peer id -> player id
 var _move_track := {}          # host: player id -> last accepted msec
@@ -189,6 +193,9 @@ func _admit_host_player(player_name: String) -> void:
 	var name := SettingsService.sanitize_name(player_name)
 	var p := _admit_player(1, Settings.player_token(name), name)
 	local_player_id = p.player_id
+	if pending_preset == "dev" and world.tick == 0:
+		DevPreset.apply(world, p.player_id)
+	pending_preset = ""
 
 
 ## Host: register (or welcome back) a player for a connected peer.
@@ -251,7 +258,10 @@ func _physics_process(delta: float) -> void:
 
 ## Advances the shared clock and publishes constructions that completed.
 func _advance(ticks: int) -> void:
-	for res in Simulation.advance(world, ticks):
+	var t0 := Time.get_ticks_usec()
+	var results := Simulation.advance(world, ticks)
+	sim_ms = lerpf(sim_ms, float(Time.get_ticks_usec() - t0) / 1000.0, 0.05)
+	for res in results:
 		if not (res["changes"] as Array).is_empty() or not (res["bunkers"] as Array).is_empty():
 			SessionLog.info("world", "construction_completed", {"changes": res["changes"], "bunkers": res["bunkers"]})
 		_publish_result(res)
@@ -779,6 +789,9 @@ func _host_dev_command(peer_id: int, cmd: String, arg: Variant) -> void:
 						var de := Build.damage_entity(world, reg9, eid, float(arg) if arg != null else 40.0)
 						out["changes"].append_array(de["changes"])
 				_publish_result(out)
+		"report":
+			var path := DevPreset.write_report(world, pid)
+			_send_notice(peer_id, "DEV_REPORT_WRITTEN", [path])
 		"recruit":
 			# Developer: the test survivor moves into the shelter now (needs a shelter).
 			var rr := NpcSim.dev_recruit(world, str(arg) if arg != null and str(arg) != "" else "mara")

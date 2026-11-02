@@ -1280,7 +1280,160 @@ def scenario_settlement_multi():
             i.kill()
 
 
-SCENARIOS = {"settlement_multi": scenario_settlement_multi, "world_multi": scenario_world_multi, "craft_multi": scenario_craft_multi, "build_multi": scenario_build_multi, "accept": scenario_accept, "infra_multi": scenario_infra_multi, "dig_multi": scenario_dig_multi, "danger_single": scenario_danger_single, "danger_multi": scenario_danger_multi, "settings": scenario_settings, "bunker_single": scenario_bunker_single, "bunker_multi": scenario_bunker_multi, "single": scenario_single, "multiplayer": scenario_multiplayer,
+
+def heal_if_low(i, limit=55):
+    st = i.state()
+    if st.get("health", 100) < limit:
+        i.cmd("dev heal")
+
+
+def scenario_slice():
+    """The integrated vertical-slice loop (brief §8.1, 19 steps) in one real game with zombies active.
+    Developer commands are used only to compress waiting (advance_clock), to trigger the defence event
+    immediately (its natural trigger is unit-tested), and as a safety heal so a bad roll cannot end the run."""
+    s = Instance("t_slice"); s.wipe(); s.start()
+    try:
+        r = s.cmd("single new 101 Pioneer"); s.cmd("tips off")
+        check("slice 00: new survival world, nothing prepared", r["ok"] and not r["state"]["bunkers"] and not r["state"]["gear"], "")
+        # 1. Establish the bunker.
+        go_inside(s); s.cmd("walk_to 300 492"); s.cmd("press_interact")
+        s.cmd("walk_to 150 470"); r = s.cmd("press_interact")
+        check("slice 01: shelter dig started, club taken", r["state"]["entities"][SITE]["state"]["stage"] in ("building", "built") and r["state"]["weapon"] == "club", "")
+        s.cmd("walk_to 186 340"); s.cmd("interact homestead.farmhouse.pantry")
+        s.cmd("walk_to 728 380"); s.cmd("interact homestead.farmhouse.linen")
+        s.cmd("walk_to 480 600"); s.cmd("press_interact")
+        # 2-4. Gather on the surface; fight; noise draws more.
+        to_west_trees(s); s.cmd("walk_to 200 685"); chop(s); heal_if_low(s)
+        r = s.cmd("wait 1.5")
+        check("slice 02: gathered timber", r["state"]["carried"].get("wood", 0) >= 3, r["state"]["carried"])
+        check("slice 03: zombies come to the noise", len(engaged(r["state"])) >= 1, [z["ai"] for z in zs(r["state"])])
+        att = r["state"]["attention_total"]
+        s.cmd("walk_to 380 945"); chop(s); r = s.cmd("wait 2"); heal_if_low(s)
+        check("slice 04: continued noise grows the threat", r["state"]["attention_total"] > att and len(engaged(r["state"])) >= 2, (att, r["state"]["attention_total"]))
+        s.cmd("dev spawn_zombie")
+        wait_for(s, lambda st: any(abs(z["x"] - st["me_x"]) + abs(z["y"] - st["me_y"]) < 90 for z in zs(st)), timeout=15)
+        r = s.cmd("attack_nearest 6 0.6", timeout=30); heal_if_low(s)
+        check("slice 03b: fight — hits land", any(z["hp"] < 100 for z in r["state"]["zombies"]), "")
+        # 5. Retreat and recover.
+        s.cmd("walk_to 700 960"); r = go_inside(s)
+        r = s.cmd("wait 5")
+        check("slice 05: retreat indoors; nothing follows", r["state"]["region"] == "homestead.farmhouse" and r["state"]["view"]["zombies"] == 0, r["state"].get("region"))
+        r = s.cmd("eat")
+        check("slice 05b: eat to recover", r["state"]["carried"].get("canned_food", 0) == 1, r["state"]["carried"])
+        # Scavenge scrap, fuel and water around the farm (zombies may be about: heal as a safety net only).
+        s.cmd("walk_to 480 600"); s.cmd("press_interact"); s.cmd("dev heal")
+        s.cmd("walk_to 1150 960"); s.cmd("walk_to 1150 1100"); s.cmd("walk_to 650 1100"); s.cmd("walk_to 650 1445 6"); s.cmd("press_interact")
+        s.cmd("walk_to 650 1100"); s.cmd("walk_to 1600 1100"); s.cmd("walk_to 1600 1185 8"); s.cmd("interact homestead.tractor")
+        heal_if_low(s)
+        s.cmd("walk_to 1910 1230 8"); chop(s); heal_if_low(s)
+        s.cmd("walk_to 1150 1100"); s.cmd("walk_to 1150 960"); s.cmd("walk_to 1150 760"); s.cmd("walk_to 1640 760"); s.cmd("walk_to 1680 680 6"); s.cmd("press_interact")
+        s.cmd("walk_to 1560 690 6"); s.cmd("press_interact")
+        s.cmd("walk_to 1150 760"); s.cmd("walk_to 950 760"); s.cmd("walk_to 860 560 8"); r = chop(s); heal_if_low(s)
+        s.cmd("walk_to 950 760")
+        cr = r["state"]["carried"]
+        check("slice 09: scavenged fuel, water, metal and parts; more timber", cr.get("wood", 0) >= 12 and cr.get("fuel", 0) >= 2 and cr.get("scrap_metal", 0) >= 4 and cr.get("water_dirty", 0) >= 2 and cr.get("electrical_parts", 0) >= 1, cr)
+        # Into the shelter: storage, expansion, construction, crafting, power and water.
+        r = to_door(s)
+        s.cmd("walk_to 300 492")
+        wait_for(s, lambda st: st["entities"][SITE]["state"]["stage"] == "built", timeout=10)
+        s.cmd("press_interact"); s.cmd("walk_to 300 452 4"); r = s.cmd("press_interact")
+        check("slice 01b: in the bunker", r["state"]["region"] == L1, r["state"].get("region"))
+        s.cmd("walk_to 650 345 6")
+        for item in list(r["state"]["carried"].keys()):
+            if item not in ("canned_food",):
+                s.cmd(f"entity_action storage store {item}")
+        r = s.cmd("wait 0.3")
+        check("slice 08: everything in shared storage", r["state"]["bunkers"][SITE]["resources"].get("scrap_metal", 0) >= 4, r["state"]["bunkers"][SITE]["resources"])
+        x, y = cell_xy(13, 12); s.cmd(f"walk_to {x} {y} 6"); s.cmd("terrain dig 12 12"); s.cmd("wait 2.4")
+        x2, y2 = cell_xy(12, 12); s.cmd(f"walk_to {x2} {y2 + 20} 8"); s.cmd("terrain support 12 12"); s.cmd("wait 3.4")
+        s.cmd(f"walk_to {x2} {y2} 8"); s.cmd("terrain dig 11 12"); r = s.cmd("wait 2.4")
+        check("slice 06: chamber expanded with a support", {"12,12", "11,12"} <= set(r["state"]["terrain"]["dug"]), r["state"]["terrain"])
+        bx, by = cell_xy(20, 12)
+        s.cmd(f"walk_to {bx} {by + 70} 8"); r = s.cmd(f"build workbench {bx} {by}"); s.cmd("wait 4.5")
+        benches = obj_of(s.state(), "workbench", L1)
+        check("slice 07: workbench built underground from storage", len(benches) == 1, objs(s.state(), L1))
+        bench = list(benches.keys())[0]
+        s.cmd(f"obj {bench} craft hatchet"); s.cmd("wait 6.5"); r = s.cmd(f"obj {bench} collect")
+        check("slice 10: crafted a hatchet", r["state"]["weapon"] in ("hatchet", "club") and "hatchet" in [g["item"] for g in r["state"]["gear"]], r["state"]["gear"])
+        s.cmd("walk_to 930 610 6"); s.cmd("entity_action generator fuel"); s.cmd("entity_action generator fuel"); r = s.cmd("entity_action generator toggle")
+        s.cmd("walk_to 250 620 6"); s.cmd("entity_action purifier fill"); s.cmd("dev advance_clock 45")
+        r = s.cmd("entity_action purifier collect")
+        check("slice 11: power and clean water", lvl(r["state"], L1, "generator").get("running") and r["state"]["carried"].get("water_clean", 0) >= 1, r["state"]["carried"])
+        # 13-14. Explore the service station and its discovery.
+        s.cmd("walk_to 540 296 4"); s.cmd("press_interact"); s.cmd("walk_to 480 600"); s.cmd("press_interact")
+        s.cmd("walk_to 1150 960"); s.cmd("walk_to 1150 1400"); s.cmd("walk_to 2340 1400 10"); heal_if_low(s)
+        r = s.cmd("interact homestead.road_east")
+        check("slice 13: reached the service station", r["state"]["region"] == "service_station", r["state"].get("region"))
+        s.cmd("dev heal")
+        s.cmd("walk_to 600 870 10"); s.cmd("interact service_station.wreck"); heal_if_low(s)
+        s.cmd("walk_to 1420 490 10"); s.cmd("interact service_station.shop_shelves"); heal_if_low(s)
+        s.cmd("walk_to 1700 720"); s.cmd("walk_to 2000 575 10"); r = s.cmd("interact service_station.tool_locker"); heal_if_low(s)
+        items = [g["item"] for g in r["state"]["gear"]]
+        check("slice 14: discovery — carburetor and workshop manual", "carburetor" in items and "workshop_manual" in items, items)
+        s.cmd("walk_to 1700 720"); s.cmd("walk_to 1530 560 10"); s.cmd("npc mara talk")
+        r = s.cmd("npc mara talk")
+        check("slice 17: survivor recruited (food + clean water handed over)", r["state"]["npcs"]["mara"]["recruit"] == "travelling", (r["state"]["npcs"]["mara"], r["state"]["carried"]))
+        s.cmd("walk_to 150 710"); s.cmd("walk_to 80 710 8"); s.cmd("interact service_station.road_west"); heal_if_low(s)
+        # 15. Prepare defences in the yard; craft a spike kit and a grow light at home.
+        s.cmd("walk_to 1150 1400"); s.cmd("walk_to 1150 960"); s.cmd("walk_to 1150 760")
+        r = to_door(s); s.cmd("walk_to 300 452 4"); s.cmd("press_interact")
+        s.cmd("walk_to 650 345 6")
+        for item in ("electrical_parts", "scrap_metal", "canned_food", "cloth"):
+            s.cmd(f"entity_action storage store {item}")
+        s.cmd(f"walk_to {bx} {by + 70} 8")
+        s.cmd("dev grant wood:12")  # compresses another round of tree felling
+        s.cmd(f"obj {bench} craft grow_light"); s.cmd("wait 8.5"); s.cmd(f"obj {bench} collect")
+        s.cmd(f"obj {bench} craft spike_kit"); s.cmd("wait 5.5"); r = s.cmd(f"obj {bench} collect")
+        check("slice 12a: crafted a grow light and a spike kit", r["state"]["carried"].get("grow_light", 0) == 1 and r["state"]["carried"].get("spike_kit", 0) == 1, r["state"]["carried"])
+        px, py = cell_xy(16, 14); s.cmd(f"walk_to {px} {py + 70} 8"); s.cmd(f"build planter {px} {py}"); s.cmd("wait 4.5")
+        r = s.state()
+        check("slice 12: hydroponic planter built", len(obj_of(r, "planter", L1)) == 1, objs(r, L1))
+        s.cmd("walk_to 930 610 6"); r = s.cmd("entity_action generator fit_part")
+        check("slice 14b: carburetor fitted", lvl(r["state"], L1, "generator").get("efficient") is True, lvl(r["state"], L1, "generator"))
+        s.cmd("walk_to 540 296 4"); s.cmd("press_interact"); s.cmd("walk_to 480 600"); s.cmd("press_interact")
+        s.cmd("walk_to 1150 760"); s.cmd("walk_to 960 760"); s.cmd("walk_to 960 590")
+        s.cmd("build barricade 934 480"); s.cmd("build barricade 998 480"); s.cmd("walk_to 1150 760"); s.cmd("build spike_trap 1250 790")
+        s.cmd("wait 3.5")
+        defs = [v["def"] for v in objs(s.state()).values()]
+        check("slice 15: defences prepared (barricades + spike trap)", defs.count("barricade") == 2 and "spike_trap" in defs, defs)
+        # 16. The defence event: horde arrives; the player waits it out indoors.
+        r = to_door(s)
+        s.cmd("dev siege 3"); s.cmd("wait 4")
+        st = s.state()
+        check("slice 16a: horde warning then attack", st["meta"]["siege"]["phase"] == "active", st["meta"].get("siege"))
+        hp0 = {k: v["hp"] for k, v in objs(st).items()}
+        s.cmd("wait 75", timeout=90)  # the horde walks in and attacks in real time
+        for _ in range(9):
+            s.cmd("dev advance_clock 20"); s.cmd("wait 1")
+        st = s.state()
+        hurt = [k for k, v in objs(st).items() if v["hp"] < hp0.get(k, 0)] + [k for k in hp0 if k not in objs(st)]
+        check("slice 16: the event ends; defences took real damage", st["meta"]["siege"]["phase"] == "idle" and st["meta"]["siege"].get("outcome") in ("repelled", "dispersed") and len(hurt) >= 1,
+              (st["meta"].get("siege"), hurt))
+        # 17-18. The survivor arrives; assign work; keep improving.
+        s.cmd("walk_to 300 452 4"); s.cmd("press_interact")
+        r = s.cmd("wait 1")
+        check("slice 17b: survivor lives in the bunker", r["state"]["npcs"]["mara"]["recruit"] == "home" and r["state"]["view"]["npcs"] == 1, r["state"]["npcs"]["mara"])
+        r = s.cmd("npc mara assign farm")
+        s.cmd("dev advance_clock 30"); r = s.cmd("wait 1")
+        planter = list(obj_of(r["state"], "planter", L1).values())[0]
+        check("slice 18: survivor tends the planter with stored water (crop growing)", r["state"]["npcs"]["mara"]["job"] == "farm" and planter["crop"] in ("growing", "ripe"),
+              (r["state"]["npcs"]["mara"], planter))
+        snap = s.state()
+        # 19. Save, exit and resume.
+        s.cmd("save"); s.quit(); s.start()
+        r = s.cmd("single continue Pioneer")
+        st = r["state"]
+        same_objs = {k: (v["def"], v["tier"], v["hp"]) for k, v in objs(st).items()} == {k: (v["def"], v["tier"], v["hp"]) for k, v in objs(snap).items()}
+        check("slice 19: resume — region, structures (with damage), storage, gear, survivor, discoveries intact",
+              st["region"] == snap["region"] and same_objs and st["bunkers"] == snap["bunkers"] and sorted(g["item"] for g in st["gear"]) == sorted(g["item"] for g in snap["gear"])
+              and st["npcs"]["mara"]["job"] == "farm" and st["meta"].get("discoveries", {}).keys() == snap["meta"].get("discoveries", {}).keys(),
+              (st.get("region"), st["bunkers"], snap["bunkers"]))
+        check("slice perf: simulation cost stays small (ms per frame)", st.get("sim_ms", 0) < 8.0, st.get("sim_ms"))
+    finally:
+        s.kill()
+
+
+SCENARIOS = {"slice": scenario_slice, "settlement_multi": scenario_settlement_multi, "world_multi": scenario_world_multi, "craft_multi": scenario_craft_multi, "build_multi": scenario_build_multi, "accept": scenario_accept, "infra_multi": scenario_infra_multi, "dig_multi": scenario_dig_multi, "danger_single": scenario_danger_single, "danger_multi": scenario_danger_multi, "settings": scenario_settings, "bunker_single": scenario_bunker_single, "bunker_multi": scenario_bunker_multi, "single": scenario_single, "multiplayer": scenario_multiplayer,
              "netfail": scenario_connection_failure, "assets": scenario_assets}
 
 if __name__ == "__main__":

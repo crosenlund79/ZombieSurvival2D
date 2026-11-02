@@ -110,6 +110,9 @@ func _build_world_panel(parent: Control) -> void:
 	_seed.placeholder_text = "FIELD_SEED_HINT"
 	_row(v, "FIELD_SEED", _seed)
 	_add_button(v, "MENU_NEW_WORLD", func() -> void: _start(""))
+	_add_button(v, "MENU_DEV_WORLD", func() -> void:
+		Session.pending_preset = "dev"
+		_start(""))
 	_add_button(v, "MENU_BACK", _back_to_main)
 
 

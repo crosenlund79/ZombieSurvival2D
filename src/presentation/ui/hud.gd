@@ -107,6 +107,8 @@ func _process(_delta: float) -> void:
 	if w.region_def(me.region_id).has("zombies"):
 		_threat.text += " · " + tr("HUD_HEAT_%d" % EventSim.heat_level(w, me.region_id))
 	_banner.text = siege_text(w)
+	if bool(w.meta.get("dev_world", false)) and _banner.text == "":
+		_banner.text = tr("HUD_DEV_WORLD")
 	_down.text = tr("HUD_DOWNED") if me.dead else ""
 	var sensor := get_tree().get_first_node_in_group("local_sensor") as InteractionSensor
 	_prompt.text = sensor.focused.prompt_text() if sensor != null and sensor.focused != null and not PlayerAvatar.input_blocked else ""

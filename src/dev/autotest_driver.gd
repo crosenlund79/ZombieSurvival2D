@@ -62,6 +62,11 @@ func _run(line: String) -> void:
 			ok = res["ok"]
 			err = str(res.get("error", "")) + " " + str(res.get("detail", ""))
 			await get_tree().process_frame
+		"devworld":
+			Session.pending_preset = "dev"
+			var rdw := Session.start_single("", 12345, a[0] if a.size() > 0 else "Tester")
+			ok = rdw["ok"]
+			await get_tree().process_frame
 		"join":
 			var res2 := Session.start_join(a[0], int(a[1]), a[2])
 			ok = res2["ok"]
@@ -349,6 +354,7 @@ func _state() -> Dictionary:
 			objs[rid2] = row
 		s["objects"] = objs
 		s["env"] = w.env
+		s["sim_ms"] = Session.sim_ms
 		var npcs := {}
 		for n in w.npcs.values():
 			npcs[n.npc_id] = {"region": n.region_id, "x": n.position.x, "y": n.position.y, "recruit": n.recruit, "job": n.job,
