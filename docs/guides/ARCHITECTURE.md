@@ -354,7 +354,64 @@ simulations. They only display what the host publishes.
 
 Protocol version 4 (adds `_rpc_request_entity_action` and `_rpc_request_drink`).
 
-## 17. Dependency direction
+## 17. The vertical slice (iterations 006–009)
+
+Every new system follows the same pattern as before: plain data in `WorldState`, host-only rules in a
+`src/sim/*` module, result dictionaries published by `GameSession._publish_result`, and views that only
+read data and send requests. `Simulation.advance` now runs, in order: job completion → `ZombieSim` →
+`SurvivalSim` → `InfraSim` (machines, hydration, hunger) → `FarmSim` → `EnvSim` → `EventSim` → `NpcSim`.
+
+**State added (save schema 4, migration 3→4):**
+
+| Where | What |
+|---|---|
+| `RegionState.objects` | Built structures and ground piles: `{oid: {def, tier, x, y, hp, stage, open, items, gear, job, output, crop, water, stored…}}` |
+| `WorldState.next_uid` | Counter for object (`o…`) and gear (`g…`) ids; never reused |
+| `WorldState.env` | Weather `{weather, until, seq}` (time of day is derived from the tick) |
+| `WorldState.meta` | `heat`, `home_heat`, `siege`, `discoveries`, `unlocks` |
+| `WorldState.npcs` | `NpcState` survivors |
+| `PlayerState` | `gear` `[{uid, item, cond}]`, `equipped {hand, body}`, `hunger`; `weapon` is now derived from the equipped hand item |
+| `BunkerState.resources` | Still the one shared store (stacks); crates hold their own `items`/`gear` |
+
+The 3→4 migration turns a carried club into an equipped gear item. Everything else is optional with
+safe defaults, so iteration 001–003 saves load.
+
+**Modules:**
+- `Build`: construction rules, which the placement preview also runs read-only on clients. It also covers
+  structure damage, breach targets for zombies, and damageable authored gates (a content `structure` block).
+- `Inv`: payment sources (your bag first, then shelter storage when underground or in the farmhouse),
+  transfers, ground piles, and player inventory actions.
+- `Craft`: workbench recipes and jobs (`craft:<oid>` world jobs) and the unlocks.
+- `FarmSim`: the rain collector and the hydroponic planter.
+- `EnvSim`: day/night and seeded weather.
+- `EventSim`: regional heat, bunker/building noise leaking to the surface, extra wanderers, and the
+  homestead defence event.
+- `NpcSim`: the survivor's recruitment, travel, life on the bunker cell grid, jobs and upkeep.
+
+**Zombies and structures.** Solid objects are dynamic `NavGrid` obstacles and block line of sight.
+When a hunting or investigating zombie finds no path, it picks a breach target and hits it (minus
+armour). Spike traps damage and slow zombies standing on them and wear out. Horde zombies (`siege`)
+are steered to the homestead and go for the nearest exposed structure. Zombies still never enter
+interiors or bunkers (GD-07/GD-22).
+
+**Replication added:**
+- Requests: `_rpc_request_build`, `_rpc_request_object`, `_rpc_request_inventory` and `_rpc_request_npc`.
+- `_rpc_object(region, oid, data)`: one object; an empty `data` means it was removed.
+- `_rpc_world_meta(env, meta)`: sent when weather, heat, the defence event, discoveries or unlocks change.
+- `_rpc_npcs(rows)`: survivors, sent at the snapshot rate together with zombies.
+- `_rpc_player_carried`: now carries the whole inventory (stacks, gear, equipped).
+- Vitals rows also carry hunger.
+
+Nothing broadcasts the whole world per frame. Protocol 5.
+
+**Persistence policy (additions):**
+- **Saved:** objects (including damage, tier, contents and running jobs), heat, the defence-event
+  record, weather, discoveries, unlocks, survivors (identity, location, recruitment, job, activity,
+  upkeep) and unique loot state (it never restocks).
+- **Not saved:** horde and extra wanderer zombies. An active defence event respawns its remaining
+  horde once after loading.
+
+## 18. Dependency direction
 
 ```
 presentation (main, ui, world views) ──reads/requests──▶ Session ──▶ WorldActions / Simulation ──▶ state
