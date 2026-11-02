@@ -1391,11 +1391,13 @@ def scenario_slice():
         s.cmd("walk_to 930 610 6"); r = s.cmd("entity_action generator fit_part")
         check("slice 14b: carburetor fitted", lvl(r["state"], L1, "generator").get("efficient") is True, lvl(r["state"], L1, "generator"))
         s.cmd("walk_to 540 296 4"); s.cmd("press_interact"); s.cmd("walk_to 480 600"); s.cmd("press_interact")
-        s.cmd("walk_to 1150 760"); s.cmd("walk_to 960 760"); s.cmd("walk_to 960 590")
+        s.cmd("dev grant wood:12")  # compresses another round of felling for the defences
+        s.cmd("walk_to 1150 760"); s.cmd("walk_to 960 760"); s.cmd("walk_to 960 600")
         s.cmd("build barricade 934 480"); s.cmd("build barricade 998 480"); s.cmd("walk_to 1150 760"); s.cmd("build spike_trap 1250 790")
+        s.cmd("walk_to 1360 760"); s.cmd("build crate 1300 840")
         s.cmd("wait 3.5")
         defs = [v["def"] for v in objs(s.state()).values()]
-        check("slice 15: defences prepared (barricades + spike trap)", defs.count("barricade") == 2 and "spike_trap" in defs, defs)
+        check("slice 15: defences prepared (barricades, spike trap, a crate in the yard)", defs.count("barricade") == 2 and "spike_trap" in defs and "crate" in defs, defs)
         # 16. The defence event: horde arrives; the player waits it out indoors.
         r = to_door(s)
         s.cmd("dev siege 3"); s.cmd("wait 4")
@@ -1411,6 +1413,7 @@ def scenario_slice():
               (st["meta"].get("siege"), hurt))
         # 17-18. The survivor arrives; assign work; keep improving.
         s.cmd("walk_to 300 452 4"); s.cmd("press_interact")
+        s.cmd("walk_to 650 345 6"); s.cmd("entity_action storage store water_clean")
         r = s.cmd("wait 1")
         check("slice 17b: survivor lives in the bunker", r["state"]["npcs"]["mara"]["recruit"] == "home" and r["state"]["view"]["npcs"] == 1, r["state"]["npcs"]["mara"])
         r = s.cmd("npc mara assign farm")

@@ -30,7 +30,7 @@ func _world() -> WorldState:
 
 func _bench(w: WorldState, pid: String) -> String:
 	var p: PlayerState = w.players[pid]
-	p.carried["wood"] = p.carrying("wood") + 6
+	p.carried["wood"] = p.carrying("wood") + 5
 	p.carried["scrap_metal"] = p.carrying("scrap_metal") + 2
 	var r := Build.request_build(w, pid, "workbench", p.position + Vector2(0, -80))
 	check(r["ok"], "workbench placed: " + str(r["reason"]))

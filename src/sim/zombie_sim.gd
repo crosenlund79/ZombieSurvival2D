@@ -302,7 +302,7 @@ static func _update(world: WorldState, z: ZombieState, grid: NavGrid, dyn: Dicti
 	if seen != null:
 		z.target_struct = ""
 	if z.target_struct != "":
-		_breach(world, z, grid, dyn)
+		_breach(world, z, grid, dyn, budget)
 		return
 	match z.ai:
 		ZombieState.AI.CHASE:
@@ -469,7 +469,7 @@ static func _move(world: WorldState, z: ZombieState, grid: NavGrid, dyn: Diction
 
 ## Walks up to the structure in the way and hits it until it breaks (or the
 ## zombie notices a player, or the structure stops blocking).
-static func _breach(world: WorldState, z: ZombieState, grid: NavGrid, dyn: Dictionary) -> void:
+static func _breach(world: WorldState, z: ZombieState, grid: NavGrid, dyn: Dictionary, budget: Array) -> void:
 	var rect := Build.target_rect(world, z.region_id, z.target_struct)
 	if not rect.has_area():
 		z.target_struct = ""
@@ -483,23 +483,37 @@ static func _breach(world: WorldState, z: ZombieState, grid: NavGrid, dyn: Dicti
 			z.timer = float(c("attack_windup", 0.6))
 			z.facing = (rect.get_center() - z.position).normalized()
 		return
+	# Walk (with pathfinding, so around buildings) to a spot just outside the structure.
 	var target := Vector2(clampf(z.position.x, rect.position.x, rect.end.x), clampf(z.position.y, rect.position.y, rect.end.y))
+	var approach := target + (z.position - target).normalized() * (Build.ATTACK_GAP - 14.0)
+	if grid.is_blocked(grid.to_cell(approach), dyn):
+		approach = _open_side(grid, dyn, rect, z.position)
 	var before := z.position
-	var dir := (target - z.position).normalized()
-	var v := dir * float(c("speed_investigate", 62)) * DT
-	z.facing = z.facing.lerp(dir, 0.35).normalized()
-	for step in [v, Vector2(v.x, 0), Vector2(0, v.y)]:
-		if not grid.is_blocked(grid.to_cell(z.position + step), dyn):
-			z.position += step
-			break
+	var keep := z.target_struct
+	z.goal = approach
+	_move(world, z, grid, dyn, float(c("speed_investigate", 62)), budget)
+	z.target_struct = keep
 	if before.distance_to(z.position) < 0.2:
 		z.stuck += DT
-		if z.stuck > 2.0:
+		if z.stuck > 4.0:
 			# Cannot get at it from here: forget it and look around.
 			z.target_struct = ""
 			z.stuck = 0.0
 			z.ai = ZombieState.AI.WANDER
 			z.goal = z.position
+
+
+## A walkable point next to a structure's footprint, nearest to `from`.
+static func _open_side(grid: NavGrid, dyn: Dictionary, rect: Rect2, from: Vector2) -> Vector2:
+	var best := rect.get_center()
+	var best_d := INF
+	var gap := Build.ATTACK_GAP - 14.0
+	for p in [Vector2(rect.get_center().x, rect.position.y - gap), Vector2(rect.get_center().x, rect.end.y + gap),
+			Vector2(rect.position.x - gap, rect.get_center().y), Vector2(rect.end.x + gap, rect.get_center().y)]:
+		if not grid.is_blocked(grid.to_cell(p), dyn) and p.distance_to(from) < best_d:
+			best_d = p.distance_to(from)
+			best = p
+	return best
 
 
 ## Spike traps hurt and slow zombies standing on them, and wear out doing so.
