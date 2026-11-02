@@ -767,7 +767,7 @@ def scenario_accept():
         s.cmd("walk_to 650 345 6"); r = s.cmd("press_interact")
         check("accept 11a: storage panel opens", r["state"]["view"]["panel"] == "storage", r["state"]["view"].get("panel"))
         carried = dict(r["state"]["carried"])
-        for item in ("wood", "fuel", "water_dirty"):
+        for item in list(carried.keys()):
             r = s.cmd(f"entity_action storage store {item}")
         res = res_of(r["state"])
         check("accept 11: deposit everything in shared storage (no loss)",
