@@ -9,6 +9,7 @@
 [ext_resource type="Script" path="res://src/presentation/world/stockpile_view.gd" id="stock"]
 [ext_resource type="Script" path="res://src/presentation/world/support_view.gd" id="support"]
 [ext_resource type="Script" path="res://src/presentation/world/light_spot.gd" id="light"]
+[ext_resource type="Script" path="res://src/presentation/world/terrain_view.gd" id="terrain"]
 
 [node name="BunkerEarth" type="Node2D"]
 script = ExtResource("region")
@@ -24,30 +25,11 @@ z_index = -10
 color = Color(0.05, 0.04, 0.03, 1)
 polygon = PackedVector2Array(-2000, -2000, 4000, -2000, 4000, 4000, -2000, 4000)
 
-[node name="Floor" type="Polygon2D" parent="Ground"]
-script = ExtResource("ground")
-polygon = PackedVector2Array(100, 246, 1000, 246, 1030, 370, 1010, 560, 910, 700, 520, 720, 170, 690, 70, 550, 80, 370)
-asset_id = "bunker.earth_floor"
-
-[node name="RoughEdge" type="Line2D" parent="Ground"]
-points = PackedVector2Array(100, 246, 1000, 246, 1030, 370, 1010, 560, 910, 700, 520, 720, 170, 690, 70, 550, 80, 370, 100, 246)
-width = 14.0
-default_color = Color(0.16, 0.11, 0.07, 1)
-joint_mode = 2
-
-[node name="Walls" type="StaticBody2D" parent="."]
-
-[node name="Edge" type="CollisionPolygon2D" parent="Walls"]
-build_mode = 1
-polygon = PackedVector2Array(100, 250, 1000, 250, 1022, 370, 1002, 556, 904, 692, 520, 712, 176, 682, 80, 548, 90, 370, 100, 250)
+[node name="Terrain" type="Node2D" parent="."]
+script = ExtResource("terrain")
 
 [node name="YSort" type="Node2D" parent="."]
 y_sort_enabled = true
-
-[node name="BackWall" type="Node2D" parent="YSort"]
-script = ExtResource("prop")
-position = Vector2(550, 252)
-asset_id = "bunker.earth_wall"
 
 [node name="LadderUp" type="Node2D" parent="YSort"]
 script = ExtResource("portal")
@@ -68,18 +50,22 @@ entity_id = "stockpile"
 [node name="Support1" type="Node2D" parent="YSort"]
 script = ExtResource("support")
 entity_id = "support_1"
+occlude = true
 
 [node name="Support2" type="Node2D" parent="YSort"]
 script = ExtResource("support")
 entity_id = "support_2"
+occlude = true
 
 [node name="Support3" type="Node2D" parent="YSort"]
 script = ExtResource("support")
 entity_id = "support_3"
+occlude = true
 
 [node name="Support4" type="Node2D" parent="YSort"]
 script = ExtResource("support")
 entity_id = "support_4"
+occlude = true
 
 [node name="LanternA" type="Node2D" parent="YSort"]
 script = ExtResource("prop")
@@ -125,4 +111,4 @@ tint = Color(0.38, 0.34, 0.3, 1)
 drift_amount = 0
 vignette_strength = 0.5
 grain_strength = 0.09
-area = Rect2(80, 246, 950, 470)
+area = Rect2(-704, -384, 2560, 1920)

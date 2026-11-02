@@ -613,7 +613,89 @@ def host_health(host, name):
     return [p for p in host.state()["players"] if p["name"] == name][0]["health"]
 
 
-SCENARIOS = {"danger_single": scenario_danger_single, "danger_multi": scenario_danger_multi, "settings": scenario_settings, "bunker_single": scenario_bunker_single, "bunker_multi": scenario_bunker_multi, "single": scenario_single, "multiplayer": scenario_multiplayer,
+
+def cell_xy(c, r):
+    return (-704 + (c + 0.5) * 64, -384 + (r + 0.5) * 64)
+
+
+def build_and_descend(i):
+    go_inside(i)
+    i.cmd("walk_to 300 492"); i.cmd("press_interact"); i.cmd("wait 8.5"); i.cmd("press_interact")
+    i.cmd("walk_to 300 452 4"); return i.cmd("press_interact")
+
+
+def scenario_dig_multi():
+    host = Instance("t_ghost"); c = Instance("t_gclient")
+    for i in (host, c):
+        i.wipe()
+    try:
+        host.start(); c.start()
+        host.cmd(f"host {PORT} new 61 Hosty")
+        host.cmd("dev peaceful 1")
+        r = build_and_descend(host)
+        check("dig: host in level -1", r["state"]["region"] == L1, r["state"].get("region"))
+        host.cmd("dev grant_stock 12")
+        r = c.cmd(f"join 127.0.0.1 {PORT} Cleo")
+        go_inside(c); c.cmd("walk_to 300 452 4"); r = c.cmd("press_interact")
+        check("dig: client in level -1", r["state"]["region"] == L1, r["state"].get("region"))
+        x, y = cell_xy(13, 12)
+        host.cmd(f"walk_to {x} {y} 6"); c.cmd(f"walk_to {x} {y + 30} 6")
+        with open(host.inbox, "a") as f: f.write("terrain dig 12 12\n")
+        with open(c.inbox, "a") as f: f.write("terrain dig 12 12\n")
+        host.seq += 1; c.seq += 1
+        rh = host._wait(host.seq, 10); rc = c._wait(c.seq, 10)
+        busy = sum(1 for rr in (rh, rc) if any("ACTION_BUSY" in n for n in rr["state"]["notices"]))
+        check("dig: concurrent dig of one cell -> one job", busy == 1, [rh["state"]["notices"], rc["state"]["notices"]])
+        time.sleep(2.6)
+        sh, sc = host.state(), c.state()
+        check("dig: both see the cell dug", "12,12" in sh["terrain"]["dug"] and "12,12" in sc["terrain"]["dug"], [sh["terrain"], sc["terrain"]])
+        x2, y2 = cell_xy(12, 12)
+        r = c.cmd(f"walk_to {x2} {y2} 8")
+        check("dig: client walks into the new space (collision updated)", r["ok"], r["state"]["view"].get("local_x"))
+        r = c.cmd("terrain dig 11 12")
+        check("dig: unsupported cell refused with explanation", any("ACTION_DIG_UNSUPPORTED" in n for n in r["state"]["notices"]), r["state"]["notices"])
+        host.cmd(f"walk_to {x2} {y2 + 20} 8")
+        with open(host.inbox, "a") as f: f.write("terrain support 12 12\n")
+        with open(c.inbox, "a") as f: f.write("terrain support 12 12\n")
+        host.seq += 1; c.seq += 1
+        rh = host._wait(host.seq, 10); rc = c._wait(c.seq, 10)
+        time.sleep(0.5)
+        check("dig: support placed once, wood spent once", host.state()["bunkers"][SITE]["wood"] == 8, host.state()["bunkers"])
+        time.sleep(3.2)
+        sc = c.state()
+        check("dig: support reinforced on both peers", sc["terrain"]["supports"].get("12,12", {}).get("stage") == "reinforced" and
+              host.state()["terrain"]["supports"].get("12,12", {}).get("stage") == "reinforced", sc["terrain"]["supports"])
+        r = c.cmd("terrain dig 11 12")
+        time.sleep(2.4)
+        x3, y3 = cell_xy(11, 12)
+        c.cmd(f"walk_to {x3} {y3} 8")
+        r = c.cmd("terrain dig 10 12")
+        time.sleep(2.4)
+        sc = c.state()
+        check("dig: digging continues into the supported area", "11,12" in sc["terrain"]["dug"] and "10,12" in sc["terrain"]["dug"], sc["terrain"]["dug"])
+        # Host leaves for the surface while the client keeps digging below.
+        host.cmd("walk_to 540 296 4"); host.cmd("press_interact")
+        host.cmd("walk_to 480 600"); r = host.cmd("press_interact")
+        check("dig: host on the surface, client underground", r["state"]["region"] == "homestead" and c.state()["region"] == L1, "")
+        r = c.cmd("terrain dig 11 13")
+        time.sleep(2.4)
+        sh = host.state()
+        check("dig: host (on surface) has the terrain changes made below", "11,13" in sh["terrains"].get(L1, []), sh["terrains"])
+        check("dig: client view still underground and independent", c.state()["view"]["region"] == L1, "")
+        host.cmd("save"); host.quit()
+        wait_for(c, lambda s: not s["in_world"], timeout=12)
+        host.start(); host.cmd(f"host {PORT} continue Hosty"); host.cmd("dev peaceful 1")
+        r = c.cmd(f"join 127.0.0.1 {PORT} Cleo")
+        st = r["state"]
+        check("dig: after restart client rejoins underground", st["region"] == L1, st.get("region"))
+        check("dig: dug cells and support persisted", set(["12,12", "11,12", "10,12", "11,13"]) <= set(st["terrain"]["dug"]) and
+              st["terrain"]["supports"].get("12,12", {}).get("stage") == "reinforced", st["terrain"])
+    finally:
+        for i in (host, c):
+            i.kill()
+
+
+SCENARIOS = {"dig_multi": scenario_dig_multi, "danger_single": scenario_danger_single, "danger_multi": scenario_danger_multi, "settings": scenario_settings, "bunker_single": scenario_bunker_single, "bunker_multi": scenario_bunker_multi, "single": scenario_single, "multiplayer": scenario_multiplayer,
              "netfail": scenario_connection_failure, "assets": scenario_assets}
 
 if __name__ == "__main__":

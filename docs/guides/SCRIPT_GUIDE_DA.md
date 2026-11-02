@@ -38,6 +38,7 @@ Beskrivelse i almindeligt sprog af hver GDScript-fil. Identifikatorer og stier e
 | `src/sim/nav_grid.gd` | Content, Prop, FenceLine | Værtens gangbarhedsgitter bygget fra områdescenens forfattede kollisionsdata plus levende træer/låger; A*-ruter og sigtelinjer for zombier og angreb. |
 | `src/sim/zombie_sim.gd` | NavGrid, ThreatState, WorldState | Kun værten: zombiesimulation — hørelse, opmærksomhed der stiger/aftager, forstærkninger fra kortkanter inden for lofter, AI-tilstandsmaskinen, bevægelse, angreb, lig og opfyldning af bestanden. |
 | `src/sim/survival_sim.gd` | WorldActions | Kun værten: spillerens livstegn — langsom genopretning af helbred og den milde genoplivningsregel (behold alt, vågn i stuehuset). |
+| `src/sim/terrain.gd` | Content, RegionState | Udgravningsregler for et områdes gitter af jordceller: åbne/faste celler, permanente celler, støtteregel (sikker margen + forstærkede støtters radius), begrundelser ved afvisning. |
 | `src/sim/simulation.gd` | WorldState | Det ene fælles ur (10 tik pr. sekund). Fremtidige tidsstyrede systemer kobles på her. |
 | `src/sim/world_actions.gd` | WorldState, Content | Værtens regler: kontrollerer en interaktionsanmodning (hvem, hvor, hvor langt, hvilken revision) og udfører den; kontrollerer at rapporteret bevægelse er fysisk mulig. |
 | `src/persistence/save_codec.gd` | WorldState, Content, BuildInfo | Konverterer verdenen til/fra gemmeformatet, validerer, udfylder sikre standardværdier, fjerner slettet indhold med advarsler og kører migreringer for gamle skemaversioner. |
@@ -81,6 +82,7 @@ Beskrivelse i almindeligt sprog af hver GDScript-fil. Identifikatorer og stier e
 | `src/presentation/world/light_spot.gd` | LightFactory | Et scenelys (lanterne, vindue, lysskakt) med den fælles radiale tekstur. |
 | `src/presentation/world/zombie_view.gd` | Session, Assets, Audio | Viser én zombie ud fra verdensdata: interpolation, slæben, ?/!-tegn, rød optaktsstilling, slagblink, helbredsbjælke, fald ved død, lokale støn. |
 | `src/presentation/world/weapon_rack_view.gd` | EntityView | Køllestativet i stuehuset; at tage en kølle udruster spilleren (én hver, løber aldrig tør). |
+| `src/presentation/world/terrain_view.gd` | Terrain, Session, Assets | Tegner udgravet gulv, fast jord, 3/4-vægflader og blækkanter ud fra gitteret; genopbygger kollision ved ændringer; placerer støttestolper; den kontekstuelle grav/støtte-prompt med farvet målramme. |
 | `src/presentation/world/placeholder_block.gd` | — | Gråboks-hjælper (brugt i fase A, beholdt til skitsering af nye områder): et farvet rektangel med tilsvarende kollision. |
 | `src/presentation/world/placeholder_ground.gd` | — | Gråboks-jord med et 100 px gitter (ikke brugt i den nuværende scene). |
 
@@ -93,6 +95,7 @@ Beskrivelse i almindeligt sprog af hver GDScript-fil. Identifikatorer og stier e
 | `tests/test_case.gd` | — | Lille basisklasse til enhedstests (`check`, `eq`). |
 | `tests/test_runner.gd` | TestCase, ContentCheck | Kører alle testfiler i tests/unit og indholdskontrollen, skriver resultater og afslutter med fejlkode ved fejl. |
 | `tests/unit/test_threat.gd` | ZombieSim, WorldActions, NavGrid | Tester navigation, syn, hørelse, opmærksomhed op/ned, eskaleringslofter, nærkampsautoritet, vægge, skade efter optakt, genoplivning, stuehusets grænse og gemmepolitikken. |
+| `tests/unit/test_terrain.gd` | Terrain, WorldActions, SaveCodec | Tester gitteret, gravevalidering og -tid, samtidige gravninger, støtters forbrug/radius/afstand, gemning og afbrudte gravninger. |
 | `tests/unit/test_world.gd` | WorldState, WorldActions, Simulation | Tester oprettelse af verden, lagring af ændringer, seedet tilfældighed, uret, validering af interaktioner, samtidige anmodninger, bevægelsesplausibilitet. |
 | `tests/unit/test_bunker.gd` | WorldActions, Simulation, SaveCodec | Tester tilflugtsrummets byggetid, ingen dobbelt lem, portaler, træ kun givet én gang, nedkøling, forstærkning der kun bruger træ én gang, ubegrænsede udviklerniveauer, gemte spil, migrering. |
 | `tests/unit/test_save.gd` | SaveCodec, SafeFile, Saves | Tester gem/indlæs-rundtur, validering, standardværdier, slettet indhold, den historiske v1-fixture, migreringer, sikre skrivninger og fallback til sikkerhedskopi. |

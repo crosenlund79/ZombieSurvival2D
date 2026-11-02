@@ -243,6 +243,94 @@
 			"complexity": "moderate",
 			"status": "READY",
 			"notes": "Temporary developer test level. Generated placeholder (tools/art/gen_bunker.py) \u2014 replace with tablet art."
+		},
+		{
+			"id": "bunker.earth_mass",
+			"name": "Solid earth seen from above (tiling)",
+			"template": "res://assets/templates/bunker/earth/template_earth_mass_tile.png",
+			"display_size": [
+				256,
+				256
+			],
+			"source_size": [
+				256,
+				256
+			],
+			"pivot": [
+				0,
+				0
+			],
+			"transparency": "none",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Drawn on every un-dug cell. Seamless tile. Generated placeholder (tools/art/gen_survival.py) \u2014 replace with tablet art."
+		},
+		{
+			"id": "bunker.earth_face",
+			"name": "Exposed earth wall face (tiles horizontally)",
+			"template": "res://assets/templates/bunker/earth/template_earth_face_tile.png",
+			"display_size": [
+				256,
+				96
+			],
+			"source_size": [
+				256,
+				128
+			],
+			"pivot": [
+				0,
+				0
+			],
+			"transparency": "none",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Drawn on the visible (south) face of solid cells next to dug space. Generated placeholder (tools/art/gen_survival.py) \u2014 replace with tablet art."
+		},
+		{
+			"id": "bunker.support_post",
+			"name": "Timber support (reinforced)",
+			"template": "res://assets/templates/bunker/earth/template_support_post.png",
+			"display_size": [
+				90,
+				150
+			],
+			"source_size": [
+				180,
+				300
+			],
+			"pivot": [
+				0.5,
+				0.967
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Placed by players on dug cells; extends the safe digging range. Generated placeholder (tools/art/gen_survival.py) \u2014 replace with tablet art."
+		},
+		{
+			"id": "bunker.support_post_building",
+			"name": "Timber support (being built)",
+			"template": "res://assets/templates/bunker/earth/template_support_post_building.png",
+			"display_size": [
+				90,
+				150
+			],
+			"source_size": [
+				180,
+				300
+			],
+			"pivot": [
+				0.5,
+				0.967
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_survival.py) \u2014 replace with tablet art."
 		}
 	]
 }

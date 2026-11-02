@@ -28,6 +28,7 @@ signal local_region_changed(region_id: String)
 signal combat_event(event: Dictionary)
 signal vitals_changed(player_id: String)
 signal zombies_updated
+signal terrain_changed(region_id: String)
 
 enum Mode { NONE, SINGLE, HOST, CLIENT }
 
@@ -333,6 +334,27 @@ func request_attack(aim: Vector2) -> void:
 		_rpc_request_attack.rpc_id(1, aim)
 
 
+## Excavation request: action "dig" (a solid cell) or "support" (an open cell).
+func request_terrain(action: String, cell: Vector2i) -> void:
+	if not in_world():
+		return
+	if is_authority():
+		_host_handle_terrain(1, action, cell)
+	else:
+		_rpc_request_terrain.rpc_id(1, action, cell)
+
+
+func _host_handle_terrain(peer_id: int, action: String, cell: Vector2i) -> void:
+	var pid: String = _peer_to_player.get(peer_id, "")
+	var res := WorldActions.request_terrain(world, pid, action, cell)
+	if res["ok"]:
+		SessionLog.info("world", "terrain", {"action": action, "cell": [cell.x, cell.y], "by": pid.substr(0, 6)})
+		_publish_result(res)
+	else:
+		SessionLog.warn("world", "terrain_rejected", {"action": action, "cell": [cell.x, cell.y], "reason": res["reason"]})
+	_send_action_result(peer_id, 0, res["ok"], res["reason"], res["reason_args"])
+
+
 func request_dev_command(cmd: String, arg: Variant = null) -> void:
 	if not in_world():
 		return
@@ -465,6 +487,13 @@ func _publish_result(res: Dictionary) -> void:
 		bunker_changed.emit(bid)
 		if mode == Mode.HOST and not multiplayer.get_peers().is_empty():
 			_rpc_bunker.rpc(bid, b.to_dict())
+	for rid in res.get("terrain", []):
+		var tr: RegionState = world.region(rid)
+		if tr == null:
+			continue
+		terrain_changed.emit(rid)
+		if mode == Mode.HOST and not multiplayer.get_peers().is_empty():
+			_rpc_terrain.rpc(rid, tr.terrain)
 	for c in res["changes"]:
 		var region := world.region(c["region_id"])
 		if region != null:
@@ -526,6 +555,17 @@ func _host_dev_command(peer_id: int, cmd: String, arg: Variant) -> void:
 					z.ai = ZombieState.AI.INVESTIGATE
 					z.goal = p3.position
 					z.last_known = p3.position
+		"grant_stock":
+			# Developer: add wood to the shelter stockpile of the player's bunker (or the first one).
+			var p6: PlayerState = world.players.get(pid)
+			var bk := world.bunker_for_region(p6.region_id) if p6 != null else null
+			if bk == null and not world.bunkers.is_empty():
+				bk = world.bunkers.values()[0]
+			if bk != null:
+				bk.resources["wood"] = bk.amount("wood") + int(float(arg) if arg != null else 20.0)
+				var gr := WorldActions._ok()
+				gr["bunkers"] = [bk.bunker_id]
+				_publish_result(gr)
 		"peaceful":
 			world.threat.enabled = arg == null or float(arg) == 0.0
 			if world.threat.enabled:
@@ -761,6 +801,20 @@ func _rpc_request_interact(request_id: int, entity_id: String, expected_rev: int
 func _rpc_action_result(_request_id: int, ok: bool, reason_key: String, args: Array) -> void:
 	if not ok:
 		notice.emit(reason_key, args)
+
+
+@rpc("any_peer", "call_remote", "reliable")
+func _rpc_request_terrain(action: String, cell: Vector2i) -> void:
+	if mode == Mode.HOST:
+		_host_handle_terrain(multiplayer.get_remote_sender_id(), action, cell)
+
+
+@rpc("authority", "call_remote", "reliable")
+func _rpc_terrain(region_id: String, terrain: Dictionary) -> void:
+	if mode != Mode.CLIENT or world == null or world.region(region_id) == null:
+		return
+	world.region(region_id).terrain = terrain.duplicate(true)
+	terrain_changed.emit(region_id)
 
 
 @rpc("any_peer", "call_remote", "reliable")

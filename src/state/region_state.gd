@@ -13,6 +13,9 @@ var region_id := ""
 var def_id := ""
 var overrides := {}  # entity_id -> {field: value}
 var revs := {}       # entity_id -> int (increments on every authoritative change)
+## Excavation state for regions with an "excavation" grid (see Terrain):
+## {"dug": {"c,r": true}, "digging": {"c,r": {...}}, "supports": {"c,r": {...}}}
+var terrain := {}
 
 
 static func make(id: String, definition_id: String = "") -> RegionState:
@@ -84,12 +87,19 @@ func to_dict() -> Dictionary:
 	var d := {"entities": ents}
 	if def_id != region_id:
 		d["def_id"] = def_id
+	if not terrain.is_empty():
+		d["terrain"] = terrain.duplicate(true)
 	return d
 
 
 ## Unknown entities (content removed since the save) are dropped with a warning.
 static func from_dict(id: String, d: Dictionary, warnings: Array) -> RegionState:
 	var r := RegionState.make(id, str(d.get("def_id", id)))
+	var t = d.get("terrain", {})
+	if t is Dictionary:
+		for part in ["dug", "digging", "supports"]:
+			if t.get(part) is Dictionary and not (t[part] as Dictionary).is_empty():
+				r.terrain[part] = (t[part] as Dictionary).duplicate(true)
 	var ents: Dictionary = d.get("entities", {})
 	for eid in ents:
 		if not r.has_entity(eid):

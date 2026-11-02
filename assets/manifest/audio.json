@@ -211,6 +211,16 @@
 			"loop": false,
 			"status": "READY",
 			"notes": "Generated placeholder (tools/art/gen_survival_audio.py)."
+		},
+		{
+			"id": "sfx.dig_earth",
+			"name": "Shovel digging earth",
+			"template": "res://assets/templates/audio/world/template_dig.wav",
+			"bus": "SFX",
+			"volume_db": -3.0,
+			"loop": false,
+			"status": "READY",
+			"notes": "Shares the iteration-002 dig placeholder; replace separately if wanted."
 		}
 	]
 }

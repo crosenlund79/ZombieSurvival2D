@@ -35,6 +35,22 @@
 		"da": "Udvikleroverblik",
 		"en": "Developer overlay"
 	},
+	"ACTION_DIG_NOT_REACHABLE": {
+		"da": "Du kan kun grave ved siden af åbent rum.",
+		"en": "You can only dig next to open space."
+	},
+	"ACTION_DIG_OPEN": {
+		"da": "Allerede gravet ud.",
+		"en": "Already dug out."
+	},
+	"ACTION_DIG_PERMANENT": {
+		"da": "Fast klippe — kan ikke graves.",
+		"en": "Solid rock — this can't be dug."
+	},
+	"ACTION_DIG_UNSUPPORTED": {
+		"da": "For ustabilt: sæt først en tømmerstøtte inden for rækkevidde.",
+		"en": "Too unstable: place a timber support within reach first."
+	},
 	"ACTION_INTERACT": {
 		"da": "Interager",
 		"en": "Interact"
@@ -94,6 +110,14 @@
 	"ACTION_STALE": {
 		"da": "En anden nåede at ændre det først.",
 		"en": "Someone else changed it first."
+	},
+	"ACTION_SUPPORT_NOT_HERE": {
+		"da": "Støtter skal stå på udgravet gulv.",
+		"en": "Supports must stand on dug-out floor."
+	},
+	"ACTION_SUPPORT_TOO_CLOSE": {
+		"da": "For tæt på en anden støtte — grav længere ud først.",
+		"en": "Too close to another support — dig further first."
 	},
 	"ACTION_TOO_FAR": {
 		"da": "For langt væk.",
@@ -268,8 +292,8 @@
 		"en": "players"
 	},
 	"HUD_REINFORCED": {
-		"da": "Forstærket jord: %s / %s",
-		"en": "Reinforced earth: %s / %s"
+		"da": "Tømmerstøtter på plads: %s",
+		"en": "Timber supports in place: %s"
 	},
 	"HUD_STOCKPILE": {
 		"da": "Tilflugtsrummets lager: %s træ",
@@ -527,6 +551,14 @@
 		"da": "Stabl %s træ på bunken",
 		"en": "Stack %s wood on the pile"
 	},
+	"PROMPT_DIG": {
+		"da": "Grav jord (%s s)",
+		"en": "Dig earth (%s s)"
+	},
+	"PROMPT_DIG_UNSTABLE": {
+		"da": "Ustabil jord — kræver en tømmerstøtte tættere på",
+		"en": "Unstable earth — needs a timber support closer"
+	},
 	"PROMPT_ENTER_HOUSE": {
 		"da": "Gå ind i stuehuset",
 		"en": "Enter the farmhouse"
@@ -546,6 +578,10 @@
 	"PROMPT_OPEN_HATCH": {
 		"da": "Åbn lem",
 		"en": "Open hatch"
+	},
+	"PROMPT_PLACE_SUPPORT": {
+		"da": "For ustabilt at grave — sæt en tømmerstøtte her (%s træ, %s på lager)",
+		"en": "Too unstable to dig — place a timber support here (%s wood, %s in stock)"
 	},
 	"PROMPT_REINFORCE": {
 		"da": "Forstærk med tømmer (%s træ, %s på lager)",

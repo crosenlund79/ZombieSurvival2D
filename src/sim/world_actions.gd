@@ -85,6 +85,8 @@ static func _shelter(world: WorldState, region: RegionState, eid: String, def: D
 ## Called by Simulation when a construction's time is up.
 static func complete_construction(world: WorldState, region_id: String, eid: String) -> Dictionary:
 	var region := world.region(region_id)
+	if region != null and eid.begins_with("terrain:"):
+		return _complete_terrain(world, region, eid)
 	if region == null or not region.has_entity(eid):
 		return _fail("ACTION_UNKNOWN_OBJECT")
 	var state := region.entity_state(eid)
@@ -241,6 +243,89 @@ static func _support(world: WorldState, region: RegionState, eid: String, def: D
 	return res
 
 
+# ------------------------------------------------------------------ excavation
+
+const DIG_REACH := 120.0
+const SUPPORT_REACH := 90.0
+
+
+## action "dig": excavate a solid cell. action "support": place a timber
+## support on an open cell (wood from the bunker stockpile). Host-validated.
+static func request_terrain(world: WorldState, player_id: String, action: String, cell: Vector2i) -> Dictionary:
+	var p: PlayerState = world.players.get(player_id, null)
+	if p == null or not p.online or p.dead:
+		return _fail("ACTION_UNKNOWN_PLAYER")
+	var region := world.region(p.region_id)
+	if not Terrain.has_terrain(region):
+		return _fail("ACTION_NOT_SUPPORTED")
+	var center := Terrain.cell_center(region, cell)
+	var cfgd := Terrain.cfg(region)
+	var k := Terrain.key(cell)
+	var res := _ok()
+	res["terrain"] = [region.region_id]
+	match action:
+		"dig":
+			if p.position.distance_to(center) > DIG_REACH:
+				return _fail("ACTION_TOO_FAR")
+			var problem := Terrain.dig_problem(region, cell)
+			if problem != "":
+				return _fail(problem)
+			var ticks := Simulation.seconds_to_ticks(float(cfgd.get("dig_seconds", 2.0)))
+			var dig: Dictionary = region.terrain.get("digging", {})
+			dig[k] = {"started": world.tick, "ticks": ticks}
+			region.terrain["digging"] = dig
+			world.add_job(region.region_id, "terrain:dig:" + k, world.tick + ticks)
+			ZombieSim.make_noise(world, region.region_id, center, "dig")
+			res["events"] = [{"kind": "dig_started", "region_id": region.region_id, "cell": k}]
+			return res
+		"support":
+			if p.position.distance_to(center) > SUPPORT_REACH:
+				return _fail("ACTION_TOO_FAR")
+			var problem2 := Terrain.support_problem(region, cell)
+			if problem2 != "":
+				return _fail(problem2)
+			var b := world.bunker_for_region(region.region_id)
+			if b == null:
+				return _fail("ACTION_NO_SHELTER")
+			var cost := int(cfgd.get("support_wood", 4))
+			if b.amount("wood") < cost:
+				return _fail("ACTION_NEED_WOOD", [cost, b.amount("wood")])
+			b.resources["wood"] = b.amount("wood") - cost  # spent in the same step: never twice
+			var ticks2 := Simulation.seconds_to_ticks(float(cfgd.get("support_seconds", 3.0)))
+			var sup: Dictionary = region.terrain.get("supports", {})
+			sup[k] = {"stage": "building", "started": world.tick, "ticks": ticks2}
+			region.terrain["supports"] = sup
+			world.add_job(region.region_id, "terrain:support:" + k, world.tick + ticks2)
+			res["bunkers"] = [b.bunker_id]
+			res["events"] = [{"kind": "support_started", "region_id": region.region_id, "cell": k}]
+			return res
+	return _fail("ACTION_NOT_SUPPORTED")
+
+
+static func _complete_terrain(world: WorldState, region: RegionState, job: String) -> Dictionary:
+	var parts := job.split(":")
+	var kind := parts[1]
+	var k := parts[2]
+	var res := _ok()
+	res["terrain"] = [region.region_id]
+	if kind == "dig":
+		var dig: Dictionary = region.terrain.get("digging", {})
+		if not dig.has(k):
+			return _fail("ACTION_NOT_SUPPORTED")
+		dig.erase(k)
+		var dug: Dictionary = region.terrain.get("dug", {})
+		dug[k] = true
+		region.terrain["dug"] = dug
+		res["events"] = [{"kind": "dug", "region_id": region.region_id, "cell": k}]
+	elif kind == "support":
+		var sup: Dictionary = region.terrain.get("supports", {})
+		if not sup.has(k) or str(sup[k].get("stage", "")) != "building":
+			return _fail("ACTION_NOT_SUPPORTED")
+		sup[k] = {"stage": "reinforced"}
+		res["events"] = [{"kind": "support_done", "region_id": region.region_id, "cell": k}]
+	return res
+
+
 # ------------------------------------------------------------------ combat
 
 const WEAPONS := {
@@ -327,7 +412,7 @@ static func is_plausible_move(from: Vector2, to: Vector2, dt_sec: float) -> bool
 
 static func _ok() -> Dictionary:
 	return {"ok": true, "reason": "", "reason_args": [], "changes": [], "bunkers": [], "players": [],
-		"transition": {}, "notice": {}, "events": [], "vitals": []}
+		"transition": {}, "notice": {}, "events": [], "vitals": [], "terrain": []}
 
 
 static func _changed(region: RegionState, eid: String, cause: String) -> Dictionary:

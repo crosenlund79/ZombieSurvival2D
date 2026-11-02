@@ -9,6 +9,9 @@ extends Node2D
 @export var entity_id := ""
 ## Floor-level art (hatches, slabs, mats) draws beneath characters instead of depth-sorting.
 @export var floor_art := false
+## Fade the art while the local player stands behind it (tall objects).
+@export var occlude := false
+var _fade := 1.0
 
 var region_id := ""
 var def_id := ""
@@ -43,6 +46,21 @@ func _ready() -> void:
 	Session.bunker_changed.connect(func(_b: String) -> void: _refresh("bunker"))
 	Assets.reloaded.connect(func() -> void: _refresh("assets"))
 	_refresh("")
+
+
+func _process(delta: float) -> void:
+	if not occlude or _art_root == null:
+		return
+	var main: Sprite2D = _art_root.get_node_or_null("Main")
+	var avatar := get_tree().get_first_node_in_group("local_avatar") as Node2D
+	var target := 1.0
+	if main != null and avatar != null:
+		var local := to_local(avatar.global_position)
+		var r := Rect2(main.position, main.texture.get_size() * main.scale) if main.texture != null else Rect2()
+		if local.y < -4.0 and r.grow_individual(-8, 0, -8, 0).has_point(local + Vector2(0, -30)):
+			target = 0.42
+	_fade = move_toward(_fade, target, delta * 3.0)
+	_art_root.modulate.a = _fade
 
 
 func region_state() -> RegionState:

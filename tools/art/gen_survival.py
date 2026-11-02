@@ -127,3 +127,77 @@ if __name__ == "__main__":
     zombie("down", True); zombie("side", True)
     zombie_dead(); club(); club_rack()
     print("survival art (milestone A) generated")
+
+
+# ---------------------------------------------------------------- milestone B
+from gen_homestead import tile_from_noise, wrap_draw
+from gen_bunker import EARTH, EARTH_D, EARTH_L, CLAY, PLANK, PLANK_D, board
+import random as _random
+
+
+def earth_mass_tile():
+    S = 256
+    rng = _random.Random(701)
+    stones = [(rng.uniform(0, S), rng.uniform(0, S), rng.uniform(3, 9)) for _ in range(60)]
+    def strokes(img):
+        def fn(d, ox, oy):
+            for x, y, r in stones:
+                d.ellipse((x - r + ox, y - r * 0.7 + oy, x + r + ox, y + r * 0.7 + oy), fill=mix(STONE, EARTH, 0.5)[:3] + (190,), outline=INK[:3] + (120,))
+            for i in range(0, S, 22):
+                d.line([(ox, i + oy + rng.uniform(-3, 3)), (S + ox, i + oy + rng.uniform(-3, 3))], fill=EARTH_D[:3] + (60,), width=2)
+        wrap_draw(img, fn)
+    img = tile_from_noise(S, mix(EARTH_D, INK, 0.25), mix(EARTH_D, INK, 0.45), EARTH, 702, 64, strokes)
+    img.save(out("bunker/earth/template_earth_mass_tile.png"), optimize=True)
+
+
+def earth_face_tile():
+    W, H = 256, 128
+    c = Canvas(W, H, seed=711)
+    c.fill([(0, 0), (W, 0), (W, H), (0, H)], EARTH, tex=0.35, cell=20, light=(0, -1, 0.4))
+    for k, y in enumerate((18, 46, 80, 104)):
+        pts = [(x, y + 6 * math.sin(x / 40.0 + k)) for x in range(0, W + 1, 32)]
+        c.fill(pts + [(W, y + 22), (0, y + 22)], [EARTH_L, CLAY, EARTH_D, EARTH][k], tex=0.35, cell=10)
+        c.ink(pts, width=1.2, alpha=110)
+    for _ in range(14):
+        x, y, r = c.rng.uniform(0, W), c.rng.uniform(10, H - 14), c.rng.uniform(4, 10)
+        st = c.blob(x, y, r, r * 0.7, n=10, irregular=0.2)
+        c.fill(st, mix(STONE, CLAY, 0.4), tex=0.2, light=(-1, -1, 0.4)); c.ink_poly(st, width=1.2)
+    for _ in range(6):
+        x = c.rng.uniform(0, W); pts = [(x, 0)]
+        for _ in range(3):
+            x += c.rng.uniform(-8, 8); pts.append((x, pts[-1][1] + c.rng.uniform(10, 18)))
+        c.ink(pts, width=c.rng.uniform(2, 4), color=mix(WOOD, EARTH_D, 0.4))
+    c.hatch(c.mask([(0, H - 26), (W, H - 26), (W, H), (0, H)]), spacing=5, alpha=80)
+    img = c.img.resize((W, H), Image.LANCZOS)
+    # make horizontally seamless by cross-fading the edges
+    a = np.asarray(img).astype(np.float32)
+    w = 24
+    for i in range(w):
+        t = i / w
+        a[:, i] = a[:, i] * t + a[:, W - w + i] * (1 - t)
+    Image.fromarray(a.astype(np.uint8), "RGBA").crop((0, 0, W - w, H)).resize((W, H), Image.LANCZOS).save(out("bunker/earth/template_earth_face_tile.png"), optimize=True)
+
+
+def support_post(done):
+    W, H = 180, 300
+    c = Canvas(W, H, seed=721 + done)
+    base = 290
+    c.soft_shadow((20, base - 12, 160, base + 8), alpha=90, blur=5)
+    for x in (34, 146):
+        if not done and x == 146:
+            c.ink([(150, base), (110, 120)], width=22, color=PLANK); c.ink([(150, base), (110, 120)], width=1.6)
+            continue
+        board(c, [(x - 12, 60), (x + 12, 60), (x + 12, base), (x - 12, base)], PLANK, grain=2)
+    if done:
+        board(c, [(10, 40), (170, 40), (170, 66), (10, 66)], PLANK_D, grain=2)
+        for x in (34, 146):
+            c.ink([(x + (22 if x < 90 else -22), 66), (x, 110)], width=8, color=PLANK_D)
+    else:
+        loose = c.blob(90, base - 8, 70, 12, n=14, irregular=0.2)
+        c.fill(loose, EARTH, tex=0.4); c.ink_poly(loose, width=1.4)
+    c.save(out(f"bunker/earth/template_support_post{'' if done else '_building'}.png"))
+
+
+if __name__ == "__main__" and "milestone_b" in sys.argv:
+    earth_mass_tile(); earth_face_tile(); support_post(True); support_post(False)
+    print("milestone B art generated")

@@ -111,6 +111,16 @@ func _run(line: String) -> void:
 					main.region_view.local_avatar.play_swing(aim)
 				Session.request_attack(aim)
 				await get_tree().create_timer(float(a[1]) if a.size() > 1 else 0.7).timeout
+		"terrain":
+			Session.request_terrain(a[0], Vector2i(int(a[1]), int(a[2])))
+			await get_tree().create_timer(0.4).timeout
+		"face":
+			# Turn toward a direction by tapping the movement key briefly.
+			var act := "move_" + a[0]
+			Input.action_press(act)
+			await get_tree().create_timer(0.08).timeout
+			Input.action_release(act)
+			await get_tree().create_timer(0.2).timeout
 		"press_repeat":
 			# Press the interact key n times, interval seconds apart (e.g. chopping).
 			for i in int(a[0]):
@@ -260,6 +270,12 @@ func _state() -> Dictionary:
 			depths.sort()
 			bunkers[bid] = {"levels": depths, "wood": b.amount("wood"), "entrance": b.entrance_region}
 		s["bunkers"] = bunkers
+		var terrains := {}
+		for rid in w.regions:
+			var rr: RegionState = w.regions[rid]
+			if not rr.terrain.is_empty():
+				terrains[rid] = (rr.terrain.get("dug", {}) as Dictionary).keys()
+		s["terrains"] = terrains
 		s["jobs"] = w.jobs.size()
 		var zs := []
 		for z in w.zombies.values():
@@ -267,6 +283,12 @@ func _state() -> Dictionary:
 				"region": z.region_id, "hp": z.health, "persistent": z.persistent})
 		s["zombies"] = zs
 		var me := Session.local_player()
+		if me != null and w.region(me.region_id) != null and Terrain.has_terrain(w.region(me.region_id)):
+			var tr := w.region(me.region_id)
+			s["terrain"] = {"dug": (tr.terrain.get("dug", {}) as Dictionary).keys(),
+				"digging": (tr.terrain.get("digging", {}) as Dictionary).keys(),
+				"supports": tr.terrain.get("supports", {}),
+				"me_cell": [Terrain.cell_of(tr, me.position).x, Terrain.cell_of(tr, me.position).y]}
 		if me != null:
 			s["region"] = me.region_id
 			s["carried"] = me.carried
@@ -296,6 +318,10 @@ func _state() -> Dictionary:
 		v["entities"] = stages
 		v["map_open"] = main.map_panel.visible
 		v["zombies"] = view.zombie_count()
+		var tv := view.get_node_or_null("Terrain") as TerrainView
+		if tv != null:
+			v["terrain_target"] = [tv._target.x, tv._target.y]
+			v["terrain_mode"] = tv._mode
 		v["map_legend"] = main.map_panel._legend.text if main.map_panel.visible else ""
 		v["avatars"] = view.avatar_count()
 		if view.local_avatar != null:

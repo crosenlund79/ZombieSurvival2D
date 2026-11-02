@@ -156,8 +156,11 @@ func _resource_line(me: PlayerState) -> String:
 				total += 1
 				if str(r.entity_state(eid).get("stage", "")) == "reinforced":
 					done += 1
-		if total > 0:
-			parts.append(UITheme.fmt("HUD_REINFORCED", [done, total]))
+		for k in r.terrain.get("supports", {}):
+			if str(r.terrain["supports"][k].get("stage", "")) == "reinforced":
+				done += 1
+		if total > 0 or done > 0:
+			parts.append(UITheme.fmt("HUD_REINFORCED", [done]))
 	return "\n".join(parts)
 
 

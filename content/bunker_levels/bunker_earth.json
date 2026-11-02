@@ -3,10 +3,10 @@
 	"display_key": "REGION_SHELTER",
 	"scene": "res://scenes/bunker/bunker_earth.tscn",
 	"bounds": [
-		0,
-		0,
-		1100,
-		760
+		-704,
+		-384,
+		2560,
+		1920
 	],
 	"spawn_points": [
 		[
@@ -116,5 +116,37 @@
 				"stage": "exposed"
 			}
 		}
-	]
+	],
+	"excavation": {
+		"cell": 64,
+		"origin": [
+			-704,
+			-384
+		],
+		"cols": 40,
+		"rows": 30,
+		"initial_open": [
+			[
+				13,
+				10,
+				14,
+				7
+			]
+		],
+		"permanent": [
+			[
+				18,
+				0,
+				3,
+				10
+			]
+		],
+		"safe_margin": 1,
+		"support_radius_cells": 3.2,
+		"support_min_gap_cells": 2,
+		"dig_seconds": 2.0,
+		"support_seconds": 3.0,
+		"support_wood": 4,
+		"_comment": "Prototype excavation grid (64 px cells). Original chamber = initial_open; ladder shaft cells are permanent."
+	}
 }

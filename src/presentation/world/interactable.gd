@@ -14,6 +14,8 @@ var focused := false
 ## False while the object cannot be used (e.g. a hatch under construction).
 var enabled := true
 var prompt_args: Array = []
+## Optional custom action (e.g. terrain digging); default requests the entity interaction.
+var on_activate: Callable
 
 
 ## def_id: the content definition of the region (see RegionView.def_id).
@@ -37,7 +39,10 @@ func prompt_text() -> String:
 
 
 func activate() -> void:
-	Session.request_interact(entity_id)
+	if on_activate.is_valid():
+		on_activate.call()
+	else:
+		Session.request_interact(entity_id)
 
 
 func set_focused(value: bool) -> void:

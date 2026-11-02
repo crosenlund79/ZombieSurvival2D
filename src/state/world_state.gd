@@ -143,6 +143,16 @@ func rebuild_jobs() -> void:
 			if str(st.get("stage", "")) == "building":
 				jobs.append({"region_id": rid, "entity_id": eid,
 					"done_tick": int(st.get("started", 0)) + int(st.get("ticks", 0))})
+		# Terrain jobs: digs and supports in progress ("terrain:dig:c,r" / "terrain:support:c,r").
+		var dig: Dictionary = r.terrain.get("digging", {})
+		for k in dig:
+			jobs.append({"region_id": rid, "entity_id": "terrain:dig:" + k,
+				"done_tick": int(dig[k].get("started", 0)) + int(dig[k].get("ticks", 0))})
+		var sup: Dictionary = r.terrain.get("supports", {})
+		for k in sup:
+			if str(sup[k].get("stage", "")) == "building":
+				jobs.append({"region_id": rid, "entity_id": "terrain:support:" + k,
+					"done_tick": int(sup[k].get("started", 0)) + int(sup[k].get("ticks", 0))})
 
 
 func add_job(region_id: String, entity_id: String, done_tick: int) -> void:
