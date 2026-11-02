@@ -5,11 +5,11 @@ extends RefCounted
 
 const GAME_TITLE := "Aftergrowth"
 const VERSION := "0.1.0"
-const ITERATION := "001"
-const STAGE := "visual-prototype"
+const ITERATION := "002"
+const STAGE := "bunker-prototype"
 const STATUS := "DEV"
 ## Bumped whenever the network protocol changes incompatibly.
-const PROTOCOL_VERSION := 1
+const PROTOCOL_VERSION := 2
 
 static var _commit := ""
 

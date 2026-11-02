@@ -31,6 +31,7 @@ Plain-language description of every GDScript file. Identifiers and paths are exa
 | `src/content/content.gd` | SafeFile | Reads authored region files (`content/regions/*.json`): entities, positions, reach, initial state, spawn points; computes a content fingerprint so host and client can confirm they match. |
 | `src/state/world_state.gd` | Content, RegionState, PlayerState, Simulation | The whole shared world as plain data: id, seed, clock tick, regions, players. Also gives seeded random number streams. |
 | `src/state/region_state.gd` | Content | Player-made changes to one region, stored only where they differ from the authored content, with a revision number per object. |
+| `src/state/bunker_state.gd` | — | One shelter as plain data: its entrance identity, levels by signed depth (no maximum) and the shared stockpile. Builds and parses level region ids. |
 | `src/state/player_state.gd` | Content | One player's saved record: identity, name, region, position, facing. |
 | `src/sim/simulation.gd` | WorldState | The one shared clock (10 ticks per second). Future timed systems attach here. |
 | `src/sim/world_actions.gd` | WorldState, Content | Host-side rules: checks an interaction request (who, where, how far, which revision) and applies it; checks that reported movement is physically possible. |
@@ -45,6 +46,7 @@ Plain-language description of every GDScript file. Identifiers and paths are exa
 | `src/presentation/ui/ui_root.gd` | Settings, UITheme | Root of all panels: applies the theme and UI scale and always fills the window at any aspect ratio. |
 | `src/presentation/ui/main_menu.gd` | Session, Saves, Settings | Start menu: Single Player, Host, Join, Settings, Quit; world continue/new; join address and port; shows errors in plain words. |
 | `src/presentation/ui/settings_panel.gd` | Settings, Assets | Settings window: volumes, display, UI scale, language, key rebinding, override folder and reload. Saves immediately; never pauses the world. |
+| `src/presentation/ui/map_panel.gd` | Session, Assets, Hud | World map (M): roads, areas, landmarks from content; trees, shelters and players from live state; depth when underground. |
 | `src/presentation/ui/hud.gd` | Session, InteractionSensor | In-game overlay: status line, the interaction prompt, short notices. |
 | `src/presentation/ui/pause_menu.gd` | Session | Esc menu: resume, save (host), settings, leave. The shared world keeps running. |
 | `src/presentation/ui/dev_overlay.gd` | Session, Net, Assets, Audio, SessionLog | F3 developer panel: build, network and world state, players, entity states, save status, overrides, log path, and a few host-checked commands. |
@@ -63,6 +65,15 @@ Plain-language description of every GDScript file. Identifiers and paths are exa
 | `src/presentation/world/ground_patch.gd` | Assets, AssetCatalog | A ground surface polygon (grass, dirt, road) filled with a tiling texture; edit its shape in the editor. |
 | `src/presentation/world/scatter.gd` | Prop | Seeded decorative dressing (grass, flowers) inside an area, avoiding given rectangles — identical for every player. |
 | `src/presentation/world/atmosphere.gd` | Assets | Mood layer: warm colour grade, drifting seed fluff, paper grain and vignette. Presentation only. |
+| `src/presentation/world/entity_view.gd` | Session, Content, Assets, Interactable | Base for world-object views: position and reach from content, state from the world, art from asset ids, one Interactable; subclasses refresh on changes. |
+| `src/presentation/world/portal_view.gd` | EntityView | Doorways and ladders between regions; hidden/unusable while disabled or while the required hatch/door is closed. |
+| `src/presentation/world/shelter_site_view.gd` | EntityView, ProgressMarker, Audio | Shelter site in a building: marked → digging (progress bar) → wooden hatch that opens and closes. |
+| `src/presentation/world/stockpile_view.gd` | EntityView | The shared timber pile; art grows with the bunker's stock; deposit prompt shows what you carry. |
+| `src/presentation/world/tree_view.gd` | EntityView, Prop | Harvestable tree: chop feedback (shake, chips, sound), fall animation, stump; trunk collision only while standing. |
+| `src/presentation/world/support_view.gd` | EntityView, ProgressMarker | Reinforcement spot: unreinforced earth → building → timber frame; prompt shows cost and stock. |
+| `src/presentation/world/progress_marker.gd` | — | Small inked progress bar drawn above something being built. |
+| `src/presentation/world/light_factory.gd` | — | Generates the soft radial texture for 2D lights and builds lantern lights. |
+| `src/presentation/world/light_spot.gd` | LightFactory | A scene light (lantern, window, ladder shaft) using the shared radial texture. |
 | `src/presentation/world/placeholder_block.gd` | — | Greybox helper (used in Phase A, kept for blocking out new areas): a coloured rectangle with matching collision. |
 | `src/presentation/world/placeholder_ground.gd` | — | Greybox ground with a 100 px grid (unused in the current scene). |
 
@@ -75,5 +86,6 @@ Plain-language description of every GDScript file. Identifiers and paths are exa
 | `tests/test_case.gd` | — | Tiny base class for unit tests (`check`, `eq`). |
 | `tests/test_runner.gd` | TestCase, ContentCheck | Runs every test file in tests/unit and the content check, writes results, exits with an error code on failure. |
 | `tests/unit/test_world.gd` | WorldState, WorldActions, Simulation | Tests world creation, change storage, seeded randomness, the clock, interaction validation, simultaneous requests, movement plausibility. |
+| `tests/unit/test_bunker.gd` | WorldActions, Simulation, SaveCodec | Tests shelter timing, no duplicate hatch, portals, wood given once, cooldown, spend-once reinforcement, unlimited developer levels, saves, migration. |
 | `tests/unit/test_save.gd` | SaveCodec, SafeFile, Saves | Tests save round-trip, validation, defaults, removed content, the historical v1 fixture, migrations, safe writes and backup fallback. |
 | `tests/unit/test_assets.gd` | AssetCatalog, AssetResolver | Tests override naming, priority, corrupt/oversized rejection, fallback, sound overrides, and display-box fitting. |

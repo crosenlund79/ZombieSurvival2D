@@ -205,7 +205,69 @@ base line and inside its art rectangle. No per-pixel masks.
 - **Build identity**: `BuildInfo.label()` (bottom-right). Commit is read from `.git` if present;
   a GitHub ZIP download shows `commit n/a` (git is never executed).
 
-## 15. Dependency direction
+## 15. Regions, buildings and bunkers (iteration 002)
+
+**Region definitions.** A region's content comes from a *definition* (`def_id`):
+- static regions — `content/regions/*.json` (`homestead`, `homestead.farmhouse`), present in every world;
+- level templates — `content/bunker_levels/*.json`, addressed as `level:<template>` (`bunker_earth`,
+  `bunker_concrete`). Bunker levels are regions created at runtime from a template.
+
+`RegionState.def_id` records which definition a region uses; for static regions it equals the region id.
+`WorldState.region_def(region_id)` returns the right definition either way. Entity ids only need to be
+unique inside one definition (every bunker level has its own `ladder_up`, `support_1` …).
+
+**Bunkers.** `WorldState.bunkers[bunker_id] → BunkerState`. The bunker id is the persistent id of the
+shelter entrance (`homestead.farmhouse.shelter`), so the entrance belongs to a specific building.
+A bunker stores its entrance region/entity, `levels: {depth → template}` with signed depths (−1, −2, …,
+**no maximum**; only created levels exist), and shared `resources` (the timber stockpile). Level regions
+are named `bunker:<bunker_id>:<depth>`. Adjacent levels connect through the `ladder_up` / `ladder_down`
+portals that every level template must contain (the content check enforces this).
+
+**Portals** (`type: portal`) move a player between regions. The host resolves the destination:
+`{region, position}` (doorways), `{bunker_of: site, depth}` (the hatch ladder), or `{bunker: "up"|"down"}`
+(relative to the level the portal is in). A portal can require another entity to be open
+(`requires_open`) and can be disabled (`ladder_down` stays disabled until a deeper level exists).
+Only the moving player's `region_id` changes. The host resets their movement check, sends them a
+correction that names the new region, and updates the roster. That player's app shell rebuilds *its own*
+view; nobody else's view or simulation changes.
+
+**Entity types and host rules** (`WorldActions.request_interact`):
+
+| type | state | rule |
+|---|---|---|
+| `door` | open | toggle (revision-checked) |
+| `shelter_site` | stage none→building→built, open, tier | start a timed dig; when built, toggle the hatch. Completing it creates the bunker and level −1 |
+| `portal` | enabled | move the player (see above) |
+| `tree` | chops, felled | one chop per request (0.3 s cooldown). The felling blow gives its wood once, to that player (carry limit 30) |
+| `stockpile` | — | deposit all carried wood into the bunker's resources |
+| `support_site` | stage exposed→building→reinforced | wood is spent from the stockpile in the same step that starts the build, so a second request is refused |
+
+**Timed construction.** Builds store `started`, `ticks` and stage `building` in entity state.
+`WorldState.jobs` is rebuilt from that state on load. `Simulation.advance` completes due jobs
+(`WorldActions.complete_construction`), and `GameSession._advance` publishes the results. Progress bars
+read the replicated clock, so no extra network traffic is needed. A save made mid-construction
+finishes after reload, exactly once.
+
+**Replication added:** `_rpc_bunker` (bunker records, which may add regions on clients),
+`_rpc_player_carried`, and `_rpc_notice`. `_rpc_correct_position` and `_rpc_submit_move` now carry
+a region. `_publish_result` sends the changes in a fixed order: bunkers → entities → carried → region moves.
+Protocol version 2. Save schema 2, with a migration from 1.
+
+**Developer level command** (`create_level`, host only): finds the player's bunker, creates the next
+depth below the deepest level from the `bunker_concrete` template, enables the ladder down above it,
+and publishes the result. Depth is computed from existing levels, so it can never duplicate one.
+
+**Views.** `EntityView` is the base for `PortalView`, `ShelterSiteView`, `StockpileView`, `TreeView` and
+`SupportView`. Each one reads its definition and state, shows art from asset ids, and owns one
+`Interactable`. Bunker level scenes are shared per template; the app shell sets
+`region_id`/`def_id` before adding them. The camera frames the region bounds: rooms smaller than
+the view stay centred.
+
+**World map** (`MapPanel`, M): drawn from the surface region's `map` block (areas, roads, landmarks)
+plus live state (trees, bunkers, players). `MapPanel.surface_point()` walks interiors (`surface` anchor)
+and bunker levels (entrance → anchor) to a surface position and depth. The map is local and never pauses.
+
+## 16. Dependency direction
 
 ```
 presentation (main, ui, world views) ──reads/requests──▶ Session ──▶ WorldActions / Simulation ──▶ state

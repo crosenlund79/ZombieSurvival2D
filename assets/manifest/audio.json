@@ -41,6 +41,106 @@
 			"loop": true,
 			"status": "READY",
 			"notes": "Generated placeholder loop (tools/art/gen_ambience.py). Seamless loop."
+		},
+		{
+			"id": "sfx.chop",
+			"name": "Axe chop",
+			"template": "res://assets/templates/audio/world/template_chop.wav",
+			"bus": "SFX",
+			"volume_db": -3.0,
+			"loop": false,
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_bunker_audio.py)."
+		},
+		{
+			"id": "sfx.tree_fall",
+			"name": "Tree falls",
+			"template": "res://assets/templates/audio/world/template_tree_fall.wav",
+			"bus": "SFX",
+			"volume_db": -2.0,
+			"loop": false,
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_bunker_audio.py)."
+		},
+		{
+			"id": "sfx.wood_drop",
+			"name": "Wood stacked on the pile",
+			"template": "res://assets/templates/audio/world/template_wood_drop.wav",
+			"bus": "SFX",
+			"volume_db": -4.0,
+			"loop": false,
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_bunker_audio.py)."
+		},
+		{
+			"id": "sfx.dig",
+			"name": "Digging starts",
+			"template": "res://assets/templates/audio/world/template_dig.wav",
+			"bus": "SFX",
+			"volume_db": -4.0,
+			"loop": false,
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_bunker_audio.py)."
+		},
+		{
+			"id": "sfx.build_hammer",
+			"name": "Hammering timber",
+			"template": "res://assets/templates/audio/world/template_build_hammer.wav",
+			"bus": "SFX",
+			"volume_db": -5.0,
+			"loop": false,
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_bunker_audio.py)."
+		},
+		{
+			"id": "sfx.build_done",
+			"name": "Construction finished",
+			"template": "res://assets/templates/audio/world/template_build_done.wav",
+			"bus": "SFX",
+			"volume_db": -4.0,
+			"loop": false,
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_bunker_audio.py)."
+		},
+		{
+			"id": "sfx.hatch_open",
+			"name": "Hatch opens",
+			"template": "res://assets/templates/audio/world/template_hatch_open.wav",
+			"bus": "SFX",
+			"volume_db": -5.0,
+			"loop": false,
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_bunker_audio.py)."
+		},
+		{
+			"id": "sfx.hatch_close",
+			"name": "Hatch closes",
+			"template": "res://assets/templates/audio/world/template_hatch_close.wav",
+			"bus": "SFX",
+			"volume_db": -4.0,
+			"loop": false,
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_bunker_audio.py)."
+		},
+		{
+			"id": "sfx.ladder",
+			"name": "Climbing a ladder / changing area",
+			"template": "res://assets/templates/audio/world/template_ladder.wav",
+			"bus": "SFX",
+			"volume_db": -6.0,
+			"loop": false,
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_bunker_audio.py)."
+		},
+		{
+			"id": "amb.underground",
+			"name": "Underground ambience (rumble, drips)",
+			"template": "res://assets/templates/audio/environment/template_underground_loop.wav",
+			"bus": "Ambience",
+			"volume_db": -8.0,
+			"loop": true,
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_bunker_audio.py)."
 		}
 	]
 }

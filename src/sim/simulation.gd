@@ -1,17 +1,37 @@
 class_name Simulation
 extends RefCounted
 ## The one shared world clock. Only the authority advances it; clients receive
-## the tick in snapshots. Future timed systems (production, schedules, events)
-## must hang off advance() instead of keeping their own clocks.
+## the tick in snapshots. Timed systems hang off advance() instead of keeping
+## their own clocks: today that is construction (shelter hatches, supports).
 
 const TICK_RATE := 10  # ticks per real second
 
 
-static func advance(world: WorldState, ticks: int) -> void:
+## Advances the clock and completes any constructions that are due.
+## Returns WorldActions results (one per completed job) for the caller to publish.
+static func advance(world: WorldState, ticks: int) -> Array:
 	if ticks <= 0:
-		return
+		return []
 	world.tick += ticks
-	# Extension point: scheduled events / timed systems step here, in tick order.
+	var done: Array = []
+	var remaining: Array = []
+	for j in world.jobs:
+		if world.tick >= int(j["done_tick"]):
+			done.append(j)
+		else:
+			remaining.append(j)
+	world.jobs = remaining
+	var results: Array = []
+	done.sort_custom(func(a, b): return a["done_tick"] < b["done_tick"])
+	for j in done:
+		var res := WorldActions.complete_construction(world, j["region_id"], j["entity_id"])
+		if res["ok"]:
+			results.append(res)
+	return results
+
+
+static func seconds_to_ticks(seconds: float) -> int:
+	return maxi(1, roundi(seconds * TICK_RATE))
 
 
 static func format_time(world: WorldState) -> String:

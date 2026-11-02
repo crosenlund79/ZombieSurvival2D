@@ -26,9 +26,12 @@ var _send_accum := 0.0
 var _last_sent := Vector2.INF
 var _bob := 0.0
 var _shown_facing := -1
+var _frame := Rect2()        # region bounds the camera frames
+var _cam_snap := true
 
 
-static func create(state: PlayerState, local: bool, bounds: Rect2) -> PlayerAvatar:
+## bounds: camera limits (empty Rect2 = no limits). light: carry a small light.
+static func create(state: PlayerState, local: bool, bounds: Rect2, light: bool = false) -> PlayerAvatar:
 	var a := PlayerAvatar.new()
 	a.player_id = state.player_id
 	a.is_local = local
@@ -36,6 +39,8 @@ static func create(state: PlayerState, local: bool, bounds: Rect2) -> PlayerAvat
 	a.position = state.position
 	a.target_position = state.position
 	a._build(state.display_name, bounds)
+	if light:
+		a.add_child(LightFactory.lantern_light(Color(1.0, 0.86, 0.6), 1.5 if local else 1.0, 0.9 if local else 0.55))
 	return a
 
 
@@ -62,13 +67,8 @@ func _build(display_name: String, bounds: Rect2) -> void:
 		shape.position = Vector2(0, -8)
 		add_child(shape)
 		camera = Camera2D.new()
-		camera.position_smoothing_enabled = true
-		camera.position_smoothing_speed = 6.0
-		camera.position = Vector2(0, -24)
-		camera.limit_left = int(bounds.position.x)
-		camera.limit_top = int(bounds.position.y)
-		camera.limit_right = int(bounds.end.x)
-		camera.limit_bottom = int(bounds.end.y)
+		camera.top_level = true  # positioned by _update_camera (framing), not by the avatar
+		_frame = bounds
 		var z := Settings.camera_zoom()
 		camera.zoom = Vector2(z, z)
 		add_child(camera)
@@ -99,6 +99,7 @@ func _apply_art() -> void:
 func _physics_process(delta: float) -> void:
 	if is_local:
 		_local_move(delta)
+		_update_camera(delta)
 	else:
 		var p: PlayerState = Session.world.players.get(player_id) if Session.world != null else null
 		if p != null:
@@ -143,6 +144,29 @@ func _animate(delta: float, moving: bool) -> void:
 func _on_corrected(pos: Vector2) -> void:
 	global_position = pos
 	_last_sent = pos
+	_cam_snap = true
+
+
+## Camera framing: a region smaller than the view stays centred (rooms, bunker
+## levels); a larger one is followed but never shows beyond its bounds.
+func _update_camera(delta: float) -> void:
+	var target := global_position + Vector2(0, -24)
+	if _frame.has_area():
+		var vis := get_viewport_rect().size / camera.zoom
+		for axis in 2:
+			if _frame.size[axis] <= vis[axis]:
+				target[axis] = _frame.get_center()[axis]
+			else:
+				target[axis] = clampf(target[axis], _frame.position[axis] + vis[axis] * 0.5, _frame.end[axis] - vis[axis] * 0.5)
+	if _cam_snap:
+		camera.global_position = target
+		_cam_snap = false
+	else:
+		camera.global_position = camera.global_position.lerp(target, 1.0 - exp(-6.0 * delta))
+
+
+func snap_camera() -> void:
+	_cam_snap = true
 
 
 func _unhandled_input(event: InputEvent) -> void:

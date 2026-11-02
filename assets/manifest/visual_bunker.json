@@ -1,0 +1,248 @@
+{
+	"kind": "visual",
+	"category": "bunker",
+	"assets": [
+		{
+			"id": "bunker.earth_floor",
+			"name": "Excavated earth floor (tiling)",
+			"template": "res://assets/templates/bunker/earth/template_earth_floor_tile.png",
+			"display_size": [
+				256,
+				256
+			],
+			"source_size": [
+				256,
+				256
+			],
+			"pivot": [
+				0,
+				0
+			],
+			"transparency": "none",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Seamless tile. Generated placeholder (tools/art/gen_bunker.py) \u2014 replace with tablet art."
+		},
+		{
+			"id": "bunker.earth_wall",
+			"name": "Exposed earth back wall",
+			"template": "res://assets/templates/bunker/earth/template_earth_wall.png",
+			"display_size": [
+				1000,
+				240
+			],
+			"source_size": [
+				2000,
+				480
+			],
+			"pivot": [
+				0.5,
+				1.0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "high",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_bunker.py) \u2014 replace with tablet art."
+		},
+		{
+			"id": "bunker.support_exposed",
+			"name": "Reinforcement spot \u2014 unreinforced earth",
+			"template": "res://assets/templates/bunker/earth/template_support_exposed.png",
+			"display_size": [
+				180,
+				210
+			],
+			"source_size": [
+				360,
+				420
+			],
+			"pivot": [
+				0.5,
+				0.952
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Chalk outline marks where the frame goes. Generated placeholder (tools/art/gen_bunker.py) \u2014 replace with tablet art."
+		},
+		{
+			"id": "bunker.support_building",
+			"name": "Reinforcement \u2014 under construction",
+			"template": "res://assets/templates/bunker/earth/template_support_building.png",
+			"display_size": [
+				180,
+				210
+			],
+			"source_size": [
+				360,
+				420
+			],
+			"pivot": [
+				0.5,
+				0.952
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_bunker.py) \u2014 replace with tablet art."
+		},
+		{
+			"id": "bunker.support_done",
+			"name": "Reinforcement \u2014 timber frame (reinforced earth)",
+			"template": "res://assets/templates/bunker/earth/template_support_done.png",
+			"display_size": [
+				180,
+				210
+			],
+			"source_size": [
+				360,
+				420
+			],
+			"pivot": [
+				0.5,
+				0.952
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_bunker.py) \u2014 replace with tablet art."
+		},
+		{
+			"id": "bunker.ladder_up",
+			"name": "Ladder up to the level above",
+			"template": "res://assets/templates/bunker/common/template_ladder_up.png",
+			"display_size": [
+				90,
+				240
+			],
+			"source_size": [
+				180,
+				480
+			],
+			"pivot": [
+				0.5,
+				1.0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_bunker.py) \u2014 replace with tablet art."
+		},
+		{
+			"id": "bunker.ladder_down_slab",
+			"name": "Concrete floor slab with ladder down",
+			"template": "res://assets/templates/bunker/common/template_ladder_down_slab.png",
+			"display_size": [
+				150,
+				100
+			],
+			"source_size": [
+				300,
+				200
+			],
+			"pivot": [
+				0.5,
+				0.525
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Floor-level art. Generated placeholder (tools/art/gen_bunker.py) \u2014 replace with tablet art."
+		},
+		{
+			"id": "bunker.lantern",
+			"name": "Lantern on a post",
+			"template": "res://assets/templates/bunker/common/template_lantern.png",
+			"display_size": [
+				40,
+				90
+			],
+			"source_size": [
+				80,
+				180
+			],
+			"pivot": [
+				0.5,
+				0.955
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Its light is a separate 2D light, not part of the image. Generated placeholder (tools/art/gen_bunker.py) \u2014 replace with tablet art."
+		},
+		{
+			"id": "bunker.tools",
+			"name": "Shovel and bucket",
+			"template": "res://assets/templates/bunker/common/template_tools.png",
+			"display_size": [
+				100,
+				80
+			],
+			"source_size": [
+				200,
+				160
+			],
+			"pivot": [
+				0.5,
+				0.9125
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_bunker.py) \u2014 replace with tablet art."
+		},
+		{
+			"id": "bunker.concrete_floor",
+			"name": "Concrete floor (tiling)",
+			"template": "res://assets/templates/bunker/concrete/template_concrete_floor_tile.png",
+			"display_size": [
+				256,
+				256
+			],
+			"source_size": [
+				256,
+				256
+			],
+			"pivot": [
+				0,
+				0
+			],
+			"transparency": "none",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Temporary developer test level. Seamless tile. Generated placeholder (tools/art/gen_bunker.py) \u2014 replace with tablet art."
+		},
+		{
+			"id": "bunker.concrete_wall",
+			"name": "Concrete back wall",
+			"template": "res://assets/templates/bunker/concrete/template_concrete_wall.png",
+			"display_size": [
+				900,
+				240
+			],
+			"source_size": [
+				1800,
+				480
+			],
+			"pivot": [
+				0.5,
+				1.0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Temporary developer test level. Generated placeholder (tools/art/gen_bunker.py) \u2014 replace with tablet art."
+		}
+	]
+}

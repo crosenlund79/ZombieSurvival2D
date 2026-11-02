@@ -4,7 +4,7 @@
 
 1. Install **Godot 4.7.2 (standard, not .NET)** from godotengine.org. Newer 4.7.x patch releases
    should work; do not open the project in an older version.
-2. On GitHub choose the branch (iteration 001: `iteration/001-foundation`) → **Code → Download ZIP**.
+2. On GitHub choose the branch (latest: `iteration/002-bunker`; iteration 001: `iteration/001-foundation`) → **Code → Download ZIP**.
 3. Extract the ZIP, start Godot, **Import** → select `project.godot` → **Import & Edit**.
    The first open imports all art (a few seconds). No other tools or steps are needed.
 4. Press **F5** (Run Project).
@@ -36,6 +36,27 @@ Things to try: walk both players, open/close the yard gate (south fence, at the 
 driveway) from either window (both see it), walk through it and open the farmhouse front door,
 press E on the gate from both at the same moment (one wins, the other is told), leave and rejoin
 (your position is remembered), host saves (F5) → host leaves → host **Continue** → client rejoins.
+
+## 3b. The bunker loop (iteration 002)
+
+1. Open the yard gate, walk up to the farmhouse door, open it, step right up to the doorway and press
+   **E** ("Enter the farmhouse").
+2. Inside, stand on the chalk-marked floorboards → **E** "Dig a shelter beneath the house". Digging
+   takes 8 s of game time (progress bar); the house stays walkable.
+3. **E** next to the finished hatch opens/closes it. Stand **on** the open hatch → **E** "Climb down".
+4. Level −1: exposed earth with four chalk-marked spots. The ladder at the back wall climbs up.
+5. Outside, stand next to a tree and press **E** repeatedly (5 chops) — it falls and you carry its wood
+   (up to 30). Felled trees stay stumps.
+6. Stack the wood on the timber pile inside the farmhouse (or the one underground).
+7. Underground, at a chalk-marked spot → **E** "Reinforce with timber" (4 wood, 3 s).
+8. **M** opens the map (your position, the farmhouse, the shelter, trees; your depth when underground).
+
+Tip: while standing *on* a hatch or right at a doorway you get the "go through" action; step a little
+aside to get "open/close" instead.
+
+**Developer: create an underground test level.** As host (or in single player) press **F3** →
+**Create underground test level**. Each press adds one concrete level below the deepest level of your
+shelter (−2, −3, −4 …) and opens a ladder down to it. Clients cannot use it.
 
 ## 4. Saves
 

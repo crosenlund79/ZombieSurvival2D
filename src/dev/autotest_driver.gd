@@ -97,6 +97,20 @@ func _run(line: String) -> void:
 		"interact":
 			Session.request_interact(a[0])
 			await get_tree().create_timer(0.5).timeout
+		"press_repeat":
+			# Press the interact key n times, interval seconds apart (e.g. chopping).
+			for i in int(a[0]):
+				var down := InputEventAction.new()
+				down.action = "interact"
+				down.pressed = true
+				Input.parse_input_event(down)
+				await get_tree().create_timer(0.05).timeout
+				var up := InputEventAction.new()
+				up.action = "interact"
+				up.pressed = false
+				Input.parse_input_event(up)
+				await get_tree().create_timer(float(a[1])).timeout
+			await get_tree().create_timer(0.5).timeout
 		"save":
 			var r := Session.save_world()
 			ok = r["ok"]
@@ -124,7 +138,7 @@ func _run(line: String) -> void:
 			var view: RegionView = main.region_view
 			if view != null and view.local_avatar != null:
 				view.local_avatar.camera.zoom = Vector2(float(a[0]), float(a[0]))
-				view.local_avatar.camera.reset_smoothing()
+				view.local_avatar.snap_camera()
 			await get_tree().create_timer(0.3).timeout
 		"screenshot":
 			await RenderingServer.frame_post_draw
@@ -137,6 +151,8 @@ func _run(line: String) -> void:
 					main.dev_overlay.visible = on
 				"pause":
 					main.pause_menu.visible = on
+				"map":
+					main.map_panel.visible = on
 				"settings":
 					if on:
 						main.open_settings()
@@ -208,18 +224,46 @@ func _state() -> Dictionary:
 		for pid in w.players:
 			var p: PlayerState = w.players[pid]
 			players.append({"id": pid, "name": p.display_name, "online": p.online,
-				"x": p.position.x, "y": p.position.y, "region": p.region_id})
+				"x": p.position.x, "y": p.position.y, "region": p.region_id, "carried": p.carried})
 		s["players"] = players
 		var ents := {}
+		var levels := {}
 		for rid in w.regions:
 			var r: RegionState = w.regions[rid]
-			for eid in Content.entity_ids(rid):
-				ents[eid] = {"state": r.entity_state(eid), "rev": r.rev(eid)}
+			var target := ents
+			if r.def_id != rid:
+				levels[rid] = {}
+				target = levels[rid]
+			for eid in Content.entity_ids(r.def_id):
+				target[eid] = {"state": r.entity_state(eid), "rev": r.rev(eid)}
 		s["entities"] = ents
+		s["level_entities"] = levels
+		var bunkers := {}
+		for bid in w.bunkers:
+			var b: BunkerState = w.bunkers[bid]
+			var depths := b.levels.keys()
+			depths.sort()
+			bunkers[bid] = {"levels": depths, "wood": b.amount("wood"), "entrance": b.entrance_region}
+		s["bunkers"] = bunkers
+		s["jobs"] = w.jobs.size()
+		var me := Session.local_player()
+		if me != null:
+			s["region"] = me.region_id
+			s["carried"] = me.carried
 	var view: RegionView = main.region_view if main != null else null
 	var v := {"exists": view != null and is_instance_valid(view)}
 	if v["exists"]:
 		v["instance_id"] = view.get_instance_id()
+		v["region"] = view.region_id
+		var stages := {}
+		for n in view.find_children("*", "EntityView", true, false):
+			var ev := n as EntityView
+			stages[ev.entity_id] = {"visible": ev.is_visible_in_tree(),
+				"enabled": ev.interact.enabled if ev.interact != null else false,
+				"stage": str(ev.state().get("stage", "")), "felled": bool(ev.state().get("felled", false))}
+		v["entities"] = stages
+		v["map_open"] = main.map_panel.visible
+		v["map_legend"] = main.map_panel._legend.text if main.map_panel.visible else ""
 		v["avatars"] = view.avatar_count()
 		if view.local_avatar != null:
 			v["local_x"] = view.local_avatar.global_position.x

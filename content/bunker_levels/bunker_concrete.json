@@ -1,0 +1,50 @@
+{
+	"template_id": "bunker_concrete",
+	"display_key": "REGION_TEST_LEVEL",
+	"scene": "res://scenes/bunker/bunker_concrete.tscn",
+	"bounds": [
+		0,
+		0,
+		1000,
+		700
+	],
+	"spawn_points": [
+		[
+			500,
+			320
+		]
+	],
+	"entities": [
+		{
+			"id": "ladder_up",
+			"type": "portal",
+			"position": [
+				500,
+				250
+			],
+			"interact_range": 56,
+			"priority": 2,
+			"target": {
+				"bunker": "up"
+			},
+			"prompt_key": "PROMPT_CLIMB_UP"
+		},
+		{
+			"id": "ladder_down",
+			"type": "portal",
+			"position": [
+				760,
+				560
+			],
+			"interact_range": 56,
+			"priority": 2,
+			"target": {
+				"bunker": "down"
+			},
+			"prompt_key": "PROMPT_CLIMB_DOWN",
+			"initial": {
+				"enabled": false
+			}
+		}
+	]
+}

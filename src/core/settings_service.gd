@@ -24,6 +24,7 @@ const DEFAULT_BINDINGS := {
 	"move_left": [KEY_A, KEY_LEFT],
 	"move_right": [KEY_D, KEY_RIGHT],
 	"interact": [KEY_E],
+	"world_map": [KEY_M],
 	"pause_menu": [KEY_ESCAPE],
 	"quick_save": [KEY_F5],
 	"zoom_in": [KEY_EQUAL, KEY_KP_ADD],
@@ -33,7 +34,7 @@ const DEFAULT_BINDINGS := {
 }
 ## Actions shown in the controls list (dev/debug keys are listed but grouped last).
 const REMAPPABLE: Array[String] = ["move_up", "move_down", "move_left", "move_right",
-	"interact", "pause_menu", "quick_save", "zoom_in", "zoom_out", "dev_overlay", "screenshot"]
+	"interact", "world_map", "pause_menu", "quick_save", "zoom_in", "zoom_out", "dev_overlay", "screenshot"]
 
 var _cfg := ConfigFile.new()
 var _path := ""

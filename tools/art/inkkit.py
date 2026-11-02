@@ -134,7 +134,9 @@ class Canvas:
 
     # ---- ink ----
     def ink(self, pts, width=2.0, closed=False, color=INK, wobble=0.9, alpha=235, seg=6):
-        """Irregular ink stroke: jittered path, varying width, round joints."""
+        """Irregular ink stroke: jittered path, varying width, round joints.
+        Drawn on its own layer and alpha-composited, so a translucent stroke
+        tints what is underneath instead of punching a see-through hole."""
         if closed:
             pts = list(pts) + [pts[0]]
         path = []
@@ -145,19 +147,29 @@ class Canvas:
                 t = i / n
                 path.append((x0 + (x1 - x0) * t, y0 + (y1 - y0) * t, (x1 - x0) / max(L, 1e-6), (y1 - y0) / max(L, 1e-6)))
         path.append((pts[-1][0], pts[-1][1], 0, 0))
-        d = ImageDraw.Draw(self.img)
         phase = self.rng.uniform(0, 100)
-        prev = None
+        placed = []
         for i, (x, y, tx, ty) in enumerate(path):
             off = (math.sin(phase + i * 0.7) * 0.5 + self.rng.uniform(-0.5, 0.5)) * wobble
-            px, py = x - ty * off, y + tx * off
             wv = width * (0.75 + 0.45 * (math.sin(phase * 1.7 + i * 0.35) * 0.5 + 0.5)) * self.rng.uniform(0.9, 1.1)
-            r = wv * SS / 2
-            c = color[:3] + (alpha,)
+            placed.append(((x - ty * off) * SS, (y + tx * off) * SS, wv * SS))
+        pad = max(p[2] for p in placed) + 2
+        x0 = int(max(0, min(p[0] for p in placed) - pad)); y0 = int(max(0, min(p[1] for p in placed) - pad))
+        x1 = int(min(self.img.size[0], max(p[0] for p in placed) + pad)); y1 = int(min(self.img.size[1], max(p[1] for p in placed) + pad))
+        if x1 <= x0 or y1 <= y0:
+            return
+        layer = Image.new("RGBA", (x1 - x0, y1 - y0), (0, 0, 0, 0))
+        d = ImageDraw.Draw(layer)
+        c = color[:3] + (alpha,)
+        prev = None
+        for px, py, w in placed:
+            px -= x0; py -= y0
+            r = w / 2
             if prev:
-                d.line([prev, (px * SS, py * SS)], fill=c, width=max(1, int(wv * SS)))
-            d.ellipse((px * SS - r, py * SS - r, px * SS + r, py * SS + r), fill=c)
-            prev = (px * SS, py * SS)
+                d.line([prev, (px, py)], fill=c, width=max(1, int(w)))
+            d.ellipse((px - r, py - r, px + r, py + r), fill=c)
+            prev = (px, py)
+        self.img.alpha_composite(layer, dest=(x0, y0))
 
     def ink_poly(self, poly, width=2.2, **kw):
         self.ink(poly, width=width, closed=True, **kw)
@@ -166,13 +178,15 @@ class Canvas:
         bbox = mask.getbbox()
         if not bbox:
             return
-        d = ImageDraw.Draw(self.img)
+        layer = Image.new("RGBA", self.img.size, (0, 0, 0, 0))
+        d = ImageDraw.Draw(layer)
         px = mask.load()
         for _ in range(count):
             x = self.rng.uniform(bbox[0], bbox[2] - 1); y = self.rng.uniform(bbox[1], bbox[3] - 1)
             if px[int(x), int(y)] > 0:
                 r = self.rng.uniform(*size) * SS / 2
                 d.ellipse((x - r, y - r, x + r, y + r), fill=color[:3] + (self.rng.randint(*alpha),))
+        self.img = Image.alpha_composite(self.img, layer)
 
     def blob(self, cx, cy, rx, ry, n=14, irregular=0.18):
         pts = []

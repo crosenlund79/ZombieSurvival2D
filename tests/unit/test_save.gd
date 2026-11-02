@@ -87,9 +87,10 @@ func test_migration_extension_point() -> void:
 		d["schema_version"] = 1
 		d["migrated"] = true
 		return d
-	var m := SaveCodec.migrate({"schema_version": 0})
+	var m := SaveCodec.migrate({"schema_version": 0, "world": {}, "players": {}})
 	SaveCodec.MIGRATIONS.erase(0)
 	check(m["ok"] and m["data"].get("migrated") == true, "migration callable runs in order")
+	check(m["ok"] and int(m["data"]["schema_version"]) == SaveCodec.SCHEMA_VERSION, "chain continues to the current schema")
 	var m2 := SaveCodec.migrate({"schema_version": -3})
 	check(not m2["ok"], "missing migration reported")
 

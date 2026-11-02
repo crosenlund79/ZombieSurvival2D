@@ -269,7 +269,201 @@ def scenario_settings():
         s.kill()
 
 
-SCENARIOS = {"settings": scenario_settings, "single": scenario_single, "multiplayer": scenario_multiplayer,
+SITE = "homestead.farmhouse.shelter"
+L1 = "bunker:homestead.farmhouse.shelter:-1"
+L2 = "bunker:homestead.farmhouse.shelter:-2"
+L3 = "bunker:homestead.farmhouse.shelter:-3"
+
+
+def lvl(state, region, eid):
+    return state.get("level_entities", {}).get(region, {}).get(eid, {}).get("state", {})
+
+
+def go_inside(i):
+    """From anywhere on the surface: through the yard gate and the front door into the farmhouse."""
+    st = i.state()
+    if not st["entities"]["homestead.yard_gate"]["state"]["open"]:
+        i.cmd("walk_to 1150 960"); i.cmd("press_interact")
+    i.cmd("walk_to 1150 960")
+    i.cmd("walk_to 1160 690")
+    if not i.state()["entities"]["homestead.farmhouse_door"]["state"]["open"]:
+        i.cmd("press_interact")
+    i.cmd("walk_to 1160 664 4")
+    return i.cmd("press_interact")
+
+
+def chop(i, n=5):
+    return i.cmd(f"press_repeat {n} 0.45", timeout=40)
+
+
+def scenario_bunker_single():
+    s = Instance("t_bunker"); s.wipe(); s.start()
+    try:
+        r = s.cmd("single new 77 Builder")
+        check("loop: 1 rural world starts", r["ok"] and r["state"]["region"] == "homestead", r["state"].get("region"))
+        r = go_inside(s)
+        check("loop: 2 enter the farmhouse", r["state"]["region"] == "homestead.farmhouse", r["state"].get("region"))
+        r = s.cmd("walk_to 300 492")
+        check("loop: shelter site focused inside the house", r["state"]["view"]["focused"] == SITE, r["state"]["view"]["focused"])
+        r = s.cmd("press_interact")
+        st = r["state"]["entities"][SITE]["state"]
+        check("loop: 3 hatch construction starts (timed)", st["stage"] == "building", st)
+        r = s.cmd("walk_to 560 500")
+        check("loop: farmhouse stays explorable during construction", r["ok"], r["state"]["view"])
+        r = s.cmd("wait 8.5")
+        check("loop: 4 construction completes on the shared clock", r["state"]["entities"][SITE]["state"]["stage"] == "built"
+              and SITE in r["state"]["bunkers"], [r["state"]["entities"][SITE], r["state"]["bunkers"]])
+        check("loop: completion feedback shown", any("SHELTER_COMPLETE" in n for n in r["state"]["notices"]), r["state"]["notices"])
+        s.cmd("walk_to 300 492"); r = s.cmd("press_interact")
+        check("loop: 5 hatch opens", r["state"]["entities"][SITE]["state"]["open"] is True, r["state"]["entities"][SITE])
+        s.cmd("walk_to 300 452 4"); r = s.cmd("press_interact")
+        check("loop: 5 descend the ladder to level -1", r["state"]["region"] == L1 and r["state"]["view"]["region"] == L1, r["state"].get("region"))
+        r = s.cmd("walk_to 800 450")
+        check("loop: 6 explore the chamber", r["ok"], r["state"]["view"])
+        exposed = [k for k, v in r["state"]["view"]["entities"].items() if k.startswith("support_") and v["stage"] == "exposed"]
+        check("loop: 4 unreinforced earth locations shown", len(exposed) == 4, exposed)
+        s.cmd("walk_to 540 300"); r = s.cmd("press_interact")
+        check("loop: 7 climb back to the farmhouse", r["state"]["region"] == "homestead.farmhouse", r["state"].get("region"))
+        s.cmd("walk_to 480 600"); r = s.cmd("press_interact")
+        check("loop: 7 back outside", r["state"]["region"] == "homestead", r["state"].get("region"))
+        s.cmd("walk_to 860 585"); r = chop(s)
+        check("loop: 8 tree felled by repeated chopping", r["state"]["entities"]["homestead.tree_01"]["state"]["felled"] is True,
+              r["state"]["entities"]["homestead.tree_01"])
+        check("loop: 8 wood collected", r["state"]["carried"].get("wood", 0) == 4, r["state"]["carried"])
+        r = s.cmd("press_interact")
+        check("loop: felled tree gives nothing more", r["state"]["carried"].get("wood", 0) == 4, r["state"]["carried"])
+        s.cmd("dev teleport 640 368"); r = chop(s)
+        check("loop: second tree felled", r["state"]["carried"].get("wood", 0) == 8, r["state"]["carried"])
+        r = go_inside(s)
+        s.cmd("walk_to 470 400"); r = s.cmd("press_interact")
+        check("loop: 9 deposit wood at the shelter", r["state"]["bunkers"][SITE]["wood"] == 8 and r["state"]["carried"].get("wood", 0) == 0,
+              [r["state"]["bunkers"], r["state"]["carried"]])
+        s.cmd("walk_to 300 452 4"); r = s.cmd("press_interact")
+        check("loop: 10 descend again", r["state"]["region"] == L1, r["state"].get("region"))
+        s.cmd("walk_to 220 350"); s.cmd("press_interact")
+        s.cmd("walk_to 760 350"); r = s.cmd("press_interact")
+        r = s.cmd("wait 3.5")
+        sup = r["state"]["level_entities"][L1]
+        done = [k for k in sup if k.startswith("support_") and sup[k]["state"]["stage"] == "reinforced"]
+        check("loop: 10 two reinforcements built", sorted(done) == ["support_1", "support_2"], done)
+        check("loop: 10 wood spent from stockpile (8 - 2x4)", r["state"]["bunkers"][SITE]["wood"] == 0, r["state"]["bunkers"])
+        check("loop: 11 view shows reinforced supports", r["state"]["view"]["entities"]["support_1"]["stage"] == "reinforced", r["state"]["view"]["entities"]["support_1"])
+        r = s.cmd("ui map on")
+        legend = r["state"]["view"].get("map_legend", "")
+        check("loop: 12 map opens underground and reports depth", r["state"]["view"]["map_open"] and "-1" in legend, legend)
+        s.cmd("ui map off")
+        r = s.cmd("dev create_level")
+        check("loop: 13 developer creates level -2", r["state"]["bunkers"][SITE]["levels"] == [-2, -1], r["state"]["bunkers"])
+        check("loop: ladder down appears in level -1", r["state"]["view"]["entities"]["ladder_down"]["visible"] is True, r["state"]["view"]["entities"]["ladder_down"])
+        s.cmd("walk_to 820 640"); r = s.cmd("press_interact")
+        check("loop: 14 descend to level -2", r["state"]["region"] == L2 and r["state"]["view"]["region"] == L2, r["state"].get("region"))
+        r = s.cmd("dev create_level"); r = s.cmd("dev create_level"); r = s.cmd("dev create_level")
+        check("loop: repeated creation -> levels -1..-5", r["state"]["bunkers"][SITE]["levels"] == [-5, -4, -3, -2, -1], r["state"]["bunkers"])
+        r = s.cmd("save")
+        check("loop: 15 save", r["ok"], r)
+        saved = r["state"]
+        s.quit(); s.start()
+        r = s.cmd("single continue Builder")
+        st = r["state"]
+        check("loop: 16 reopened in level -2", st["region"] == L2 and st["view"]["region"] == L2, st.get("region"))
+        check("loop: 16 bunker levels intact", st["bunkers"] == saved["bunkers"], [st["bunkers"], saved["bunkers"]])
+        check("loop: 16 reinforcements intact", lvl(st, L1, "support_1").get("stage") == "reinforced" and lvl(st, L1, "support_3").get("stage") == "exposed", st["level_entities"].get(L1))
+        check("loop: 16 felled trees intact", st["entities"]["homestead.tree_01"]["state"]["felled"] and st["entities"]["homestead.tree_02"]["state"]["felled"], "")
+        check("loop: 16 hatch built and open", st["entities"][SITE]["state"] == saved["entities"][SITE]["state"], st["entities"][SITE])
+        check("loop: 16 ladders between all levels intact", all(lvl(st, f"bunker:{SITE}:{d}", "ladder_down").get("enabled") for d in (-1, -2, -3, -4)), "")
+        s.cmd("walk_to 500 296 4"); r = s.cmd("press_interact")
+        check("loop: climb from -2 back to -1 after reload", r["state"]["region"] == L1, r["state"].get("region"))
+    finally:
+        s.kill()
+
+
+def scenario_bunker_multi():
+    host = Instance("t_bhost"); a = Instance("t_balice")
+    for i in (host, a):
+        i.wipe()
+    try:
+        host.start(); a.start()
+        host.cmd(f"host {PORT} new 99 Hosty")
+        go_inside(host)
+        host.cmd("walk_to 300 492"); host.cmd("press_interact"); host.cmd("wait 8.5")
+        r = host.cmd("press_interact")
+        check("mpb: host built and opened the hatch", r["state"]["entities"][SITE]["state"]["open"] is True, r["state"]["entities"][SITE])
+        r = host.cmd("dev create_level")
+        check("mpb: host created level -2", r["state"]["bunkers"][SITE]["levels"] == [-2, -1], r["state"]["bunkers"])
+        r = a.cmd(f"join 127.0.0.1 {PORT} Alice")
+        check("mpb: late joiner receives bunker and levels", r["ok"] and r["state"]["bunkers"].get(SITE, {}).get("levels") == [-2, -1], r["state"].get("bunkers"))
+        check("mpb: late joiner sees the open hatch", r["state"]["entities"][SITE]["state"]["open"] is True, "")
+        r = go_inside(a)
+        check("mpb: client enters the farmhouse", r["state"]["region"] == "homestead.farmhouse", r["state"].get("region"))
+        a.cmd("walk_to 300 452 4"); r = a.cmd("press_interact")
+        check("mpb: client descends to level -1", r["state"]["region"] == L1, r["state"].get("region"))
+        st = host.state()
+        check("mpb: host sees client in level -1", [p for p in st["players"] if p["name"] == "Alice"][0]["region"] == L1, st["players"])
+        check("mpb: host view does not show the underground player", st["view"]["avatars"] == 1, st["view"])
+        # Host goes outside and chops; client waits underground.
+        host.cmd("walk_to 480 600"); host.cmd("press_interact")
+        host.cmd("walk_to 860 585"); r = chop(host)
+        check("mpb: host chops a tree on the surface", r["state"]["carried"].get("wood", 0) == 4, r["state"]["carried"])
+        host.cmd("dev teleport 640 368"); r = chop(host)
+        go_inside(host); host.cmd("walk_to 470 400"); r = host.cmd("press_interact")
+        check("mpb: host deposits 8 wood", r["state"]["bunkers"][SITE]["wood"] == 8, r["state"]["bunkers"])
+        time.sleep(0.5)
+        sa = a.state()
+        check("mpb: client underground sees the stockpile grow", sa["bunkers"][SITE]["wood"] == 8, sa["bunkers"])
+        # Client builds while the host goes back out and chops another tree.
+        host.cmd("walk_to 480 600"); host.cmd("press_interact")
+        a.cmd("walk_to 220 350")
+        with open(a.inbox, "a") as f: f.write("press_interact\n")
+        a.seq += 1
+        host.cmd("dev teleport 200 690"); rh = chop(host)
+        ra = a._wait(a.seq, 20)
+        a.cmd("walk_to 760 350"); a.cmd("press_interact"); r = a.cmd("wait 3.5")
+        sup = r["state"]["level_entities"][L1]
+        check("mpb: client built two reinforcements underground", sup["support_1"]["state"]["stage"] == "reinforced" and sup["support_2"]["state"]["stage"] == "reinforced", sup)
+        check("mpb: host chopped at the same time", rh["state"]["entities"]["homestead.tree_03"]["state"]["felled"] is True, rh["state"]["entities"]["homestead.tree_03"])
+        sh = host.state()
+        check("mpb: host sees the reinforcements", lvl(sh, L1, "support_2").get("stage") == "reinforced", "")
+        check("mpb: stockpile spent exactly once (8 - 8)", sh["bunkers"][SITE]["wood"] == 0 and r["state"]["bunkers"][SITE]["wood"] == 0, [sh["bunkers"], r["state"]["bunkers"]])
+        a.cmd("walk_to 210 600"); r = a.cmd("press_interact")
+        check("mpb: empty stockpile -> host refuses the next support", any("ACTION_NEED_WOOD" in n for n in r["state"]["notices"])
+              and lvl(r["state"], L1, "support_3").get("stage") == "exposed", [r["state"]["notices"], r["state"]["view"]["focused"]])
+        # Different levels at once: host on the surface, client on -2.
+        a.cmd("walk_to 820 640"); r = a.cmd("press_interact")
+        check("mpb: client on level -2", r["state"]["region"] == L2 and r["state"]["view"]["region"] == L2, r["state"].get("region"))
+        a0 = [p for p in host.state()["players"] if p["name"] == "Alice"][0]
+        a.cmd("hold move_right 0.6")
+        host.cmd("hold move_left 0.4")
+        st = wait_for(host, lambda s: [p for p in s["players"] if p["name"] == "Alice"][0]["x"] > a0["x"] + 40)
+        check("mpb: independent control on different levels (host sees -2 movement)",
+              [p for p in st["players"] if p["name"] == "Alice"][0]["x"] > a0["x"] + 40 and st["region"] == "homestead", st["players"])
+        sa = a.state()
+        check("mpb: client camera/view stays on -2 while host is outside", sa["view"]["region"] == L2 and sa["view"]["avatars"] == 1, sa["view"])
+        r = host.cmd("dev create_level")
+        check("mpb: host creates level -3 while client is on -2", r["state"]["bunkers"][SITE]["levels"] == [-3, -2, -1], r["state"]["bunkers"])
+        time.sleep(0.6)
+        sa = a.state()
+        check("mpb: client on -2 sees the new ladder down appear", sa["view"]["entities"]["ladder_down"]["visible"] is True, sa["view"]["entities"]["ladder_down"])
+        r = a.cmd("dev create_level")
+        check("mpb: client cannot use the developer command", any("DEV_HOST_ONLY" in n for n in r["state"]["notices"]) and r["state"]["bunkers"][SITE]["levels"] == [-3, -2, -1], r["state"]["notices"])
+        r = host.cmd("save")
+        check("mpb: host saves with players on different levels", r["ok"], r)
+        host.quit()
+        sa = wait_for(a, lambda s: not s["in_world"], timeout=12)
+        check("mpb: client returns to menu when host closes", not sa["in_world"], "")
+        host.start()
+        r = host.cmd(f"host {PORT} continue Hosty")
+        check("mpb: host restarts on the surface", r["ok"] and r["state"]["region"] == "homestead", r["state"].get("region"))
+        r = a.cmd(f"join 127.0.0.1 {PORT} Alice")
+        check("mpb: client rejoins directly on level -2", r["ok"] and r["state"]["region"] == L2 and r["state"]["view"]["region"] == L2, r["state"].get("region"))
+        check("mpb: rejoined client sees persisted bunker", r["state"]["bunkers"][SITE]["levels"] == [-3, -2, -1] and lvl(r["state"], L1, "support_1").get("stage") == "reinforced", r["state"]["bunkers"])
+        a.cmd("walk_to 760 600"); r = a.cmd("press_interact")
+        check("mpb: client descends to -3 after restart", r["state"]["region"] == L3, r["state"].get("region"))
+    finally:
+        for i in (host, a):
+            i.kill()
+
+
+SCENARIOS = {"settings": scenario_settings, "bunker_single": scenario_bunker_single, "bunker_multi": scenario_bunker_multi, "single": scenario_single, "multiplayer": scenario_multiplayer,
              "netfail": scenario_connection_failure, "assets": scenario_assets}
 
 if __name__ == "__main__":

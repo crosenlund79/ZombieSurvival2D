@@ -19,6 +19,7 @@ extends Node2D
 @export var fade_with: NodePath
 
 var region_id := ""
+var def_id := ""
 var _sprite: Sprite2D
 var _shape: CollisionShape2D
 var _interact: Interactable
@@ -28,7 +29,8 @@ var _open := false
 func _ready() -> void:
 	var view := _region_view()
 	region_id = view.region_id if view != null else Content.DEFAULT_REGION
-	var def := Content.entity_def(region_id, entity_id)
+	def_id = view.def_id if view != null else region_id
+	var def := Content.entity_def(def_id, entity_id)
 	if def.is_empty():
 		SessionLog.error("world", "door_view_without_entity", {"entity": entity_id, "region": region_id})
 		return
@@ -49,7 +51,7 @@ func _ready() -> void:
 		body.add_child(_shape)
 		add_child(body)
 	_interact = Interactable.new()
-	_interact.setup(region_id, entity_id)
+	_interact.setup(def_id, entity_id)
 	_interact.focus_changed.connect(func(f: bool) -> void:
 		_sprite.modulate = Color(1.3, 1.22, 1.0) if f else Color.WHITE)
 	add_child(_interact)

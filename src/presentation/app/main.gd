@@ -12,6 +12,7 @@ var pause_menu: PauseMenu
 var dev_overlay: DevOverlay
 var build_label: Label
 var settings_panel: SettingsPanel
+var map_panel: MapPanel
 
 
 func _ready() -> void:
@@ -39,6 +40,9 @@ func _ready() -> void:
 	dev_overlay.screenshot_requested.connect(func() -> void: take_screenshot(""))
 	dev_overlay.hide()
 	ui.add_child(dev_overlay)
+	map_panel = MapPanel.new()
+	map_panel.hide()
+	ui.add_child(map_panel)
 	build_label = UITheme.small(BuildInfo.label(), 11)
 	build_label.set_anchors_preset(Control.PRESET_BOTTOM_RIGHT)
 	build_label.grow_horizontal = Control.GROW_DIRECTION_BEGIN
@@ -50,6 +54,7 @@ func _ready() -> void:
 	ui.add_child(build_label)
 	Session.world_started.connect(_on_world_started)
 	Session.world_ended.connect(_on_world_ended)
+	Session.local_region_changed.connect(_on_local_region_changed)
 	if Paths.has_arg("autotest"):
 		var driver := AutotestDriver.new()
 		driver.main = self
@@ -58,7 +63,7 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	var focus := get_viewport().gui_get_focus_owner()
-	PlayerAvatar.input_blocked = pause_menu.visible or settings_panel != null or menu.visible \
+	PlayerAvatar.input_blocked = pause_menu.visible or settings_panel != null or menu.visible or map_panel.visible \
 		or (focus is LineEdit)
 
 
@@ -69,6 +74,10 @@ func _unhandled_input(event: InputEvent) -> void:
 		take_screenshot("")
 	elif not Session.in_world():
 		return
+	elif event.is_action_pressed("world_map") and settings_panel == null and not pause_menu.visible:
+		map_panel.visible = not map_panel.visible
+	elif event.is_action_pressed("pause_menu") and map_panel.visible:
+		map_panel.hide()
 	elif event.is_action_pressed("pause_menu") and settings_panel == null:
 		pause_menu.visible = not pause_menu.visible
 	elif event.is_action_pressed("quick_save"):
@@ -84,6 +93,7 @@ func _on_world_started() -> void:
 func _on_world_ended(reason_key: String) -> void:
 	clear_region_view()
 	pause_menu.hide()
+	map_panel.hide()
 	Audio.stop_all_loops()
 	menu.show()
 	menu.on_session_ended(reason_key)
@@ -94,12 +104,19 @@ func build_region_view() -> void:
 	var me := Session.local_player()
 	if me == null:
 		return
-	var scene_path := str(Content.region_def(me.region_id).get("scene", ""))
-	var packed := load(scene_path) as PackedScene
+	var region := Session.world.region(me.region_id)
+	if region == null:
+		SessionLog.error("view", "region_missing", {"region": me.region_id})
+		return
+	var scene_path := str(region.definition().get("scene", ""))
+	var packed := load(scene_path) as PackedScene if ResourceLoader.exists(scene_path) else null
 	if packed == null:
 		SessionLog.error("view", "region_scene_missing", {"region": me.region_id, "scene": scene_path})
 		return
 	region_view = packed.instantiate() as RegionView
+	# Bunker levels share one scene per template: tell the view which level it shows.
+	region_view.region_id = region.region_id
+	region_view.def_id = region.def_id
 	world_layer.add_child(region_view)
 
 
@@ -108,6 +125,13 @@ func clear_region_view() -> void:
 		world_layer.remove_child(region_view)
 		region_view.free()
 	region_view = null
+
+
+func _on_local_region_changed(region_id: String) -> void:
+	if region_view == null or region_view.region_id != region_id:
+		Audio.play("sfx.ladder")
+		# Deferred: the request that moved us may still be running inside the old view.
+		build_region_view.call_deferred()
 
 
 ## Frees and rebuilds the region presentation from world data (scene independence).

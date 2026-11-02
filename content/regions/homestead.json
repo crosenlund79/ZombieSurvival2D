@@ -2,22 +2,385 @@
 	"region_id": "homestead",
 	"display_key": "REGION_HOMESTEAD",
 	"scene": "res://scenes/regions/homestead/homestead.tscn",
-	"bounds": [0, 0, 2400, 1700],
-	"spawn_points": [[1110, 1060], [1190, 1060], [1060, 1110], [1240, 1110]],
+	"bounds": [
+		0,
+		0,
+		2400,
+		1700
+	],
+	"spawn_points": [
+		[
+			1110,
+			1060
+		],
+		[
+			1190,
+			1060
+		],
+		[
+			1060,
+			1110
+		],
+		[
+			1240,
+			1110
+		]
+	],
 	"entities": [
 		{
 			"id": "homestead.yard_gate",
 			"type": "door",
-			"position": [1150, 900],
+			"position": [
+				1150,
+				900
+			],
 			"interact_range": 100,
-			"initial": {"open": false}
+			"initial": {
+				"open": false
+			}
 		},
 		{
 			"id": "homestead.farmhouse_door",
 			"type": "door",
-			"position": [1160, 641],
+			"position": [
+				1160,
+				641
+			],
 			"interact_range": 80,
-			"initial": {"open": false}
+			"initial": {
+				"open": false
+			}
+		},
+		{
+			"id": "homestead.farmhouse_entry",
+			"type": "portal",
+			"position": [
+				1160,
+				646
+			],
+			"interact_range": 44,
+			"priority": 2,
+			"requires_open": "homestead.farmhouse_door",
+			"target": {
+				"region": "homestead.farmhouse",
+				"position": [
+					480,
+					560
+				]
+			},
+			"prompt_key": "PROMPT_ENTER_HOUSE"
+		},
+		{
+			"id": "homestead.tree_01",
+			"type": "tree",
+			"position": [
+				860,
+				520
+			],
+			"interact_range": 80,
+			"chops": 5,
+			"wood": 4,
+			"prompt_key": "PROMPT_CHOP",
+			"initial": {
+				"chops": 0,
+				"felled": false
+			}
+		},
+		{
+			"id": "homestead.tree_02",
+			"type": "tree",
+			"position": [
+				640,
+				300
+			],
+			"interact_range": 80,
+			"chops": 5,
+			"wood": 4,
+			"prompt_key": "PROMPT_CHOP",
+			"initial": {
+				"chops": 0,
+				"felled": false
+			}
+		},
+		{
+			"id": "homestead.tree_03",
+			"type": "tree",
+			"position": [
+				200,
+				620
+			],
+			"interact_range": 80,
+			"chops": 5,
+			"wood": 4,
+			"prompt_key": "PROMPT_CHOP",
+			"initial": {
+				"chops": 0,
+				"felled": false
+			}
+		},
+		{
+			"id": "homestead.tree_04",
+			"type": "tree",
+			"position": [
+				380,
+				880
+			],
+			"interact_range": 80,
+			"chops": 5,
+			"wood": 3,
+			"prompt_key": "PROMPT_CHOP",
+			"initial": {
+				"chops": 0,
+				"felled": false
+			}
+		},
+		{
+			"id": "homestead.tree_05",
+			"type": "tree",
+			"position": [
+				2060,
+				730
+			],
+			"interact_range": 80,
+			"chops": 5,
+			"wood": 4,
+			"prompt_key": "PROMPT_CHOP",
+			"initial": {
+				"chops": 0,
+				"felled": false
+			}
+		},
+		{
+			"id": "homestead.tree_06",
+			"type": "tree",
+			"position": [
+				2300,
+				900
+			],
+			"interact_range": 80,
+			"chops": 5,
+			"wood": 3,
+			"prompt_key": "PROMPT_CHOP",
+			"initial": {
+				"chops": 0,
+				"felled": false
+			}
+		},
+		{
+			"id": "homestead.tree_07",
+			"type": "tree",
+			"position": [
+				1910,
+				1190
+			],
+			"interact_range": 80,
+			"chops": 5,
+			"wood": 3,
+			"prompt_key": "PROMPT_CHOP",
+			"initial": {
+				"chops": 0,
+				"felled": false
+			}
 		}
-	]
+	],
+	"map": {
+		"areas": [
+			{
+				"kind": "woods",
+				"polygon": [
+					[
+						0,
+						0
+					],
+					[
+						2400,
+						0
+					],
+					[
+						2400,
+						330
+					],
+					[
+						1950,
+						560
+					],
+					[
+						1500,
+						470
+					],
+					[
+						1300,
+						250
+					],
+					[
+						1000,
+						230
+					],
+					[
+						700,
+						380
+					],
+					[
+						300,
+						700
+					],
+					[
+						0,
+						760
+					]
+				]
+			},
+			{
+				"kind": "woods",
+				"polygon": [
+					[
+						1900,
+						650
+					],
+					[
+						2400,
+						620
+					],
+					[
+						2400,
+						1250
+					],
+					[
+						1850,
+						1260
+					]
+				]
+			},
+			{
+				"kind": "woods",
+				"polygon": [
+					[
+						0,
+						820
+					],
+					[
+						460,
+						800
+					],
+					[
+						520,
+						1180
+					],
+					[
+						0,
+						1250
+					]
+				]
+			},
+			{
+				"kind": "yard",
+				"polygon": [
+					[
+						820,
+						480
+					],
+					[
+						1720,
+						480
+					],
+					[
+						1720,
+						900
+					],
+					[
+						820,
+						900
+					]
+				]
+			}
+		],
+		"roads": [
+			{
+				"kind": "road",
+				"width": 140,
+				"points": [
+					[
+						0,
+						1395
+					],
+					[
+						600,
+						1406
+					],
+					[
+						1200,
+						1394
+					],
+					[
+						1800,
+						1402
+					],
+					[
+						2400,
+						1396
+					]
+				]
+			},
+			{
+				"kind": "track",
+				"width": 110,
+				"points": [
+					[
+						1150,
+						1340
+					],
+					[
+						1150,
+						905
+					],
+					[
+						1150,
+						700
+					]
+				]
+			}
+		],
+		"landmarks": [
+			{
+				"kind": "building",
+				"position": [
+					1150,
+					575
+				],
+				"size": [
+					330,
+					140
+				],
+				"label_key": "MAP_FARMHOUSE"
+			},
+			{
+				"kind": "building",
+				"position": [
+					1560,
+					575
+				],
+				"size": [
+					150,
+					70
+				],
+				"label_key": "MAP_SHED"
+			},
+			{
+				"kind": "point",
+				"position": [
+					560,
+					1398
+				],
+				"label_key": "MAP_CAR"
+			},
+			{
+				"kind": "point",
+				"position": [
+					1268,
+					1306
+				],
+				"label_key": "MAP_SIGN"
+			}
+		]
+	}
 }

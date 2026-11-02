@@ -682,7 +682,11 @@ def tile_from_noise(size, base, dark, light, seed, cell, strokes=None):
         arr[..., i] = arr[..., i] * 0.6 + base[i] * 0.4
     img = Image.fromarray(np.clip(arr, 0, 255).astype(np.uint8), "RGB").convert("RGBA")
     if strokes:
-        strokes(img)
+        # Strokes go on an overlay that is composited, so translucent marks blend
+        # instead of punching holes in the (opaque) tile.
+        overlay = Image.new("RGBA", img.size, (0, 0, 0, 0))
+        strokes(overlay)
+        img = Image.alpha_composite(img, overlay)
     return img
 
 

@@ -1,0 +1,45 @@
+class_name ShelterSiteView
+extends EntityView
+## A place where a shelter can be dug (shelter_site entity). Stages:
+## none -> building (timed on the shared clock) -> built (a wooden floor hatch
+## that opens and closes). The hatch "tier" field is kept for future upgrades.
+
+var _progress: ProgressMarker
+
+
+func _build() -> void:
+	_progress = ProgressMarker.new()
+	_progress.position = Vector2(0, -110)
+	_progress.source = build_progress
+	add_child(_progress)
+
+
+func _refresh(cause: String) -> void:
+	var st := state()
+	var stage := str(st.get("stage", "none"))
+	var open := bool(st.get("open", false))
+	_progress.visible = stage == "building"
+	match stage:
+		"none":
+			show_art("Main", "world.shelter_site_marked")
+			_set_prompt(true, "PROMPT_BUILD_SHELTER")
+		"building":
+			show_art("Main", "world.shelter_site_digging")
+			_set_prompt(false, "PROMPT_BUILD_SHELTER")
+		_:
+			show_art("Main", "world.hatch_open" if open else "world.hatch_closed")
+			_set_prompt(true, "PROMPT_CLOSE_HATCH" if open else "PROMPT_OPEN_HATCH")
+	match cause:
+		"build_started":
+			Audio.play("sfx.dig", global_position)
+		"completed":
+			Audio.play("sfx.build_done", global_position)
+			Session.notice.emit("SHELTER_COMPLETE", [])
+		"action":
+			Audio.play("sfx.hatch_open" if open else "sfx.hatch_close", global_position)
+
+
+func _set_prompt(on: bool, key: String) -> void:
+	if interact != null:
+		interact.enabled = on
+		interact.prompt_key = key

@@ -11,13 +11,18 @@ signal focus_changed(focused: bool)
 @export var priority := 0
 var reach := 90.0
 var focused := false
+## False while the object cannot be used (e.g. a hatch under construction).
+var enabled := true
+var prompt_args: Array = []
 
 
-func setup(region_id: String, id: String) -> void:
+## def_id: the content definition of the region (see RegionView.def_id).
+func setup(def_id: String, id: String) -> void:
 	entity_id = id
-	var def := Content.entity_def(region_id, id)
+	var def := Content.entity_def(def_id, id)
 	if not def.is_empty():
 		reach = float(def.get("interact_range", reach))
+		priority = int(def.get("priority", priority))
 
 
 func _ready() -> void:
@@ -28,7 +33,7 @@ func prompt_text() -> String:
 	var key_names := []
 	for code in Settings.action_keys("interact"):
 		key_names.append(Settings.key_label(code))
-	return "[%s] %s" % [" / ".join(key_names), tr(prompt_key)]
+	return "[%s] %s" % [" / ".join(key_names), UITheme.fmt(prompt_key, prompt_args)]
 
 
 func activate() -> void:

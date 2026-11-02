@@ -58,8 +58,9 @@ func test_interaction_success() -> void:
 	var w := _world_with_player(_gate_pos() + Vector2(0, 60))
 	var r := WorldActions.request_interact(w, "aaaaaaaaaaaaaaaa", GATE, 0)
 	check(r["ok"], "in range, correct rev -> ok")
-	eq(r["state"], {"open": true}, "gate toggled open")
-	eq(r["rev"], 1, "rev 1")
+	eq(w.region("homestead").entity_state(GATE), {"open": true}, "gate toggled open")
+	eq(w.region("homestead").rev(GATE), 1, "rev 1")
+	eq(r["changes"], [{"region_id": "homestead", "entity_id": GATE, "cause": "action"}], "change reported")
 
 
 func test_interaction_rejections() -> void:

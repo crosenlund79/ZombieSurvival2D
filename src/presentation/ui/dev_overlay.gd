@@ -34,6 +34,7 @@ func _ready() -> void:
 	_btn(g, "DEV_RELOAD_ASSETS", func() -> void: Assets.reload())
 	_btn(g, "DEV_REBUILD_VIEW", func() -> void: rebuild_view_requested.emit())
 	_btn(g, "DEV_SCREENSHOT", func() -> void: screenshot_requested.emit())
+	_btn(g, "DEV_CREATE_LEVEL", func() -> void: Session.request_dev_command("create_level"))
 
 
 func _btn(parent: Control, key: String, cb: Callable) -> void:
@@ -62,10 +63,18 @@ func _process(_delta: float) -> void:
 			lines.append("region %s · me %s @ (%d, %d)" % [me.region_id, me.player_id.substr(0, 6), me.position.x, me.position.y])
 		for p in w.online_players():
 			lines.append("  · %s [%s] (%d, %d)" % [p.display_name, p.player_id.substr(0, 6), p.position.x, p.position.y])
-		for rid in w.regions:
-			var r: RegionState = w.regions[rid]
-			for eid in Content.entity_ids(rid):
-				lines.append("  %s rev %d %s" % [eid, r.rev(eid), JSON.stringify(r.entity_state(eid))])
+		if me != null and w.region(me.region_id) != null:
+			var r: RegionState = w.region(me.region_id)
+			for eid in Content.entity_ids(r.def_id):
+				if r.rev(eid) > 0:
+					lines.append("  %s rev %d %s" % [eid, r.rev(eid), JSON.stringify(r.entity_state(eid))])
+		for bid in w.bunkers:
+			var b: BunkerState = w.bunkers[bid]
+			var depths := b.levels.keys()
+			depths.sort()
+			lines.append("bunker %s · levels %s · wood %d" % [bid, str(depths), b.amount("wood")])
+		if me != null:
+			lines.append("carrying %s · jobs %d" % [JSON.stringify(me.carried), w.jobs.size()])
 	var s := Session.last_save
 	lines.append("last save: %s" % ("—" if s.is_empty() else ("OK" if s["ok"] else "FAILED " + str(s["error"]))))
 	lines.append("art/sound overrides active: %d · loops %s" % [Assets.override_count(), str(Audio.active_loops())])

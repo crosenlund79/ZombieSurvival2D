@@ -1,0 +1,28 @@
+{
+	"kind": "visual",
+	"category": "ui",
+	"assets": [
+		{
+			"id": "ui.map_paper",
+			"name": "World map paper (tiling)",
+			"template": "res://assets/templates/ui/template_map_paper.png",
+			"display_size": [
+				512,
+				512
+			],
+			"source_size": [
+				512,
+				512
+			],
+			"pivot": [
+				0,
+				0
+			],
+			"transparency": "none",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Seamless tile behind the map drawing. Generated placeholder (tools/art/gen_bunker.py) \u2014 replace with tablet art."
+		}
+	]
+}

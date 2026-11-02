@@ -9,14 +9,19 @@ var display_name := "Survivor"
 var region_id := ""
 var position := Vector2.ZERO
 var facing := 0          # 0 down, 1 up, 2 left, 3 right (presentation hint)
+var carried := {}        # resource id -> amount the player is carrying, e.g. {"wood": 4}
 var online := false      # runtime only — never saved
 var last_seen_unix := 0
+
+
+func carrying(resource: String) -> int:
+	return int(carried.get(resource, 0))
 
 
 func to_dict() -> Dictionary:
 	return {"name": display_name, "region_id": region_id,
 		"position": [snappedf(position.x, 0.01), snappedf(position.y, 0.01)],
-		"facing": facing, "last_seen_unix": last_seen_unix}
+		"facing": facing, "last_seen_unix": last_seen_unix, "carried": carried.duplicate()}
 
 
 static func from_dict(id: String, d: Dictionary) -> PlayerState:
@@ -28,4 +33,7 @@ static func from_dict(id: String, d: Dictionary) -> PlayerState:
 	p.position = Vector2(float(pos[0]), float(pos[1]))
 	p.facing = int(d.get("facing", 0))
 	p.last_seen_unix = int(d.get("last_seen_unix", 0))
+	var c: Dictionary = d.get("carried", {})
+	for k in c:
+		p.carried[str(k)] = maxi(0, int(c[k]))
 	return p

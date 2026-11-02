@@ -1,0 +1,182 @@
+{
+	"kind": "visual",
+	"category": "interior",
+	"assets": [
+		{
+			"id": "world.interior_floor",
+			"name": "Farmhouse floorboards (tiling)",
+			"template": "res://assets/templates/world/interior/template_floor_planks_tile.png",
+			"display_size": [
+				256,
+				256
+			],
+			"source_size": [
+				256,
+				256
+			],
+			"pivot": [
+				0,
+				0
+			],
+			"transparency": "none",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Seamless tile. Generated placeholder (tools/art/gen_bunker.py) \u2014 replace with tablet art."
+		},
+		{
+			"id": "world.interior_wall",
+			"name": "Farmhouse back wall with windows",
+			"template": "res://assets/templates/world/interior/template_back_wall.png",
+			"display_size": [
+				760,
+				220
+			],
+			"source_size": [
+				1520,
+				440
+			],
+			"pivot": [
+				0.5,
+				1.0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "high",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_bunker.py) \u2014 replace with tablet art."
+		},
+		{
+			"id": "world.furniture_table",
+			"name": "Table with overturned chair",
+			"template": "res://assets/templates/world/interior/template_table.png",
+			"display_size": [
+				150,
+				110
+			],
+			"source_size": [
+				300,
+				220
+			],
+			"pivot": [
+				0.5,
+				0.909
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_bunker.py) \u2014 replace with tablet art."
+		},
+		{
+			"id": "world.furniture_bed",
+			"name": "Bed",
+			"template": "res://assets/templates/world/interior/template_bed.png",
+			"display_size": [
+				200,
+				130
+			],
+			"source_size": [
+				400,
+				260
+			],
+			"pivot": [
+				0.5,
+				0.808
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_bunker.py) \u2014 replace with tablet art."
+		},
+		{
+			"id": "world.furniture_cupboard",
+			"name": "Cupboard, one door open",
+			"template": "res://assets/templates/world/interior/template_cupboard.png",
+			"display_size": [
+				110,
+				160
+			],
+			"source_size": [
+				220,
+				320
+			],
+			"pivot": [
+				0.5,
+				0.9375
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_bunker.py) \u2014 replace with tablet art."
+		},
+		{
+			"id": "world.furniture_stove",
+			"name": "Wood stove",
+			"template": "res://assets/templates/world/interior/template_stove.png",
+			"display_size": [
+				100,
+				130
+			],
+			"source_size": [
+				200,
+				260
+			],
+			"pivot": [
+				0.5,
+				0.908
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_bunker.py) \u2014 replace with tablet art."
+		},
+		{
+			"id": "world.furniture_rug",
+			"name": "Rug (floor decal)",
+			"template": "res://assets/templates/world/interior/template_rug.png",
+			"display_size": [
+				220,
+				130
+			],
+			"source_size": [
+				440,
+				260
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_bunker.py) \u2014 replace with tablet art."
+		},
+		{
+			"id": "world.exit_mat",
+			"name": "Front door mat with daylight spill (exit)",
+			"template": "res://assets/templates/world/interior/template_exit_mat.png",
+			"display_size": [
+				120,
+				55
+			],
+			"source_size": [
+				240,
+				110
+			],
+			"pivot": [
+				0.5,
+				0.873
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_bunker.py) \u2014 replace with tablet art."
+		}
+	]
+}

@@ -1,0 +1,87 @@
+{
+	"region_id": "homestead.farmhouse",
+	"display_key": "REGION_FARMHOUSE",
+	"scene": "res://scenes/regions/homestead/farmhouse_interior.tscn",
+	"bounds": [
+		0,
+		0,
+		960,
+		680
+	],
+	"surface": {
+		"region": "homestead",
+		"position": [
+			1160,
+			641
+		]
+	},
+	"spawn_points": [
+		[
+			480,
+			560
+		]
+	],
+	"entities": [
+		{
+			"id": "homestead.farmhouse.exit",
+			"type": "portal",
+			"position": [
+				480,
+				622
+			],
+			"interact_range": 56,
+			"priority": 2,
+			"target": {
+				"region": "homestead",
+				"position": [
+					1160,
+					700
+				]
+			},
+			"prompt_key": "PROMPT_EXIT_HOUSE"
+		},
+		{
+			"id": "homestead.farmhouse.shelter",
+			"type": "shelter_site",
+			"position": [
+				300,
+				440
+			],
+			"interact_range": 84,
+			"build_seconds": 8,
+			"level_template": "bunker_earth",
+			"initial": {
+				"stage": "none",
+				"open": false,
+				"tier": "wood"
+			}
+		},
+		{
+			"id": "homestead.farmhouse.hatch_ladder",
+			"type": "portal",
+			"position": [
+				300,
+				440
+			],
+			"interact_range": 34,
+			"priority": 2,
+			"requires_open": "homestead.farmhouse.shelter",
+			"target": {
+				"bunker_of": "homestead.farmhouse.shelter",
+				"depth": -1
+			},
+			"prompt_key": "PROMPT_CLIMB_DOWN"
+		},
+		{
+			"id": "homestead.farmhouse.timber",
+			"type": "stockpile",
+			"position": [
+				470,
+				330
+			],
+			"interact_range": 80,
+			"bunker_of": "homestead.farmhouse.shelter",
+			"prompt_key": "PROMPT_DEPOSIT_WOOD"
+		}
+	]
+}

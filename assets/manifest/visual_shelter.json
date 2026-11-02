@@ -1,0 +1,182 @@
+{
+	"kind": "visual",
+	"category": "shelter",
+	"assets": [
+		{
+			"id": "world.shelter_site_marked",
+			"name": "Shelter site \u2014 marked on the floorboards",
+			"template": "res://assets/templates/world/shelter/template_site_marked.png",
+			"display_size": [
+				140,
+				100
+			],
+			"source_size": [
+				280,
+				200
+			],
+			"pivot": [
+				0.5,
+				0.55
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Floor-level art: drawn under characters. Generated placeholder (tools/art/gen_bunker.py) \u2014 replace with tablet art."
+		},
+		{
+			"id": "world.shelter_site_digging",
+			"name": "Shelter site \u2014 digging in progress",
+			"template": "res://assets/templates/world/shelter/template_site_digging.png",
+			"display_size": [
+				160,
+				120
+			],
+			"source_size": [
+				320,
+				240
+			],
+			"pivot": [
+				0.5,
+				0.583
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_bunker.py) \u2014 replace with tablet art."
+		},
+		{
+			"id": "world.hatch_closed",
+			"name": "Wooden floor hatch \u2014 closed",
+			"template": "res://assets/templates/world/shelter/template_hatch_closed.png",
+			"display_size": [
+				140,
+				110
+			],
+			"source_size": [
+				280,
+				220
+			],
+			"pivot": [
+				0.5,
+				0.545
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Tier 'wood'. Future tiers (reinforced, steel) get their own assets. Generated placeholder (tools/art/gen_bunker.py) \u2014 replace with tablet art."
+		},
+		{
+			"id": "world.hatch_open",
+			"name": "Wooden floor hatch \u2014 open, ladder down",
+			"template": "res://assets/templates/world/shelter/template_hatch_open.png",
+			"display_size": [
+				140,
+				140
+			],
+			"source_size": [
+				280,
+				280
+			],
+			"pivot": [
+				0.5,
+				0.643
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_bunker.py) \u2014 replace with tablet art."
+		},
+		{
+			"id": "world.timber_pile_empty",
+			"name": "Timber stockpile \u2014 empty bearers",
+			"template": "res://assets/templates/world/shelter/template_timber_pile_empty.png",
+			"display_size": [
+				150,
+				90
+			],
+			"source_size": [
+				300,
+				180
+			],
+			"pivot": [
+				0.5,
+				0.889
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_bunker.py) \u2014 replace with tablet art."
+		},
+		{
+			"id": "world.timber_pile_small",
+			"name": "Timber stockpile \u2014 small (1\u20137)",
+			"template": "res://assets/templates/world/shelter/template_timber_pile_small.png",
+			"display_size": [
+				150,
+				90
+			],
+			"source_size": [
+				300,
+				180
+			],
+			"pivot": [
+				0.5,
+				0.889
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_bunker.py) \u2014 replace with tablet art."
+		},
+		{
+			"id": "world.timber_pile_medium",
+			"name": "Timber stockpile \u2014 medium (8\u201319)",
+			"template": "res://assets/templates/world/shelter/template_timber_pile_medium.png",
+			"display_size": [
+				150,
+				90
+			],
+			"source_size": [
+				300,
+				180
+			],
+			"pivot": [
+				0.5,
+				0.889
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_bunker.py) \u2014 replace with tablet art."
+		},
+		{
+			"id": "world.timber_pile_large",
+			"name": "Timber stockpile \u2014 large (20+)",
+			"template": "res://assets/templates/world/shelter/template_timber_pile_large.png",
+			"display_size": [
+				150,
+				90
+			],
+			"source_size": [
+				300,
+				180
+			],
+			"pivot": [
+				0.5,
+				0.889
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_bunker.py) \u2014 replace with tablet art."
+		}
+	]
+}

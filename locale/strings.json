@@ -1,4 +1,24 @@
 {
+	"ACTION_ALREADY_DONE": {
+		"da": "Allerede forstærket.",
+		"en": "Already reinforced."
+	},
+	"ACTION_ALREADY_FELLED": {
+		"da": "Det træ er allerede fældet.",
+		"en": "That tree is already down."
+	},
+	"ACTION_BUSY": {
+		"da": "Arbejdet er allerede i gang.",
+		"en": "Work is already under way."
+	},
+	"ACTION_CARRY_FULL": {
+		"da": "Du kan ikke bære mere end %s træ. Stabl det ved tilflugtsrummet.",
+		"en": "You can't carry more than %s wood. Stack it at the shelter."
+	},
+	"ACTION_CLOSED": {
+		"da": "Den er lukket.",
+		"en": "It is closed."
+	},
 	"ACTION_DEV_OVERLAY": {
 		"da": "Udvikleroverblik",
 		"en": "Developer overlay"
@@ -23,9 +43,25 @@
 		"da": "Gå op",
 		"en": "Move up"
 	},
+	"ACTION_NEED_WOOD": {
+		"da": "Kræver %s træ — lageret har %s.",
+		"en": "Needs %s wood — the stockpile has %s."
+	},
+	"ACTION_NOTHING_TO_DEPOSIT": {
+		"da": "Du bærer ikke noget træ.",
+		"en": "You are not carrying any wood."
+	},
+	"ACTION_NOT_AVAILABLE": {
+		"da": "Den vej er ikke åben.",
+		"en": "That way is not open."
+	},
 	"ACTION_NOT_SUPPORTED": {
 		"da": "Det kan ikke bruges.",
 		"en": "Nothing to do with that."
+	},
+	"ACTION_NO_SHELTER": {
+		"da": "Der er endnu intet tilflugtsrum her.",
+		"en": "There is no shelter here yet."
 	},
 	"ACTION_PAUSE_MENU": {
 		"da": "Menu",
@@ -47,6 +83,10 @@
 		"da": "For langt væk.",
 		"en": "Too far away."
 	},
+	"ACTION_TOO_FAST": {
+		"da": "",
+		"en": ""
+	},
 	"ACTION_UNKNOWN_OBJECT": {
 		"da": "Den genstand er her ikke.",
 		"en": "That object is not here."
@@ -54,6 +94,10 @@
 	"ACTION_UNKNOWN_PLAYER": {
 		"da": "Du er ikke registreret i denne verden.",
 		"en": "You are not registered in this world."
+	},
+	"ACTION_WORLD_MAP": {
+		"da": "Verdenskort",
+		"en": "World map"
 	},
 	"ACTION_ZOOM_IN": {
 		"da": "Zoom ind",
@@ -87,9 +131,25 @@
 		"da": "Ur +1 t",
 		"en": "Clock +1 h"
 	},
+	"DEV_CREATE_LEVEL": {
+		"da": "Opret underjordisk testniveau",
+		"en": "Create underground test level"
+	},
 	"DEV_HOST_ONLY": {
 		"da": "Udviklerkommandoer kører kun hos værten.",
 		"en": "Developer commands run only on the host."
+	},
+	"DEV_LEVEL_CREATED": {
+		"da": "Oprettede underjordisk niveau %s.",
+		"en": "Created underground level %s."
+	},
+	"DEV_LEVEL_FAILED": {
+		"da": "Kunne ikke oprette niveauet.",
+		"en": "Could not create the level."
+	},
+	"DEV_NO_SHELTER": {
+		"da": "Byg først et tilflugtsrum.",
+		"en": "Build a shelter first."
 	},
 	"DEV_REBUILD_VIEW": {
 		"da": "Genopbyg visning",
@@ -143,9 +203,25 @@
 		"da": "tilfældig",
 		"en": "random"
 	},
+	"HUD_CARRYING": {
+		"da": "Bærer %s / %s træ",
+		"en": "Carrying %s / %s wood"
+	},
+	"HUD_LEVEL": {
+		"da": "%s · Niveau %s",
+		"en": "%s · Level %s"
+	},
 	"HUD_PLAYERS": {
 		"da": "spillere",
 		"en": "players"
+	},
+	"HUD_REINFORCED": {
+		"da": "Forstærket jord: %s / %s",
+		"en": "Reinforced earth: %s / %s"
+	},
+	"HUD_STOCKPILE": {
+		"da": "Tilflugtsrummets lager: %s træ",
+		"en": "Shelter stockpile: %s wood"
 	},
 	"HUD_TIME": {
 		"da": "tid",
@@ -198,6 +274,46 @@
 	"LANG_EN": {
 		"da": "English",
 		"en": "English"
+	},
+	"MAP_CAR": {
+		"da": "Efterladt bil",
+		"en": "Abandoned car"
+	},
+	"MAP_FARMHOUSE": {
+		"da": "Stuehus",
+		"en": "Farmhouse"
+	},
+	"MAP_LEGEND": {
+		"da": "● dig   ● andre overlevende   ▲ tilflugtsrum   ○ træer (små = fældede)   [M] luk",
+		"en": "● you   ● other survivors   ▲ shelter   ○ trees (small = felled)   [M] close"
+	},
+	"MAP_SHED": {
+		"da": "Skur",
+		"en": "Shed"
+	},
+	"MAP_SHELTER": {
+		"da": "Tilflugtsrum (%s niveauer)",
+		"en": "Shelter (%s levels)"
+	},
+	"MAP_SIGN": {
+		"da": "Skilt",
+		"en": "Sign"
+	},
+	"MAP_TITLE": {
+		"da": "Kort — %s",
+		"en": "Map — %s"
+	},
+	"MAP_YOU_INSIDE": {
+		"da": "Du er indenfor: %s.",
+		"en": "You are inside: %s."
+	},
+	"MAP_YOU_SURFACE": {
+		"da": "Du er udenfor: %s.",
+		"en": "You are outside: %s."
+	},
+	"MAP_YOU_UNDERGROUND": {
+		"da": "Du er under jorden: %s (dybde %s), under det markerede tilflugtsrum.",
+		"en": "You are underground: %s (depth %s), beneath the marked shelter."
 	},
 	"MENU_BACK": {
 		"da": "Tilbage",
@@ -303,6 +419,22 @@
 		"da": "%s gik.",
 		"en": "%s left."
 	},
+	"PROMPT_BUILD_SHELTER": {
+		"da": "Grav et tilflugtsrum under huset",
+		"en": "Dig a shelter beneath the house"
+	},
+	"PROMPT_CHOP": {
+		"da": "Fæld træ (%s mere)",
+		"en": "Chop tree (%s more)"
+	},
+	"PROMPT_CLIMB_DOWN": {
+		"da": "Klatr ned",
+		"en": "Climb down"
+	},
+	"PROMPT_CLIMB_UP": {
+		"da": "Klatr op",
+		"en": "Climb up"
+	},
 	"PROMPT_CLOSE_DOOR": {
 		"da": "Luk dør",
 		"en": "Close door"
@@ -310,6 +442,22 @@
 	"PROMPT_CLOSE_GATE": {
 		"da": "Luk låge",
 		"en": "Close gate"
+	},
+	"PROMPT_CLOSE_HATCH": {
+		"da": "Luk lem",
+		"en": "Close hatch"
+	},
+	"PROMPT_DEPOSIT_WOOD": {
+		"da": "Stabl %s træ på bunken",
+		"en": "Stack %s wood on the pile"
+	},
+	"PROMPT_ENTER_HOUSE": {
+		"da": "Gå ind i stuehuset",
+		"en": "Enter the farmhouse"
+	},
+	"PROMPT_EXIT_HOUSE": {
+		"da": "Gå udenfor",
+		"en": "Go outside"
 	},
 	"PROMPT_OPEN_DOOR": {
 		"da": "Åbn dør",
@@ -319,13 +467,33 @@
 		"da": "Åbn låge",
 		"en": "Open gate"
 	},
+	"PROMPT_OPEN_HATCH": {
+		"da": "Åbn lem",
+		"en": "Open hatch"
+	},
+	"PROMPT_REINFORCE": {
+		"da": "Forstærk med tømmer (%s træ, %s på lager)",
+		"en": "Reinforce with timber (%s wood, %s in stock)"
+	},
 	"PROMPT_USE": {
 		"da": "Brug",
 		"en": "Use"
 	},
+	"REGION_FARMHOUSE": {
+		"da": "Stuehuset",
+		"en": "The Farmhouse"
+	},
 	"REGION_HOMESTEAD": {
 		"da": "Husmandsstedet",
 		"en": "The Homestead"
+	},
+	"REGION_SHELTER": {
+		"da": "Tilflugtsrum",
+		"en": "Shelter"
+	},
+	"REGION_TEST_LEVEL": {
+		"da": "Testniveau",
+		"en": "Test level"
 	},
 	"SAVE_FAILED": {
 		"da": "Gemning mislykkedes: %s",
@@ -414,5 +582,21 @@
 	"SETTINGS_WINDOW_SIZE": {
 		"da": "Vinduesstørrelse",
 		"en": "Window size"
+	},
+	"SHELTER_COMPLETE": {
+		"da": "Lemmen til tilflugtsrummet er færdig.",
+		"en": "The shelter hatch is finished."
+	},
+	"STOCKPILE_LABEL": {
+		"da": "Tømmer: %s",
+		"en": "Timber: %s"
+	},
+	"WOOD_DEPOSITED": {
+		"da": "Stablede %s træ. Lager: %s",
+		"en": "Stacked %s wood. Stockpile: %s"
+	},
+	"WOOD_GAINED": {
+		"da": "+%s træ (bærer %s)",
+		"en": "+%s wood (carrying %s)"
 	}
 }

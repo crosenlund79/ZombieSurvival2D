@@ -3,20 +3,40 @@ extends RefCounted
 ## Player-made changes to one region, kept apart from the authored initial
 ## content. Only fields that differ from the content definition are stored,
 ## plus a revision counter per changed entity.
+##
+## region_id identifies this region in the world (e.g. "homestead" or
+## "bunker:homestead.farmhouse.shelter:-2"); def_id names the content
+## definition it was built from (the same id for static regions, or
+## "level:<template>" for bunker levels).
 
 var region_id := ""
+var def_id := ""
 var overrides := {}  # entity_id -> {field: value}
 var revs := {}       # entity_id -> int (increments on every authoritative change)
 
 
+static func make(id: String, definition_id: String = "") -> RegionState:
+	var r := RegionState.new()
+	r.region_id = id
+	r.def_id = definition_id if definition_id != "" else id
+	return r
+
+
+func definition() -> Dictionary:
+	return Content.region_def(def_id)
+
+
+func entity_def(entity_id: String) -> Dictionary:
+	return Content.entity_def(def_id, entity_id)
+
+
 func has_entity(entity_id: String) -> bool:
-	return not Content.entity_def(region_id, entity_id).is_empty()
+	return not entity_def(entity_id).is_empty()
 
 
 ## Current state = authored initial state merged with saved changes.
 func entity_state(entity_id: String) -> Dictionary:
-	var def := Content.entity_def(region_id, entity_id)
-	var state: Dictionary = def.get("initial", {}).duplicate(true)
+	var state: Dictionary = entity_def(entity_id).get("initial", {}).duplicate(true)
 	state.merge(overrides.get(entity_id, {}), true)
 	return state
 
@@ -27,7 +47,7 @@ func rev(entity_id: String) -> int:
 
 ## Authority only. Stores only fields that differ from the initial content.
 func set_fields(entity_id: String, fields: Dictionary) -> void:
-	var initial: Dictionary = Content.entity_def(region_id, entity_id).get("initial", {})
+	var initial: Dictionary = entity_def(entity_id).get("initial", {})
 	var o: Dictionary = overrides.get(entity_id, {})
 	for k in fields:
 		if initial.has(k) and initial[k] == fields[k]:
@@ -43,7 +63,7 @@ func set_fields(entity_id: String, fields: Dictionary) -> void:
 
 ## Replica side: accept the host's full state for an entity.
 func apply_remote(entity_id: String, state: Dictionary, new_rev: int) -> void:
-	var initial: Dictionary = Content.entity_def(region_id, entity_id).get("initial", {})
+	var initial: Dictionary = entity_def(entity_id).get("initial", {})
 	var o := {}
 	for k in state:
 		if not (initial.has(k) and initial[k] == state[k]):
@@ -61,13 +81,15 @@ func to_dict() -> Dictionary:
 	for id in ids:
 		if not ents.has(id):
 			ents[id] = {"state": overrides.get(id, {}), "rev": rev(id)}
-	return {"entities": ents}
+	var d := {"entities": ents}
+	if def_id != region_id:
+		d["def_id"] = def_id
+	return d
 
 
 ## Unknown entities (content removed since the save) are dropped with a warning.
 static func from_dict(id: String, d: Dictionary, warnings: Array) -> RegionState:
-	var r := RegionState.new()
-	r.region_id = id
+	var r := RegionState.make(id, str(d.get("def_id", id)))
 	var ents: Dictionary = d.get("entities", {})
 	for eid in ents:
 		if not r.has_entity(eid):

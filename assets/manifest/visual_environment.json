@@ -287,6 +287,28 @@
 			"complexity": "trivial",
 			"status": "READY",
 			"notes": "Generated placeholder (tools/art/gen_homestead.py) \u2014 replace with tablet art."
+		},
+		{
+			"id": "env.tree_stump",
+			"name": "Tree stump (after felling)",
+			"template": "res://assets/templates/env/trees/template_stump.png",
+			"display_size": [
+				90,
+				60
+			],
+			"source_size": [
+				180,
+				120
+			],
+			"pivot": [
+				0.5,
+				0.867
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_bunker.py) \u2014 replace with tablet art."
 		}
 	]
 }

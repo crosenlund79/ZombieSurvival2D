@@ -31,6 +31,7 @@ Beskrivelse i almindeligt sprog af hver GDScript-fil. Identifikatorer og stier e
 | `src/content/content.gd` | SafeFile | Læser forfattede områdefiler (`content/regions/*.json`): entiteter, positioner, rækkevidde, starttilstand, startpunkter; beregner et indholdsfingeraftryk, så vært og klient kan bekræfte, at de matcher. |
 | `src/state/world_state.gd` | Content, RegionState, PlayerState, Simulation | Hele den fælles verden som rene data: id, seed, urtik, områder, spillere. Giver også seedede tilfældighedsstrømme. |
 | `src/state/region_state.gd` | Content | Spillerskabte ændringer i ét område, kun gemt hvor de afviger fra det forfattede indhold, med et revisionsnummer pr. genstand. |
+| `src/state/bunker_state.gd` | — | Ét tilflugtsrum som rene data: indgangens identitet, niveauer efter dybde med fortegn (intet maksimum) og det fælles lager. Danner og fortolker niveauernes område-id'er. |
 | `src/state/player_state.gd` | Content | Én spillers gemte data: identitet, navn, område, position, retning. |
 | `src/sim/simulation.gd` | WorldState | Det ene fælles ur (10 tik pr. sekund). Fremtidige tidsstyrede systemer kobles på her. |
 | `src/sim/world_actions.gd` | WorldState, Content | Værtens regler: kontrollerer en interaktionsanmodning (hvem, hvor, hvor langt, hvilken revision) og udfører den; kontrollerer at rapporteret bevægelse er fysisk mulig. |
@@ -45,6 +46,7 @@ Beskrivelse i almindeligt sprog af hver GDScript-fil. Identifikatorer og stier e
 | `src/presentation/ui/ui_root.gd` | Settings, UITheme | Rod for alle paneler: anvender temaet og UI-skaleringen og fylder altid vinduet uanset billedformat. |
 | `src/presentation/ui/main_menu.gd` | Session, Saves, Settings | Startmenu: Enspiller, Vært, Deltag, Indstillinger, Afslut; fortsæt/ny verden; adresse og port; viser fejl i klart sprog. |
 | `src/presentation/ui/settings_panel.gd` | Settings, Assets | Indstillingsvindue: lydstyrker, skærm, UI-skalering, sprog, omdefinering af taster, udskiftningsmappe og genindlæsning. Gemmer straks; sætter aldrig verden på pause. |
+| `src/presentation/ui/map_panel.gd` | Session, Assets, Hud | Verdenskort (M): veje, områder og kendemærker fra indholdet; træer, tilflugtsrum og spillere fra den aktuelle tilstand; dybde under jorden. |
 | `src/presentation/ui/hud.gd` | Session, InteractionSensor | Overlay i spillet: statuslinje, interaktionsprompt, korte beskeder. |
 | `src/presentation/ui/pause_menu.gd` | Session | Esc-menu: fortsæt, gem (vært), indstillinger, forlad. Den fælles verden kører videre. |
 | `src/presentation/ui/dev_overlay.gd` | Session, Net, Assets, Audio, SessionLog | F3-udviklerpanel: build, netværks- og verdenstilstand, spillere, entitetstilstande, gemmestatus, udskiftninger, logsti og nogle få værtskontrollerede kommandoer. |
@@ -63,6 +65,15 @@ Beskrivelse i almindeligt sprog af hver GDScript-fil. Identifikatorer og stier e
 | `src/presentation/world/ground_patch.gd` | Assets, AssetCatalog | En jordflade-polygon (græs, jord, vej) fyldt med en gentagende tekstur; formen redigeres i editoren. |
 | `src/presentation/world/scatter.gd` | Prop | Seedet dekorativ beplantning (græs, blomster) i et område uden for angivne rektangler — ens for alle spillere. |
 | `src/presentation/world/atmosphere.gd` | Assets | Stemningslag: varm farvetone, drivende frøfnug, papirstruktur og vignet. Kun præsentation. |
+| `src/presentation/world/entity_view.gd` | Session, Content, Assets, Interactable | Basis for visninger af genstande: position og rækkevidde fra indholdet, tilstand fra verden, grafik fra asset-id'er, én Interactable; underklasser opdaterer ved ændringer. |
+| `src/presentation/world/portal_view.gd` | EntityView | Døråbninger og stiger mellem områder; skjult/ubrugelig når deaktiveret eller når den krævede lem/dør er lukket. |
+| `src/presentation/world/shelter_site_view.gd` | EntityView, ProgressMarker, Audio | Stedet til et tilflugtsrum i en bygning: markeret → graves (statuslinje) → trælem der kan åbnes og lukkes. |
+| `src/presentation/world/stockpile_view.gd` | EntityView | Den fælles tømmerbunke; grafikken vokser med lageret; prompten viser hvad du bærer. |
+| `src/presentation/world/tree_view.gd` | EntityView, Prop | Træ der kan fældes: hug-feedback (rysten, spåner, lyd), faldanimation, stub; stammekollision kun mens træet står. |
+| `src/presentation/world/support_view.gd` | EntityView, ProgressMarker | Forstærkningssted: uforstærket jord → bygges → tømmerramme; prompten viser pris og lager. |
+| `src/presentation/world/progress_marker.gd` | — | Lille blæktegnet statuslinje over noget der bygges. |
+| `src/presentation/world/light_factory.gd` | — | Danner den bløde radiale tekstur til 2D-lys og bygger lanternelys. |
+| `src/presentation/world/light_spot.gd` | LightFactory | Et scenelys (lanterne, vindue, lysskakt) med den fælles radiale tekstur. |
 | `src/presentation/world/placeholder_block.gd` | — | Gråboks-hjælper (brugt i fase A, beholdt til skitsering af nye områder): et farvet rektangel med tilsvarende kollision. |
 | `src/presentation/world/placeholder_ground.gd` | — | Gråboks-jord med et 100 px gitter (ikke brugt i den nuværende scene). |
 
@@ -75,5 +86,6 @@ Beskrivelse i almindeligt sprog af hver GDScript-fil. Identifikatorer og stier e
 | `tests/test_case.gd` | — | Lille basisklasse til enhedstests (`check`, `eq`). |
 | `tests/test_runner.gd` | TestCase, ContentCheck | Kører alle testfiler i tests/unit og indholdskontrollen, skriver resultater og afslutter med fejlkode ved fejl. |
 | `tests/unit/test_world.gd` | WorldState, WorldActions, Simulation | Tester oprettelse af verden, lagring af ændringer, seedet tilfældighed, uret, validering af interaktioner, samtidige anmodninger, bevægelsesplausibilitet. |
+| `tests/unit/test_bunker.gd` | WorldActions, Simulation, SaveCodec | Tester tilflugtsrummets byggetid, ingen dobbelt lem, portaler, træ kun givet én gang, nedkøling, forstærkning der kun bruger træ én gang, ubegrænsede udviklerniveauer, gemte spil, migrering. |
 | `tests/unit/test_save.gd` | SaveCodec, SafeFile, Saves | Tester gem/indlæs-rundtur, validering, standardværdier, slettet indhold, den historiske v1-fixture, migreringer, sikre skrivninger og fallback til sikkerhedskopi. |
 | `tests/unit/test_assets.gd` | AssetCatalog, AssetResolver | Tester navngivning af udskiftninger, prioritet, afvisning af beskadigede/for store filer, nødløsning, lydudskiftning og tilpasning til visningsboksen. |

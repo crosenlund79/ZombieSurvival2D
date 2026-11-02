@@ -6,6 +6,7 @@ extends Control
 var _status: Label
 var _prompt: Label
 var _notices: VBoxContainer
+var _resources: Label
 
 
 func _ready() -> void:
@@ -35,20 +36,64 @@ func _ready() -> void:
 	_notices.alignment = BoxContainer.ALIGNMENT_BEGIN
 	_notices.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(_notices)
+	_resources = UITheme.small("", 15)
+	_resources.set_anchors_preset(Control.PRESET_TOP_RIGHT)
+	_resources.grow_horizontal = Control.GROW_DIRECTION_BEGIN
+	_resources.offset_right = -14
+	_resources.offset_top = 10
+	_resources.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	_resources.add_theme_color_override("font_outline_color", Color(0, 0, 0, 0.8))
+	_resources.add_theme_constant_override("outline_size", 4)
+	add_child(_resources)
 	Session.notice.connect(show_notice)
 
 
 func _process(_delta: float) -> void:
 	if not Session.in_world():
 		_status.text = ""
+		_resources.text = ""
 		_prompt.text = ""
 		return
 	var w := Session.world
+	var me := Session.local_player()
 	_status.text = "%s · %s · %s %d · %s %s" % [
-		tr("MODE_" + Session.mode_name()), tr(Content.region_def(Session.local_player().region_id).get("display_key", "")),
+		tr("MODE_" + Session.mode_name()), region_label(me.region_id),
 		tr("HUD_PLAYERS"), w.online_players().size(), tr("HUD_TIME"), Simulation.format_time(w)]
+	_resources.text = _resource_line(me)
 	var sensor := get_tree().get_first_node_in_group("local_sensor") as InteractionSensor
 	_prompt.text = sensor.focused.prompt_text() if sensor != null and sensor.focused != null and not PlayerAvatar.input_blocked else ""
+
+
+## "The Homestead", "The Farmhouse", "Shelter · Level -2" …
+static func region_label(region_id: String) -> String:
+	var w := Session.world
+	var name := TranslationServer.translate(str(w.region_def(region_id).get("display_key", "")))
+	var parsed := BunkerState.parse_region_id(region_id)
+	if not parsed.is_empty():
+		name = UITheme.fmt("HUD_LEVEL", [name, parsed["depth"]])
+	return name
+
+
+func _resource_line(me: PlayerState) -> String:
+	var parts: Array[String] = []
+	parts.append(UITheme.fmt("HUD_CARRYING", [me.carrying("wood"), WorldActions.CARRY_LIMIT]))
+	var b := Session.world.bunker_for_region(me.region_id)
+	if b == null and Session.world.bunkers.size() == 1:
+		b = Session.world.bunkers.values()[0]
+	if b != null:
+		parts.append(UITheme.fmt("HUD_STOCKPILE", [b.amount("wood")]))
+	var r := Session.world.region(me.region_id)
+	if r != null and not BunkerState.parse_region_id(me.region_id).is_empty():
+		var total := 0
+		var done := 0
+		for eid in Content.entity_ids(r.def_id):
+			if str(r.entity_def(eid).get("type", "")) == "support_site":
+				total += 1
+				if str(r.entity_state(eid).get("stage", "")) == "reinforced":
+					done += 1
+		if total > 0:
+			parts.append(UITheme.fmt("HUD_REINFORCED", [done, total]))
+	return "\n".join(parts)
 
 
 func show_notice(key: String, args: Array) -> void:
@@ -58,7 +103,7 @@ func show_notice(key: String, args: Array) -> void:
 	l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	l.add_theme_color_override("font_outline_color", Color(0, 0, 0, 0.9))
 	l.add_theme_constant_override("outline_size", 5)
-	if key.begins_with("ACTION_") or key.ends_with("FAILED") or key.begins_with("DEV_"):
+	if key.begins_with("ACTION_") or key.ends_with("FAILED") or key == "DEV_HOST_ONLY":
 		l.add_theme_color_override("font_color", UITheme.WARN)
 	_notices.add_child(l)
 	while _notices.get_child_count() > 5:

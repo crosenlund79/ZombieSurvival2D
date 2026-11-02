@@ -34,6 +34,12 @@ func _ready() -> void:
 	var cm := CanvasModulate.new()
 	cm.color = tint
 	add_child(cm)
+	if drift_amount > 0:
+		_add_drift()
+	_add_overlay()
+
+
+func _add_drift() -> void:
 	var p := CPUParticles2D.new()
 	p.amount = drift_amount
 	p.lifetime = 14.0
@@ -52,6 +58,9 @@ func _ready() -> void:
 	p.color = Color(1, 1, 1, 0.75)
 	p.z_index = 20
 	add_child(p)
+
+
+func _add_overlay() -> void:
 	var layer := CanvasLayer.new()
 	layer.layer = 5
 	add_child(layer)

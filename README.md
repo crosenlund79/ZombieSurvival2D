@@ -4,7 +4,7 @@ A 2D co-op zombie-survival and underground bunker-management game, built in Godo
 
 > Danger above. Security below. But security must be earned and can be threatened.
 
-**Status:** iteration 001 — technical foundation + first explorable prototype (no survival gameplay yet).
+**Status:** iteration 002 — dig a shelter under the farmhouse, chop timber, reinforce the bunker, world map (no zombies/survival stats yet).
 Godot 4.7.2 · open `project.godot` · press F5. Two players: see the testing guide.
 
 - Design context and inherited engineering lessons: [`docs/HANDOVER.md`](docs/HANDOVER.md)

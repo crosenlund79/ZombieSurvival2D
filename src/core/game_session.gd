@@ -19,6 +19,11 @@ signal local_position_corrected(position: Vector2)
 signal notice(text_key: String, args: Array)
 signal save_status_changed
 signal join_progress(text_key: String)
+signal bunker_changed(bunker_id: String)
+signal player_resources_changed(player_id: String)
+## The local player moved to another region (hatch, ladder, doorway). The app
+## shell rebuilds the view; other players are unaffected.
+signal local_region_changed(region_id: String)
 
 enum Mode { NONE, SINGLE, HOST, CLIENT }
 
@@ -216,7 +221,7 @@ func _physics_process(delta: float) -> void:
 	while _tick_accum >= step:
 		_tick_accum -= step
 		ticks += 1
-	Simulation.advance(world, ticks)
+	_advance(ticks)
 	_autosave_accum += delta
 	if _autosave_accum >= AUTOSAVE_SECONDS:
 		_autosave_accum = 0.0
@@ -226,6 +231,13 @@ func _physics_process(delta: float) -> void:
 		if _snapshot_accum >= SNAPSHOT_INTERVAL:
 			_snapshot_accum = 0.0
 			_broadcast_snapshot()
+
+
+## Advances the shared clock and publishes constructions that completed.
+func _advance(ticks: int) -> void:
+	for res in Simulation.advance(world, ticks):
+		SessionLog.info("world", "construction_completed", {"changes": res["changes"], "bunkers": res["bunkers"]})
+		_publish_result(res)
 
 
 func _broadcast_snapshot() -> void:
@@ -241,7 +253,7 @@ func _roster_rows() -> Array:
 	var rows := []
 	for p in world.online_players():
 		rows.append({"id": p.player_id, "name": p.display_name, "region": p.region_id,
-			"position": p.position, "facing": p.facing})
+			"position": p.position, "facing": p.facing, "carried": p.carried})
 	return rows
 
 
@@ -259,10 +271,11 @@ func _broadcast_roster() -> void:
 func submit_local_move(pos: Vector2, facing: int) -> void:
 	if not in_world():
 		return
+	var region := local_player().region_id
 	if is_authority():
-		_host_handle_move(1, pos, facing)
+		_host_handle_move(1, pos, facing, region)
 	else:
-		_rpc_submit_move.rpc_id(1, pos, facing)
+		_rpc_submit_move.rpc_id(1, pos, facing, region)
 
 
 func request_interact(entity_id: String) -> void:
@@ -345,11 +358,13 @@ func _host_handle_join(peer_id: int, token: String, name: String, protocol: int,
 	notice.emit("PLAYER_JOINED", [p.display_name])
 
 
-func _host_handle_move(peer_id: int, pos: Vector2, facing: int) -> void:
+func _host_handle_move(peer_id: int, pos: Vector2, facing: int, region_id: String) -> void:
 	var pid: String = _peer_to_player.get(peer_id, "")
 	if pid == "":
 		return
 	var p: PlayerState = world.players[pid]
+	if region_id != p.region_id:
+		return  # sent before a region change reached that player; ignore
 	var now := Time.get_ticks_msec()
 	var dt := maxf(0.001, (now - int(_move_track.get(pid, now))) / 1000.0)
 	_move_track[pid] = now
@@ -366,13 +381,53 @@ func _host_handle_interact(peer_id: int, request_id: int, entity_id: String, exp
 	var pid: String = _peer_to_player.get(peer_id, "")
 	var result := WorldActions.request_interact(world, pid, entity_id, expected_rev)
 	if result["ok"]:
-		SessionLog.info("world", "entity_changed", {"entity": entity_id, "by": pid.substr(0, 6),
-			"state": result["state"], "rev": result["rev"]})
-		_publish_entity(result["region_id"], entity_id, result["state"], result["rev"], "action")
-	else:
+		SessionLog.info("world", "interaction", {"entity": entity_id, "by": pid.substr(0, 6),
+			"changes": result["changes"], "bunkers": result["bunkers"], "transition": str(result["transition"])})
+		_publish_result(result)
+		if not (result["notice"] as Dictionary).is_empty():
+			_send_notice(peer_id, result["notice"]["key"], result["notice"]["args"])
+	elif result["reason"] != "ACTION_TOO_FAST":
 		SessionLog.warn("world", "interaction_rejected", {"entity": entity_id, "by": pid.substr(0, 6),
 			"reason": result["reason"], "expected_rev": expected_rev})
-	_send_action_result(peer_id, request_id, result["ok"], result["reason"])
+	_send_action_result(peer_id, request_id, result["ok"], result["reason"], result["reason_args"])
+
+
+## Sends everything a WorldActions result changed to all peers, in an order
+## clients can apply: bunkers (may add regions) -> entities -> carried -> moves.
+func _publish_result(res: Dictionary) -> void:
+	for bid in res["bunkers"]:
+		var b: BunkerState = world.bunker(bid)
+		if b == null:
+			continue
+		bunker_changed.emit(bid)
+		if mode == Mode.HOST and not multiplayer.get_peers().is_empty():
+			_rpc_bunker.rpc(bid, b.to_dict())
+	for c in res["changes"]:
+		var region := world.region(c["region_id"])
+		if region != null:
+			_publish_entity(c["region_id"], c["entity_id"], region.entity_state(c["entity_id"]),
+				region.rev(c["entity_id"]), c["cause"])
+	for pid in res["players"]:
+		var p: PlayerState = world.players.get(pid)
+		if p == null:
+			continue
+		player_resources_changed.emit(pid)
+		if mode == Mode.HOST and not multiplayer.get_peers().is_empty():
+			_rpc_player_carried.rpc(pid, p.carried)
+	var t: Dictionary = res["transition"]
+	if not t.is_empty():
+		var pid2: String = t["player_id"]
+		_move_track[pid2] = Time.get_ticks_msec()
+		SessionLog.info("session", "region_changed", {"player": pid2.substr(0, 6), "region": t["region_id"]})
+		_send_correction(_peer_of(pid2), t["position"], t["region_id"])
+		_broadcast_roster()
+
+
+func _peer_of(player_id: String) -> int:
+	for peer in _peer_to_player:
+		if _peer_to_player[peer] == player_id:
+			return peer
+	return 0
 
 
 func _host_dev_command(peer_id: int, cmd: String, arg: Variant) -> void:
@@ -384,7 +439,15 @@ func _host_dev_command(peer_id: int, cmd: String, arg: Variant) -> void:
 	SessionLog.info("dev", "command", {"peer": peer_id, "cmd": cmd, "arg": str(arg)})
 	match cmd:
 		"advance_clock":
-			Simulation.advance(world, int(float(arg) * Simulation.TICK_RATE))
+			_advance(int(float(arg) * Simulation.TICK_RATE))
+		"create_level":
+			var res := WorldActions.dev_create_level(world, pid)
+			if res["ok"]:
+				SessionLog.info("dev", "level_created", {"region": res["new_region"], "bunkers": res["bunkers"]})
+				_publish_result(res)
+				_send_notice(peer_id, res["notice"]["key"], res["notice"]["args"])
+			else:
+				_send_action_result(peer_id, 0, false, res["reason"])
 		"save":
 			save_world()
 		"teleport":
@@ -392,12 +455,15 @@ func _host_dev_command(peer_id: int, cmd: String, arg: Variant) -> void:
 				var p: PlayerState = world.players[pid]
 				p.position = arg
 				_move_track[pid] = Time.get_ticks_msec()
-				_send_correction(peer_id, p.position)
+				_send_correction(peer_id, p.position, p.region_id)
 		"spawn":
 			if pid != "":
 				var p2: PlayerState = world.players[pid]
+				p2.region_id = Content.DEFAULT_REGION
 				p2.position = Content.spawn_point(p2.region_id, 0)
-				_send_correction(peer_id, p2.position)
+				_move_track[pid] = Time.get_ticks_msec()
+				_send_correction(peer_id, p2.position, p2.region_id)
+				_broadcast_roster()
 		_:
 			_send_action_result(peer_id, 0, false, "DEV_UNKNOWN_COMMAND")
 
@@ -408,19 +474,31 @@ func _publish_entity(region_id: String, entity_id: String, state: Dictionary, re
 		_rpc_entity_changed.rpc(region_id, entity_id, state, rev, cause)
 
 
-func _send_correction(peer_id: int, pos: Vector2) -> void:
+func _send_correction(peer_id: int, pos: Vector2, region_id: String = "") -> void:
+	if peer_id == 0:
+		return
 	if peer_id == 1:
 		local_position_corrected.emit(pos)
+		if region_id != "":
+			local_region_changed.emit(region_id)
 	else:
-		_rpc_correct_position.rpc_id(peer_id, pos)
+		_rpc_correct_position.rpc_id(peer_id, pos, region_id)
 
 
-func _send_action_result(peer_id: int, request_id: int, ok: bool, reason: String) -> void:
+func _send_action_result(peer_id: int, request_id: int, ok: bool, reason: String, args: Array = []) -> void:
+	if ok or reason == "ACTION_TOO_FAST":
+		return
 	if peer_id == 1:
-		if not ok:
-			notice.emit(reason, [])
-	else:
-		_rpc_action_result.rpc_id(peer_id, request_id, ok, reason)
+		notice.emit(reason, args)
+	elif peer_id != 0:
+		_rpc_action_result.rpc_id(peer_id, request_id, ok, reason, args)
+
+
+func _send_notice(peer_id: int, key: String, args: Array) -> void:
+	if peer_id == 1:
+		notice.emit(key, args)
+	elif peer_id != 0:
+		_rpc_notice.rpc_id(peer_id, key, args)
 
 
 func _on_peer_disconnected(peer_id: int) -> void:
@@ -508,9 +586,9 @@ func _rpc_join_rejected(reason_key: String) -> void:
 
 
 @rpc("any_peer", "call_remote", "unreliable_ordered")
-func _rpc_submit_move(pos: Vector2, facing: int) -> void:
+func _rpc_submit_move(pos: Vector2, facing: int, region_id: String) -> void:
 	if mode == Mode.HOST:
-		_host_handle_move(multiplayer.get_remote_sender_id(), pos, facing)
+		_host_handle_move(multiplayer.get_remote_sender_id(), pos, facing, region_id)
 
 
 @rpc("authority", "call_remote", "unreliable_ordered")
@@ -546,6 +624,7 @@ func _rpc_roster(rows: Array) -> void:
 		if pid != local_player_id:
 			p.position = row["position"]
 		p.facing = int(row["facing"])
+		p.carried = (row.get("carried", {}) as Dictionary).duplicate()
 		p.online = true
 	for pid in world.players:
 		if not seen.has(pid):
@@ -554,10 +633,15 @@ func _rpc_roster(rows: Array) -> void:
 
 
 @rpc("authority", "call_remote", "reliable")
-func _rpc_correct_position(pos: Vector2) -> void:
+func _rpc_correct_position(pos: Vector2, region_id: String) -> void:
 	if world != null and world.players.has(local_player_id):
-		(world.players[local_player_id] as PlayerState).position = pos
+		var p: PlayerState = world.players[local_player_id]
+		p.position = pos
+		if region_id != "":
+			p.region_id = region_id
 	local_position_corrected.emit(pos)
+	if region_id != "":
+		local_region_changed.emit(region_id)
 
 
 @rpc("any_peer", "call_remote", "reliable")
@@ -567,9 +651,31 @@ func _rpc_request_interact(request_id: int, entity_id: String, expected_rev: int
 
 
 @rpc("authority", "call_remote", "reliable")
-func _rpc_action_result(_request_id: int, ok: bool, reason_key: String) -> void:
+func _rpc_action_result(_request_id: int, ok: bool, reason_key: String, args: Array) -> void:
 	if not ok:
-		notice.emit(reason_key, [])
+		notice.emit(reason_key, args)
+
+
+@rpc("authority", "call_remote", "reliable")
+func _rpc_notice(key: String, args: Array) -> void:
+	notice.emit(key, args)
+
+
+@rpc("authority", "call_remote", "reliable")
+func _rpc_bunker(bunker_id: String, data: Dictionary) -> void:
+	if mode != Mode.CLIENT or world == null:
+		return
+	world.bunkers[bunker_id] = BunkerState.from_dict(bunker_id, data)
+	world.ensure_bunker_regions()
+	bunker_changed.emit(bunker_id)
+
+
+@rpc("authority", "call_remote", "reliable")
+func _rpc_player_carried(player_id: String, carried: Dictionary) -> void:
+	if mode != Mode.CLIENT or world == null or not world.players.has(player_id):
+		return
+	(world.players[player_id] as PlayerState).carried = carried.duplicate()
+	player_resources_changed.emit(player_id)
 
 
 @rpc("authority", "call_remote", "reliable")

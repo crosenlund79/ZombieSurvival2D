@@ -13,7 +13,11 @@ Open the manifest for its category in `assets/manifest/`:
 | `visual_world.json` | farmhouse, shed, farmhouse door, yard gate, fence segments |
 | `visual_environment.json` | trees, shrubs, grass tufts, ground tiles, paper grain, drift particle |
 | `visual_props.json` | car, bunker entrance, suitcase, wheelbarrow, sign, barrel |
-| `audio.json` | door/gate sounds, menu click, countryside ambience loop |
+| `visual_interior.json` | farmhouse floor, back wall, furniture, rug, exit mat |
+| `visual_shelter.json` | shelter site (marked / digging), wooden hatch (closed / open), timber piles (empty → large) |
+| `visual_bunker.json` | earth floor/wall, reinforcement (exposed / building / done), ladders, lantern, tools, concrete test level |
+| `visual_ui.json` | world map paper |
+| `audio.json` | door/gate, menu click, ambience loops (countryside, underground), chop, tree fall, wood stacking, digging, hammering, build done, hatch, ladder |
 
 All current templates are **generated placeholders** (tools/art) waiting for your tablet art.
 
@@ -60,6 +64,10 @@ Special cases:
   developer so the door position can be moved (one number in the scene).
 - **Side views** (`char.player_side`) face right; the game mirrors them for walking left.
 - **Paper grain** is a greyscale texture used by the screen overlay (subtle).
+- **Floor-level art** (hatches, the ladder-down slab, the exit mat) is drawn *under* characters; the
+  hatch picture's opening should stay centred where the manifest pivot says.
+- **Trees** that can be chopped use the same tree pictures as decoration, plus `env.tree_stump`.
+- **Lantern light** is a separate light, not part of the lantern picture.
 
 ## 4. Sounds
 

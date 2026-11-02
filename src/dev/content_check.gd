@@ -6,6 +6,8 @@ extends RefCounted
 ## Never modifies or deletes anything.
 
 var lines: Array[Dictionary] = []
+## Entity types whose state is stored (they need an "initial" block).
+const STATEFUL: Array[String] = ["door", "shelter_site", "tree", "support_site"]
 
 
 func run() -> Array[Dictionary]:
@@ -13,6 +15,7 @@ func run() -> Array[Dictionary]:
 	Content.reload()
 	AssetCatalog.reload()
 	_check_regions()
+	_check_level_templates()
 	_check_manifests()
 	_check_code_references()
 	_check_locale()
@@ -74,11 +77,66 @@ func _check_regions() -> void:
 			all_ids[eid] = true
 			if not str(e.get("type", "")) in Content.ENTITY_TYPES:
 				_add("FAIL", "entity %s: unknown type %s" % [eid, e.get("type", "")])
-			if not (e.get("initial") is Dictionary):
+			if str(e.get("type", "")) in STATEFUL and not (e.get("initial") is Dictionary):
 				_add("FAIL", "entity %s: missing initial state" % eid)
+			_check_portal(rid, e)
 			if not rect.has_point(Content.entity_position(e)):
 				_add("FAIL", "entity %s: position outside region bounds" % eid)
 		_add("PASS", "region %s: %d entities checked" % [rid, def.get("entities", []).size()])
+
+
+func _check_portal(def_id: String, e: Dictionary) -> void:
+	var eid := str(e.get("id", ""))
+	var req := str(e.get("requires_open", ""))
+	if req != "" and Content.entity_def(def_id, req).is_empty():
+		_add("FAIL", "%s: requires_open points to unknown entity %s" % [eid, req])
+	if str(e.get("type", "")) == "portal":
+		var t: Dictionary = e.get("target", {})
+		if t.has("region") and Content.region_def(str(t["region"])).is_empty():
+			_add("FAIL", "%s: target region %s does not exist" % [eid, t["region"]])
+		if t.has("bunker_of") and Content.entity_def(def_id, str(t["bunker_of"])).get("type", "") != "shelter_site":
+			_add("FAIL", "%s: bunker_of must name a shelter_site in the same region" % eid)
+		if t.is_empty():
+			_add("FAIL", "%s: portal without target" % eid)
+	if str(e.get("type", "")) == "shelter_site":
+		var tpl := str(e.get("level_template", ""))
+		if Content.region_def(Content.level_def_id(tpl)).is_empty():
+			_add("FAIL", "%s: unknown level_template %s" % [eid, tpl])
+
+
+func _check_level_templates() -> void:
+	for tid in Content.level_template_ids():
+		var def_id := Content.level_def_id(tid)
+		var def := Content.region_def(def_id)
+		for need in ["ladder_up", "ladder_down"]:
+			if Content.entity_def(def_id, need).is_empty():
+				_add("FAIL", "level template %s: missing %s (levels must connect)" % [tid, need])
+		for e in def.get("entities", []):
+			if str(e.get("type", "")) in STATEFUL and not (e.get("initial") is Dictionary):
+				_add("FAIL", "level template %s: %s missing initial state" % [tid, e.get("id", "")])
+			_check_portal(def_id, e)
+		var scene := str(def.get("scene", ""))
+		if not ResourceLoader.exists(scene):
+			_add("FAIL", "level template %s: scene missing (%s)" % [tid, scene])
+			continue
+		_check_scene_entities(def_id, scene)
+		_add("PASS", "level template %s checked" % tid)
+
+
+## Every EntityView/DoorView in a scene must point at an entity of its definition.
+func _check_scene_entities(def_id: String, scene_path: String) -> void:
+	var root := (load(scene_path) as PackedScene).instantiate()
+	for n in root.find_children("*", "", true, false):
+		var eid := ""
+		if n is DoorView:
+			eid = (n as DoorView).entity_id
+		elif n is EntityView:
+			eid = (n as EntityView).entity_id
+		else:
+			continue
+		if Content.entity_def(def_id, eid).is_empty():
+			_add("FAIL", "%s: node %s points to unknown entity '%s'" % [scene_path, n.name, eid])
+	root.free()
 
 
 func _check_region_scene(rid: String, scene_path: String) -> void:
@@ -100,6 +158,7 @@ func _check_region_scene(rid: String, scene_path: String) -> void:
 	if not (root is RegionView) or (root as RegionView).region_id != rid:
 		_add("FAIL", "region %s: scene root must be a RegionView with region_id '%s'" % [rid, rid])
 	root.free()
+	_check_scene_entities(rid, scene_path)
 
 
 func _check_manifests() -> void:
