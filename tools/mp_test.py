@@ -1425,12 +1425,18 @@ def scenario_slice():
         check("slice 14b: carburetor fitted", lvl(r["state"], L1, "generator").get("efficient") is True, lvl(r["state"], L1, "generator"))
         leave_bunker(s)
         s.cmd("dev grant wood:12")  # compresses another round of felling for the defences
-        s.cmd("walk_to 1150 760"); s.cmd("walk_to 960 760"); s.cmd("walk_to 960 600")
-        for bx2 in (934, 998):
-            for _try in range(4):  # a zombie standing on the spot is a valid refusal: wait and retry
+        s.cmd("walk_to 1150 760"); s.cmd("walk_to 960 760")
+        # A zombie standing on a spot is a valid refusal: retry, then use the north-east gap instead.
+        placed = 0
+        for spot in [(934, 480, "960 600"), (998, 480, "960 600"), (1350, 490, "1360 600"), (1414, 490, "1360 600")]:
+            if placed >= 2:
+                break
+            s.cmd(f"walk_to {spot[2]}")
+            for _try in range(2):
                 before = len(objs(s.state()))
-                s.cmd(f"build barricade {bx2} 480")
+                s.cmd(f"build barricade {spot[0]} {spot[1]}")
                 if len(objs(s.state())) > before:
+                    placed += 1
                     break
                 heal_if_low(s); s.cmd("wait 2")
         s.cmd("walk_to 1150 760"); s.cmd("build spike_trap 1250 790")
