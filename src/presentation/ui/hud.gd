@@ -45,6 +45,8 @@ func _ready() -> void:
 	_resources.grow_horizontal = Control.GROW_DIRECTION_BEGIN
 	_resources.offset_right = -14
 	_resources.offset_top = 10
+	_resources.offset_left = -640  # wraps long lines instead of running into the left-hand HUD
+	_resources.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_resources.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	_resources.add_theme_color_override("font_outline_color", Color(0, 0, 0, 0.8))
 	_resources.add_theme_constant_override("outline_size", 4)
@@ -78,7 +80,7 @@ func _ready() -> void:
 	_banner.set_anchors_preset(Control.PRESET_CENTER_TOP)
 	_banner.offset_left = -420
 	_banner.offset_right = 420
-	_banner.offset_top = 10
+	_banner.offset_top = 150
 	_banner.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_banner.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(_banner)

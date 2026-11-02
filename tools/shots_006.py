@@ -148,6 +148,7 @@ def survivor():
     try:
         s.cmd("window 1600 900")
         s.cmd("devworld Tester"); s.cmd("dev peaceful 1"); s.cmd("tips off")
+        to_yard(s)
         s.cmd("walk_to 1160 760"); s.cmd("walk_to 1160 690"); s.cmd("interact homestead.farmhouse_door") if not s.state()["entities"]["homestead.farmhouse_door"]["state"]["open"] else None
         s.cmd("walk_to 1160 664 4"); s.cmd("interact homestead.farmhouse_entry")
         s.cmd("walk_to 300 452 4"); s.cmd("interact homestead.farmhouse.hatch_ladder")
