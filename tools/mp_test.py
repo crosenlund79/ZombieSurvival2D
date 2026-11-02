@@ -1290,6 +1290,35 @@ def heal_if_low(i, limit=55):
         i.cmd("dev heal")
 
 
+def enter_bunker(i):
+    """From the homestead surface (yard side) to bunker level -1, using explicit targets."""
+    st = i.state()
+    if st["region"] == "homestead":
+        i.cmd("walk_to 1160 760"); i.cmd("walk_to 1160 690")
+        if not i.state()["entities"]["homestead.farmhouse_door"]["state"]["open"]:
+            i.cmd("interact homestead.farmhouse_door")
+        i.cmd("walk_to 1160 664 4"); i.cmd("interact homestead.farmhouse_entry")
+    if i.state()["region"] == "homestead.farmhouse":
+        i.cmd("walk_to 300 470 6")
+        if not i.state()["entities"][SITE]["state"].get("open", False):
+            i.cmd("interact " + SITE)
+        i.cmd("walk_to 300 452 4"); i.cmd("interact homestead.farmhouse.hatch_ladder")
+    return i.state()
+
+
+def leave_bunker(i):
+    """From bunker level -1 up to the homestead surface, using explicit targets."""
+    if BunkerStateLike(i.state()["region"]):
+        i.cmd("walk_to 540 296 4"); i.cmd("interact ladder_up")
+    if i.state()["region"] == "homestead.farmhouse":
+        i.cmd("walk_to 480 600 6"); i.cmd("interact homestead.farmhouse.exit")
+    return i.state()
+
+
+def BunkerStateLike(region):
+    return region.startswith("bunker:")
+
+
 def scenario_slice():
     """The integrated vertical-slice loop (brief §8.1, 19 steps) in one real game with zombies active.
     Developer commands are used only to compress waiting (advance_clock), to trigger the defence event
@@ -1363,7 +1392,7 @@ def scenario_slice():
         r = s.cmd("entity_action purifier collect")
         check("slice 11: power and clean water", lvl(r["state"], L1, "generator").get("running") and r["state"]["carried"].get("water_clean", 0) >= 1, r["state"]["carried"])
         # 13-14. Explore the service station and its discovery.
-        s.cmd("walk_to 540 296 4"); s.cmd("press_interact"); s.cmd("walk_to 480 600"); s.cmd("press_interact")
+        leave_bunker(s)
         s.cmd("walk_to 1150 960"); s.cmd("walk_to 1150 1400"); s.cmd("walk_to 2340 1400 10"); heal_if_low(s)
         r = s.cmd("interact homestead.road_east")
         check("slice 13: reached the service station", r["state"]["region"] == "service_station", r["state"].get("region"))
@@ -1379,7 +1408,8 @@ def scenario_slice():
         s.cmd("walk_to 150 710"); s.cmd("walk_to 80 710 8"); s.cmd("interact service_station.road_west"); heal_if_low(s)
         # 15. Prepare defences in the yard; craft a spike kit and a grow light at home.
         s.cmd("walk_to 1150 1400"); s.cmd("walk_to 1150 960"); s.cmd("walk_to 1150 760")
-        r = to_door(s); s.cmd("walk_to 300 452 4"); s.cmd("press_interact")
+        st0 = enter_bunker(s)
+        check("slice 13b: back home and down in the bunker", st0["region"] == L1, st0.get("region"))
         s.cmd("walk_to 650 345 6")
         for item in ("electrical_parts", "scrap_metal", "canned_food", "cloth"):
             s.cmd(f"entity_action storage store {item}")
@@ -1393,7 +1423,7 @@ def scenario_slice():
         check("slice 12: hydroponic planter built", len(obj_of(r, "planter", L1)) == 1, objs(r, L1))
         s.cmd("walk_to 930 610 6"); r = s.cmd("entity_action generator fit_part")
         check("slice 14b: carburetor fitted", lvl(r["state"], L1, "generator").get("efficient") is True, lvl(r["state"], L1, "generator"))
-        s.cmd("walk_to 540 296 4"); s.cmd("press_interact"); s.cmd("walk_to 480 600"); s.cmd("press_interact")
+        leave_bunker(s)
         s.cmd("dev grant wood:12")  # compresses another round of felling for the defences
         s.cmd("walk_to 1150 760"); s.cmd("walk_to 960 760"); s.cmd("walk_to 960 600")
         for bx2 in (934, 998):
@@ -1409,7 +1439,10 @@ def scenario_slice():
         defs = [v["def"] for v in objs(s.state()).values()]
         check("slice 15: defences prepared (barricades, spike trap, a crate in the yard)", defs.count("barricade") == 2 and "spike_trap" in defs and "crate" in defs, defs)
         # 16. The defence event: horde arrives; the player waits it out indoors.
-        r = to_door(s)
+        s.cmd("walk_to 1160 760"); s.cmd("walk_to 1160 690")
+        if not s.state()["entities"]["homestead.farmhouse_door"]["state"]["open"]:
+            s.cmd("interact homestead.farmhouse_door")
+        s.cmd("walk_to 1160 664 4"); s.cmd("interact homestead.farmhouse_entry")
         s.cmd("dev siege 3"); s.cmd("wait 4")
         st = s.state()
         check("slice 16a: horde warning then attack", st["meta"]["siege"]["phase"] == "active", st["meta"].get("siege"))
@@ -1422,7 +1455,7 @@ def scenario_slice():
         check("slice 16: the event ends; defences took real damage", st["meta"]["siege"]["phase"] == "idle" and st["meta"]["siege"].get("outcome") in ("repelled", "dispersed") and len(hurt) >= 1,
               (st["meta"].get("siege"), hurt))
         # 17-18. The survivor arrives; assign work; keep improving.
-        s.cmd("walk_to 300 452 4"); s.cmd("press_interact")
+        enter_bunker(s)
         s.cmd("walk_to 650 345 6"); s.cmd("entity_action storage store water_clean")
         r = s.cmd("wait 1")
         check("slice 17b: survivor lives in the bunker", r["state"]["npcs"]["mara"]["recruit"] == "home" and r["state"]["view"]["npcs"] == 1, r["state"]["npcs"]["mara"])
