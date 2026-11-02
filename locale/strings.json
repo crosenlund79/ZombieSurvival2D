@@ -1,4 +1,8 @@
 {
+	"ACTION_ALREADY_ARMED": {
+		"da": "Du har allerede en kølle.",
+		"en": "You already carry a club."
+	},
 	"ACTION_ALREADY_DONE": {
 		"da": "Allerede forstærket.",
 		"en": "Already reinforced."
@@ -6,6 +10,10 @@
 	"ACTION_ALREADY_FELLED": {
 		"da": "Det træ er allerede fældet.",
 		"en": "That tree is already down."
+	},
+	"ACTION_ATTACK": {
+		"da": "Angrib",
+		"en": "Attack"
 	},
 	"ACTION_BUSY": {
 		"da": "Arbejdet er allerede i gang.",
@@ -18,6 +26,10 @@
 	"ACTION_CLOSED": {
 		"da": "Den er lukket.",
 		"en": "It is closed."
+	},
+	"ACTION_DEAD": {
+		"da": "Du er slået ud.",
+		"en": "You are down."
 	},
 	"ACTION_DEV_OVERLAY": {
 		"da": "Udvikleroverblik",
@@ -75,6 +87,10 @@
 		"da": "Skærmbillede",
 		"en": "Screenshot"
 	},
+	"ACTION_SPRINT": {
+		"da": "Løb (larmende)",
+		"en": "Run (noisy)"
+	},
 	"ACTION_STALE": {
 		"da": "En anden nåede at ændre det først.",
 		"en": "Someone else changed it first."
@@ -127,6 +143,10 @@
 		"da": "Brugerflade",
 		"en": "Interface"
 	},
+	"DEV_AI_LABELS": {
+		"da": "Zombie-AI-etiketter",
+		"en": "Zombie AI labels"
+	},
 	"DEV_CLOCK": {
 		"da": "Ur +1 t",
 		"en": "Clock +1 h"
@@ -135,9 +155,17 @@
 		"da": "Opret underjordisk testniveau",
 		"en": "Create underground test level"
 	},
+	"DEV_HEAL": {
+		"da": "Helbred + vand",
+		"en": "Heal + water"
+	},
 	"DEV_HOST_ONLY": {
 		"da": "Udviklerkommandoer kører kun hos værten.",
 		"en": "Developer commands run only on the host."
+	},
+	"DEV_HURT": {
+		"da": "Skad mig 25",
+		"en": "Hurt me 25"
 	},
 	"DEV_LEVEL_CREATED": {
 		"da": "Oprettede underjordisk niveau %s.",
@@ -146,6 +174,10 @@
 	"DEV_LEVEL_FAILED": {
 		"da": "Kunne ikke oprette niveauet.",
 		"en": "Could not create the level."
+	},
+	"DEV_NOISE": {
+		"da": "Høj lyd her",
+		"en": "Loud noise here"
 	},
 	"DEV_NO_SHELTER": {
 		"da": "Byg først et tilflugtsrum.",
@@ -174,6 +206,14 @@
 	"DEV_SPAWN": {
 		"da": "Tilbage til start",
 		"en": "Back to spawn"
+	},
+	"DEV_SPAWN_GROUP": {
+		"da": "Skab gruppe (4)",
+		"en": "Spawn group (4)"
+	},
+	"DEV_SPAWN_ZOMBIE": {
+		"da": "Skab zombie",
+		"en": "Spawn zombie"
 	},
 	"DEV_TITLE": {
 		"da": "Udvikler (F3)",
@@ -207,6 +247,18 @@
 		"da": "Bærer %s / %s træ",
 		"en": "Carrying %s / %s wood"
 	},
+	"HUD_DOWNED": {
+		"da": "Du blev overmandet… vågner op i stuehuset.",
+		"en": "You were overwhelmed… waking up in the farmhouse."
+	},
+	"HUD_HEALTH": {
+		"da": "Helbred",
+		"en": "Health"
+	},
+	"HUD_HYDRATION": {
+		"da": "Væske",
+		"en": "Water"
+	},
 	"HUD_LEVEL": {
 		"da": "%s · Niveau %s",
 		"en": "%s · Level %s"
@@ -222,6 +274,30 @@
 	"HUD_STOCKPILE": {
 		"da": "Tilflugtsrummets lager: %s træ",
 		"en": "Shelter stockpile: %s wood"
+	},
+	"HUD_THREAT_CALM": {
+		"da": "Stille",
+		"en": "Quiet"
+	},
+	"HUD_THREAT_GATHERING": {
+		"da": "De samler sig",
+		"en": "They are gathering"
+	},
+	"HUD_THREAT_HORDE": {
+		"da": "En horde nærmer sig!",
+		"en": "A horde is converging!"
+	},
+	"HUD_THREAT_NOTICED": {
+		"da": "Du er blevet hørt",
+		"en": "You've been heard"
+	},
+	"HUD_THREAT_SHELTERED": {
+		"da": "I ly",
+		"en": "Sheltered"
+	},
+	"HUD_THREAT_STIRRING": {
+		"da": "Noget rører sig i nærheden",
+		"en": "Something stirs nearby"
 	},
 	"HUD_TIME": {
 		"da": "tid",
@@ -475,6 +551,10 @@
 		"da": "Forstærk med tømmer (%s træ, %s på lager)",
 		"en": "Reinforce with timber (%s wood, %s in stock)"
 	},
+	"PROMPT_TAKE_CLUB": {
+		"da": "Tag en trækølle",
+		"en": "Take a wooden club"
+	},
 	"PROMPT_USE": {
 		"da": "Brug",
 		"en": "Use"
@@ -590,6 +670,10 @@
 	"STOCKPILE_LABEL": {
 		"da": "Tømmer: %s",
 		"en": "Timber: %s"
+	},
+	"WEAPON_TAKEN": {
+		"da": "Du tager en kølle. Angreb: venstre museknap eller F.",
+		"en": "You take a club. Attack: left mouse button or F."
 	},
 	"WOOD_DEPOSITED": {
 		"da": "Stablede %s træ. Lager: %s",

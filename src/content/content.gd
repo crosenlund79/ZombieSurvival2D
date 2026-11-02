@@ -16,7 +16,7 @@ const LEVEL_DIR := "res://content/bunker_levels/"
 const LEVEL_PREFIX := "level:"
 const DEFAULT_REGION := "homestead"
 ## Entity types the rules in WorldActions understand.
-const ENTITY_TYPES: Array[String] = ["door", "portal", "shelter_site", "tree", "stockpile", "support_site"]
+const ENTITY_TYPES: Array[String] = ["door", "portal", "shelter_site", "tree", "stockpile", "support_site", "weapon_rack"]
 
 static var _defs: Dictionary = {}       # def_id -> def
 static var _region_ids: Array = []      # static regions only

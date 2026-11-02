@@ -19,6 +19,7 @@ var def_id := ""
 
 var local_avatar: PlayerAvatar
 var _avatars := {}  # player_id -> PlayerAvatar
+var _zombies := {}  # zombie_id -> ZombieView
 var _actors: Node2D
 
 
@@ -43,6 +44,8 @@ func _ready() -> void:
 		_actors.y_sort_enabled = true
 		add_child(_actors)
 	Session.roster_changed.connect(_sync_avatars)
+	Session.vitals_changed.connect(func(_p: String) -> void: _refresh_vitals())
+	Session.combat_event.connect(_on_combat_event)
 	_sync_avatars()
 	if ambience_id != "":
 		Audio.play_loop("ambience", ambience_id)
@@ -73,6 +76,62 @@ func _sync_avatars() -> void:
 		if not wanted.has(pid) and pid != Session.local_player_id:
 			(_avatars[pid] as Node).queue_free()
 			_avatars.erase(pid)
+
+
+func _process(_delta: float) -> void:
+	_sync_zombies()
+
+
+## Keeps one ZombieView per zombie in this region (world data is the truth).
+func _sync_zombies() -> void:
+	if Session.world == null:
+		return
+	for z in Session.world.zombies.values():
+		if z.region_id == region_id and not _zombies.has(z.zombie_id):
+			var v := ZombieView.new()
+			v.name = "Zombie_" + z.zombie_id
+			v.setup(z)
+			_actors.add_child(v)
+			_zombies[z.zombie_id] = v
+	for id in _zombies.keys():
+		var z: ZombieState = Session.world.zombies.get(id)
+		if z == null or z.region_id != region_id:
+			(_zombies[id] as Node).queue_free()
+			_zombies.erase(id)
+
+
+func zombie_count() -> int:
+	return _zombies.size()
+
+
+func _refresh_vitals() -> void:
+	for pid in _avatars:
+		var p: PlayerState = Session.world.players.get(pid)
+		if p != null:
+			(_avatars[pid] as PlayerAvatar).set_downed(p.dead)
+			(_avatars[pid] as PlayerAvatar).refresh_weapon()
+
+
+func _on_combat_event(ev: Dictionary) -> void:
+	match str(ev.get("kind", "")):
+		"swing":
+			var a: PlayerAvatar = _avatars.get(ev["player_id"])
+			if a != null and not a.is_local:  # the local swing already played on key press
+				a.play_swing(ev["aim"])
+		"zombie_hit":
+			var v: ZombieView = _zombies.get(ev["zombie_id"])
+			if v != null:
+				v.hit_flash()
+				Audio.play("sfx.zombie_death" if ev["killed"] else "sfx.zombie_hit", v.global_position)
+		"player_hit":
+			var a2: PlayerAvatar = _avatars.get(ev["player_id"])
+			if a2 != null:
+				a2.hurt_flash()
+				Audio.play("sfx.player_hurt", a2.global_position)
+		"player_died":
+			var a3: PlayerAvatar = _avatars.get(ev["player_id"])
+			if a3 != null:
+				a3.set_downed(true)
 
 
 func avatar_count() -> int:

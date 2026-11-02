@@ -1,0 +1,80 @@
+{
+	"_comment": "Zombie, noise and horde tuning (prototype values, all configurable). Distances in world px, times in seconds.",
+	"health": 100,
+	"speed_wander": 32,
+	"speed_investigate": 62,
+	"speed_chase": 92,
+	"sight_range": 300,
+	"sight_cone_degrees": 140,
+	"omni_sense_range": 110,
+	"lose_target_after": 3.5,
+	"search_time": 3.5,
+	"attack_start_range": 44,
+	"attack_reach": 66,
+	"attack_windup": 0.7,
+	"attack_damage": 10,
+	"attack_cooldown": 1.7,
+	"stagger_time": 0.35,
+	"corpse_time": 6,
+	"separation": 26,
+	"hearing_multiplier": 1.0,
+	"attention_half_life": 18,
+	"escalation": [
+		{
+			"attention": 1.2,
+			"want": 2
+		},
+		{
+			"attention": 3.5,
+			"want": 4
+		},
+		{
+			"attention": 6.5,
+			"want": 7
+		}
+	],
+	"reinforce_from_level": 1,
+	"recruit_radius": 1100,
+	"reinforcement_cooldown": 5,
+	"reinforcements_per_wave": 2,
+	"max_active": 16,
+	"max_reinforcements": 8,
+	"min_spawn_distance_from_players": 720,
+	"replenish_every": 60,
+	"path_budget_per_tick": 3,
+	"ai_catchup_ticks": 10,
+	"noise": {
+		"chop": {
+			"radius": 460,
+			"attention": 1.0
+		},
+		"fell": {
+			"radius": 560,
+			"attention": 2.0
+		},
+		"melee": {
+			"radius": 260,
+			"attention": 0.5
+		},
+		"run": {
+			"radius": 190,
+			"attention": 0.12
+		},
+		"door": {
+			"radius": 180,
+			"attention": 0.2
+		},
+		"dig": {
+			"radius": 260,
+			"attention": 0.3
+		},
+		"machine": {
+			"radius": 300,
+			"attention": 0.05
+		},
+		"dev": {
+			"radius": 500,
+			"attention": 1.5
+		}
+	}
+}

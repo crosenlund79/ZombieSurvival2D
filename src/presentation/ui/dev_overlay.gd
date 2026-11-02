@@ -35,6 +35,12 @@ func _ready() -> void:
 	_btn(g, "DEV_REBUILD_VIEW", func() -> void: rebuild_view_requested.emit())
 	_btn(g, "DEV_SCREENSHOT", func() -> void: screenshot_requested.emit())
 	_btn(g, "DEV_CREATE_LEVEL", func() -> void: Session.request_dev_command("create_level"))
+	_btn(g, "DEV_SPAWN_ZOMBIE", func() -> void: Session.request_dev_command("spawn_zombie"))
+	_btn(g, "DEV_SPAWN_GROUP", func() -> void: Session.request_dev_command("spawn_group"))
+	_btn(g, "DEV_NOISE", func() -> void: Session.request_dev_command("noise", 1.0))
+	_btn(g, "DEV_HURT", func() -> void: Session.request_dev_command("hurt", 25.0))
+	_btn(g, "DEV_HEAL", func() -> void: Session.request_dev_command("heal"))
+	_btn(g, "DEV_AI_LABELS", func() -> void: ZombieView.show_debug = not ZombieView.show_debug)
 
 
 func _btn(parent: Control, key: String, cb: Callable) -> void:
@@ -75,6 +81,17 @@ func _process(_delta: float) -> void:
 			lines.append("bunker %s · levels %s · wood %d" % [bid, str(depths), b.amount("wood")])
 		if me != null:
 			lines.append("carrying %s · jobs %d" % [JSON.stringify(me.carried), w.jobs.size()])
+			lines.append("health %d · hydration %d · weapon '%s' · dead %s" % [me.health, me.hydration, me.weapon, str(me.dead)])
+			var counts := {}
+			for z in w.zombies.values():
+				counts[z.state_name()] = int(counts.get(z.state_name(), 0)) + 1
+			lines.append("zombies %d %s · attention here %.2f" % [w.zombies.size(), JSON.stringify(counts),
+				w.threat.local_attention(me.region_id, me.position)])
+			var hot := []
+			for key in w.threat.zones:
+				hot.append("%s=%.1f" % [key.substr(key.find("|") + 1), w.threat.zones[key]])
+			if not hot.is_empty():
+				lines.append("zones " + ", ".join(hot.slice(0, 6)))
 	var s := Session.last_save
 	lines.append("last save: %s" % ("—" if s.is_empty() else ("OK" if s["ok"] else "FAILED " + str(s["error"]))))
 	lines.append("art/sound overrides active: %d · loops %s" % [Assets.override_count(), str(Audio.active_loops())])

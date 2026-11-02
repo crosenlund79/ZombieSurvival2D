@@ -1,0 +1,138 @@
+{
+	"kind": "visual",
+	"category": "zombie",
+	"assets": [
+		{
+			"id": "char.zombie",
+			"name": "Zombie \u2014 facing down",
+			"template": "res://assets/templates/characters/zombie/template_zombie_down.png",
+			"display_size": [
+				56,
+				88
+			],
+			"source_size": [
+				110,
+				172
+			],
+			"pivot": [
+				0.5,
+				0.953
+			],
+			"transparency": "required",
+			"directions": "down (this), up, side",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Shamble, lean and hit flash are code-driven; one pose per direction. Generated placeholder (tools/art/gen_survival.py) \u2014 replace with tablet art."
+		},
+		{
+			"id": "char.zombie_up",
+			"name": "Zombie \u2014 facing up",
+			"template": "res://assets/templates/characters/zombie/template_zombie_up.png",
+			"display_size": [
+				56,
+				88
+			],
+			"source_size": [
+				110,
+				172
+			],
+			"pivot": [
+				0.5,
+				0.953
+			],
+			"transparency": "required",
+			"directions": "up",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_survival.py) \u2014 replace with tablet art."
+		},
+		{
+			"id": "char.zombie_side",
+			"name": "Zombie \u2014 side (faces right; mirrored for left)",
+			"template": "res://assets/templates/characters/zombie/template_zombie_side.png",
+			"display_size": [
+				56,
+				88
+			],
+			"source_size": [
+				110,
+				172
+			],
+			"pivot": [
+				0.5,
+				0.953
+			],
+			"transparency": "required",
+			"directions": "right; left = mirrored",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_survival.py) \u2014 replace with tablet art."
+		},
+		{
+			"id": "char.zombie_lunge",
+			"name": "Zombie attack wind-up \u2014 facing down",
+			"template": "res://assets/templates/characters/zombie/template_zombie_down_lunge.png",
+			"display_size": [
+				56,
+				88
+			],
+			"source_size": [
+				110,
+				172
+			],
+			"pivot": [
+				0.5,
+				0.953
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Shown while it winds up an attack (the readable warning). Generated placeholder (tools/art/gen_survival.py) \u2014 replace with tablet art."
+		},
+		{
+			"id": "char.zombie_side_lunge",
+			"name": "Zombie attack wind-up \u2014 side",
+			"template": "res://assets/templates/characters/zombie/template_zombie_side_lunge.png",
+			"display_size": [
+				56,
+				88
+			],
+			"source_size": [
+				110,
+				172
+			],
+			"pivot": [
+				0.5,
+				0.953
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_survival.py) \u2014 replace with tablet art."
+		},
+		{
+			"id": "char.zombie_dead",
+			"name": "Zombie \u2014 fallen",
+			"template": "res://assets/templates/characters/zombie/template_zombie_dead.png",
+			"display_size": [
+				95,
+				45
+			],
+			"source_size": [
+				190,
+				90
+			],
+			"pivot": [
+				0.5,
+				0.67
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_survival.py) \u2014 replace with tablet art."
+		}
+	]
+}

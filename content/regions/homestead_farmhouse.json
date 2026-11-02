@@ -82,6 +82,17 @@
 			"interact_range": 80,
 			"bunker_of": "homestead.farmhouse.shelter",
 			"prompt_key": "PROMPT_DEPOSIT_WOOD"
+		},
+		{
+			"id": "homestead.farmhouse.club_rack",
+			"type": "weapon_rack",
+			"position": [
+				150,
+				410
+			],
+			"interact_range": 70,
+			"weapon": "club",
+			"prompt_key": "PROMPT_TAKE_CLUB"
 		}
 	]
 }

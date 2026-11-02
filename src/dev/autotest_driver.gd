@@ -95,8 +95,22 @@ func _run(line: String) -> void:
 			Input.parse_input_event(ev2)
 			await get_tree().create_timer(0.5).timeout
 		"interact":
-			Session.request_interact(a[0])
+			Session.request_interact(a[0], int(a[1]) if a.size() > 1 else -1)
 			await get_tree().create_timer(0.5).timeout
+		"attack_nearest":
+			# Swing at the nearest zombie n times (aim recomputed each swing).
+			for i in int(a[0]):
+				var me := Session.local_player()
+				var best: ZombieState = null
+				for z in Session.world.zombies.values():
+					if z.region_id == me.region_id and not z.is_dead():
+						if best == null or z.position.distance_to(me.position) < best.position.distance_to(me.position):
+							best = z
+				var aim := Vector2.DOWN if best == null else (best.position - me.position).normalized()
+				if main.region_view != null and main.region_view.local_avatar != null:
+					main.region_view.local_avatar.play_swing(aim)
+				Session.request_attack(aim)
+				await get_tree().create_timer(float(a[1]) if a.size() > 1 else 0.7).timeout
 		"press_repeat":
 			# Press the interact key n times, interval seconds apart (e.g. chopping).
 			for i in int(a[0]):
@@ -224,7 +238,8 @@ func _state() -> Dictionary:
 		for pid in w.players:
 			var p: PlayerState = w.players[pid]
 			players.append({"id": pid, "name": p.display_name, "online": p.online,
-				"x": p.position.x, "y": p.position.y, "region": p.region_id, "carried": p.carried})
+				"x": p.position.x, "y": p.position.y, "region": p.region_id, "carried": p.carried,
+				"health": p.health, "dead": p.dead})
 		s["players"] = players
 		var ents := {}
 		var levels := {}
@@ -246,10 +261,27 @@ func _state() -> Dictionary:
 			bunkers[bid] = {"levels": depths, "wood": b.amount("wood"), "entrance": b.entrance_region}
 		s["bunkers"] = bunkers
 		s["jobs"] = w.jobs.size()
+		var zs := []
+		for z in w.zombies.values():
+			zs.append({"id": z.zombie_id, "ai": z.state_name(), "x": z.position.x, "y": z.position.y,
+				"region": z.region_id, "hp": z.health, "persistent": z.persistent})
+		s["zombies"] = zs
 		var me := Session.local_player()
 		if me != null:
 			s["region"] = me.region_id
 			s["carried"] = me.carried
+			s["health"] = me.health
+			s["hydration"] = me.hydration
+			s["dead"] = me.dead
+			s["weapon"] = me.weapon
+			s["attention"] = w.threat.local_attention(me.region_id, me.position)
+			var total := 0.0
+			for key in w.threat.zones:
+				total += float(w.threat.zones[key])
+			s["attention_total"] = total
+			s["me_x"] = me.position.x
+			s["me_y"] = me.position.y
+			s["threat_label"] = Hud.threat_label(me)
 	var view: RegionView = main.region_view if main != null else null
 	var v := {"exists": view != null and is_instance_valid(view)}
 	if v["exists"]:
@@ -263,6 +295,7 @@ func _state() -> Dictionary:
 				"stage": str(ev.state().get("stage", "")), "felled": bool(ev.state().get("felled", false))}
 		v["entities"] = stages
 		v["map_open"] = main.map_panel.visible
+		v["zombies"] = view.zombie_count()
 		v["map_legend"] = main.map_panel._legend.text if main.map_panel.visible else ""
 		v["avatars"] = view.avatar_count()
 		if view.local_avatar != null:

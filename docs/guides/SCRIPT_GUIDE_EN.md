@@ -29,10 +29,15 @@ Plain-language description of every GDScript file. Identifiers and paths are exa
 | Script | Depends on | What it does |
 |---|---|---|
 | `src/content/content.gd` | SafeFile | Reads authored region files (`content/regions/*.json`): entities, positions, reach, initial state, spawn points; computes a content fingerprint so host and client can confirm they match. |
+| `src/state/zombie_state.gd` | — | One zombie as plain data: identity, region, position, health, AI state and short-term memory. Only the base population's identity/position/health is saved. |
+| `src/state/threat_state.gd` | — | World noise queue and attention per coarse zone (transient: never saved, so a reloaded world starts calm). |
 | `src/state/world_state.gd` | Content, RegionState, PlayerState, Simulation | The whole shared world as plain data: id, seed, clock tick, regions, players. Also gives seeded random number streams. |
 | `src/state/region_state.gd` | Content | Player-made changes to one region, stored only where they differ from the authored content, with a revision number per object. |
 | `src/state/bunker_state.gd` | — | One shelter as plain data: its entrance identity, levels by signed depth (no maximum) and the shared stockpile. Builds and parses level region ids. |
 | `src/state/player_state.gd` | Content | One player's saved record: identity, name, region, position, facing. |
+| `src/sim/nav_grid.gd` | Content, Prop, FenceLine | Host-side walkability grid built from the region scene's authored collision data, plus live trees/gates; A* paths and line-of-sight checks for zombies and attacks. |
+| `src/sim/zombie_sim.gd` | NavGrid, ThreatState, WorldState | Host-only zombie simulation: hearing, attention escalation/decay, reinforcements from map entries within caps, the AI state machine, movement, attacks, corpses and population top-up. |
+| `src/sim/survival_sim.gd` | WorldActions | Host-only player vitals: slow health recovery and the forgiving respawn rule (keep everything, wake in the farmhouse). |
 | `src/sim/simulation.gd` | WorldState | The one shared clock (10 ticks per second). Future timed systems attach here. |
 | `src/sim/world_actions.gd` | WorldState, Content | Host-side rules: checks an interaction request (who, where, how far, which revision) and applies it; checks that reported movement is physically possible. |
 | `src/persistence/save_codec.gd` | WorldState, Content, BuildInfo | Converts the world to/from the save format, validates it, fills safe defaults, drops removed content with warnings, and runs migrations for old schema versions. |
@@ -74,6 +79,8 @@ Plain-language description of every GDScript file. Identifiers and paths are exa
 | `src/presentation/world/progress_marker.gd` | — | Small inked progress bar drawn above something being built. |
 | `src/presentation/world/light_factory.gd` | — | Generates the soft radial texture for 2D lights and builds lantern lights. |
 | `src/presentation/world/light_spot.gd` | LightFactory | A scene light (lantern, window, ladder shaft) using the shared radial texture. |
+| `src/presentation/world/zombie_view.gd` | Session, Assets, Audio | Shows one zombie from world data: interpolation, shamble, ?/! cues, red wind-up pose, hit flash, health bar, fall on death, local groans. |
+| `src/presentation/world/weapon_rack_view.gd` | EntityView | The club rack in the farmhouse; taking a club equips the player (one each, never runs out). |
 | `src/presentation/world/placeholder_block.gd` | — | Greybox helper (used in Phase A, kept for blocking out new areas): a coloured rectangle with matching collision. |
 | `src/presentation/world/placeholder_ground.gd` | — | Greybox ground with a 100 px grid (unused in the current scene). |
 
@@ -85,6 +92,7 @@ Plain-language description of every GDScript file. Identifiers and paths are exa
 | `src/dev/autotest_driver.gd` | Session, Saves, Assets, Audio | Test-only remote control (only with `--autotest`): reads commands from a file and writes state reports, so `tools/mp_test.py` can drive real separate game processes. |
 | `tests/test_case.gd` | — | Tiny base class for unit tests (`check`, `eq`). |
 | `tests/test_runner.gd` | TestCase, ContentCheck | Runs every test file in tests/unit and the content check, writes results, exits with an error code on failure. |
+| `tests/unit/test_threat.gd` | ZombieSim, WorldActions, NavGrid | Tests navigation, sight, hearing, attention growth/decay, escalation caps, melee authority, walls, wind-up damage, respawn, the farmhouse boundary and the persistence policy. |
 | `tests/unit/test_world.gd` | WorldState, WorldActions, Simulation | Tests world creation, change storage, seeded randomness, the clock, interaction validation, simultaneous requests, movement plausibility. |
 | `tests/unit/test_bunker.gd` | WorldActions, Simulation, SaveCodec | Tests shelter timing, no duplicate hatch, portals, wood given once, cooldown, spend-once reinforcement, unlimited developer levels, saves, migration. |
 | `tests/unit/test_save.gd` | SaveCodec, SafeFile, Saves | Tests save round-trip, validation, defaults, removed content, the historical v1 fixture, migrations, safe writes and backup fallback. |

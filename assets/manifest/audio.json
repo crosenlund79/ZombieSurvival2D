@@ -141,6 +141,76 @@
 			"loop": true,
 			"status": "READY",
 			"notes": "Generated placeholder (tools/art/gen_bunker_audio.py)."
+		},
+		{
+			"id": "sfx.zombie_groan",
+			"name": "Zombie groan (idle)",
+			"template": "res://assets/templates/audio/zombie/template_groan.wav",
+			"bus": "SFX",
+			"volume_db": -10.0,
+			"loop": false,
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_survival_audio.py)."
+		},
+		{
+			"id": "sfx.zombie_alert",
+			"name": "Zombie notices something",
+			"template": "res://assets/templates/audio/zombie/template_alert.wav",
+			"bus": "SFX",
+			"volume_db": -6.0,
+			"loop": false,
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_survival_audio.py)."
+		},
+		{
+			"id": "sfx.zombie_attack",
+			"name": "Zombie attack wind-up",
+			"template": "res://assets/templates/audio/zombie/template_attack.wav",
+			"bus": "SFX",
+			"volume_db": -4.0,
+			"loop": false,
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_survival_audio.py)."
+		},
+		{
+			"id": "sfx.zombie_hit",
+			"name": "Zombie takes a hit",
+			"template": "res://assets/templates/audio/zombie/template_hit.wav",
+			"bus": "SFX",
+			"volume_db": -3.0,
+			"loop": false,
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_survival_audio.py)."
+		},
+		{
+			"id": "sfx.zombie_death",
+			"name": "Zombie falls",
+			"template": "res://assets/templates/audio/zombie/template_death.wav",
+			"bus": "SFX",
+			"volume_db": -4.0,
+			"loop": false,
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_survival_audio.py)."
+		},
+		{
+			"id": "sfx.swing",
+			"name": "Melee swing",
+			"template": "res://assets/templates/audio/combat/template_swing.wav",
+			"bus": "SFX",
+			"volume_db": -6.0,
+			"loop": false,
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_survival_audio.py)."
+		},
+		{
+			"id": "sfx.player_hurt",
+			"name": "Player hurt",
+			"template": "res://assets/templates/audio/combat/template_player_hurt.wav",
+			"bus": "SFX",
+			"volume_db": -3.0,
+			"loop": false,
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_survival_audio.py)."
 		}
 	]
 }

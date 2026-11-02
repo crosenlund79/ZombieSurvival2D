@@ -5,7 +5,8 @@ extends CharacterBody2D
 ## host validates them. *Remote* avatars only interpolate toward the positions
 ## the host broadcasts. The avatar never owns the player's saved state.
 
-const SPEED := 220.0           # below WorldActions.MAX_PLAYER_SPEED
+const SPEED := 220.0           # walking; well below WorldActions.MAX_PLAYER_SPEED
+const SPRINT_SPEED := 320.0    # running is faster but makes noise (host decides)
 const SEND_INTERVAL := 0.05
 const ASSET_ID := "char.player"
 ## Art per facing (0 down, 1 up, 2 left, 3 right). Side art faces right; left is flipped.
@@ -27,6 +28,11 @@ var _last_sent := Vector2.INF
 var _bob := 0.0
 var _shown_facing := -1
 var _frame := Rect2()        # region bounds the camera frames
+var _weapon: Sprite2D
+var _swing_tween: Tween
+var _flash := 0.0
+var _downed := false
+var _aim := Vector2.DOWN
 var _cam_snap := true
 
 
@@ -49,6 +55,11 @@ func _build(display_name: String, bounds: Rect2) -> void:
 	_sprite = Sprite2D.new()
 	add_child(_sprite)
 	_apply_art()
+	_weapon = Sprite2D.new()
+	_weapon.position = Vector2(14, -34)
+	_weapon.rotation = 0.5
+	add_child(_weapon)
+	refresh_weapon()
 	_label = Label.new()
 	_label.text = display_name
 	_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -116,7 +127,10 @@ func _local_move(delta: float) -> void:
 	var dir := Vector2.ZERO
 	if not input_blocked:
 		dir = Input.get_vector("move_left", "move_right", "move_up", "move_down")
-	velocity = dir * SPEED
+	var running := Input.is_action_pressed("sprint") and not input_blocked
+	velocity = dir * (SPRINT_SPEED if running else SPEED)
+	if _downed:
+		velocity = Vector2.ZERO
 	move_and_slide()
 	if dir != Vector2.ZERO:
 		if absf(dir.x) > absf(dir.y):
@@ -134,6 +148,10 @@ func _local_move(delta: float) -> void:
 
 ## Presentation only: a small bob while walking, horizontal flip by facing.
 func _animate(delta: float, moving: bool) -> void:
+	_flash = maxf(0.0, _flash - delta * 3.0)
+	var tint := Color(1, 1, 1).lerp(Color(1.9, 0.55, 0.5), _flash)
+	tint.a = _sprite.modulate.a
+	_sprite.modulate = tint
 	if facing != _shown_facing:
 		_apply_art()
 	_sprite.flip_h = facing == 2
@@ -172,10 +190,65 @@ func snap_camera() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if not is_local or input_blocked:
 		return
+	if event.is_action_pressed("attack") and not _downed:
+		var aim := _facing_vector()
+		if event is InputEventMouseButton:
+			aim = (get_global_mouse_position() - (global_position + Vector2(0, -30))).normalized()
+		play_swing(aim)
+		Session.request_attack(aim)
+		get_viewport().set_input_as_handled()
+		return
 	if event.is_action_pressed("zoom_in"):
 		_set_zoom(camera.zoom.x * 1.1)
 	elif event.is_action_pressed("zoom_out"):
 		_set_zoom(camera.zoom.x / 1.1)
+
+
+func _facing_vector() -> Vector2:
+	return [Vector2.DOWN, Vector2.UP, Vector2.LEFT, Vector2.RIGHT][clampi(facing, 0, 3)]
+
+
+## Visual swing (club or fists). Presentation only; the host decides hits.
+func play_swing(aim: Vector2) -> void:
+	_aim = aim
+	if aim.x < -0.3:
+		_sprite.flip_h = true
+	elif aim.x > 0.3:
+		_sprite.flip_h = false
+	Audio.play("sfx.swing", global_position)
+	var base := aim.angle() + PI / 2.0
+	_weapon.visible = true
+	_weapon.position = Vector2(0, -34) + aim * 10.0
+	if _swing_tween != null and _swing_tween.is_valid():
+		_swing_tween.kill()
+	_weapon.rotation = base - 1.3
+	_swing_tween = create_tween()
+	_swing_tween.tween_property(_weapon, "rotation", base + 1.2, 0.14).set_trans(Tween.TRANS_QUAD)
+	_swing_tween.tween_interval(0.12)
+	_swing_tween.tween_callback(refresh_weapon)
+
+
+func refresh_weapon() -> void:
+	var p: PlayerState = Session.world.players.get(player_id) if Session.world != null else null
+	var has_club := p != null and p.weapon == "club"
+	_weapon.visible = has_club
+	if has_club:
+		Assets.apply_to_sprite(_weapon, "item.club")
+	_weapon.position = Vector2(14, -34)
+	_weapon.rotation = 0.5
+
+
+func hurt_flash() -> void:
+	_flash = 1.0
+
+
+func set_downed(value: bool) -> void:
+	if value == _downed:
+		return
+	_downed = value
+	var tw := create_tween()
+	tw.tween_property(_sprite, "rotation", 1.45 if value else 0.0, 0.35)
+	tw.parallel().tween_property(_sprite, "modulate:a", 0.6 if value else 1.0, 0.35)
 
 
 func _set_zoom(z: float) -> void:

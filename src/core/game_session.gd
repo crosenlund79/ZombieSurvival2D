@@ -24,6 +24,10 @@ signal player_resources_changed(player_id: String)
 ## The local player moved to another region (hatch, ladder, doorway). The app
 ## shell rebuilds the view; other players are unaffected.
 signal local_region_changed(region_id: String)
+## Combat/threat events for presentation (swings, hits, deaths, respawns).
+signal combat_event(event: Dictionary)
+signal vitals_changed(player_id: String)
+signal zombies_updated
 
 enum Mode { NONE, SINGLE, HOST, CLIENT }
 
@@ -162,6 +166,9 @@ func _open_world(world_id: String, new_seed: int) -> Dictionary:
 
 
 func _begin() -> void:
+	if is_authority():
+		var added := ZombieSim.ensure_population(world)
+		SessionLog.info("threat", "population_ready", {"zombies": world.zombies.size(), "added": added})
 	_tick_accum = 0.0
 	_snapshot_accum = 0.0
 	_autosave_accum = 0.0
@@ -231,6 +238,7 @@ func _physics_process(delta: float) -> void:
 		if _snapshot_accum >= SNAPSHOT_INTERVAL:
 			_snapshot_accum = 0.0
 			_broadcast_snapshot()
+			_broadcast_zombies()
 
 
 ## Advances the shared clock and publishes constructions that completed.
@@ -238,6 +246,23 @@ func _advance(ticks: int) -> void:
 	for res in Simulation.advance(world, ticks):
 		SessionLog.info("world", "construction_completed", {"changes": res["changes"], "bunkers": res["bunkers"]})
 		_publish_result(res)
+
+
+## Zombie rows for every region: [id, region, x, y, fx, fy, ai, health].
+## Sent unreliably at the snapshot rate; clients interpolate. Includes the
+## hottest attention zones so players can read the threat level.
+func _broadcast_zombies() -> void:
+	if multiplayer.get_peers().is_empty():
+		return
+	var rows := []
+	for z in world.zombies.values():
+		rows.append([z.zombie_id, z.region_id, snappedf(z.position.x, 0.1), snappedf(z.position.y, 0.1),
+			snappedf(z.facing.x, 0.01), snappedf(z.facing.y, 0.01), z.ai, roundi(z.health)])
+	var zones := []
+	for key in world.threat.zones:
+		if float(world.threat.zones[key]) >= 0.3:
+			zones.append([key, snappedf(world.threat.zones[key], 0.01)])
+	_rpc_zombies.rpc(rows, zones)
 
 
 func _broadcast_snapshot() -> void:
@@ -253,7 +278,8 @@ func _roster_rows() -> Array:
 	var rows := []
 	for p in world.online_players():
 		rows.append({"id": p.player_id, "name": p.display_name, "region": p.region_id,
-			"position": p.position, "facing": p.facing, "carried": p.carried})
+			"position": p.position, "facing": p.facing, "carried": p.carried,
+			"vitals": _vitals_row(p)})
 	return rows
 
 
@@ -278,18 +304,33 @@ func submit_local_move(pos: Vector2, facing: int) -> void:
 		_rpc_submit_move.rpc_id(1, pos, facing, region)
 
 
-func request_interact(entity_id: String) -> void:
+## rev_override >= 0 sends an explicit revision (tests use it to reproduce
+## truly simultaneous requests made from the same revision).
+func request_interact(entity_id: String, rev_override: int = -1) -> void:
 	if not in_world():
 		return
 	var p: PlayerState = world.players.get(local_player_id)
 	var region := world.region(p.region_id)
 	var rev := region.rev(entity_id) if region != null else 0
+	if rev_override >= 0:
+		rev = rev_override
 	var req := _next_request
 	_next_request += 1
 	if is_authority():
 		_host_handle_interact(1, req, entity_id, rev)
 	else:
 		_rpc_request_interact.rpc_id(1, req, entity_id, rev)
+
+
+## Melee swing toward a direction. The swing animation plays locally at once;
+## the host decides whether anything was hit.
+func request_attack(aim: Vector2) -> void:
+	if not in_world() or local_player().dead:
+		return
+	if is_authority():
+		_host_handle_attack(1, aim)
+	else:
+		_rpc_request_attack.rpc_id(1, aim)
 
 
 func request_dev_command(cmd: String, arg: Variant = null) -> void:
@@ -368,11 +409,19 @@ func _host_handle_move(peer_id: int, pos: Vector2, facing: int, region_id: Strin
 	var now := Time.get_ticks_msec()
 	var dt := maxf(0.001, (now - int(_move_track.get(pid, now))) / 1000.0)
 	_move_track[pid] = now
+	if p.dead:
+		return
 	if not WorldActions.is_plausible_move(p.position, pos, dt):
 		SessionLog.warn("session", "move_rejected", {"player": pid.substr(0, 6),
 			"from": [p.position.x, p.position.y], "to": [pos.x, pos.y], "dt": snappedf(dt, 0.001)})
 		_send_correction(peer_id, p.position)
 		return
+	# Running is loud: speed above walking pace makes a small noise now and then.
+	if p.position.distance_to(pos) / dt > PlayerAvatar.SPEED * 1.2:
+		var nk := pid + ":run_noise"
+		if world.tick - int(world.cooldowns.get(nk, -1000)) >= 5:
+			world.cooldowns[nk] = world.tick
+			ZombieSim.make_noise(world, p.region_id, pos, "run")
 	p.position = pos
 	p.facing = clampi(facing, 0, 3)
 
@@ -392,8 +441,22 @@ func _host_handle_interact(peer_id: int, request_id: int, entity_id: String, exp
 	_send_action_result(peer_id, request_id, result["ok"], result["reason"], result["reason_args"])
 
 
+func _host_handle_attack(peer_id: int, aim: Vector2) -> void:
+	var pid: String = _peer_to_player.get(peer_id, "")
+	if pid == "":
+		return
+	var res := WorldActions.request_attack(world, pid, aim)
+	if res["ok"]:
+		_publish_result(res)
+
+
+static func _vitals_row(p: PlayerState) -> Array:
+	return [snappedf(p.health, 0.1), snappedf(p.hydration, 0.1), p.dead, p.weapon]
+
+
 ## Sends everything a WorldActions result changed to all peers, in an order
-## clients can apply: bunkers (may add regions) -> entities -> carried -> moves.
+## clients can apply: bunkers (may add regions) -> entities -> carried -> vitals
+## -> events -> moves.
 func _publish_result(res: Dictionary) -> void:
 	for bid in res["bunkers"]:
 		var b: BunkerState = world.bunker(bid)
@@ -414,6 +477,19 @@ func _publish_result(res: Dictionary) -> void:
 		player_resources_changed.emit(pid)
 		if mode == Mode.HOST and not multiplayer.get_peers().is_empty():
 			_rpc_player_carried.rpc(pid, p.carried)
+	for pid in res.get("vitals", []):
+		var pv: PlayerState = world.players.get(pid)
+		if pv == null:
+			continue
+		vitals_changed.emit(pid)
+		if mode == Mode.HOST and not multiplayer.get_peers().is_empty():
+			_rpc_vitals.rpc(pid, _vitals_row(pv))
+	var events: Array = res.get("events", [])
+	if not events.is_empty():
+		for ev in events:
+			combat_event.emit(ev)
+		if mode == Mode.HOST and not multiplayer.get_peers().is_empty():
+			_rpc_events.rpc(events)
 	var t: Dictionary = res["transition"]
 	if not t.is_empty():
 		var pid2: String = t["player_id"]
@@ -440,6 +516,35 @@ func _host_dev_command(peer_id: int, cmd: String, arg: Variant) -> void:
 	match cmd:
 		"advance_clock":
 			_advance(int(float(arg) * Simulation.TICK_RATE))
+		"spawn_zombie", "spawn_group":
+			if pid != "":
+				var p3: PlayerState = world.players[pid]
+				var n := 1 if cmd == "spawn_zombie" else 4
+				for i in n:
+					var ang := TAU * float(i) / n + 0.6
+					var z := ZombieSim.spawn(world, p3.region_id, p3.position + Vector2(cos(ang), sin(ang)) * 260.0, false)
+					z.ai = ZombieState.AI.INVESTIGATE
+					z.goal = p3.position
+					z.last_known = p3.position
+		"peaceful":
+			world.threat.enabled = arg == null or float(arg) == 0.0
+			if world.threat.enabled:
+				ZombieSim.ensure_population(world)
+		"noise":
+			if pid != "":
+				var p4: PlayerState = world.players[pid]
+				ZombieSim.make_noise(world, p4.region_id, p4.position, "dev", float(arg) if arg != null else 1.0)
+		"hurt", "heal":
+			if pid != "":
+				var p5: PlayerState = world.players[pid]
+				if cmd == "hurt":
+					_publish_result(ZombieSim.damage_player(world, p5, float(arg) if arg != null else 25.0, "dev"))
+				else:
+					p5.health = 100.0
+					p5.hydration = 100.0
+					var hr := WorldActions._ok()
+					hr["vitals"] = [pid]
+					_publish_result(hr)
 		"create_level":
 			var res := WorldActions.dev_create_level(world, pid)
 			if res["ok"]:
@@ -625,6 +730,8 @@ func _rpc_roster(rows: Array) -> void:
 			p.position = row["position"]
 		p.facing = int(row["facing"])
 		p.carried = (row.get("carried", {}) as Dictionary).duplicate()
+		if row.has("vitals"):
+			_apply_vitals(p, row["vitals"])
 		p.online = true
 	for pid in world.players:
 		if not seen.has(pid):
@@ -654,6 +761,62 @@ func _rpc_request_interact(request_id: int, entity_id: String, expected_rev: int
 func _rpc_action_result(_request_id: int, ok: bool, reason_key: String, args: Array) -> void:
 	if not ok:
 		notice.emit(reason_key, args)
+
+
+@rpc("any_peer", "call_remote", "reliable")
+func _rpc_request_attack(aim: Vector2) -> void:
+	if mode == Mode.HOST:
+		_host_handle_attack(multiplayer.get_remote_sender_id(), aim)
+
+
+@rpc("authority", "call_remote", "unreliable_ordered")
+func _rpc_zombies(rows: Array, zones: Array) -> void:
+	if mode != Mode.CLIENT or world == null:
+		return
+	var seen := {}
+	for r in rows:
+		var id := str(r[0])
+		seen[id] = true
+		var z: ZombieState = world.zombies.get(id)
+		if z == null:
+			z = ZombieState.new()
+			z.zombie_id = id
+			world.zombies[id] = z
+		z.region_id = str(r[1])
+		z.position = Vector2(float(r[2]), float(r[3]))
+		z.facing = Vector2(float(r[4]), float(r[5]))
+		z.ai = int(r[6])
+		z.health = float(r[7])
+	for id in world.zombies.keys():
+		if not seen.has(id):
+			world.zombies.erase(id)
+	world.threat.zones.clear()
+	for zr in zones:
+		world.threat.zones[str(zr[0])] = float(zr[1])
+	zombies_updated.emit()
+
+
+@rpc("authority", "call_remote", "reliable")
+func _rpc_events(events: Array) -> void:
+	if mode != Mode.CLIENT:
+		return
+	for ev in events:
+		combat_event.emit(ev)
+
+
+@rpc("authority", "call_remote", "reliable")
+func _rpc_vitals(player_id: String, row: Array) -> void:
+	if mode != Mode.CLIENT or world == null or not world.players.has(player_id):
+		return
+	_apply_vitals(world.players[player_id], row)
+	vitals_changed.emit(player_id)
+
+
+static func _apply_vitals(p: PlayerState, row: Array) -> void:
+	p.health = float(row[0])
+	p.hydration = float(row[1])
+	p.dead = bool(row[2])
+	p.weapon = str(row[3])
 
 
 @rpc("authority", "call_remote", "reliable")

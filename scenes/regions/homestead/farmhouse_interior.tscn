@@ -9,6 +9,7 @@
 [ext_resource type="Script" path="res://src/presentation/world/stockpile_view.gd" id="stock"]
 [ext_resource type="Script" path="res://src/presentation/world/support_view.gd" id="support"]
 [ext_resource type="Script" path="res://src/presentation/world/light_spot.gd" id="light"]
+[ext_resource type="Script" path="res://src/presentation/world/weapon_rack_view.gd" id="rack"]
 
 [node name="FarmhouseInterior" type="Node2D"]
 script = ExtResource("region")
@@ -89,6 +90,10 @@ position = Vector2(800, 600)
 asset_id = "world.furniture_stove"
 footprint = Vector2(80, 28)
 occlude = true
+
+[node name="ClubRack" type="Node2D" parent="YSort"]
+script = ExtResource("rack")
+entity_id = "homestead.farmhouse.club_rack"
 
 [node name="Exit" type="Node2D" parent="YSort"]
 script = ExtResource("portal")

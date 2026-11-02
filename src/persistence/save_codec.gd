@@ -15,16 +15,29 @@ extends RefCounted
 ##               "carried": {"wood": n}}}
 ## }
 ## Schema history: 1 = iteration 001 (no bunkers/carried). 2 = iteration 002.
+## 3 = iteration 003: world.zombies (persistent base population only:
+## {id: {region_id, position, health}}), world.next_zombie, player health /
+## hydration / weapon. Noise, attention and horde reinforcements are never saved.
 ## World identity (world) and player identity (players) are separate blocks.
 
-const SCHEMA_VERSION := 2
+const SCHEMA_VERSION := 3
 const GAME_ID := "Aftergrowth"
 
 ## Migration extension point: from_version -> Callable(Dictionary) -> Dictionary
 ## returning data upgraded to from_version + 1.
 static var MIGRATIONS := {
 	1: SaveCodec._migrate_1_to_2,
+	2: SaveCodec._migrate_2_to_3,
 }
+
+
+## 2 -> 3: no zombies yet (the host tops up the base population on start);
+## players start healthy and hydrated (PlayerState defaults).
+static func _migrate_2_to_3(d: Dictionary) -> Dictionary:
+	d["world"]["zombies"] = d["world"].get("zombies", {})
+	d["world"]["next_zombie"] = d["world"].get("next_zombie", 0)
+	d["schema_version"] = 3
+	return d
 
 
 ## 1 -> 2: worlds from iteration 001 get an empty bunker table and empty
@@ -41,6 +54,11 @@ static func encode(world: WorldState) -> Dictionary:
 	var regions := {}
 	for rid in world.regions:
 		regions[rid] = (world.regions[rid] as RegionState).to_dict()
+	var zombies := {}
+	for zid in world.zombies:
+		var z: ZombieState = world.zombies[zid]
+		if z.persistent and not z.is_dead():
+			zombies[zid] = z.to_dict()
 	var bunkers := {}
 	for bid in world.bunkers:
 		bunkers[bid] = (world.bunkers[bid] as BunkerState).to_dict()
@@ -60,6 +78,8 @@ static func encode(world: WorldState) -> Dictionary:
 			"content_fingerprint": world.content_fingerprint,
 			"regions": regions,
 			"bunkers": bunkers,
+			"zombies": zombies,
+			"next_zombie": world.next_zombie,
 		},
 		"players": players,
 	}
@@ -161,5 +181,11 @@ static func decode(d: Dictionary) -> Dictionary:
 			p.region_id = Content.DEFAULT_REGION
 			p.position = Content.spawn_point(p.region_id, 0)
 		w.players[pid] = p
+	w.next_zombie = int(wd.get("next_zombie", 0))
+	var zs: Dictionary = wd.get("zombies", {})
+	for zid in zs:
+		var z := ZombieState.from_dict(str(zid), zs[zid])
+		if w.regions.has(z.region_id):
+			w.zombies[str(zid)] = z
 	w.rebuild_jobs()
 	return {"ok": true, "world": w, "error": "", "warnings": warnings}

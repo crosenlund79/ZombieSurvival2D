@@ -25,6 +25,8 @@ const DEFAULT_BINDINGS := {
 	"move_right": [KEY_D, KEY_RIGHT],
 	"interact": [KEY_E],
 	"world_map": [KEY_M],
+	"attack": [KEY_F],
+	"sprint": [KEY_SHIFT],
 	"pause_menu": [KEY_ESCAPE],
 	"quick_save": [KEY_F5],
 	"zoom_in": [KEY_EQUAL, KEY_KP_ADD],
@@ -34,7 +36,7 @@ const DEFAULT_BINDINGS := {
 }
 ## Actions shown in the controls list (dev/debug keys are listed but grouped last).
 const REMAPPABLE: Array[String] = ["move_up", "move_down", "move_left", "move_right",
-	"interact", "world_map", "pause_menu", "quick_save", "zoom_in", "zoom_out", "dev_overlay", "screenshot"]
+	"interact", "attack", "sprint", "world_map", "pause_menu", "quick_save", "zoom_in", "zoom_out", "dev_overlay", "screenshot"]
 
 var _cfg := ConfigFile.new()
 var _path := ""
@@ -161,6 +163,7 @@ func _apply_input_map() -> void:
 	# Mouse wheel zoom is always available in addition to keys.
 	_add_mouse(&"zoom_in", MOUSE_BUTTON_WHEEL_UP)
 	_add_mouse(&"zoom_out", MOUSE_BUTTON_WHEEL_DOWN)
+	_add_mouse(&"attack", MOUSE_BUTTON_LEFT)
 
 
 func _set_action_keys(action: String, keys: Array) -> void:

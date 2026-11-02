@@ -1,0 +1,50 @@
+{
+	"kind": "visual",
+	"category": "items",
+	"assets": [
+		{
+			"id": "item.club",
+			"name": "Wooden club (held)",
+			"template": "res://assets/templates/items/template_club.png",
+			"display_size": [
+				20,
+				60
+			],
+			"source_size": [
+				40,
+				120
+			],
+			"pivot": [
+				0.5,
+				0.9
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Pivot = grip; rotated in code for the swing. Generated placeholder (tools/art/gen_survival.py) \u2014 replace with tablet art."
+		},
+		{
+			"id": "item.club_rack",
+			"name": "Club rack (pick up a club)",
+			"template": "res://assets/templates/items/template_club_rack.png",
+			"display_size": [
+				60,
+				100
+			],
+			"source_size": [
+				120,
+				200
+			],
+			"pivot": [
+				0.5,
+				0.93
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_survival.py) \u2014 replace with tablet art."
+		}
+	]
+}

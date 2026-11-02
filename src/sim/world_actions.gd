@@ -25,6 +25,8 @@ static func request_interact(world: WorldState, player_id: String, entity_id: St
 	var p: PlayerState = world.players.get(player_id, null)
 	if p == null or not p.online:
 		return _fail("ACTION_UNKNOWN_PLAYER")
+	if p.dead:
+		return _fail("ACTION_DEAD")
 	var region := world.region(p.region_id)
 	if region == null or not region.has_entity(entity_id):
 		return _fail("ACTION_UNKNOWN_OBJECT")
@@ -38,7 +40,16 @@ static func request_interact(world: WorldState, player_id: String, entity_id: St
 			if expected_rev != region.rev(entity_id):
 				return _fail("ACTION_STALE")
 			region.set_fields(entity_id, {"open": not bool(state.get("open", false))})
+			ZombieSim.make_noise(world, region.region_id, Content.entity_position(def), "door")
 			return _changed(region, entity_id, "action")
+		"weapon_rack":
+			if p.weapon == str(def.get("weapon", "club")):
+				return _fail("ACTION_ALREADY_ARMED")
+			p.weapon = str(def.get("weapon", "club"))
+			var wr := _ok()
+			wr["vitals"] = [p.player_id]
+			wr["notice"] = {"key": "WEAPON_TAKEN", "args": []}
+			return wr
 		"shelter_site":
 			return _shelter(world, region, entity_id, def, state, expected_rev)
 		"portal":
@@ -170,11 +181,13 @@ static func _chop(world: WorldState, p: PlayerState, region: RegionState, eid: S
 		return _fail("ACTION_CARRY_FULL", [CARRY_LIMIT])
 	world.cooldowns[key] = world.tick
 	var chops := int(state.get("chops", 0)) + 1
+	ZombieSim.make_noise(world, region.region_id, Content.entity_position(def), "chop")
 	if chops < int(def.get("chops", 5)):
 		region.set_fields(eid, {"chops": chops})
 		return _changed(region, eid, "chop")
 	# The felling blow: the tree's wood goes to whoever landed it, once.
 	region.set_fields(eid, {"chops": chops, "felled": true})
+	ZombieSim.make_noise(world, region.region_id, Content.entity_position(def), "fell")
 	var gained := mini(int(def.get("wood", 4)), CARRY_LIMIT - p.carrying("wood"))
 	p.carried["wood"] = p.carrying("wood") + gained
 	var res := _changed(region, eid, "felled")
@@ -228,6 +241,54 @@ static func _support(world: WorldState, region: RegionState, eid: String, def: D
 	return res
 
 
+# ------------------------------------------------------------------ combat
+
+const WEAPONS := {
+	"": {"damage": 12.0, "range": 54.0, "cooldown_ticks": 5},
+	"club": {"damage": 34.0, "range": 74.0, "cooldown_ticks": 6},
+}
+const ARC_COS := 0.42  # ~65 degrees either side of the swing direction
+
+
+## A melee swing toward `aim`. The host picks the closest zombie in reach and
+## in the swing arc with a clear line (no hitting through walls or fences).
+static func request_attack(world: WorldState, player_id: String, aim: Vector2) -> Dictionary:
+	var p: PlayerState = world.players.get(player_id, null)
+	if p == null or not p.online or p.dead:
+		return _fail("ACTION_DEAD")
+	var w: Dictionary = WEAPONS.get(p.weapon, WEAPONS[""])
+	var key := player_id + ":attack"
+	if world.tick - int(world.cooldowns.get(key, -1000)) < int(w["cooldown_ticks"]):
+		return _fail("ACTION_TOO_FAST")
+	world.cooldowns[key] = world.tick
+	aim = aim.normalized() if aim.length() > 0.01 else Vector2.DOWN
+	var res := _ok()
+	res["events"] = [{"kind": "swing", "player_id": player_id, "aim": aim}]
+	ZombieSim.make_noise(world, p.region_id, p.position, "melee")
+	var region := world.region(p.region_id)
+	var best: ZombieState = null
+	var best_d := INF
+	for z in world.zombies.values():
+		if z.region_id != p.region_id or z.is_dead():
+			continue
+		var to: Vector2 = z.position - p.position
+		var d := to.length()
+		if d > float(w["range"]):
+			continue
+		if d > 26.0 and aim.dot(to / d) < ARC_COS:
+			continue
+		var grid := NavGrid.for_def(region.def_id)
+		if not grid.clear_line(p.position, z.position, NavGrid.dynamic_blocked(world, p.region_id, grid)):
+			continue
+		if d < best_d:
+			best_d = d
+			best = z
+	if best != null:
+		var hit := ZombieSim.damage_zombie(world, best, float(w["damage"]), p, aim * 16.0)
+		res["events"].append_array(hit["events"])
+	return res
+
+
 # ------------------------------------------------------------------ developer
 
 ## Creates one new level below the deepest level of the player's bunker.
@@ -266,7 +327,7 @@ static func is_plausible_move(from: Vector2, to: Vector2, dt_sec: float) -> bool
 
 static func _ok() -> Dictionary:
 	return {"ok": true, "reason": "", "reason_args": [], "changes": [], "bunkers": [], "players": [],
-		"transition": {}, "notice": {}}
+		"transition": {}, "notice": {}, "events": [], "vitals": []}
 
 
 static func _changed(region: RegionState, eid: String, cause: String) -> Dictionary:

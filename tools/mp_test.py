@@ -52,6 +52,7 @@ def scenario_single():
     s = Instance("t_single"); s.wipe(); s.start()
     try:
         r = s.cmd("single new 111 Solo")
+        s.cmd("dev peaceful 1")
         check("single: world starts", r["ok"] and r["state"]["in_world"], r)
         r = s.cmd(f"walk_to {GATE_STAND}")
         check("single: player moves with input", r["ok"], r["state"]["view"])
@@ -77,6 +78,7 @@ def scenario_single():
         s.quit()
         s.start()
         r = s.cmd("single continue Solo")
+        s.cmd("dev peaceful 1")
         st = r["state"]
         check("single: restart loads same world", r["ok"] and st.get("world_id") == world_id, st.get("world_id"))
         check("single: gate still open after restart", gate(st).get("state", {}).get("open") is True, gate(st))
@@ -95,6 +97,7 @@ def scenario_multiplayer():
     try:
         host.start(); a.start(); b.start()
         r = host.cmd(f"host {PORT} new 4242 Hosty")
+        host.cmd("dev peaceful 1")
         check("mp: host starts", r["ok"], r)
         world_id = r["state"]["world_id"]
         r = a.cmd(f"join 127.0.0.1 {PORT} Alice")
@@ -137,8 +140,9 @@ def scenario_multiplayer():
         check("mp: B is told it was too far", any("ACTION_TOO_FAR" in n for n in r["state"]["notices"]), r["state"]["notices"])
         # Simultaneous requests based on the same revision: exactly one wins.
         b.cmd(f"walk_to {GATE_STAND.split()[0]} {int(GATE_STAND.split()[1]) + 20}")
-        with open(a.inbox, "a") as f: f.write(f"interact {GATE}\n")
-        with open(b.inbox, "a") as f: f.write(f"interact {GATE}\n")
+        rev_now = gate(host.state())["rev"]
+        with open(a.inbox, "a") as f: f.write(f"interact {GATE} {rev_now}\n")
+        with open(b.inbox, "a") as f: f.write(f"interact {GATE} {rev_now}\n")
         a.seq += 1; b.seq += 1
         ra = a._wait(a.seq, 10); rb = b._wait(b.seq, 10)
         st = wait_for(host, lambda s: gate(s)["rev"] >= 2)
@@ -180,6 +184,7 @@ def scenario_multiplayer():
         # Restart host from the save; clients rejoin.
         host.start()
         r = host.cmd(f"host {PORT} continue Hosty")
+        host.cmd("dev peaceful 1")
         check("mp: host restarts from save", r["ok"] and r["state"].get("world_id") == world_id, r)
         check("mp: restarted host has gate open rev 3", gate(r["state"]) == {"state": {"open": True}, "rev": 3}, gate(r["state"]))
         check("mp: clock continues from save", r["state"]["tick"] >= tick_saved, (tick_saved, r["state"]["tick"]))
@@ -217,6 +222,7 @@ def scenario_assets():
     s.start()
     try:
         r = s.cmd("single new 5 Painter")
+        s.cmd("dev peaceful 1")
         srcs = r["state"]["asset_sources"]
         check("assets: template used by default", srcs.get("char.player") == "template", srcs)
         p0 = player(r["state"], "Painter")
@@ -264,6 +270,7 @@ def scenario_settings():
         check("settings: UI scale persists", abs(st["ui_scale"] - 1.5) < 1e-6, st)
         check("settings: volume persists and is applied to the bus", abs(st["master"] - 0.25) < 1e-6 and st["master_bus_db"] < -10, st)
         r = s.cmd("single new 3 Solo")
+        s.cmd("dev peaceful 1")
         check("settings: client settings not stored in world save", "language" not in json.dumps(r["state"].get("entities", {})), "")
     finally:
         s.kill()
@@ -300,6 +307,7 @@ def scenario_bunker_single():
     s = Instance("t_bunker"); s.wipe(); s.start()
     try:
         r = s.cmd("single new 77 Builder")
+        s.cmd("dev peaceful 1")
         check("loop: 1 rural world starts", r["ok"] and r["state"]["region"] == "homestead", r["state"].get("region"))
         r = go_inside(s)
         check("loop: 2 enter the farmhouse", r["state"]["region"] == "homestead.farmhouse", r["state"].get("region"))
@@ -364,6 +372,7 @@ def scenario_bunker_single():
         saved = r["state"]
         s.quit(); s.start()
         r = s.cmd("single continue Builder")
+        s.cmd("dev peaceful 1")
         st = r["state"]
         check("loop: 16 reopened in level -2", st["region"] == L2 and st["view"]["region"] == L2, st.get("region"))
         check("loop: 16 bunker levels intact", st["bunkers"] == saved["bunkers"], [st["bunkers"], saved["bunkers"]])
@@ -384,6 +393,7 @@ def scenario_bunker_multi():
     try:
         host.start(); a.start()
         host.cmd(f"host {PORT} new 99 Hosty")
+        host.cmd("dev peaceful 1")
         go_inside(host)
         host.cmd("walk_to 300 492"); host.cmd("press_interact"); host.cmd("wait 8.5")
         r = host.cmd("press_interact")
@@ -452,6 +462,7 @@ def scenario_bunker_multi():
         check("mpb: client returns to menu when host closes", not sa["in_world"], "")
         host.start()
         r = host.cmd(f"host {PORT} continue Hosty")
+        host.cmd("dev peaceful 1")
         check("mpb: host restarts on the surface", r["ok"] and r["state"]["region"] == "homestead", r["state"].get("region"))
         r = a.cmd(f"join 127.0.0.1 {PORT} Alice")
         check("mpb: client rejoins directly on level -2", r["ok"] and r["state"]["region"] == L2 and r["state"]["view"]["region"] == L2, r["state"].get("region"))
@@ -463,7 +474,146 @@ def scenario_bunker_multi():
             i.kill()
 
 
-SCENARIOS = {"settings": scenario_settings, "bunker_single": scenario_bunker_single, "bunker_multi": scenario_bunker_multi, "single": scenario_single, "multiplayer": scenario_multiplayer,
+
+def zs(state, alive=True):
+    return [z for z in state.get("zombies", []) if not alive or z["ai"] != "DEAD"]
+
+
+def engaged(state):
+    return [z for z in zs(state) if z["ai"] in ("INVESTIGATE", "CHASE", "WINDUP", "RECOVER", "STAGGER")]
+
+
+def take_club(i):
+    go_inside(i)
+    i.cmd("walk_to 150 470"); r = i.cmd("press_interact")
+    i.cmd("walk_to 480 600"); i.cmd("press_interact")
+    return r
+
+
+def to_west_trees(i):
+    i.cmd("walk_to 1150 960")
+    if not i.state()["entities"]["homestead.yard_gate"]["state"]["open"]:
+        i.cmd("press_interact")
+    i.cmd("walk_to 700 960")
+
+
+def scenario_danger_single():
+    s = Instance("t_danger"); s.wipe(); s.start()
+    try:
+        r = s.cmd("single new 31 Scout")
+        base = len(zs(r["state"]))
+        check("danger: base zombie population exists away from the homestead", base >= 4, base)
+        r = take_club(s)
+        check("danger: club taken from the farmhouse rack", r["state"]["weapon"] == "club", r["state"].get("weapon"))
+        to_west_trees(s)
+        s.cmd("walk_to 200 685")
+        r = s.cmd("press_repeat 5 0.45", timeout=40)
+        check("danger: tree felled", r["state"]["entities"]["homestead.tree_03"]["state"]["felled"], "")
+        r = s.cmd("wait 1.5")
+        check("danger: chopping noise makes zombies investigate", len(engaged(r["state"])) >= 1, [z["ai"] for z in zs(r["state"])])
+        att1 = r["state"]["attention_total"]
+        s.cmd("walk_to 380 945")
+        r = s.cmd("press_repeat 5 0.45", timeout=40)
+        r = s.cmd("wait 2")
+        st = r["state"]
+        check("danger: continued noise raises attention", st["attention_total"] > att1, (att1, st["attention_total"]))
+        check("danger: more zombies converge (horde developing)", len(engaged(st)) >= 3, [(z["ai"], z["persistent"]) for z in zs(st)])
+        check("danger: threat shown to the player", st["threat_label"] not in ("Quiet", ""), st["threat_label"])
+        transient = [z for z in zs(st) if not z["persistent"]]
+        check("danger: reinforcements stay within the cap", len(transient) <= 8, len(transient))
+        s.cmd("dev spawn_zombie")
+        wait_for(s, lambda st: any(abs(z["x"] - st["me_x"]) + abs(z["y"] - st["me_y"]) < 90 for z in zs(st)), timeout=15)
+        r = s.cmd("attack_nearest 8 0.6", timeout=30)
+        hurt = [z for z in r["state"]["zombies"] if z["hp"] < 100]
+        check("danger: melee hits land (authoritative)", len(hurt) >= 1, [(z["ai"], z["hp"]) for z in r["state"]["zombies"]][:8])
+        check("danger: a zombie can be killed", any(z["ai"] == "DEAD" for z in r["state"]["zombies"]) or
+              any(z["hp"] <= 32 for z in r["state"]["zombies"]), "")
+        hp_before = r["state"]["health"]
+        s.cmd("dev heal")
+        s.cmd("walk_to 700 960"); s.cmd("walk_to 1150 960"); s.cmd("walk_to 1160 690")
+        st = s.state()
+        if not st["entities"]["homestead.farmhouse_door"]["state"]["open"]:
+            s.cmd("press_interact")
+        s.cmd("walk_to 1160 664 4"); r = s.cmd("press_interact")
+        check("danger: retreat into the farmhouse", r["state"]["region"] in ("homestead.farmhouse",), r["state"].get("region"))
+        r = s.cmd("wait 6")
+        st = r["state"]
+        check("danger: no zombie follows inside", all(z["region"] == "homestead" for z in st["zombies"]) and st["view"]["zombies"] == 0, st["view"])
+        check("danger: zombies give up the chase", not any(z["ai"] in ("CHASE", "WINDUP") for z in st["zombies"]), [z["ai"] for z in st["zombies"]])
+        check("danger: indoors reads as sheltered", st["threat_label"] in ("Sheltered", "I ly"), st["threat_label"])
+        r = s.cmd("save")
+        s.quit(); s.start()
+        r = s.cmd("single continue Scout")
+        st = r["state"]
+        check("danger: reload keeps the club and position", st["weapon"] == "club" and st["region"] == "homestead.farmhouse", (st.get("weapon"), st.get("region")))
+        check("danger: reload has no duplicated horde (only base population)", all(z["persistent"] for z in zs(st)) and len(zs(st)) <= 6, [(z["id"], z["persistent"]) for z in zs(st)])
+        check("danger: reload starts calm", st["attention"] == 0, st["attention"])
+    finally:
+        s.kill()
+
+
+def scenario_danger_multi():
+    host = Instance("t_dhost"); c = Instance("t_dclient")
+    for i in (host, c):
+        i.wipe()
+    try:
+        host.start(); c.start()
+        host.cmd(f"host {PORT} new 47 Hosty")
+        r = c.cmd(f"join 127.0.0.1 {PORT} Cleo")
+        check("dmp: client joins a world with zombies", r["ok"], r["error"])
+        time.sleep(0.6)
+        sh, sc = host.state(), c.state()
+        hz = {z["id"]: z for z in zs(sh)}
+        cz = {z["id"]: z for z in zs(sc)}
+        check("dmp: client mirrors the same zombies", set(hz) == set(cz), (sorted(hz), sorted(cz)))
+        close = all(abs(hz[k]["x"] - cz[k]["x"]) < 60 and abs(hz[k]["y"] - cz[k]["y"]) < 60 for k in hz if k in cz)
+        check("dmp: zombie positions consistent between peers", close, "")
+        # Client makes noise on the east side; the host sees zombies react there.
+        c.cmd("walk_to 1150 960")
+        if not c.state()["entities"]["homestead.yard_gate"]["state"]["open"]:
+            c.cmd("press_interact")
+        c.cmd("walk_to 1800 960"); c.cmd("walk_to 2060 795")
+        r = c.cmd("press_repeat 5 0.45", timeout=40)
+        check("dmp: client fells a tree", r["state"]["entities"]["homestead.tree_05"]["state"]["felled"], "")
+        time.sleep(1.0)
+        sh = host.state()
+        near = [z for z in engaged(sh) if abs(z["x"] - 2060) < 900]
+        check("dmp: noise made by the client draws zombies (seen by host)", len(near) >= 1, [(z["ai"], int(z["x"]), int(z["y"])) for z in zs(sh)])
+        # Zombies reach the client: damage is decided by the host and agrees on both peers.
+        host.cmd("dev spawn_group")
+        hp0 = c.state()["health"]
+        sc = wait_for(c, lambda s: s["health"] < hp0 or s["dead"], timeout=25)
+        wait_for(c, lambda st: any(abs(z["x"] - st["me_x"]) + abs(z["y"] - st["me_y"]) < 90 for z in zs(st)), timeout=10)
+        time.sleep(0.5)
+        sh = host.state()
+        cleo_h = [p for p in sh["players"] if p["name"] == "Cleo"][0]
+        sc = c.state()
+        check("dmp: zombies damage the client", sc["health"] < hp0 or sc["dead"], (hp0, sc["health"]))
+        r = c.cmd("attack_nearest 4 0.6", timeout=20)
+        sh = host.state()
+        check("dmp: client hits are applied by the host", any(z["hp"] < 100 for z in sh["zombies"]), [(z["ai"], z["hp"]) for z in sh["zombies"]][:10])
+        sh = host.state(); sc = c.state()
+        h_hp = [p for p in sh["players"] if p["name"] == "Cleo"][0]
+        check("dmp: client health identical on host and client", abs(sc["health"] - host_health(host, "Cleo")) < 0.5, (sc["health"], host_health(host, "Cleo")))
+        host.cmd("save"); host.quit()
+        wait_for(c, lambda s: not s["in_world"], timeout=12)
+        host.start()
+        r = host.cmd(f"host {PORT} continue Hosty")
+        r = c.cmd(f"join 127.0.0.1 {PORT} Cleo")
+        check("dmp: rejoin after restart", r["ok"], r["error"])
+        time.sleep(0.6)
+        check("dmp: rejoined client sees only the base population", all(z["persistent"] for z in zs(host.state())) and
+              {z["id"] for z in zs(host.state())} == {z["id"] for z in zs(c.state())}, "")
+    finally:
+        for i in (host, c):
+            i.kill()
+
+
+def host_health(host, name):
+    return [p for p in host.state()["players"] if p["name"] == name][0]["health"]
+
+
+SCENARIOS = {"danger_single": scenario_danger_single, "danger_multi": scenario_danger_multi, "settings": scenario_settings, "bunker_single": scenario_bunker_single, "bunker_multi": scenario_bunker_multi, "single": scenario_single, "multiplayer": scenario_multiplayer,
              "netfail": scenario_connection_failure, "assets": scenario_assets}
 
 if __name__ == "__main__":

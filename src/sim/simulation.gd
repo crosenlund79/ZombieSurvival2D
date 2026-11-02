@@ -2,7 +2,8 @@ class_name Simulation
 extends RefCounted
 ## The one shared world clock. Only the authority advances it; clients receive
 ## the tick in snapshots. Timed systems hang off advance() instead of keeping
-## their own clocks: today that is construction (shelter hatches, supports).
+## their own clocks: construction, zombies/noise/attention (ZombieSim) and
+## player vitals (SurvivalSim).
 
 const TICK_RATE := 10  # ticks per real second
 
@@ -27,6 +28,8 @@ static func advance(world: WorldState, ticks: int) -> Array:
 		var res := WorldActions.complete_construction(world, j["region_id"], j["entity_id"])
 		if res["ok"]:
 			results.append(res)
+	results.append_array(ZombieSim.step(world, ticks))
+	results.append_array(SurvivalSim.step(world, ticks))
 	return results
 
 

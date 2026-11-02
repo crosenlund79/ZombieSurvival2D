@@ -29,10 +29,15 @@ Beskrivelse i almindeligt sprog af hver GDScript-fil. Identifikatorer og stier e
 | Script | Afhænger af | Hvad det gør |
 |---|---|---|
 | `src/content/content.gd` | SafeFile | Læser forfattede områdefiler (`content/regions/*.json`): entiteter, positioner, rækkevidde, starttilstand, startpunkter; beregner et indholdsfingeraftryk, så vært og klient kan bekræfte, at de matcher. |
+| `src/state/zombie_state.gd` | — | Én zombie som rene data: identitet, område, position, helbred, AI-tilstand og korttidshukommelse. Kun grundbestandens identitet/position/helbred gemmes. |
+| `src/state/threat_state.gd` | — | Verdens støjkø og opmærksomhed pr. grov zone (midlertidig: gemmes aldrig, så en genindlæst verden starter rolig). |
 | `src/state/world_state.gd` | Content, RegionState, PlayerState, Simulation | Hele den fælles verden som rene data: id, seed, urtik, områder, spillere. Giver også seedede tilfældighedsstrømme. |
 | `src/state/region_state.gd` | Content | Spillerskabte ændringer i ét område, kun gemt hvor de afviger fra det forfattede indhold, med et revisionsnummer pr. genstand. |
 | `src/state/bunker_state.gd` | — | Ét tilflugtsrum som rene data: indgangens identitet, niveauer efter dybde med fortegn (intet maksimum) og det fælles lager. Danner og fortolker niveauernes område-id'er. |
 | `src/state/player_state.gd` | Content | Én spillers gemte data: identitet, navn, område, position, retning. |
+| `src/sim/nav_grid.gd` | Content, Prop, FenceLine | Værtens gangbarhedsgitter bygget fra områdescenens forfattede kollisionsdata plus levende træer/låger; A*-ruter og sigtelinjer for zombier og angreb. |
+| `src/sim/zombie_sim.gd` | NavGrid, ThreatState, WorldState | Kun værten: zombiesimulation — hørelse, opmærksomhed der stiger/aftager, forstærkninger fra kortkanter inden for lofter, AI-tilstandsmaskinen, bevægelse, angreb, lig og opfyldning af bestanden. |
+| `src/sim/survival_sim.gd` | WorldActions | Kun værten: spillerens livstegn — langsom genopretning af helbred og den milde genoplivningsregel (behold alt, vågn i stuehuset). |
 | `src/sim/simulation.gd` | WorldState | Det ene fælles ur (10 tik pr. sekund). Fremtidige tidsstyrede systemer kobles på her. |
 | `src/sim/world_actions.gd` | WorldState, Content | Værtens regler: kontrollerer en interaktionsanmodning (hvem, hvor, hvor langt, hvilken revision) og udfører den; kontrollerer at rapporteret bevægelse er fysisk mulig. |
 | `src/persistence/save_codec.gd` | WorldState, Content, BuildInfo | Konverterer verdenen til/fra gemmeformatet, validerer, udfylder sikre standardværdier, fjerner slettet indhold med advarsler og kører migreringer for gamle skemaversioner. |
@@ -74,6 +79,8 @@ Beskrivelse i almindeligt sprog af hver GDScript-fil. Identifikatorer og stier e
 | `src/presentation/world/progress_marker.gd` | — | Lille blæktegnet statuslinje over noget der bygges. |
 | `src/presentation/world/light_factory.gd` | — | Danner den bløde radiale tekstur til 2D-lys og bygger lanternelys. |
 | `src/presentation/world/light_spot.gd` | LightFactory | Et scenelys (lanterne, vindue, lysskakt) med den fælles radiale tekstur. |
+| `src/presentation/world/zombie_view.gd` | Session, Assets, Audio | Viser én zombie ud fra verdensdata: interpolation, slæben, ?/!-tegn, rød optaktsstilling, slagblink, helbredsbjælke, fald ved død, lokale støn. |
+| `src/presentation/world/weapon_rack_view.gd` | EntityView | Køllestativet i stuehuset; at tage en kølle udruster spilleren (én hver, løber aldrig tør). |
 | `src/presentation/world/placeholder_block.gd` | — | Gråboks-hjælper (brugt i fase A, beholdt til skitsering af nye områder): et farvet rektangel med tilsvarende kollision. |
 | `src/presentation/world/placeholder_ground.gd` | — | Gråboks-jord med et 100 px gitter (ikke brugt i den nuværende scene). |
 
@@ -85,6 +92,7 @@ Beskrivelse i almindeligt sprog af hver GDScript-fil. Identifikatorer og stier e
 | `src/dev/autotest_driver.gd` | Session, Saves, Assets, Audio | Fjernbetjening kun til test (kun med `--autotest`): læser kommandoer fra en fil og skriver tilstandsrapporter, så `tools/mp_test.py` kan styre rigtige, separate spilprocesser. |
 | `tests/test_case.gd` | — | Lille basisklasse til enhedstests (`check`, `eq`). |
 | `tests/test_runner.gd` | TestCase, ContentCheck | Kører alle testfiler i tests/unit og indholdskontrollen, skriver resultater og afslutter med fejlkode ved fejl. |
+| `tests/unit/test_threat.gd` | ZombieSim, WorldActions, NavGrid | Tester navigation, syn, hørelse, opmærksomhed op/ned, eskaleringslofter, nærkampsautoritet, vægge, skade efter optakt, genoplivning, stuehusets grænse og gemmepolitikken. |
 | `tests/unit/test_world.gd` | WorldState, WorldActions, Simulation | Tester oprettelse af verden, lagring af ændringer, seedet tilfældighed, uret, validering af interaktioner, samtidige anmodninger, bevægelsesplausibilitet. |
 | `tests/unit/test_bunker.gd` | WorldActions, Simulation, SaveCodec | Tester tilflugtsrummets byggetid, ingen dobbelt lem, portaler, træ kun givet én gang, nedkøling, forstærkning der kun bruger træ én gang, ubegrænsede udviklerniveauer, gemte spil, migrering. |
 | `tests/unit/test_save.gd` | SaveCodec, SafeFile, Saves | Tester gem/indlæs-rundtur, validering, standardværdier, slettet indhold, den historiske v1-fixture, migreringer, sikre skrivninger og fallback til sikkerhedskopi. |

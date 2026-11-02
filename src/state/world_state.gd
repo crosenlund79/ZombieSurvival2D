@@ -15,6 +15,10 @@ var bunkers := {}             # bunker_id -> BunkerState
 ## Timed constructions in progress: [{region_id, entity_id, done_tick}]. Rebuilt
 ## from entity state (stage "building" + started + ticks) — never saved itself.
 var jobs: Array = []
+var zombies := {}             # zombie_id -> ZombieState (host: simulated; clients: mirrored)
+var next_zombie := 0          # id counter (saved, so ids are never reused)
+var threat := ThreatState.new()   # noise + attention (transient, never saved)
+var _sim_rng: RandomNumberGenerator
 ## Runtime-only per-player cooldowns ("<player_id>:<action>" -> tick). Never saved.
 var cooldowns := {}
 
@@ -61,6 +65,15 @@ func make_rng(stream: String) -> RandomNumberGenerator:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = hash("%d:%s" % [world_seed, stream])
 	return rng
+
+
+## Random stream for host-side simulation (zombie wandering, jitter). Seeded
+## from the world seed and the clock at first use, so tests are reproducible.
+func sim_rng() -> RandomNumberGenerator:
+	if _sim_rng == null:
+		_sim_rng = RandomNumberGenerator.new()
+		_sim_rng.seed = hash("%d:sim:%d" % [world_seed, tick])
+	return _sim_rng
 
 
 func online_players() -> Array:
