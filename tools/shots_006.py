@@ -87,7 +87,7 @@ def craft():
     s = Instance("shots_006b", headless=False); s.wipe(); s.start()
     try:
         s.cmd("window 1600 900")
-        s.cmd("single new 62 Crafter"); s.cmd("dev peaceful 1")
+        s.cmd("single new 62 Crafter"); s.cmd("dev peaceful 1"); s.cmd("tips off")
         for g in ("wood:14", "scrap_metal:6", "cloth:4", "canned_food:2", "electrical_parts:2", "padded_jacket:1"):
             s.cmd(f"dev grant {g}")
         to_yard(s)
@@ -143,6 +143,52 @@ def world():
         s.quit()
 
 
+def survivor():
+    s = Instance("shots_006d", headless=False); s.wipe(); s.start()
+    try:
+        s.cmd("window 1600 900")
+        s.cmd("devworld Tester"); s.cmd("dev peaceful 1"); s.cmd("tips off")
+        s.cmd("walk_to 1160 760"); s.cmd("walk_to 1160 690"); s.cmd("interact homestead.farmhouse_door") if not s.state()["entities"]["homestead.farmhouse_door"]["state"]["open"] else None
+        s.cmd("walk_to 1160 664 4"); s.cmd("interact homestead.farmhouse_entry")
+        s.cmd("walk_to 300 452 4"); s.cmd("interact homestead.farmhouse.hatch_ladder")
+        s.cmd("walk_to 500 520"); s.cmd("zoom 0.8"); s.cmd("wait 6")
+        shot(s, "k1_dev_world_bunker_survivor", 0.5)
+        s.cmd("panel settlement on"); shot(s, "k2_settlement_overview", 0.5); s.cmd("panel settlement off")
+        s.cmd("npc mara assign farm"); s.cmd("wait 8")
+        s.cmd("zoom 1.0")
+        shot(s, "k3_survivor_farming", 0.5)
+    finally:
+        s.quit()
+
+
+def duo():
+    h = Instance("shots_006h", headless=False); c = Instance("shots_006g", headless=False)
+    for i in (h, c):
+        i.wipe()
+    try:
+        h.start(); c.start()
+        for i in (h, c):
+            i.cmd("window 1100 650")
+        h.cmd("host 47912 new 71 Hosty"); h.cmd("tips off"); h.cmd("dev peaceful 1")
+        c.cmd("join 127.0.0.1 47912 Cleo"); c.cmd("tips off")
+        h.cmd("dev grant wood:12")
+        to_yard(h); to_yard(c)
+        h.cmd("walk_to 960 760"); h.cmd("walk_to 960 600")
+        h.cmd("build barricade 934 480"); h.cmd("build barricade 998 480")
+        c.cmd("walk_to 1150 960"); c.cmd("walk_to 1150 1400"); c.cmd("walk_to 2340 1400 10"); c.cmd("interact homestead.road_east")
+        c.cmd("walk_to 900 700")
+        h.cmd("zoom 0.8"); c.cmd("zoom 0.7"); h.cmd("wait 3")
+        shot(h, "l1_mp_host_fortifying_home", 0.5)
+        shot(c, "l2_mp_client_at_service_station", 0.3)
+    finally:
+        for i in (h, c):
+            i.quit()
+
+
+if not only or "survivor" in only:
+    survivor()
+if not only or "duo" in only:
+    duo()
 if not only or "world" in only:
     world()
 if not only or "craft" in only:
