@@ -167,7 +167,34 @@ the viewport. Stretch mode `canvas_items` + aspect `expand`: wider screens see m
 distorted. Panels: `MainMenu`, `Hud`, `PauseMenu` (does not pause), `SettingsPanel`, `DevOverlay` (F3),
 bottom-right build label. All text goes through translation keys in `locale/strings.json`.
 
-## 13. Testing and diagnostics
+## 13. Region presentation (visual prototype)
+
+The homestead scene (`scenes/regions/homestead/homestead.tscn`) is pure presentation, editable in the
+Godot editor. **Provisional view: 3/4 top-down (oblique).** The ground is a plain 2D plane; standing
+objects are drawn front-facing with height. World data stores only ground-plane positions, so the
+same data works for pure top-down or another 2D view later — nothing in state, saves, networking or
+interaction depends on the camera.
+
+Layers (back to front):
+1. `Ground` (z −10): `GroundPatch` polygons with tiling textures (meadow, road, driveway, yard).
+2. `YSort` (y-sort on): every standing thing — `Prop`s, `FenceLine`s, `Scatter` dressing, `DoorView`s
+   and player avatars — sorted by its ground-contact point (node origin = manifest pivot).
+3. `Atmosphere`: warm `CanvasModulate`, drifting seed particles (z 20), and a screen overlay
+   (CanvasLayer 5) with paper grain + soft vignette. The UI (CanvasLayer 10) is never graded.
+
+Building blocks (`src/presentation/world/`):
+- `Prop` — art by asset ID + **independent** collision `footprint` at the base; `occlude` fades the art
+  to 42 % while the local player stands behind it; `sway` applies `sway.gdshader` (wind).
+- `FenceLine` — fits a whole number of fence segments between two points + one collision strip.
+- `GroundPatch` — textured polygon; tile size comes from the manifest display size.
+- `Scatter` — seeded decorative dressing within an area, avoiding rectangles (same for every player).
+- `Atmosphere` — mood only; never hides interactables.
+- `DoorView.fade_with` — a door set into a building copies that building's occlusion fade.
+
+Occlusion rule (simple on purpose): a tall prop fades when the local player's position is above its
+base line and inside its art rectangle. No per-pixel masks.
+
+## 14. Testing and diagnostics
 
 - **Unit + content check**: `godot --headless --path . res://tests/run_tests.tscn`.
 - **Real multi-process tests**: `python3 tools/mp_test.py` starts separate game processes
@@ -178,7 +205,7 @@ bottom-right build label. All text goes through translation keys in `locale/stri
 - **Build identity**: `BuildInfo.label()` (bottom-right). Commit is read from `.git` if present;
   a GitHub ZIP download shows `commit n/a` (git is never executed).
 
-## 14. Dependency direction
+## 15. Dependency direction
 
 ```
 presentation (main, ui, world views) ──reads/requests──▶ Session ──▶ WorldActions / Simulation ──▶ state

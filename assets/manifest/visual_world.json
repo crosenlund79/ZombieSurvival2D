@@ -3,30 +3,202 @@
 	"category": "world",
 	"assets": [
 		{
-			"id": "world.door_closed",
-			"name": "Yard gate — closed",
-			"template": "res://assets/templates/world/doors/template_gate_closed.png",
-			"display_size": [96, 64],
-			"source_size": [192, 128],
-			"pivot": [0.5, 1.0],
+			"id": "world.farmhouse",
+			"name": "Abandoned farmhouse (facade + roof, 3/4 view)",
+			"template": "res://assets/templates/world/buildings/template_farmhouse.png",
+			"display_size": [
+				440,
+				410
+			],
+			"source_size": [
+				880,
+				820
+			],
+			"pivot": [
+				0.5,
+				0.9634
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "high",
+			"status": "READY",
+			"notes": "Door opening drawn dark at x 420-500 (source); the door itself is a separate asset. Collision footprint is set in the scene. Generated placeholder (tools/art/gen_homestead.py) \u2014 replace with tablet art."
+		},
+		{
+			"id": "world.shed",
+			"name": "Tool shed",
+			"template": "res://assets/templates/world/buildings/template_shed.png",
+			"display_size": [
+				200,
+				190
+			],
+			"source_size": [
+				400,
+				380
+			],
+			"pivot": [
+				0.5,
+				0.9368
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_homestead.py) \u2014 replace with tablet art."
+		},
+		{
+			"id": "world.house_door_closed",
+			"name": "Farmhouse front door \u2014 closed",
+			"template": "res://assets/templates/world/doors/template_house_door_closed.png",
+			"display_size": [
+				40,
+				83
+			],
+			"source_size": [
+				80,
+				166
+			],
+			"pivot": [
+				0.5,
+				1.0
+			],
 			"transparency": "required",
 			"directions": "none",
 			"complexity": "simple",
 			"status": "READY",
-			"notes": "Phase A technical placeholder. Collision is defined in code, not by the image."
+			"notes": "Must fit the farmhouse door opening (40 x 83 display). Generated placeholder (tools/art/gen_homestead.py) \u2014 replace with tablet art."
+		},
+		{
+			"id": "world.house_door_open",
+			"name": "Farmhouse front door \u2014 open",
+			"template": "res://assets/templates/world/doors/template_house_door_open.png",
+			"display_size": [
+				40,
+				83
+			],
+			"source_size": [
+				80,
+				166
+			],
+			"pivot": [
+				0.5,
+				1.0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_homestead.py) \u2014 replace with tablet art."
+		},
+		{
+			"id": "world.door_closed",
+			"name": "Yard gate \u2014 closed",
+			"template": "res://assets/templates/world/doors/template_gate_closed.png",
+			"display_size": [
+				128,
+				60
+			],
+			"source_size": [
+				256,
+				120
+			],
+			"pivot": [
+				0.5,
+				0.9333
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Includes both gate posts. Blocker collision set in the scene. Generated placeholder (tools/art/gen_homestead.py) \u2014 replace with tablet art."
 		},
 		{
 			"id": "world.door_open",
-			"name": "Yard gate — open",
+			"name": "Yard gate \u2014 open",
 			"template": "res://assets/templates/world/doors/template_gate_open.png",
-			"display_size": [96, 64],
-			"source_size": [192, 128],
-			"pivot": [0.5, 1.0],
+			"display_size": [
+				128,
+				60
+			],
+			"source_size": [
+				256,
+				120
+			],
+			"pivot": [
+				0.5,
+				0.9333
+			],
 			"transparency": "required",
 			"directions": "none",
 			"complexity": "simple",
 			"status": "READY",
-			"notes": "Phase A technical placeholder."
+			"notes": "Generated placeholder (tools/art/gen_homestead.py) \u2014 replace with tablet art."
+		},
+		{
+			"id": "world.fence_h_a",
+			"name": "Fence segment, east-west",
+			"template": "res://assets/templates/world/fences/template_fence_h_a.png",
+			"display_size": [
+				128,
+				56
+			],
+			"source_size": [
+				256,
+				112
+			],
+			"pivot": [
+				0.5,
+				0.9286
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Repeats side by side (FenceLine). Generated placeholder (tools/art/gen_homestead.py) \u2014 replace with tablet art."
+		},
+		{
+			"id": "world.fence_h_b",
+			"name": "Fence segment, east-west, broken rail",
+			"template": "res://assets/templates/world/fences/template_fence_h_b.png",
+			"display_size": [
+				128,
+				56
+			],
+			"source_size": [
+				256,
+				112
+			],
+			"pivot": [
+				0.5,
+				0.9286
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_homestead.py) \u2014 replace with tablet art."
+		},
+		{
+			"id": "world.fence_v",
+			"name": "Fence segment, north-south",
+			"template": "res://assets/templates/world/fences/template_fence_v.png",
+			"display_size": [
+				24,
+				128
+			],
+			"source_size": [
+				48,
+				256
+			],
+			"pivot": [
+				0.5,
+				0.9609
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Stacks vertically with ~18% overlap. Generated placeholder (tools/art/gen_homestead.py) \u2014 replace with tablet art."
 		}
 	]
 }

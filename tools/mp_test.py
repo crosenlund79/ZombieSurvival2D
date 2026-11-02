@@ -11,7 +11,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from aftergrowth_driver import Instance, USER_DIR, LOG_DIR
 
 GATE = "homestead.yard_gate"
-GATE_STAND = os.environ.get("GATE_STAND", "790 660")   # a point within reach of the gate
+GATE_STAND = os.environ.get("GATE_STAND", "1150 960")   # a point within reach of the gate
 PORT = 24790
 results = []
 
@@ -58,6 +58,11 @@ def scenario_single():
         check("single: gate gets interaction focus", r["state"]["view"].get("focused") == GATE, r["state"]["view"])
         r = s.cmd("press_interact")
         check("single: gate opens via interaction", gate(r["state"]).get("state", {}).get("open") is True, gate(r["state"]))
+        r = s.cmd("walk_to 1160 690")
+        check("single: open gate lets the player into the yard", r["ok"], r["state"]["view"])
+        r = s.cmd("press_interact")
+        door = r["state"]["entities"].get("homestead.farmhouse_door", {})
+        check("single: farmhouse door opens (second entity)", door.get("state", {}).get("open") is True, door)
         before_id = r["state"]["view"]["instance_id"]
         r = s.cmd("rebuild_view")
         v = r["state"]["view"]
@@ -75,6 +80,7 @@ def scenario_single():
         st = r["state"]
         check("single: restart loads same world", r["ok"] and st.get("world_id") == world_id, st.get("world_id"))
         check("single: gate still open after restart", gate(st).get("state", {}).get("open") is True, gate(st))
+        check("single: farmhouse door still open after restart", st["entities"]["homestead.farmhouse_door"]["state"]["open"] is True, st["entities"])
         check("single: clock restored", st.get("tick", 0) >= tick1, (tick1, st.get("tick")))
         p2 = player(st, "Solo")
         check("single: position restored", p2 and abs(p2["x"] - pos["x"]) < 2 and abs(p2["y"] - pos["y"]) < 2, (pos, p2))
@@ -202,7 +208,7 @@ def scenario_connection_failure():
 def scenario_assets():
     over = os.path.join(USER_DIR, "overrides")
     fix = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "tests", "fixtures", "overrides")
-    img_dst = os.path.join(over, "characters", "player", "body_01.png")
+    img_dst = os.path.join(over, "characters", "player", "survivor_down.png")
     snd_dst = os.path.join(over, "audio", "world", "door_open.wav")
     s = Instance("t_assets"); s.wipe()
     for p in (img_dst, snd_dst):
@@ -216,7 +222,7 @@ def scenario_assets():
         p0 = player(r["state"], "Painter")
         os.makedirs(os.path.dirname(img_dst), exist_ok=True)
         os.makedirs(os.path.dirname(snd_dst), exist_ok=True)
-        shutil.copy(os.path.join(fix, "characters", "player", "body_01.png"), img_dst)
+        shutil.copy(os.path.join(fix, "characters", "player", "survivor_down.png"), img_dst)
         shutil.copy(os.path.join(fix, "audio", "world", "door_open.wav"), snd_dst)
         r = s.cmd("reload_assets")
         r = s.cmd(f"walk_to {GATE_STAND}")
@@ -226,7 +232,7 @@ def scenario_assets():
         check("assets: external sound override used", srcs.get("sfx.door_open") == "external", srcs)
         check("assets: gameplay unaffected by art swap (gate still works)", gate(r["state"])["state"]["open"] is True, gate(r["state"]))
         # Corrupt override is rejected -> template.
-        shutil.copy(os.path.join(fix, "characters", "player", "corrupt_body_01.png"), img_dst)
+        shutil.copy(os.path.join(fix, "characters", "player", "corrupt_survivor_down.png"), img_dst)
         r = s.cmd("reload_assets")
         r = s.cmd("rebuild_view")
         check("assets: corrupt PNG rejected, template used", r["state"]["asset_sources"].get("char.player") == "template", r["state"]["asset_sources"])

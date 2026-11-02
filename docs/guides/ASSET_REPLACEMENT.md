@@ -9,9 +9,13 @@ Open the manifest for its category in `assets/manifest/`:
 
 | File | Contains |
 |---|---|
-| `visual_characters.json` | player and (later) other characters |
-| `visual_world.json` | buildings, doors/gates, fences, vehicles, props, vegetation, ground |
-| `audio.json` | sound effects, ambience, interface sounds |
+| `visual_characters.json` | survivor (down / up / side views) |
+| `visual_world.json` | farmhouse, shed, farmhouse door, yard gate, fence segments |
+| `visual_environment.json` | trees, shrubs, grass tufts, ground tiles, paper grain, drift particle |
+| `visual_props.json` | car, bunker entrance, suitcase, wheelbarrow, sign, barrel |
+| `audio.json` | door/gate sounds, menu click, countryside ambience loop |
+
+All current templates are **generated placeholders** (tools/art) waiting for your tablet art.
 
 Each entry tells you: `template` (the placeholder file), `display_size` (how big it appears in game,
 in game pixels), `source_size` (recommended drawing size — about 2× display), `pivot` (which point
@@ -24,15 +28,15 @@ support before replacing works · **REFERENCE_ONLY** = listed for planning, not 
 
 Take the template path, change `templates` to `overrides`, and remove `template_` from the file name.
 
-    template:  assets/templates/characters/player/template_body_01.png
-    yours:     assets/overrides/characters/player/body_01.png
+    template:  assets/templates/characters/player/template_survivor_down.png
+    yours:     assets/overrides/characters/player/survivor_down.png
 
 Two places are searched, in this order:
 
 1. **External folder (recommended while drawing)** — works in the editor *and* in an exported game:
    `%APPDATA%\Aftergrowth\overrides\` on Windows
-   (Settings → **Open overrides folder** opens it). Mirror the same sub-folders there:
-   `%APPDATA%\Aftergrowth\overrides\characters\player\body_01.png`
+   (Settings → **Open overrides folder** opens it; on Linux `~/.local/share/Aftergrowth/overrides/`). Mirror the same sub-folders there:
+   `%APPDATA%\Aftergrowth\overrides\characters\player\survivor_down.png`
 2. **Inside the project** — `assets/overrides/...` (ships with the project/branch).
 3. Otherwise the original template is used.
 4. If even the template is missing, a magenta checkerboard appears and the log names the asset.
@@ -47,6 +51,15 @@ Two places are searched, in this order:
 - Size limits: 4–4096 px per side, at most 16 MB per file.
 - Collision, interaction reach and all rules are defined separately — changing a picture can never
   change gameplay.
+
+Special cases:
+- **Ground tiles** (`env.ground_*`) repeat across the map — keep them seamless (left edge continues
+  into right edge, top into bottom). No transparency needed.
+- **Farmhouse door** art must fit the dark door opening drawn in the farmhouse picture
+  (40 × 83 display px). If you redraw the farmhouse, keep the opening in the same place or tell the
+  developer so the door position can be moved (one number in the scene).
+- **Side views** (`char.player_side`) face right; the game mirrors them for walking left.
+- **Paper grain** is a greyscale texture used by the screen overlay (subtle).
 
 ## 4. Sounds
 

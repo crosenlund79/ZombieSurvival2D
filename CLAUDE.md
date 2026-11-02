@@ -3,7 +3,7 @@
 Single source of permanent project rules. Full design context: `docs/HANDOVER.md`.
 
 ## Status
-Working title **Aftergrowth**. Iteration 001 in progress: Phase A technical foundation implemented.
+Working title **Aftergrowth**. Iteration 001 (foundation + first visual prototype) implemented; Windows acceptance pending.
 Do not implement anything that has not been explicitly approved as an assignment by the
 creator. Brainstorms are not feature requests.
 

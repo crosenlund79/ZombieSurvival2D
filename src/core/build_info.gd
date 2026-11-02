@@ -6,7 +6,7 @@ extends RefCounted
 const GAME_TITLE := "Aftergrowth"
 const VERSION := "0.1.0"
 const ITERATION := "001"
-const STAGE := "foundation"
+const STAGE := "visual-prototype"
 const STATUS := "DEV"
 ## Bumped whenever the network protocol changes incompatibly.
 const PROTOCOL_VERSION := 1

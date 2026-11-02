@@ -8,6 +8,8 @@ extends CharacterBody2D
 const SPEED := 220.0           # below WorldActions.MAX_PLAYER_SPEED
 const SEND_INTERVAL := 0.05
 const ASSET_ID := "char.player"
+## Art per facing (0 down, 1 up, 2 left, 3 right). Side art faces right; left is flipped.
+const FACING_ASSETS := ["char.player", "char.player_up", "char.player_side", "char.player_side"]
 
 ## Set by UI while a menu/text field has focus (local input only — the shared
 ## world keeps running).
@@ -23,6 +25,7 @@ var _label: Label
 var _send_accum := 0.0
 var _last_sent := Vector2.INF
 var _bob := 0.0
+var _shown_facing := -1
 
 
 static func create(state: PlayerState, local: bool, bounds: Rect2) -> PlayerAvatar:
@@ -80,12 +83,17 @@ func _build(display_name: String, bounds: Rect2) -> void:
 func _ready() -> void:
 	Assets.reloaded.connect(_apply_art)
 	if is_local:
+		add_to_group("local_avatar")
 		camera.make_current()
 		Session.local_position_corrected.connect(_on_corrected)
 
 
 func _apply_art() -> void:
-	Assets.apply_to_sprite(_sprite, ASSET_ID)
+	_shown_facing = facing
+	var id: String = FACING_ASSETS[clampi(facing, 0, 3)]
+	if not AssetCatalog.has(id):
+		id = ASSET_ID
+	Assets.apply_to_sprite(_sprite, id)
 
 
 func _physics_process(delta: float) -> void:
@@ -125,10 +133,9 @@ func _local_move(delta: float) -> void:
 
 ## Presentation only: a small bob while walking, horizontal flip by facing.
 func _animate(delta: float, moving: bool) -> void:
-	if facing == 2:
-		_sprite.flip_h = true
-	elif facing == 3:
-		_sprite.flip_h = false
+	if facing != _shown_facing:
+		_apply_art()
+	_sprite.flip_h = facing == 2
 	_bob = _bob + delta * 12.0 if moving else 0.0
 	_sprite.offset.y = -absf(sin(_bob)) * 6.0 / maxf(_sprite.scale.y, 0.01)
 

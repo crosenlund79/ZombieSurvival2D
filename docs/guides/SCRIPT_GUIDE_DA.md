@@ -58,8 +58,13 @@ Beskrivelse i almindeligt sprog af hver GDScript-fil. Identifikatorer og stier e
 | `src/presentation/world/door_view.gd` | Session, Content, Assets, Audio, Interactable | Viser en dør/låge-entitet fra verdensdata: billede for åben/lukket, blokering når lukket, prompttekst og lyd, når værten melder en ændring. |
 | `src/presentation/world/interactable.gd` | Content, Session, Settings | Et fokuserbart interaktionspunkt med rækkevidde og prioritet fra indholdet; aktivering sender kun en anmodning til værten. |
 | `src/presentation/world/interaction_sensor.gd` | Interactable, PlayerAvatar | På den lokale avatar: vælger det ene bedste mål (prioritet, derefter nærmeste) og aktiverer det på interaktionstasten. |
-| `src/presentation/world/placeholder_block.gd` | — | Fase A-geometrisk pladsholder: et farvet rektangel med tilsvarende kollision (synlig i editoren). |
-| `src/presentation/world/placeholder_ground.gd` | — | Fase A-pladsholderjord med et 100 px gitter. |
+| `src/presentation/world/prop.gd` | Assets, AssetCatalog | En stående genstand i verden: viser grafik efter asset-ID, tilføjer et kollisionsfodaftryk uafhængigt af grafikken, toner ud når den lokale spiller står bag den, valgfri svajen i vinden. Viser skabelongrafik i editoren. |
+| `src/presentation/world/fence_line.gd` | Prop, AssetCatalog | Et lige hegn mellem to punkter: passer et helt antal segmenter ind og tilføjer én kollisionsstrimmel. |
+| `src/presentation/world/ground_patch.gd` | Assets, AssetCatalog | En jordflade-polygon (græs, jord, vej) fyldt med en gentagende tekstur; formen redigeres i editoren. |
+| `src/presentation/world/scatter.gd` | Prop | Seedet dekorativ beplantning (græs, blomster) i et område uden for angivne rektangler — ens for alle spillere. |
+| `src/presentation/world/atmosphere.gd` | Assets | Stemningslag: varm farvetone, drivende frøfnug, papirstruktur og vignet. Kun præsentation. |
+| `src/presentation/world/placeholder_block.gd` | — | Gråboks-hjælper (brugt i fase A, beholdt til skitsering af nye områder): et farvet rektangel med tilsvarende kollision. |
+| `src/presentation/world/placeholder_ground.gd` | — | Gråboks-jord med et 100 px gitter (ikke brugt i den nuværende scene). |
 
 ## Udvikling og test
 

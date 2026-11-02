@@ -1,0 +1,138 @@
+{
+	"kind": "visual",
+	"category": "props",
+	"assets": [
+		{
+			"id": "prop.car_sedan",
+			"name": "Abandoned sedan",
+			"template": "res://assets/templates/props/vehicles/template_sedan.png",
+			"display_size": [
+				230,
+				120
+			],
+			"source_size": [
+				460,
+				240
+			],
+			"pivot": [
+				0.5,
+				0.8917
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "high",
+			"status": "READY",
+			"notes": "Side view, faces right. Generated placeholder (tools/art/gen_homestead.py) \u2014 replace with tablet art."
+		},
+		{
+			"id": "prop.bunker_hatch",
+			"name": "Bunker entrance (hatch in mound)",
+			"template": "res://assets/templates/props/bunker/template_bunker_hatch.png",
+			"display_size": [
+				230,
+				160
+			],
+			"source_size": [
+				460,
+				320
+			],
+			"pivot": [
+				0.5,
+				0.9125
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "high",
+			"status": "READY",
+			"notes": "Visual only in iteration 001 \u2014 no interaction, no interior. Generated placeholder (tools/art/gen_homestead.py) \u2014 replace with tablet art."
+		},
+		{
+			"id": "prop.suitcase",
+			"name": "Dropped suitcase",
+			"template": "res://assets/templates/props/clutter/template_suitcase.png",
+			"display_size": [
+				60,
+				42
+			],
+			"source_size": [
+				120,
+				84
+			],
+			"pivot": [
+				0.5,
+				0.8333
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_homestead.py) \u2014 replace with tablet art."
+		},
+		{
+			"id": "prop.wheelbarrow",
+			"name": "Overturned wheelbarrow",
+			"template": "res://assets/templates/props/clutter/template_wheelbarrow.png",
+			"display_size": [
+				90,
+				60
+			],
+			"source_size": [
+				180,
+				120
+			],
+			"pivot": [
+				0.5,
+				0.9
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_homestead.py) \u2014 replace with tablet art."
+		},
+		{
+			"id": "prop.sign_gone_north",
+			"name": "Hand-painted sign 'GONE NORTH'",
+			"template": "res://assets/templates/props/clutter/template_sign_gone_north.png",
+			"display_size": [
+				70,
+				90
+			],
+			"source_size": [
+				140,
+				180
+			],
+			"pivot": [
+				0.5,
+				0.9556
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Text is painted into the image (not localized). Generated placeholder (tools/art/gen_homestead.py) \u2014 replace with tablet art."
+		},
+		{
+			"id": "prop.barrel",
+			"name": "Rusty barrel",
+			"template": "res://assets/templates/props/clutter/template_barrel.png",
+			"display_size": [
+				42,
+				58
+			],
+			"source_size": [
+				84,
+				116
+			],
+			"pivot": [
+				0.5,
+				0.8966
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_homestead.py) \u2014 replace with tablet art."
+		}
+	]
+}

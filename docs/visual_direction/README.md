@@ -102,6 +102,22 @@ The reference does not conflict with the asset-replacement architecture (§8, §
 non-pixel art fits the `template_`/override convention, and the ~2× source-art guideline suits
 tablet-drawn work.
 
+## Prototype findings (iteration 001)
+
+The first playable homestead (see [`../iterations/001_foundation.md`](../iterations/001_foundation.md)
+and `../screenshots/iteration_001/`) **tried** these EXPLORING options. None of them is approved yet:
+
+| Register item | What the prototype used |
+|---|---|
+| VX-01 Perspective | 3/4 top-down (oblique) view. Ground-plane data model, so the view can still change. |
+| VX-02 Surface/bunker | Bunker entrance shown as a hatch in an earth mound inside the farmyard. No interior. |
+| VX-05 Lighting | Shadows baked into the art, warm global tint, paper-grain and vignette overlay. No 2D lights. |
+| VX-06 Scale | Survivor 52 × 84 display px (about 40–45 px per metre). Farmhouse 440 × 410. Art drawn at 2×. |
+| VX-09 Readability | Name labels, inked outlines, occlusion fade behind tall objects, focus tint on interactables. |
+
+All illustrations are **generated placeholders** (`tools/art/`) in the APPROVED palette. They are
+meant to judge scale and mood, not as final art.
+
 ## Rules for future visual work
 
 - Make new mockups in the APPROVED palette and material language, translated into whatever perspective

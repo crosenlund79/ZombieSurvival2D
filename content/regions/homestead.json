@@ -2,14 +2,21 @@
 	"region_id": "homestead",
 	"display_key": "REGION_HOMESTEAD",
 	"scene": "res://scenes/regions/homestead/homestead.tscn",
-	"bounds": [0, 0, 1600, 1100],
-	"spawn_points": [[760, 700], [840, 700], [720, 740], [880, 740]],
+	"bounds": [0, 0, 2400, 1700],
+	"spawn_points": [[1110, 1060], [1190, 1060], [1060, 1110], [1240, 1110]],
 	"entities": [
 		{
 			"id": "homestead.yard_gate",
 			"type": "door",
-			"position": [800, 600],
+			"position": [1150, 900],
 			"interact_range": 100,
+			"initial": {"open": false}
+		},
+		{
+			"id": "homestead.farmhouse_door",
+			"type": "door",
+			"position": [1160, 641],
+			"interact_range": 80,
 			"initial": {"open": false}
 		}
 	]

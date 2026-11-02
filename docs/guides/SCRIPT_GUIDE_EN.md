@@ -58,8 +58,13 @@ Plain-language description of every GDScript file. Identifiers and paths are exa
 | `src/presentation/world/door_view.gd` | Session, Content, Assets, Audio, Interactable | Shows a door/gate entity from world data: picture for open/closed, a blocker while closed, prompt text, and the sound when the host reports a change. |
 | `src/presentation/world/interactable.gd` | Content, Session, Settings | A focusable interaction point with reach and priority from content; activating it only sends a request to the host. |
 | `src/presentation/world/interaction_sensor.gd` | Interactable, PlayerAvatar | On the local avatar: picks the single best target (priority, then nearest) and triggers it on the interact key. |
-| `src/presentation/world/placeholder_block.gd` | — | Phase A geometric placeholder: a coloured rectangle with matching collision (editor-visible). |
-| `src/presentation/world/placeholder_ground.gd` | — | Phase A placeholder ground with a 100 px grid. |
+| `src/presentation/world/prop.gd` | Assets, AssetCatalog | A standing world object: shows art by asset ID, adds a collision footprint that is independent of the art, fades when the local player is behind it, optional wind sway. Previews template art in the editor. |
+| `src/presentation/world/fence_line.gd` | Prop, AssetCatalog | A straight fence between two points: fits a whole number of segments and adds one collision strip. |
+| `src/presentation/world/ground_patch.gd` | Assets, AssetCatalog | A ground surface polygon (grass, dirt, road) filled with a tiling texture; edit its shape in the editor. |
+| `src/presentation/world/scatter.gd` | Prop | Seeded decorative dressing (grass, flowers) inside an area, avoiding given rectangles — identical for every player. |
+| `src/presentation/world/atmosphere.gd` | Assets | Mood layer: warm colour grade, drifting seed fluff, paper grain and vignette. Presentation only. |
+| `src/presentation/world/placeholder_block.gd` | — | Greybox helper (used in Phase A, kept for blocking out new areas): a coloured rectangle with matching collision. |
+| `src/presentation/world/placeholder_ground.gd` | — | Greybox ground with a 100 px grid (unused in the current scene). |
 
 ## Developer and tests
 

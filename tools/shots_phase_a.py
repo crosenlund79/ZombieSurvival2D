@@ -10,7 +10,7 @@ try:
     s.cmd("window 1600 900")
     s.cmd(f"screenshot {OUT}/a1_main_menu.png")
     s.cmd("single new 7 Survivor")
-    s.cmd("walk_to 790 660")
+    s.cmd("walk_to 1150 960")
     s.cmd(f"screenshot {OUT}/a2_placeholder_world_prompt.png")
     s.cmd("press_interact")
     s.cmd("ui dev on")

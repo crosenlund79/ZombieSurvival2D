@@ -8,9 +8,15 @@ extends Node2D
 @export var entity_id := ""
 @export var closed_asset := "world.door_closed"
 @export var open_asset := "world.door_open"
+## Collision while closed (zero = no blocker, e.g. a door set into a solid building).
 @export var blocker_size := Vector2(80, 16)
+## Moves only the picture (e.g. a door drawn above the building's base line),
+## keeping the entity position — and so reach and depth sorting — at the base.
+@export var sprite_offset := Vector2.ZERO
 @export var prompt_open_key := "PROMPT_OPEN_GATE"
 @export var prompt_close_key := "PROMPT_CLOSE_GATE"
+## Optional Prop (e.g. the building this door belongs to) whose occlusion fade the door copies.
+@export var fade_with: NodePath
 
 var region_id := ""
 var _sprite: Sprite2D
@@ -27,16 +33,21 @@ func _ready() -> void:
 		SessionLog.error("world", "door_view_without_entity", {"entity": entity_id, "region": region_id})
 		return
 	position = Content.entity_position(def)
+	var art_root := Node2D.new()
+	art_root.name = "Art"
+	art_root.position = sprite_offset
+	add_child(art_root)
 	_sprite = Sprite2D.new()
-	add_child(_sprite)
-	var body := StaticBody2D.new()
-	_shape = CollisionShape2D.new()
-	var rect := RectangleShape2D.new()
-	rect.size = blocker_size
-	_shape.shape = rect
-	_shape.position = Vector2(0, -blocker_size.y * 0.5)
-	body.add_child(_shape)
-	add_child(body)
+	art_root.add_child(_sprite)
+	if blocker_size.x > 0.0 and blocker_size.y > 0.0:
+		var body := StaticBody2D.new()
+		_shape = CollisionShape2D.new()
+		var rect := RectangleShape2D.new()
+		rect.size = blocker_size
+		_shape.shape = rect
+		_shape.position = Vector2(0, -blocker_size.y * 0.5)
+		body.add_child(_shape)
+		add_child(body)
 	_interact = Interactable.new()
 	_interact.setup(region_id, entity_id)
 	_interact.focus_changed.connect(func(f: bool) -> void:
@@ -45,6 +56,15 @@ func _ready() -> void:
 	Session.entity_changed.connect(_on_entity_changed)
 	Assets.reloaded.connect(_refresh)
 	_refresh()
+
+
+func _process(_delta: float) -> void:
+	if fade_with.is_empty():
+		set_process(false)
+		return
+	var p := get_node_or_null(fade_with) as Prop
+	if p != null:
+		($Art as Node2D).modulate.a = p.current_alpha()
 
 
 func _region_view() -> RegionView:
@@ -62,7 +82,8 @@ func _refresh() -> void:
 		return
 	_open = bool(region.entity_state(entity_id).get("open", false))
 	Assets.apply_to_sprite(_sprite, open_asset if _open else closed_asset)
-	_shape.set_deferred("disabled", _open)
+	if _shape != null:
+		_shape.set_deferred("disabled", _open)
 	_interact.prompt_key = prompt_close_key if _open else prompt_open_key
 
 

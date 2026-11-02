@@ -194,6 +194,7 @@ func _state() -> Dictionary:
 	var s := {"mode": Session.mode_name(), "net": Net.status_name(), "in_world": Session.in_world(),
 		"local_player_id": Session.local_player_id, "notices": _notices.duplicate(),
 		"last_save": Session.last_save, "loops": Audio.active_loops(),
+		"fps": Engine.get_frames_per_second(), "nodes": get_tree().get_node_count(),
 		"settings": {"language": Settings.language(), "ui_scale": Settings.ui_scale(),
 			"camera_zoom": Settings.camera_zoom(), "master": Settings.bus_volume("Master"),
 			"master_bus_db": AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Master")),

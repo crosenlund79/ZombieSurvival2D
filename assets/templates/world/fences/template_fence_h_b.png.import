@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b0uktcrbrxugw"
-path="res://.godot/imported/template_body_01.png-491c991d1d1d5e063d1d03ed6001bb57.ctex"
+uid="uid://cocve40mr8nkw"
+path="res://.godot/imported/template_fence_h_b.png-17d2ef7782ff20a87ddaeaa1b3d5ab99.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/templates/characters/player/template_body_01.png"
-dest_files=["res://.godot/imported/template_body_01.png-491c991d1d1d5e063d1d03ed6001bb57.ctex"]
+source_file="res://assets/templates/world/fences/template_fence_h_b.png"
+dest_files=["res://.godot/imported/template_fence_h_b.png-17d2ef7782ff20a87ddaeaa1b3d5ab99.ctex"]
 
 [params]
 

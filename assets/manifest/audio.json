@@ -31,6 +31,16 @@
 			"loop": false,
 			"status": "READY",
 			"notes": "Generated technical placeholder."
+		},
+		{
+			"id": "amb.countryside",
+			"name": "Countryside ambience (wind, distant birds)",
+			"template": "res://assets/templates/audio/environment/template_countryside_loop.wav",
+			"bus": "Ambience",
+			"volume_db": -6.0,
+			"loop": true,
+			"status": "READY",
+			"notes": "Generated placeholder loop (tools/art/gen_ambience.py). Seamless loop."
 		}
 	]
 }

@@ -28,6 +28,21 @@ def player(color, mark, rel):
     im.save(out(rel))
 
 
+def recolored_survivor(rel):
+    """Test override: the illustrated survivor with a red jacket (visibly different)."""
+    import colorsys
+    im = Image.open(os.path.join(ROOT, "assets/templates/characters/player/template_survivor_down.png")).convert("RGBA")
+    px = im.load()
+    for y in range(im.height):
+        for x in range(im.width):
+            r, g, b, a = px[x, y]
+            h, s, v = colorsys.rgb_to_hsv(r / 255, g / 255, b / 255)
+            if a > 0 and 0.12 < h < 0.30 and s > 0.25:
+                r2, g2, b2 = colorsys.hsv_to_rgb(0.0, min(1, s * 1.3), v)
+                px[x, y] = (int(r2 * 255), int(g2 * 255), int(b2 * 255), a)
+    im.save(out(rel))
+
+
 def gate(open_, rel):
     im = Image.new("RGBA", (192, 128), (0, 0, 0, 0))
     d = ImageDraw.Draw(im)
@@ -58,15 +73,13 @@ def tone(rel, freqs, dur, noise=0.0, decay=6.0, rate=22050):
 
 
 if __name__ == "__main__":
-    player((96, 112, 66), "T", "assets/templates/characters/player/template_body_01.png")
-    gate(False, "assets/templates/world/doors/template_gate_closed.png")
-    gate(True, "assets/templates/world/doors/template_gate_open.png")
+    # Player and gate templates are now illustrated (tools/art/gen_homestead.py).
     tone("assets/templates/audio/world/template_door_open.wav", [180, 260], 0.45, noise=0.35, decay=5)
     tone("assets/templates/audio/world/template_door_close.wav", [90, 130], 0.35, noise=0.5, decay=9)
     tone("assets/templates/audio/ui/template_click.wav", [1200], 0.06, decay=60)
     # Test fixtures (copied into override folders by tests, then removed).
-    player((170, 60, 50), "O", "tests/fixtures/overrides/characters/player/body_01.png")
+    recolored_survivor("tests/fixtures/overrides/characters/player/survivor_down.png")
     tone("tests/fixtures/overrides/audio/world/door_open.wav", [600, 900], 0.3, decay=8)
-    with open(out("tests/fixtures/overrides/characters/player/corrupt_body_01.png"), "wb") as f:
+    with open(out("tests/fixtures/overrides/characters/player/corrupt_survivor_down.png"), "wb") as f:
         f.write(b"\x89PNG\r\n\x1a\nthis is not a real png")
     print("placeholders generated")

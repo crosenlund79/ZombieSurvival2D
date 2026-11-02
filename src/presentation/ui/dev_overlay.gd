@@ -49,8 +49,9 @@ func _process(_delta: float) -> void:
 		return
 	var lines: Array[String] = []
 	lines.append(BuildInfo.label())
-	lines.append("engine %s · renderer %s · instance '%s'" % [Engine.get_version_info().get("string", "?"),
-		RenderingServer.get_current_rendering_method(), Paths.instance_name()])
+	lines.append("engine %s · renderer %s · instance '%s' · %d fps · %d nodes" % [Engine.get_version_info().get("string", "?"),
+		RenderingServer.get_current_rendering_method(), Paths.instance_name(), Engine.get_frames_per_second(),
+		get_tree().get_node_count()])
 	lines.append("mode %s · peer %d · authority %s · net %s %s" % [Session.mode_name(),
 		multiplayer.get_unique_id(), str(Session.is_authority()), Net.status_name(), Net.detail])
 	var w := Session.world

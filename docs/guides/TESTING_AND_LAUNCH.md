@@ -14,7 +14,7 @@
 Main menu → **Single Player** → **New World** (seed optional) or **Continue**.
 Move with **WASD / arrows**, zoom with **mouse wheel / + −**, interact with **E** when a prompt
 shows. **Esc** = menu (the world keeps running), **F5** = save, **F3** = developer overlay,
-**F12** = screenshot.
+**F12** = screenshot. Walking behind the farmhouse or a tree fades it so you stay visible.
 
 ## 3. Two players on one computer
 
@@ -32,7 +32,8 @@ Without `--instance` both windows share settings; then just type **different pla
 player types it. Windows Firewall may ask to allow Godot — allow it on private networks.
 Internet play needs port forwarding of UDP 24680 on the host's router (no relay/matchmaking exists).
 
-Things to try: walk both players, open/close the yard gate from either window (both see it),
+Things to try: walk both players, open/close the yard gate (south fence, at the end of the dirt
+driveway) from either window (both see it), walk through it and open the farmhouse front door,
 press E on the gate from both at the same moment (one wins, the other is told), leave and rejoin
 (your position is remembered), host saves (F5) → host leaves → host **Continue** → client rejoins.
 
@@ -46,8 +47,8 @@ Autosave every 5 minutes, on leaving, and when the host closes the window.
 ## 5. Replace art and sound
 
 See `docs/guides/ASSET_REPLACEMENT.md`. Quick test: copy
-`tests/fixtures/overrides/characters/player/body_01.png` to
-`%APPDATA%\Aftergrowth\overrides\characters\player\body_01.png`, then Settings → **Reload art & sound**.
+`tests/fixtures/overrides/characters/player/survivor_down.png` to
+`%APPDATA%\Aftergrowth\overrides\characters\player\survivor_down.png`, then Settings → **Reload art & sound**.
 The player turns red-jacketed. Delete it and reload to get the template back.
 
 ## 6. Logs and diagnostics
@@ -65,6 +66,6 @@ godot --headless --path . --import                       # refresh class cache a
 godot --headless --path . res://tests/run_tests.tscn      # unit tests + content check
 python3 tools/mp_test.py                                  # real multi-process host/client tests
 python3 tools/check_script_guides.py                      # docs freshness: every script documented
-xvfb-run -a python3 tools/shots_phase_a.py                # rendered screenshots (Linux)
+xvfb-run -a python3 tools/shots_phase_b.py                # rendered screenshots of the homestead (Linux)
 ```
 Results are written to `tests/_out/` (ignored by git).

@@ -1,0 +1,292 @@
+{
+	"kind": "visual",
+	"category": "environment",
+	"assets": [
+		{
+			"id": "env.tree_oak_a",
+			"name": "Broadleaf tree A",
+			"template": "res://assets/templates/env/trees/template_oak_a.png",
+			"display_size": [
+				300,
+				360
+			],
+			"source_size": [
+				600,
+				720
+			],
+			"pivot": [
+				0.5,
+				0.9583
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "high",
+			"status": "READY",
+			"notes": "Collision: trunk only (scene). Generated placeholder (tools/art/gen_homestead.py) \u2014 replace with tablet art."
+		},
+		{
+			"id": "env.tree_oak_b",
+			"name": "Broadleaf tree B",
+			"template": "res://assets/templates/env/trees/template_oak_b.png",
+			"display_size": [
+				300,
+				360
+			],
+			"source_size": [
+				600,
+				720
+			],
+			"pivot": [
+				0.5,
+				0.9583
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "high",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_homestead.py) \u2014 replace with tablet art."
+		},
+		{
+			"id": "env.tree_birch",
+			"name": "Birch",
+			"template": "res://assets/templates/env/trees/template_birch.png",
+			"display_size": [
+				170,
+				310
+			],
+			"source_size": [
+				340,
+				620
+			],
+			"pivot": [
+				0.5,
+				0.9613
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_homestead.py) \u2014 replace with tablet art."
+		},
+		{
+			"id": "env.shrub_a",
+			"name": "Shrub",
+			"template": "res://assets/templates/env/plants/template_shrub_a.png",
+			"display_size": [
+				110,
+				80
+			],
+			"source_size": [
+				220,
+				160
+			],
+			"pivot": [
+				0.5,
+				0.9125
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_homestead.py) \u2014 replace with tablet art."
+		},
+		{
+			"id": "env.shrub_b",
+			"name": "Wildflower shrub (pink)",
+			"template": "res://assets/templates/env/plants/template_shrub_b.png",
+			"display_size": [
+				90,
+				70
+			],
+			"source_size": [
+				180,
+				140
+			],
+			"pivot": [
+				0.5,
+				0.9
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_homestead.py) \u2014 replace with tablet art."
+		},
+		{
+			"id": "env.grass_a",
+			"name": "Grass tuft, green",
+			"template": "res://assets/templates/env/plants/template_grass_a.png",
+			"display_size": [
+				80,
+				50
+			],
+			"source_size": [
+				160,
+				100
+			],
+			"pivot": [
+				0.5,
+				0.94
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_homestead.py) \u2014 replace with tablet art."
+		},
+		{
+			"id": "env.grass_b",
+			"name": "Grass tuft, dry",
+			"template": "res://assets/templates/env/plants/template_grass_b.png",
+			"display_size": [
+				80,
+				50
+			],
+			"source_size": [
+				160,
+				100
+			],
+			"pivot": [
+				0.5,
+				0.94
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_homestead.py) \u2014 replace with tablet art."
+		},
+		{
+			"id": "env.grass_c",
+			"name": "Grass tuft with flowers",
+			"template": "res://assets/templates/env/plants/template_grass_c.png",
+			"display_size": [
+				80,
+				50
+			],
+			"source_size": [
+				160,
+				100
+			],
+			"pivot": [
+				0.5,
+				0.94
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_homestead.py) \u2014 replace with tablet art."
+		},
+		{
+			"id": "env.ground_grass",
+			"name": "Ground: meadow grass (tiling)",
+			"template": "res://assets/templates/env/ground/template_grass_tile.png",
+			"display_size": [
+				512,
+				512
+			],
+			"source_size": [
+				512,
+				512
+			],
+			"pivot": [
+				0,
+				0
+			],
+			"transparency": "none",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Seamless tile; must stay seamless. Generated placeholder (tools/art/gen_homestead.py) \u2014 replace with tablet art."
+		},
+		{
+			"id": "env.ground_dirt",
+			"name": "Ground: packed dirt (tiling)",
+			"template": "res://assets/templates/env/ground/template_dirt_tile.png",
+			"display_size": [
+				384,
+				384
+			],
+			"source_size": [
+				512,
+				512
+			],
+			"pivot": [
+				0,
+				0
+			],
+			"transparency": "none",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Seamless tile. Generated placeholder (tools/art/gen_homestead.py) \u2014 replace with tablet art."
+		},
+		{
+			"id": "env.ground_asphalt",
+			"name": "Ground: cracked asphalt (tiling)",
+			"template": "res://assets/templates/env/ground/template_asphalt_tile.png",
+			"display_size": [
+				256,
+				256
+			],
+			"source_size": [
+				256,
+				256
+			],
+			"pivot": [
+				0,
+				0
+			],
+			"transparency": "none",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Seamless tile. Generated placeholder (tools/art/gen_homestead.py) \u2014 replace with tablet art."
+		},
+		{
+			"id": "fx.paper_grain",
+			"name": "Screen paper grain (tiling, greyscale)",
+			"template": "res://assets/templates/fx/template_paper_grain.png",
+			"display_size": [
+				256,
+				256
+			],
+			"source_size": [
+				256,
+				256
+			],
+			"pivot": [
+				0,
+				0
+			],
+			"transparency": "none",
+			"directions": "none",
+			"complexity": "trivial",
+			"status": "READY",
+			"notes": "Used by the atmosphere overlay shader. Generated placeholder (tools/art/gen_homestead.py) \u2014 replace with tablet art."
+		},
+		{
+			"id": "fx.drift_seed",
+			"name": "Drifting seed fluff particle",
+			"template": "res://assets/templates/fx/template_drift_seed.png",
+			"display_size": [
+				12,
+				12
+			],
+			"source_size": [
+				24,
+				24
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "trivial",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_homestead.py) \u2014 replace with tablet art."
+		}
+	]
+}

@@ -4,16 +4,69 @@
 	"assets": [
 		{
 			"id": "char.player",
-			"name": "Player survivor (single pose)",
-			"template": "res://assets/templates/characters/player/template_body_01.png",
-			"display_size": [48, 64],
-			"source_size": [96, 128],
-			"pivot": [0.5, 1.0],
+			"name": "Survivor \u2014 facing down",
+			"template": "res://assets/templates/characters/player/template_survivor_down.png",
+			"display_size": [
+				52,
+				84
+			],
+			"source_size": [
+				104,
+				168
+			],
+			"pivot": [
+				0.5,
+				0.9524
+			],
 			"transparency": "required",
-			"directions": "one pose; flipped horizontally in code",
+			"directions": "down (this), up, side",
 			"complexity": "simple",
 			"status": "READY",
-			"notes": "Phase A technical placeholder. Pivot = feet."
+			"notes": "Pivot = feet. Walking bob is code-driven; no frames required. Generated placeholder (tools/art/gen_homestead.py) \u2014 replace with tablet art."
+		},
+		{
+			"id": "char.player_up",
+			"name": "Survivor \u2014 facing up (back, backpack)",
+			"template": "res://assets/templates/characters/player/template_survivor_up.png",
+			"display_size": [
+				52,
+				84
+			],
+			"source_size": [
+				104,
+				168
+			],
+			"pivot": [
+				0.5,
+				0.9524
+			],
+			"transparency": "required",
+			"directions": "up",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_homestead.py) \u2014 replace with tablet art."
+		},
+		{
+			"id": "char.player_side",
+			"name": "Survivor \u2014 side (faces right; flipped for left)",
+			"template": "res://assets/templates/characters/player/template_survivor_side.png",
+			"display_size": [
+				52,
+				84
+			],
+			"source_size": [
+				104,
+				168
+			],
+			"pivot": [
+				0.5,
+				0.9524
+			],
+			"transparency": "required",
+			"directions": "right; left = mirrored",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_homestead.py) \u2014 replace with tablet art."
 		}
 	]
 }
