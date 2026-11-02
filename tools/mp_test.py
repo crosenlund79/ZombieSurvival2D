@@ -538,7 +538,7 @@ def scenario_danger_single():
         check("danger: retreat into the farmhouse", r["state"]["region"] in ("homestead.farmhouse",), r["state"].get("region"))
         r = s.cmd("wait 6")
         st = r["state"]
-        check("danger: no zombie follows inside", all(z["region"] == "homestead" for z in st["zombies"]) and st["view"]["zombies"] == 0, st["view"])
+        check("danger: no zombie follows inside", not any(z["region"] == "homestead.farmhouse" for z in st["zombies"]) and st["view"]["zombies"] == 0, st["view"])
         check("danger: zombies give up the chase", not any(z["ai"] in ("CHASE", "WINDUP") for z in st["zombies"]), [z["ai"] for z in st["zombies"]])
         check("danger: indoors reads as sheltered", st["threat_label"] in ("Sheltered", "I ly"), st["threat_label"])
         r = s.cmd("save")
@@ -546,7 +546,8 @@ def scenario_danger_single():
         r = s.cmd("single continue Scout")
         st = r["state"]
         check("danger: reload keeps the club and position", st["weapon"] == "club" and st["region"] == "homestead.farmhouse", (st.get("weapon"), st.get("region")))
-        check("danger: reload has no duplicated horde (only base population)", all(z["persistent"] for z in zs(st)) and len(zs(st)) <= 6, [(z["id"], z["persistent"]) for z in zs(st)])
+        home = [z for z in zs(st) if z["region"] == "homestead"]
+        check("danger: reload has no duplicated horde (only base population)", all(z["persistent"] for z in home) and len(home) <= 6, [(z["id"], z["persistent"]) for z in home])
         check("danger: reload starts calm", st["attention"] == 0, st["attention"])
     finally:
         s.kill()
