@@ -4,7 +4,7 @@
 |---|---|
 | Base | `iteration/003-survival-slice` @ `19b3330` |
 | Branch | `iteration/006-world-worth-surviving` |
-| Recovery references | `backup/pre-iteration-006` (`19b3330`), `backup/iteration-006-milestone` (`f12f85d`), `backup/iteration-007-milestone` (`7164b21`), `backup/iteration-008-milestone` (`aa8e50e`), `backup/iteration-009-milestone` (`10d605c`) |
+| Recovery references | `backup/iteration-006-009-final` (this commit's parent chain), `backup/pre-iteration-006` (`19b3330`), `backup/iteration-006-milestone` (`f12f85d`), `backup/iteration-007-milestone` (`7164b21`), `backup/iteration-008-milestone` (`aa8e50e`), `backup/iteration-009-milestone` (`10d605c`) |
 | Engine | Godot 4.7.2 stable, Compatibility renderer |
 | Save schema | 4 (migrations 1→2→3→4; older worlds load) · network protocol 5 |
 | Status | Implemented and tested on Linux (unit, real multi-process, rendered). **Windows acceptance pending.** |
@@ -147,7 +147,7 @@ playable is EXPLORING (GX-15 … GX-26). Later mechanics are DEFERRED (GF-03 …
 | Kind | Result |
 |---|---|
 | Unit tests + content check | **89/89 PASS**; 43 new across `test_build` (12), `test_survival_cycle` (10), `test_world_events` (8), `test_settlement` (6) and others updated; content check also validates buildables, recipes, loot items and every translation key used by data |
-| Real separate processes (`tools/mp_test.py`) | See the final run in the commit message of the final commit (all scenarios incl. 001–005 regressions) |
+| Real separate processes (`tools/mp_test.py`) | Last complete run of every scenario (001–009, 23 scenarios): **320/321**. The one failure was the slice's horde check. It exposed a real AI flaw: horde zombies could drift off after searching. That is now fixed, and the affected scenarios were re-run afterwards: `slice` 29/29, `world_multi` 18/18, `build_multi` 22/22, `settlement_multi` 15/15, `danger_multi` 10/10, `perf_multi` 2/2 |
 | — `slice` (29 checks) | The integrated 19-step loop in one real game with zombies active, ending in a save/quit/resume that keeps everything (dev commands used only to compress waiting, trigger the horde immediately, add timber, and heal as a safety net) |
 | — `build_multi` (22) | Concurrent placement, spend once, upgrade/damage/repair seen by both, collision, crates and piles between players, shared-storage builds underground, persistence after restart |
 | — `craft_multi` (16) | Concurrent crafting at one bench, collection, drop/pick-up keeping the item identity, needs replication, a crafting job surviving a host restart exactly once |

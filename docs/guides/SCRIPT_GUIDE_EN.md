@@ -110,6 +110,7 @@ Plain-language description of every GDScript file. Identifiers and paths are exa
 
 | Script | Depends on | What it does |
 |---|---|---|
+| `src/dev/dev_preset.gd` | Build, Inv, NpcSim, SessionLog | Developer Test World preset (prepared shelter, machines, workbench, planter, stock, tools, survivor at home; marked in world.meta) and the F3 problem report writer (build, world, location, systems, recent log). |
 | `src/dev/content_check.gd` | Content, AssetCatalog, Localization | Content integrity inspection (PASS/WARN/FAIL): regions, region scenes, manifests, asset IDs used in code, translations. Never changes anything. |
 | `src/dev/autotest_driver.gd` | Session, Saves, Assets, Audio | Test-only remote control (only with `--autotest`): reads commands from a file and writes state reports, so `tools/mp_test.py` can drive real separate game processes. |
 | `tests/test_case.gd` | — | Tiny base class for unit tests (`check`, `eq`). |

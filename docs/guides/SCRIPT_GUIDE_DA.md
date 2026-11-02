@@ -110,6 +110,7 @@ Beskrivelse i almindeligt sprog af hver GDScript-fil. Identifikatorer og stier e
 
 | Script | Afhænger af | Hvad det gør |
 |---|---|---|
+| `src/dev/dev_preset.gd` | Build, Inv, NpcSim, SessionLog | Forudindstilling til udviklerens testverden (klargjort tilflugtsrum, maskiner, arbejdsbænk, plantebed, lager, værktøj, overlevende hjemme; markeret i world.meta) og F3-fejlrapporten (build, verden, sted, systemer, seneste log). |
 | `src/dev/content_check.gd` | Content, AssetCatalog, Localization | Kontrol af indholdets integritet (PASS/WARN/FAIL): områder, områdescener, manifester, asset-ID'er brugt i koden, oversættelser. Ændrer aldrig noget. |
 | `src/dev/autotest_driver.gd` | Session, Saves, Assets, Audio | Fjernbetjening kun til test (kun med `--autotest`): læser kommandoer fra en fil og skriver tilstandsrapporter, så `tools/mp_test.py` kan styre rigtige, separate spilprocesser. |
 | `tests/test_case.gd` | — | Lille basisklasse til enhedstests (`check`, `eq`). |
