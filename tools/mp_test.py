@@ -1291,18 +1291,27 @@ def heal_if_low(i, limit=55):
 
 
 def enter_bunker(i):
-    """From the homestead surface (yard side) to bunker level -1, using explicit targets."""
-    st = i.state()
-    if st["region"] == "homestead":
-        i.cmd("walk_to 1160 760"); i.cmd("walk_to 1160 690")
-        if not i.state()["entities"]["homestead.farmhouse_door"]["state"]["open"]:
-            i.cmd("interact homestead.farmhouse_door")
-        i.cmd("walk_to 1160 664 4"); i.cmd("interact homestead.farmhouse_entry")
-    if i.state()["region"] == "homestead.farmhouse":
-        i.cmd("walk_to 300 470 6")
-        if not i.state()["entities"][SITE]["state"].get("open", False):
-            i.cmd("interact " + SITE)
-        i.cmd("walk_to 300 452 4"); i.cmd("interact homestead.farmhouse.hatch_ladder")
+    """From the homestead surface (yard side) to bunker level -1, using explicit targets.
+    Retries each leg: zombies or a closing door can interrupt a scripted walk."""
+    for _attempt in range(4):
+        st = i.state()
+        if st["region"] == L1:
+            break
+        if st["region"] == "homestead":
+            if st.get("health", 100) < 55:
+                i.cmd("dev heal")
+            i.cmd("walk_to 1150 960")
+            if not i.state()["entities"]["homestead.yard_gate"]["state"]["open"]:
+                i.cmd("interact homestead.yard_gate")
+            i.cmd("walk_to 1150 760"); i.cmd("walk_to 1160 700")
+            if not i.state()["entities"]["homestead.farmhouse_door"]["state"]["open"]:
+                i.cmd("interact homestead.farmhouse_door")
+            i.cmd("walk_to 1160 664 4"); i.cmd("interact homestead.farmhouse_entry")
+        elif st["region"] == "homestead.farmhouse":
+            i.cmd("walk_to 300 470 6")
+            if not i.state()["entities"][SITE]["state"].get("open", False):
+                i.cmd("interact " + SITE)
+            i.cmd("walk_to 300 452 4"); i.cmd("interact homestead.farmhouse.hatch_ladder")
     return i.state()
 
 
