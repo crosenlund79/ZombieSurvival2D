@@ -3,9 +3,9 @@
 Single source of permanent project rules. Full design context: `docs/HANDOVER.md`.
 
 ## Status
-Working title **Aftergrowth**. Iterations 003–005 "The Survival Slice" (zombies/noise/hordes/combat, bunker
-excavation with supports, items/storage/scavenging/generator/power/water/hydration) implemented on
-`iteration/003-survival-slice`; Windows acceptance pending for 001–003.
+Working title **Aftergrowth**. Iterations 006–009 "A World Worth Surviving" (construction/defences,
+crafting/food/equipment, threat + defence event + day/night/weather + service station, recruitable survivor)
+implemented on `iteration/006-world-worth-surviving`; Windows acceptance pending for 001–009.
 Gameplay decision register: `docs/DESIGN_DECISIONS.md` (keep it updated each iteration).
 Do not implement anything that has not been explicitly approved as an assignment by the
 creator. Brainstorms are not feature requests.

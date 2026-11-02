@@ -4,7 +4,7 @@ A 2D co-op zombie-survival and underground bunker-management game, built in Godo
 
 > Danger above. Security below. But security must be earned and can be threatened.
 
-**Status:** iterations 003–005 "The Survival Slice": zombies, noise and hordes, a club, health and respawn; excavating the bunker with timber supports; scavenging, shared storage, generator power, water purification and hydration. Windows acceptance pending.
+**Status:** iterations 006–009 "A World Worth Surviving" — integrated vertical slice: building and defences, crafting, food and equipment, a reacting world (threat, horde events, day/night, rain, the service station), and a recruitable survivor. Windows acceptance pending. Play: [`docs/PLAYTEST_GUIDE.md`](docs/PLAYTEST_GUIDE.md).
 Godot 4.7.2 · open `project.godot` · press F5. Two players: see the testing guide.
 
 - Design context and inherited engineering lessons: [`docs/HANDOVER.md`](docs/HANDOVER.md)

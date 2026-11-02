@@ -4,7 +4,7 @@
 
 1. Install **Godot 4.7.2 (standard, not .NET)** from godotengine.org. Newer 4.7.x patch releases
    should work; do not open the project in an older version.
-2. On GitHub choose the branch (latest: `iteration/003-survival-slice`; earlier: `iteration/002-bunker`, `iteration/001-foundation`) → **Code → Download ZIP**.
+2. On GitHub choose the branch (latest: `iteration/006-world-worth-surviving`; earlier: `iteration/003-survival-slice`, `iteration/002-bunker`, `iteration/001-foundation`) → **Code → Download ZIP**.
 3. Extract the ZIP, start Godot, **Import** → select `project.godot` → **Import & Edit**.
    The first open imports all art (a few seconds). No other tools or steps are needed.
 4. Press **F5** (Run Project).
@@ -106,6 +106,19 @@ nobody is down there.
 group, make noise, hurt / heal, grant timber, grant fuel / dirty water, set thirst, advance the clock,
 create a test level.
 
+## 3d. The vertical slice (iterations 006–009)
+
+The human-facing walkthrough of everything new is in [`../PLAYTEST_GUIDE.md`](../PLAYTEST_GUIDE.md):
+- building and defences (B, R)
+- the inventory (I), crafting at the workbench, food (X)
+- the service station east along the road and its discovery
+- day/night, rain and horde events at the homestead
+- the survivor and the settlement overview (N)
+- the survival guide (H)
+
+**Single Player → Developer Test World** starts a prepared world for quick checks. It marks itself
+"DEVELOPER TEST WORLD" on screen. **New World** is the normal game.
+
 ## 4. Saves
 
 Only the host (or single player) saves. Locations (Windows):
@@ -136,6 +149,9 @@ godot --headless --path . res://tests/run_tests.tscn      # unit tests + content
 python3 tools/mp_test.py                                  # real multi-process host/client tests
 python3 tools/check_script_guides.py                      # docs freshness: every script documented
 xvfb-run -a python3 tools/shots_phase_b.py                # rendered screenshots of the homestead (Linux)
+python3 tools/mp_test.py slice                            # the integrated vertical-slice loop (19 steps, one real game)
+python3 tools/mp_test.py build_multi craft_multi world_multi settlement_multi   # 006-009 two-process scenarios
+xvfb-run -a -s "-screen 0 1700x1000x24" python3 tools/shots_006.py   # 006-009 screenshots
 python3 tools/mp_test.py accept                           # the 25-step survival-slice acceptance run
 python3 tools/mp_test.py infra_multi dig_multi danger_multi   # iteration 003 two-process scenarios
 xvfb-run -a -s "-screen 0 1700x1000x24" python3 tools/shots_003.py   # iteration 003 screenshots

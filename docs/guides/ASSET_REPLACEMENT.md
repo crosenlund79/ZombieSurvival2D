@@ -75,6 +75,23 @@ Special cases:
   `world.purifier_off` / `_on` and `world.lamp_off` / `_on`, plus `world.storage_locker`. The lamp's glow is
   a separate game light, so `lamp_on` only needs the lit bulb. Keep the machine's footprint (its bottom
   edge) where the template has it, because collision is set in the scene, not taken from the art.
+- **Construction** (iterations 006–009):
+  - Surface barricades come in three tiers: `build.barricade_wood`, `_metal` and `_concrete`.
+  - In the bunker the same barricade fills one 64 px excavation cell: `build.wall_*`, drawn as a 3/4
+    block.
+  - Door: `build.door_closed` / `_open`.
+  - Spike trap: `build.spike_trap` / `_worn`.
+  - Planter: `build.planter_empty` / `_growing` / `_ripe`.
+  - Rain collector: `build.rain_collector` / `_full`.
+  - Also `build.crate`, `build.workbench` and `build.pile` (dropped items).
+  - Keep the bottom edge where the template has it, because collision is a rectangle set by the game,
+    not by the picture.
+- **Service station:** `world.station_*`. **Held tools:** `item.machete`, `item.hatchet` and
+  `item.felling_axe`, drawn like `item.club`. **Steel hatch:** `world.hatch_steel_*`.
+- **The survivor** (`char.npc*`) is a recoloured copy of the player placeholder. You can replace her
+  independently of the player.
+- **New sounds** (iteration 006–009): structure hit and break, upgrade clank, spike trap, the rain loop
+  (`amb.rain`, seamless) and the horde warning.
 - **New sounds** (iteration 003): zombie groan / alert / attack / hit / death, swing, player hurt,
   dig earth, the looping generator hum (`amb.generator`, a seamless loop), water pour, rummage and drink.
 
