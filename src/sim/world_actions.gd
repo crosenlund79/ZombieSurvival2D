@@ -100,6 +100,8 @@ static func complete_construction(world: WorldState, region_id: String, eid: Str
 		return _complete_terrain(world, region, eid)
 	if region != null and eid.begins_with("object:"):
 		return Build.complete(world, region, eid.substr(7))
+	if region != null and eid.begins_with("craft:"):
+		return Craft.complete(world, region, eid.substr(6))
 	if region == null or not region.has_entity(eid):
 		return _fail("ACTION_UNKNOWN_OBJECT")
 	var state := region.entity_state(eid)
@@ -195,15 +197,21 @@ static func _chop(world: WorldState, p: PlayerState, region: RegionState, eid: S
 	if Items.free_slots(p.carried) <= 0:
 		return _fail("ACTION_CARRY_FULL", [Items.carry_slots()])
 	world.cooldowns[key] = world.tick
-	var chops := int(state.get("chops", 0)) + 1
+	# Better tools count for several chops per blow (hatchet x2, felling axe x4).
+	var tool := Items.info(p.weapon) if p.weapon != "" else Items.bare_hands()
+	var chops := int(state.get("chops", 0)) + int(tool.get("chop", 1))
 	ZombieSim.make_noise(world, region.region_id, Content.entity_position(def), "chop")
+	var worn := wear_hand(p, 0.5)
 	if chops < int(def.get("chops", 5)):
 		region.set_fields(eid, {"chops": chops})
-		return _changed(region, eid, "chop")
+		var rc := _changed(region, eid, "chop")
+		if worn:
+			rc["players"] = [p.player_id]
+		return rc
 	# The felling blow: the tree's wood goes to whoever landed it, once.
 	region.set_fields(eid, {"chops": chops, "felled": true})
 	ZombieSim.make_noise(world, region.region_id, Content.entity_position(def), "fell")
-	var gained := mini(int(def.get("wood", 4)), Items.free_slots(p.carried))
+	var gained := mini(int(def.get("wood", 4)) + int(tool.get("wood_bonus", 0)), Inv.free_slots(p))
 	p.carried["wood"] = p.carrying("wood") + gained
 	var res := _changed(region, eid, "felled")
 	res["players"] = [p.player_id]
@@ -333,6 +341,20 @@ static func request_entity_action(world: WorldState, player_id: String, eid: Str
 				src.erase("fuel")
 			region.set_fields(eid, {"fuel": float(st.get("fuel", 0.0)) + 1.0})
 			res["changes"] = [{"region_id": region.region_id, "entity_id": eid, "cause": "fuelled"}]
+		"generator:fit_part":
+			# The tuned carburetor (a unique find) halves fuel use, permanently.
+			if bool(st.get("efficient", false)):
+				return _fail("ACTION_ALREADY_DONE")
+			var ci := -1
+			for i in p.gear.size():
+				if str(p.gear[i].get("item", "")) == "carburetor":
+					ci = i
+			if ci < 0:
+				return _fail("ACTION_NEED_PART")
+			p.gear.remove_at(ci)
+			region.set_fields(eid, {"efficient": true})
+			res["changes"] = [{"region_id": region.region_id, "entity_id": eid, "cause": "upgraded"}]
+			res["notice"] = {"key": "GEN_PART_FITTED", "args": []}
 		"generator:toggle":
 			var running := not bool(st.get("running", false))
 			if running and float(st.get("fuel", 0.0)) <= 0.0:

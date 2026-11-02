@@ -32,6 +32,7 @@ var target_struct := ""             # "o:<oid>" / "e:<eid>": structure it is bre
 var stuck := 0.0                    # seconds without progress toward a structure
 var trap_time := 0.0                # seconds spent on spikes since the last trap hit
 var siege := false                  # part of a defence event (EventSim)
+var extra := false                  # extra wanderer from regional heat / night (EventSim)
 
 
 func is_dead() -> bool:

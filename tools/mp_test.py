@@ -1057,7 +1057,97 @@ def scenario_build_multi():
             i.kill()
 
 
-SCENARIOS = {"build_multi": scenario_build_multi, "accept": scenario_accept, "infra_multi": scenario_infra_multi, "dig_multi": scenario_dig_multi, "danger_single": scenario_danger_single, "danger_multi": scenario_danger_multi, "settings": scenario_settings, "bunker_single": scenario_bunker_single, "bunker_multi": scenario_bunker_multi, "single": scenario_single, "multiplayer": scenario_multiplayer,
+
+def pl(state, name):
+    return [p for p in state["players"] if p["name"] == name][0]
+
+
+def scenario_craft_multi():
+    host = Instance("t_chost"); c = Instance("t_cclient")
+    for i in (host, c):
+        i.wipe()
+    try:
+        host.start(); c.start()
+        host.cmd(f"host {PORT} new 67 Hosty"); host.cmd("dev peaceful 1")
+        r = c.cmd(f"join 127.0.0.1 {PORT} Cleo")
+        check("craft: client joins", r["ok"], r["error"])
+        # Client scavenges food and cloth in the farmhouse.
+        go_inside(c)
+        c.cmd("walk_to 186 340"); c.cmd("interact homestead.farmhouse.pantry")
+        c.cmd("walk_to 728 380"); r = c.cmd("interact homestead.farmhouse.linen")
+        check("craft: client finds food and cloth indoors", r["state"]["carried"].get("canned_food", 0) >= 2 and r["state"]["carried"].get("cloth", 0) >= 2, r["state"]["carried"])
+        c.cmd("walk_to 480 600"); c.cmd("press_interact")
+        host.cmd("dev grant wood:14"); host.cmd("dev grant scrap_metal:6")
+        host.cmd("walk_to 1150 960")
+        if not host.state()["entities"]["homestead.yard_gate"]["state"]["open"]:
+            host.cmd("press_interact")
+        host.cmd("walk_to 1150 760"); host.cmd("walk_to 1300 860")
+        host.cmd("build workbench 1260 820"); time.sleep(4.5)
+        bench = list(obj_of(host.state(), "workbench").keys())
+        check("craft: host builds a workbench", len(bench) == 1, objs(host.state()))
+        bench = bench[0]
+        c.cmd("walk_to 1150 760"); c.cmd("walk_to 1220 880")
+        h0, c0 = host.state()["carried"], c.state()["carried"]
+        rh, rc = send_both(host, c, f"obj {bench} craft hatchet", f"obj {bench} craft bandage")
+        time.sleep(0.5)
+        sh, sc = host.state(), c.state()
+        started_host = sh["carried"].get("scrap_metal", 0) < h0.get("scrap_metal", 0)
+        started_client = sc["carried"].get("cloth", 0) < c0.get("cloth", 0)
+        check("craft: concurrent crafting at one bench -> exactly one job", started_host != started_client, (sh["carried"], sc["carried"]))
+        check("craft: the refused crafter keeps all materials", (not started_host and sh["carried"] == h0) or (not started_client and sc["carried"] == c0),
+              (sh["carried"], sc["carried"]))
+        time.sleep(7)
+        winner, other = (host, c) if started_host else (c, host)
+        r = winner.cmd(f"obj {bench} collect")
+        made = "hatchet" if started_host else "bandage"
+        st = r["state"]
+        check("craft: crafted item collected by the crafter", (made in [g["item"] for g in st["gear"]]) if made == "hatchet" else st["carried"].get("bandage", 0) == 2,
+              (st["gear"], st["carried"]))
+        r = other.cmd(f"obj {bench} craft " + ("bandage" if started_host else "hatchet"))
+        time.sleep(7)
+        r = other.cmd(f"obj {bench} collect")
+        check("craft: second crafter's job ran after the first", len(r["state"]["gear"]) >= 1 or r["state"]["carried"].get("bandage", 0) == 2, (r["state"]["gear"], r["state"]["carried"]))
+        sh = host.state()
+        check("craft: host holds the hatchet (auto-equipped)", sh["weapon"] == "hatchet", sh.get("weapon"))
+        # Hand the hatchet over: drop and pick up keeps the item's identity.
+        uid = [g["uid"] for g in sh["gear"] if g["item"] == "hatchet"][0]
+        host.cmd(f"inv drop {uid}")
+        time.sleep(0.4)
+        piles = obj_of(c.state(), "pile")
+        check("craft: dropped hatchet visible to the client", len(piles) == 1, piles)
+        c.cmd("walk_to 1300 880")
+        r = c.cmd(f"obj {list(piles.keys())[0]} pickup")
+        time.sleep(0.3)
+        check("craft: picked up by the client with the same identity", any(g["uid"] == uid for g in r["state"]["gear"]) and not obj_of(host.state(), "pile"), r["state"]["gear"])
+        c.cmd(f"inv equip {uid}")
+        time.sleep(0.3)
+        check("craft: client equips it; host sees it", c.state()["weapon"] == "hatchet" and "hatchet" in pl(host.state(), "Cleo")["gear"], (c.state()["weapon"], pl(host.state(), "Cleo")))
+        r = c.cmd("eat")
+        time.sleep(0.3)
+        check("craft: client eats; inventory and hunger agree on the host (hunger is published in 2-point steps)", abs(pl(host.state(), "Cleo")["hunger"] - c.state()["hunger"]) < 2.0
+              and c.state()["carried"].get("canned_food", 0) == 1, (pl(host.state(), "Cleo")["hunger"], c.state()["hunger"], c.state()["carried"]))
+        # A crafting job survives a host restart and finishes exactly once.
+        host.cmd("dev grant scrap_metal:3"); host.cmd("dev grant wood:1")
+        r = host.cmd(f"obj {bench} craft machete")
+        check("craft: machete job started", "job" in str(r["state"]["objects"]) or r["ok"], "")
+        host.cmd("save"); host.quit()
+        wait_for(c, lambda s: not s["in_world"], timeout=12)
+        host.start(); host.cmd(f"host {PORT} continue Hosty"); host.cmd("dev peaceful 1")
+        r = c.cmd(f"join 127.0.0.1 {PORT} Cleo")
+        check("craft: client rejoins with its gear", r["ok"] and "hatchet" in [g["item"] for g in r["state"]["gear"]], r["state"].get("gear"))
+        time.sleep(11)
+        host.cmd("walk_to 1300 860")
+        r = host.cmd(f"obj {bench} collect")
+        machetes = [g for g in r["state"]["gear"] if g["item"] == "machete"]
+        check("craft: job finished after the restart, exactly one machete", len(machetes) == 1, r["state"]["gear"])
+        r = host.cmd(f"obj {bench} collect")
+        check("craft: nothing left to collect twice", any("ACTION_NOTHING_THERE" in n for n in r["state"]["notices"]), r["state"]["notices"][-2:])
+    finally:
+        for i in (host, c):
+            i.kill()
+
+
+SCENARIOS = {"craft_multi": scenario_craft_multi, "build_multi": scenario_build_multi, "accept": scenario_accept, "infra_multi": scenario_infra_multi, "dig_multi": scenario_dig_multi, "danger_single": scenario_danger_single, "danger_multi": scenario_danger_multi, "settings": scenario_settings, "bunker_single": scenario_bunker_single, "bunker_multi": scenario_bunker_multi, "single": scenario_single, "multiplayer": scenario_multiplayer,
              "netfail": scenario_connection_failure, "assets": scenario_assets}
 
 if __name__ == "__main__":

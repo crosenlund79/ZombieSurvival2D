@@ -230,10 +230,11 @@ func play_swing(aim: Vector2) -> void:
 
 func refresh_weapon() -> void:
 	var p: PlayerState = Session.world.players.get(player_id) if Session.world != null else null
-	var has_club := p != null and p.weapon == "club"
-	_weapon.visible = has_club
-	if has_club:
-		Assets.apply_to_sprite(_weapon, "item.club")
+	var held := p.weapon if p != null else ""
+	var art := "item." + held
+	_weapon.visible = held != "" and AssetCatalog.has(art)
+	if _weapon.visible:
+		Assets.apply_to_sprite(_weapon, art)
 	_weapon.position = Vector2(14, -34)
 	_weapon.rotation = 0.5
 

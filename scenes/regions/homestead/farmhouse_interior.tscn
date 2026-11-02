@@ -1,5 +1,6 @@
 [gd_scene format=3]
 
+[ext_resource type="Script" path="res://src/presentation/world/machine_view.gd" id="machinev"]
 [ext_resource type="Script" path="res://src/presentation/world/region_view.gd" id="region"]
 [ext_resource type="Script" path="res://src/presentation/world/prop.gd" id="prop"]
 [ext_resource type="Script" path="res://src/presentation/world/ground_patch.gd" id="ground"]
@@ -90,6 +91,14 @@ position = Vector2(800, 600)
 asset_id = "world.furniture_stove"
 footprint = Vector2(80, 28)
 occlude = true
+
+[node name="Pantry" type="Node2D" parent="YSort"]
+script = ExtResource("machinev")
+entity_id = "homestead.farmhouse.pantry"
+
+[node name="Linen" type="Node2D" parent="YSort"]
+script = ExtResource("machinev")
+entity_id = "homestead.farmhouse.linen"
 
 [node name="ClubRack" type="Node2D" parent="YSort"]
 script = ExtResource("rack")

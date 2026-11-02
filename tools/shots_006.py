@@ -83,5 +83,36 @@ def build():
         s.quit()
 
 
+def craft():
+    s = Instance("shots_006b", headless=False); s.wipe(); s.start()
+    try:
+        s.cmd("window 1600 900")
+        s.cmd("single new 62 Crafter"); s.cmd("dev peaceful 1")
+        for g in ("wood:14", "scrap_metal:6", "cloth:4", "canned_food:2", "electrical_parts:2", "padded_jacket:1"):
+            s.cmd(f"dev grant {g}")
+        to_yard(s)
+        s.cmd("walk_to 1300 860"); s.cmd("build workbench 1260 820"); s.cmd("wait 4.5")
+        bench = [k for k, v in s.state()["objects"]["homestead"].items() if v["def"] == "workbench"][0]
+        s.cmd(f"obj {bench} craft hatchet"); s.cmd("wait 6.5"); s.cmd(f"obj {bench} collect")
+        s.cmd(f"obj {bench} craft bandage")
+        s.cmd("dev hunger 30")
+        s.cmd("zoom 1.1")
+        s.cmd("interact_bench") if False else None
+        s.cmd("walk_to 1262 862")
+        s.cmd("press_interact")
+        shot(s, "i1_workbench_crafting", 0.6)
+        s.cmd("panel_close")
+        s.cmd("panel inventory on")
+        shot(s, "i2_inventory_and_needs", 0.5)
+        s.cmd("panel inventory off")
+        s.cmd("panel guide on")
+        shot(s, "i3_survival_guide", 0.5)
+        s.cmd("panel guide off")
+    finally:
+        s.quit()
+
+
+if not only or "craft" in only:
+    craft()
 if not only or "build" in only:
     build()

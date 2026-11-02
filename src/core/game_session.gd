@@ -375,6 +375,59 @@ func _host_handle_drink(peer_id: int) -> void:
 	_send_action_result(peer_id, 0, res["ok"], res["reason"], res["reason_args"])
 
 
+## Inventory action for the local player: equip, unequip, drop, use.
+func request_inventory(action: String, arg: String) -> void:
+	if not in_world():
+		return
+	if is_authority():
+		_host_handle_inventory(1, action, arg)
+	else:
+		_rpc_request_inventory.rpc_id(1, action, arg)
+
+
+## Eat the most filling food you carry.
+func request_eat() -> void:
+	var me := local_player()
+	if me == null:
+		return
+	var food := Inv.best_food(me)
+	if food == "":
+		notice.emit("ACTION_NO_FOOD", [])
+		return
+	request_inventory("use", food)
+
+
+## Talk to / assign a survivor.
+func request_npc(npc_id: String, action: String, arg: String = "") -> void:
+	if not in_world():
+		return
+	if is_authority():
+		_host_handle_npc(1, npc_id, action, arg)
+	else:
+		_rpc_request_npc.rpc_id(1, npc_id, action, arg)
+
+
+func _host_handle_inventory(peer_id: int, action: String, arg: String) -> void:
+	var pid: String = _peer_to_player.get(peer_id, "")
+	var res := Inv.request(world, pid, action, arg)
+	if res["ok"]:
+		SessionLog.info("inventory", action, {"arg": arg, "by": pid.substr(0, 6)})
+		_publish_result(res)
+		if not (res["notice"] as Dictionary).is_empty():
+			_send_notice(peer_id, res["notice"]["key"], res["notice"]["args"])
+	_send_action_result(peer_id, 0, res["ok"], res["reason"], res["reason_args"])
+
+
+func _host_handle_npc(peer_id: int, npc_id: String, action: String, arg: String) -> void:
+	var pid: String = _peer_to_player.get(peer_id, "")
+	var res := NpcSim.request(world, pid, npc_id, action, arg)
+	if res["ok"]:
+		_publish_result(res)
+		if not (res["notice"] as Dictionary).is_empty():
+			_send_notice(peer_id, res["notice"]["key"], res["notice"]["args"])
+	_send_action_result(peer_id, 0, res["ok"], res["reason"], res["reason_args"])
+
+
 ## Place a structure (content/buildables.json) at a world position.
 func request_build(def_id: String, pos: Vector2) -> void:
 	if not in_world():
@@ -668,6 +721,13 @@ func _host_dev_command(peer_id: int, cmd: String, arg: Variant) -> void:
 						if pile8 != "":
 							gi["objects"] = [[p7.region_id, pile8]]
 				_publish_result(gi)
+		"hunger":
+			var p10: PlayerState = world.players.get(pid)
+			if p10 != null:
+				p10.hunger = float(arg) if arg != null else 20.0
+				var hu := WorldActions._ok()
+				hu["vitals"] = [pid]
+				_publish_result(hu)
 		"thirst":
 			var p8: PlayerState = world.players.get(pid)
 			if p8 != null:
@@ -1057,6 +1117,18 @@ func _rpc_player_carried(player_id: String, inventory: Dictionary) -> void:
 		return
 	(world.players[player_id] as PlayerState).apply_inventory(inventory)
 	player_resources_changed.emit(player_id)
+
+
+@rpc("any_peer", "call_remote", "reliable")
+func _rpc_request_inventory(action: String, arg: String) -> void:
+	if mode == Mode.HOST:
+		_host_handle_inventory(multiplayer.get_remote_sender_id(), action, arg)
+
+
+@rpc("any_peer", "call_remote", "reliable")
+func _rpc_request_npc(npc_id: String, action: String, arg: String) -> void:
+	if mode == Mode.HOST:
+		_host_handle_npc(multiplayer.get_remote_sender_id(), npc_id, action, arg)
 
 
 @rpc("any_peer", "call_remote", "reliable")

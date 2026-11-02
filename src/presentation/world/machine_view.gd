@@ -97,11 +97,20 @@ func panel_data() -> Dictionary:
 			var running := bool(st.get("running", false))
 			var status := "GEN_RUNNING" if running else ("GEN_EMPTY" if fuel <= 0.0 else "GEN_STOPPED")
 			lines.append(TranslationServer.translate(status))
-			lines.append(UITheme.fmt("GEN_FUEL", [roundi(fuel / cap * 100.0), snappedf(fuel * float(InfraSim.c("generator_seconds_per_fuel", 180)) / 60.0, 0.1)]))
+			var mins := fuel * float(InfraSim.c("generator_seconds_per_fuel", 180)) / 60.0 * (2.0 if bool(st.get("efficient", false)) else 1.0)
+			lines.append(UITheme.fmt("GEN_FUEL", [roundi(fuel / cap * 100.0), snappedf(mins, 0.1)]))
 			lines.append(TranslationServer.translate("GEN_POWER_ON" if InfraSim.is_powered(Session.world, region_id) else "GEN_POWER_OFF"))
 			var fuel_avail := Items.amount(carried, "fuel") + Items.amount(store, "fuel")
 			buttons.append([UITheme.fmt("GEN_ADD_FUEL", [fuel_avail]), "fuel", "", fuel_avail > 0 and fuel <= cap - 1.0])
 			buttons.append([TranslationServer.translate("GEN_STOP" if running else "GEN_START"), "toggle", "", running or fuel > 0.0])
+			var me2 := Session.local_player()
+			var has_part := false
+			for g in me2.gear:
+				has_part = has_part or str(g.get("item", "")) == "carburetor"
+			if bool(st.get("efficient", false)):
+				lines.append(TranslationServer.translate("GEN_EFFICIENT"))
+			elif has_part:
+				buttons.append([TranslationServer.translate("GEN_FIT_PART"), "fit_part", "", true])
 			return {"title": TranslationServer.translate("PANEL_GENERATOR"), "lines": lines, "buttons": buttons}
 		"purifier":
 			var input := int(st.get("input", 0))

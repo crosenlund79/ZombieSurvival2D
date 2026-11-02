@@ -50,12 +50,12 @@ func _ready() -> void:
 	add_child(_resources)
 	_vitals = Control.new()
 	_vitals.position = Vector2(14, 34)
-	_vitals.size = Vector2(220, 40)
+	_vitals.size = Vector2(220, 58)
 	_vitals.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_vitals.draw.connect(_draw_vitals)
 	add_child(_vitals)
 	_threat = UITheme.small("", 15)
-	_threat.position = Vector2(14, 76)
+	_threat.position = Vector2(14, 94)
 	_threat.add_theme_color_override("font_outline_color", Color(0, 0, 0, 0.85))
 	_threat.add_theme_constant_override("outline_size", 4)
 	add_child(_threat)
@@ -131,6 +131,7 @@ func _draw_vitals() -> void:
 		return
 	_bar(Vector2(0, 0), me.health / 100.0, Color("#B5543A"), tr("HUD_HEALTH"))
 	_bar(Vector2(0, 18), me.hydration / 100.0, Color("#4F8C9A"), tr("HUD_HYDRATION"))
+	_bar(Vector2(0, 36), me.hunger / 100.0, Color("#C9A23A"), tr("HUD_HUNGER"))
 
 
 func _bar(at: Vector2, frac: float, col: Color, label: String) -> void:
@@ -164,6 +165,16 @@ func _resource_line(me: PlayerState) -> String:
 		parts.append(UITheme.fmt("HUD_DRINK_HINT", [me.carrying("water_clean")]))
 	if InfraSim.is_thirsty(me):
 		parts.append(tr("HUD_THIRSTY"))
+	var food := Inv.best_food(me)
+	if food != "" and me.hunger < 85.0:
+		parts.append(UITheme.fmt("HUD_EAT_HINT", [tr(Items.name_key(food))]))
+	if InfraSim.is_hungry(me):
+		parts.append(tr("HUD_HUNGRY"))
+	var hand := me.equipped_gear("hand")
+	if not hand.is_empty():
+		var info := Items.info(str(hand["item"]))
+		parts.append(UITheme.fmt("HUD_HOLDING", [UITheme.fmt("INV_GEAR_COND", [tr(Items.name_key(str(hand["item"]))),
+			roundi(float(hand.get("cond", 0)) / maxf(1.0, float(info.get("durability", 1))) * 100.0)])]))
 	var b := Session.world.bunker_for_region(me.region_id)
 	if b == null and Session.world.bunkers.size() == 1:
 		b = Session.world.bunkers.values()[0]

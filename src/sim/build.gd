@@ -317,7 +317,7 @@ static func request_object(world: WorldState, player_id: String, oid: String, ac
 	var res := WorldActions._ok()
 	res["objects"] = [[region.region_id, oid]]
 	res["players"] = [p.player_id]
-	if action in ["toggle", "repair", "upgrade", "store", "take", "collect", "plant", "water", "harvest"] and not is_built(o):
+	if action in ["toggle", "repair", "upgrade", "store", "take", "collect", "plant", "water", "harvest", "craft", "repair_gear"] and not is_built(o):
 		return WorldActions._fail("ACTION_BUSY")
 	match action:
 		"toggle":
@@ -366,6 +366,8 @@ static func request_object(world: WorldState, player_id: String, oid: String, ac
 			ZombieSim.make_noise(world, region.region_id, pos_of(o), "build")
 			res["events"] = [{"kind": "upgraded", "region_id": region.region_id, "oid": oid, "x": float(o["x"]), "y": float(o["y"])}]
 		"dismantle":
+			if o.has("job"):
+				return WorldActions._fail("ACTION_BUSY")
 			var refund := {}
 			var cost2: Dictionary = tier_of(o).get("cost", {})
 			var share := 1.0 if not is_built(o) else float(d.get("refund", 0.5))
@@ -380,6 +382,10 @@ static func request_object(world: WorldState, player_id: String, oid: String, ac
 			var pile := Inv.drop_into_pile(world, region.region_id, pos_of(o), o.get("items", {}), o.get("gear", []))
 			if pile != "":
 				res["objects"].append([region.region_id, pile])
+			var made: Dictionary = o.get("output", {})
+			var pile2 := Inv.drop_into_pile(world, region.region_id, pos_of(o), made.get("items", {}), made.get("gear", []))
+			if pile2 != "" and not [region.region_id, pile2] in res["objects"]:
+				res["objects"].append([region.region_id, pile2])
 			for k in region.objects:  # piles created by give_stack
 				if is_pile(region.objects[k]) and not [region.region_id, k] in res["objects"]:
 					res["objects"].append([region.region_id, k])
@@ -414,6 +420,8 @@ static func request_object(world: WorldState, player_id: String, oid: String, ac
 			if moved <= 0:
 				return WorldActions._fail("ACTION_NOTHING_THERE" if action == "take" else "ACTION_CARRY_FULL", [Items.carry_slots()])
 		_:
+			if Craft.is_bench(o):
+				return Craft.object_action(world, p, region, oid, o, action, arg, res)
 			return FarmSim.object_action(world, p, region, oid, o, action, arg, res)
 	return res
 

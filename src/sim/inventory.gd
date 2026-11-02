@@ -147,3 +147,99 @@ static func unequip_uid(p: PlayerState, uid: String) -> void:
 	for slot in p.equipped.keys():
 		if str(p.equipped[slot]) == uid:
 			p.equipped.erase(slot)
+
+
+## Player inventory actions (host): equip <uid>, unequip <slot>, drop <item|uid>,
+## use <item|uid> (eat / drink / heal / read). Returns a WorldActions result.
+static func request(world: WorldState, player_id: String, action: String, arg: String) -> Dictionary:
+	var p: PlayerState = world.players.get(player_id, null)
+	if p == null or not p.online:
+		return WorldActions._fail("ACTION_UNKNOWN_PLAYER")
+	if p.dead:
+		return WorldActions._fail("ACTION_DEAD")
+	var res := WorldActions._ok()
+	res["players"] = [p.player_id]
+	res["vitals"] = [p.player_id]
+	match action:
+		"equip":
+			var i := p.find_gear(arg)
+			if i < 0:
+				return WorldActions._fail("ACTION_UNKNOWN_OBJECT")
+			var slot := str(Items.info(str(p.gear[i]["item"])).get("slot", ""))
+			if slot == "":
+				return WorldActions._fail("ACTION_CANT_USE")
+			p.equipped[slot] = arg
+		"unequip":
+			if not p.equipped.has(arg):
+				return WorldActions._fail("ACTION_NOTHING_THERE")
+			p.equipped.erase(arg)
+		"drop":
+			var gi := p.find_gear(arg)
+			var pile := ""
+			if gi >= 0:
+				var g: Dictionary = p.gear[gi]
+				unequip_uid(p, arg)
+				p.gear.remove_at(gi)
+				pile = drop_into_pile(world, p.region_id, p.position, {}, [g])
+			else:
+				var n := p.carrying(arg)
+				if n <= 0:
+					return WorldActions._fail("ACTION_NOTHING_THERE")
+				p.carried.erase(arg)
+				pile = drop_into_pile(world, p.region_id, p.position, {arg: n}, [])
+			res["objects"] = [[p.region_id, pile]]
+		"use":
+			return _use(world, p, arg, res)
+		_:
+			return WorldActions._fail("ACTION_NOT_SUPPORTED")
+	return res
+
+
+static func _use(world: WorldState, p: PlayerState, arg: String, res: Dictionary) -> Dictionary:
+	var gi := p.find_gear(arg)
+	var item := str(p.gear[gi]["item"]) if gi >= 0 else arg
+	var info := Items.info(item)
+	if str(info.get("use", "")) == "":
+		return WorldActions._fail("ACTION_CANT_USE")
+	if gi < 0 and p.carrying(item) <= 0:
+		return WorldActions._fail("ACTION_NOTHING_THERE")
+	match str(info.get("use", "")):
+		"eat":
+			p.hunger = minf(100.0, p.hunger + float(info.get("food", 20)))
+			res["notice"] = {"key": "ATE", "args": [int(info.get("food", 20))]}
+			res["events"] = [{"kind": "ate", "player_id": p.player_id}]
+		"drink":
+			p.hydration = minf(100.0, p.hydration + float(info.get("hydration", 40)))
+			res["events"] = [{"kind": "drank", "player_id": p.player_id}]
+		"heal":
+			if p.health >= 100.0:
+				return WorldActions._fail("ACTION_NOT_HURT")
+			p.health = minf(100.0, p.health + float(info.get("heal", 30)))
+			res["events"] = [{"kind": "healed", "player_id": p.player_id}]
+		"read":
+			var learned: Array[String] = []
+			for key in info.get("unlocks", []):
+				Craft.unlock(world, str(key))
+				learned.append(TranslationServer.translate(Items.name_key(str(key))))
+			res["meta"] = true
+			res["notice"] = {"key": "RECIPES_LEARNED", "args": [", ".join(learned)]}
+		_:
+			return WorldActions._fail("ACTION_CANT_USE")
+	if gi >= 0:
+		unequip_uid(p, arg)
+		p.gear.remove_at(gi)
+	else:
+		p.carried[item] = p.carrying(item) - 1
+		if int(p.carried[item]) <= 0:
+			p.carried.erase(item)
+	return res
+
+
+## Eats the most filling food carried (the eat key).
+static func best_food(p: PlayerState) -> String:
+	var best := ""
+	for item in p.carried:
+		if str(Items.info(item).get("use", "")) == "eat":
+			if best == "" or float(Items.info(item).get("food", 0)) > float(Items.info(best).get("food", 0)):
+				best = item
+	return best

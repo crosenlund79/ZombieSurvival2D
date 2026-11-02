@@ -102,6 +102,40 @@
 			"interact_range": 70,
 			"weapon": "club",
 			"prompt_key": "PROMPT_TAKE_CLUB"
+		},
+		{
+			"id": "homestead.farmhouse.pantry",
+			"type": "loot",
+			"position": [
+				186,
+				300
+			],
+			"interact_range": 75,
+			"prompt_key": "PROMPT_SEARCH_PANTRY",
+			"loot": {
+				"canned_food": 2
+			},
+			"restock_minutes": 25,
+			"initial": {
+				"looted_at": -1
+			}
+		},
+		{
+			"id": "homestead.farmhouse.linen",
+			"type": "loot",
+			"position": [
+				728,
+				350
+			],
+			"interact_range": 75,
+			"prompt_key": "PROMPT_SEARCH_LINEN",
+			"loot": {
+				"cloth": 2
+			},
+			"restock_minutes": 30,
+			"initial": {
+				"looted_at": -1
+			}
 		}
 	]
 }

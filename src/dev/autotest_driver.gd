@@ -132,6 +132,21 @@ func _run(line: String) -> void:
 		"obj":
 			Session.request_object(a[0], a[1], a[2] if a.size() > 2 else "")
 			await get_tree().create_timer(0.5).timeout
+		"inv":
+			Session.request_inventory(a[0], a[1] if a.size() > 1 else "")
+			await get_tree().create_timer(0.4).timeout
+		"eat":
+			Session.request_eat()
+			await get_tree().create_timer(0.4).timeout
+		"npc":
+			Session.request_npc(a[0], a[1], a[2] if a.size() > 2 else "")
+			await get_tree().create_timer(0.5).timeout
+		"panel":
+			# Open a UI panel: inventory / guide / settlement (screenshots).
+			var pnl: Control = {"inventory": main.inventory_panel, "guide": main.guide, "settlement": main.settlement_panel}.get(a[0])
+			if pnl != null:
+				pnl.visible = a.size() < 2 or a[1] == "on"
+			await get_tree().create_timer(0.4).timeout
 		"build_ghost":
 			BuildMode.forced_pos = Vector2(float(a[1]), float(a[2]))
 			main.build_mode.start(a[0])
@@ -285,7 +300,7 @@ func _state() -> Dictionary:
 		var players := []
 		for pid in w.players:
 			var p: PlayerState = w.players[pid]
-			players.append({"id": pid, "name": p.display_name, "online": p.online,
+			players.append({"gear": p.gear.map(func(g): return g["item"]), "hunger": p.hunger, "id": pid, "name": p.display_name, "online": p.online,
 				"x": p.position.x, "y": p.position.y, "region": p.region_id, "carried": p.carried,
 				"health": p.health, "dead": p.dead, "hydration": p.hydration})
 		s["players"] = players
@@ -350,6 +365,7 @@ func _state() -> Dictionary:
 			s["gear"] = me.gear
 			s["equipped"] = me.equipped
 			s["hunger"] = me.hunger
+			s["unlocks"] = w.meta.get("unlocks", {})
 			s["health"] = me.health
 			s["hydration"] = me.hydration
 			s["dead"] = me.dead

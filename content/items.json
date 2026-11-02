@@ -23,7 +23,7 @@
 		"hatchet": {"name_key": "ITEM_HATCHET", "desc_key": "ITEM_HATCHET_DESC", "cat": "gear", "stack": false, "slot": "hand",
 			"damage": 28, "range": 66, "cooldown_ticks": 6, "chop": 2, "durability": 140, "repair": {"wood": 1}},
 		"felling_axe": {"name_key": "ITEM_FELLING_AXE", "desc_key": "ITEM_FELLING_AXE_DESC", "cat": "gear", "stack": false, "slot": "hand",
-			"damage": 42, "range": 76, "cooldown_ticks": 7, "chop": 4, "durability": 220, "repair": {"scrap_metal": 1}},
+			"damage": 42, "range": 76, "cooldown_ticks": 7, "chop": 4, "wood_bonus": 2, "durability": 220, "repair": {"scrap_metal": 1}},
 		"padded_jacket": {"name_key": "ITEM_JACKET", "desc_key": "ITEM_JACKET_DESC", "cat": "gear", "stack": false, "slot": "body",
 			"armor": 0.35, "durability": 150, "repair": {"cloth": 1}},
 		"carburetor": {"name_key": "ITEM_CARBURETOR", "desc_key": "ITEM_CARBURETOR_DESC", "cat": "part", "stack": false, "unique": true},

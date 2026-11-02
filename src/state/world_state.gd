@@ -161,6 +161,9 @@ func rebuild_jobs() -> void:
 			if str(o.get("stage", "")) == "building":
 				jobs.append({"region_id": rid, "entity_id": "object:" + oid,
 					"done_tick": int(o.get("started", 0)) + int(o.get("ticks", 0))})
+			if o.get("job") is Dictionary:
+				jobs.append({"region_id": rid, "entity_id": "craft:" + oid,
+					"done_tick": int(o["job"].get("started", 0)) + int(o["job"].get("ticks", 0))})
 		# Terrain jobs: digs and supports in progress ("terrain:dig:c,r" / "terrain:support:c,r").
 		var dig: Dictionary = r.terrain.get("digging", {})
 		for k in dig:

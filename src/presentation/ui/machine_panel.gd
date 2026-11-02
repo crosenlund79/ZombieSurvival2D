@@ -47,8 +47,8 @@ func _ready() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_CENTER_BOTTOM)
 	offset_left = -230
 	offset_right = 230
-	offset_top = -330
-	offset_bottom = -140
+	offset_top = -470
+	offset_bottom = -130
 	var v := VBoxContainer.new()
 	add_child(v)
 	_title = UITheme.heading("", 20)
@@ -56,8 +56,14 @@ func _ready() -> void:
 	_lines = UITheme.small("", 14)
 	_lines.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	v.add_child(_lines)
+	var scroll := ScrollContainer.new()
+	scroll.custom_minimum_size = Vector2(0, 150)
+	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	v.add_child(scroll)
 	_buttons = VBoxContainer.new()
-	v.add_child(_buttons)
+	_buttons.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	scroll.add_child(_buttons)
 	var close := Button.new()
 	close.text = "MENU_CLOSE"
 	close.pressed.connect(close_current)

@@ -539,6 +539,13 @@ static func _trap_slow() -> float:
 # ======================================================================
 
 static func damage_player(world: WorldState, p: PlayerState, amount: float, source: String) -> Dictionary:
+	# Worn protective gear takes a share off hits from zombies, and wears.
+	var armour := p.equipped_gear("body")
+	var worn := false
+	if source != "dev" and not armour.is_empty() and float(armour.get("cond", 0)) > 0.0:
+		amount *= 1.0 - float(Items.info(str(armour["item"])).get("armor", 0.0))
+		armour["cond"] = maxf(0.0, float(armour["cond"]) - 1.0)
+		worn = true
 	p.health = maxf(0.0, p.health - amount)
 	p.last_hurt_tick = world.tick
 	var events := [{"kind": "player_hit", "player_id": p.player_id, "amount": amount, "source": source}]
@@ -553,6 +560,8 @@ static func damage_player(world: WorldState, p: PlayerState, amount: float, sour
 	var res := _event_result(events[0])
 	res["events"] = events
 	res["vitals"] = [p.player_id]
+	if worn:
+		res["players"] = [p.player_id]
 	return res
 
 
@@ -562,6 +571,7 @@ static func damage_zombie(world: WorldState, z: ZombieState, amount: float, atta
 	if killed:
 		z.ai = ZombieState.AI.DEAD
 		z.dead_time = 0.0
+		EventSim.on_kill(world, z.region_id)
 	else:
 		z.ai = ZombieState.AI.STAGGER
 		z.timer = float(c("stagger_time", 0.35))

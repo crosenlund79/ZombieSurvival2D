@@ -59,7 +59,8 @@ static func _generator(world: WorldState, r: RegionState, eid: String, seconds: 
 		return
 	var fuel := float(st.get("fuel", 0.0))
 	var before := fuel
-	fuel = maxf(0.0, fuel - seconds / float(c("generator_seconds_per_fuel", 180)))
+	var burn := 0.5 if bool(st.get("efficient", false)) else 1.0
+	fuel = maxf(0.0, fuel - burn * seconds / float(c("generator_seconds_per_fuel", 180)))
 	var fields := {"fuel": snappedf(fuel, 0.0001)}
 	var cause := ""
 	if fuel <= 0.0:
@@ -101,19 +102,30 @@ static func _purifier(world: WorldState, r: RegionState, eid: String, seconds: f
 
 static func _hydration(world: WorldState, seconds: float, results: Array) -> void:
 	var loss := float(c("hydration_loss_per_minute", 2.5)) * seconds / 60.0
+	var hloss := float(c("hunger_loss_per_minute", 1.4)) * seconds / 60.0
 	for p in world.online_players():
 		if p.dead:
 			continue
+		var hunger_before: float = p.hunger
+		p.hunger = maxf(0.0, p.hunger - hloss)
+		if p.hunger <= 0.0:
+			var sfloor := float(c("starving_health_floor", 20))
+			if p.health > sfloor:
+				p.health = maxf(sfloor, p.health - float(c("starving_health_loss_per_minute", 3)) * seconds / 60.0)
 		var before: float = p.hydration
 		p.hydration = maxf(0.0, p.hydration - loss)
 		if p.hydration <= 0.0:
 			var floor_hp := float(c("dehydrated_health_floor", 25))
 			if p.health > floor_hp:
 				p.health = maxf(floor_hp, p.health - float(c("dehydrated_health_loss_per_minute", 3)) * seconds / 60.0)
-		if floori(before / 2.0) != floori(p.hydration / 2.0):
+		if floori(before / 2.0) != floori(p.hydration / 2.0) or floori(hunger_before / 2.0) != floori(p.hunger / 2.0):
 			var res := WorldActions._ok()
 			res["vitals"] = [p.player_id]
 			results.append(res)
+
+
+static func is_hungry(p: PlayerState) -> bool:
+	return p.hunger < float(c("hungry_below", 25))
 
 
 static func is_thirsty(p: PlayerState) -> bool:

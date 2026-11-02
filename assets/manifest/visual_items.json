@@ -45,6 +45,72 @@
 			"complexity": "simple",
 			"status": "READY",
 			"notes": "Generated placeholder (tools/art/gen_survival.py) \u2014 replace with tablet art."
+		},
+		{
+			"id": "item.machete",
+			"name": "Machete (held)",
+			"template": "res://assets/templates/items/template_machete.png",
+			"display_size": [
+				20,
+				60
+			],
+			"source_size": [
+				40,
+				120
+			],
+			"pivot": [
+				0.5,
+				0.9
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_tools.py) - replace with tablet art."
+		},
+		{
+			"id": "item.hatchet",
+			"name": "Hatchet (held)",
+			"template": "res://assets/templates/items/template_hatchet.png",
+			"display_size": [
+				20,
+				60
+			],
+			"source_size": [
+				40,
+				120
+			],
+			"pivot": [
+				0.5,
+				0.9
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_tools.py) - replace with tablet art."
+		},
+		{
+			"id": "item.felling_axe",
+			"name": "Felling axe (held)",
+			"template": "res://assets/templates/items/template_felling_axe.png",
+			"display_size": [
+				20,
+				60
+			],
+			"source_size": [
+				40,
+				120
+			],
+			"pivot": [
+				0.5,
+				0.9
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_tools.py) - replace with tablet art."
 		}
 	]
 }

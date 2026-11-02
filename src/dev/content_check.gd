@@ -232,6 +232,13 @@ func _check_data() -> void:
 				if t.has(ak) and not AssetCatalog.has(str(t[ak])):
 					problems += 1
 					_add("FAIL", "buildable %s uses unknown asset %s" % [id, t[ak]])
+	for rid in Craft.recipes():
+		var r := Craft.recipe(rid)
+		for part in ["in", "out"]:
+			for item in r.get(part, {}):
+				if not Items.exists(item):
+					problems += 1
+					_add("FAIL", "recipe %s uses unknown item %s" % [rid, item])
 	for id in Build.menu():
 		if id != "support" and Build.def(id).is_empty():
 			problems += 1

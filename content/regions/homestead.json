@@ -258,7 +258,8 @@
 			"interact_range": 90,
 			"prompt_key": "PROMPT_SALVAGE_TRACTOR",
 			"loot": {
-				"scrap_metal": 3
+				"scrap_metal": 3,
+				"electrical_parts": 1
 			},
 			"restock_minutes": 20,
 			"initial": {

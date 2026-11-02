@@ -14,6 +14,9 @@ var build_label: Label
 var settings_panel: SettingsPanel
 var map_panel: MapPanel
 var build_mode: BuildMode
+var inventory_panel: InventoryPanel
+var guide: Guide
+var settlement_panel: SettlementPanel
 
 
 func _ready() -> void:
@@ -47,6 +50,15 @@ func _ready() -> void:
 	build_mode = BuildMode.new()
 	build_mode.main = self
 	ui.add_child(build_mode)
+	inventory_panel = InventoryPanel.new()
+	inventory_panel.hide()
+	ui.add_child(inventory_panel)
+	settlement_panel = SettlementPanel.new()
+	settlement_panel.hide()
+	ui.add_child(settlement_panel)
+	guide = Guide.new()
+	ui.add_child(guide)
+	ui.add_child(guide.card())
 	build_label = UITheme.small(BuildInfo.label(), 11)
 	build_label.set_anchors_preset(Control.PRESET_BOTTOM_RIGHT)
 	build_label.grow_horizontal = Control.GROW_DIRECTION_BEGIN
@@ -69,7 +81,8 @@ func _process(_delta: float) -> void:
 	var focus := get_viewport().gui_get_focus_owner()
 	PlayerAvatar.input_blocked = pause_menu.visible or settings_panel != null or menu.visible or map_panel.visible \
 		or (MachinePanel.current != null and is_instance_valid(MachinePanel.current)) \
-		or (focus is LineEdit) or (build_mode != null and build_mode.menu_open())
+		or (focus is LineEdit) or (build_mode != null and build_mode.menu_open()) \
+		or (guide != null and guide.visible) or (settlement_panel != null and settlement_panel.visible)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -83,12 +96,25 @@ func _unhandled_input(event: InputEvent) -> void:
 		map_panel.visible = not map_panel.visible
 	elif event.is_action_pressed("pause_menu") and map_panel.visible:
 		map_panel.hide()
+	elif event.is_action_pressed("pause_menu") and (inventory_panel.visible or guide.visible or settlement_panel.visible):
+		inventory_panel.hide()
+		guide.hide()
+		settlement_panel.hide()
 	elif event.is_action_pressed("pause_menu") and settings_panel == null:
 		pause_menu.visible = not pause_menu.visible
 	elif event.is_action_pressed("quick_save"):
 		Session.save_world()
 	elif event.is_action_pressed("drink") and not PlayerAvatar.input_blocked:
 		Session.request_drink()
+	elif event.is_action_pressed("eat") and not PlayerAvatar.input_blocked:
+		Session.request_eat()
+	elif event.is_action_pressed("inventory") and not pause_menu.visible:
+		inventory_panel.visible = not inventory_panel.visible
+		get_viewport().set_input_as_handled()
+	elif event.is_action_pressed("guide") and not pause_menu.visible:
+		guide.visible = not guide.visible
+	elif event.is_action_pressed("settlement") and not pause_menu.visible:
+		settlement_panel.visible = not settlement_panel.visible
 
 
 func _on_world_started() -> void:
@@ -99,6 +125,9 @@ func _on_world_started() -> void:
 
 func _on_world_ended(reason_key: String) -> void:
 	clear_region_view()
+	inventory_panel.hide()
+	guide.hide()
+	settlement_panel.hide()
 	pause_menu.hide()
 	map_panel.hide()
 	Audio.stop_all_loops()

@@ -1,0 +1,204 @@
+{
+	"kind": "visual",
+	"category": "station",
+	"assets": [
+		{
+			"id": "world.station_shop",
+			"name": "Service station shop",
+			"template": "res://assets/templates/world/station/template_shop.png",
+			"display_size": [
+				300,
+				220
+			],
+			"source_size": [
+				600,
+				440
+			],
+			"pivot": [
+				0.5,
+				0.955
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_station.py) - replace with tablet art."
+		},
+		{
+			"id": "world.station_canopy",
+			"name": "Fuel canopy with pumps",
+			"template": "res://assets/templates/world/station/template_canopy.png",
+			"display_size": [
+				280,
+				190
+			],
+			"source_size": [
+				560,
+				380
+			],
+			"pivot": [
+				0.5,
+				0.947
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_station.py) - replace with tablet art."
+		},
+		{
+			"id": "world.station_workshop",
+			"name": "Workshop garage",
+			"template": "res://assets/templates/world/station/template_workshop.png",
+			"display_size": [
+				280,
+				210
+			],
+			"source_size": [
+				560,
+				420
+			],
+			"pivot": [
+				0.5,
+				0.952
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_station.py) - replace with tablet art."
+		},
+		{
+			"id": "world.station_tyres",
+			"name": "Tyre pile",
+			"template": "res://assets/templates/world/station/template_tyres.png",
+			"display_size": [
+				70,
+				50
+			],
+			"source_size": [
+				140,
+				100
+			],
+			"pivot": [
+				0.5,
+				0.92
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_station.py) - replace with tablet art."
+		},
+		{
+			"id": "world.station_sign",
+			"name": "Price sign",
+			"template": "res://assets/templates/world/station/template_sign.png",
+			"display_size": [
+				70,
+				160
+			],
+			"source_size": [
+				140,
+				320
+			],
+			"pivot": [
+				0.5,
+				0.97
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_station.py) - replace with tablet art."
+		},
+		{
+			"id": "world.station_locker",
+			"name": "Workshop tool locker",
+			"template": "res://assets/templates/world/station/template_tool_locker.png",
+			"display_size": [
+				60,
+				100
+			],
+			"source_size": [
+				120,
+				200
+			],
+			"pivot": [
+				0.5,
+				0.96
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_station.py) - replace with tablet art."
+		},
+		{
+			"id": "char.npc",
+			"name": "Survivor (Mara) - Survivor \u2014 facing down",
+			"template": "res://assets/templates/characters/survivor/template_npc_down.png",
+			"display_size": [
+				52,
+				84
+			],
+			"source_size": [
+				104,
+				168
+			],
+			"pivot": [
+				0.5,
+				0.9524
+			],
+			"transparency": "required",
+			"directions": "down (this), up, side",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Recoloured placeholder of the player figure (tools/art/gen_station.py) - replace with tablet art."
+		},
+		{
+			"id": "char.npc_up",
+			"name": "Survivor (Mara) - Survivor \u2014 facing up (back, backpack)",
+			"template": "res://assets/templates/characters/survivor/template_npc_up.png",
+			"display_size": [
+				52,
+				84
+			],
+			"source_size": [
+				104,
+				168
+			],
+			"pivot": [
+				0.5,
+				0.9524
+			],
+			"transparency": "required",
+			"directions": "up",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Recoloured placeholder of the player figure (tools/art/gen_station.py) - replace with tablet art."
+		},
+		{
+			"id": "char.npc_side",
+			"name": "Survivor (Mara) - Survivor \u2014 side (faces right; flipped for left)",
+			"template": "res://assets/templates/characters/survivor/template_npc_side.png",
+			"display_size": [
+				52,
+				84
+			],
+			"source_size": [
+				104,
+				168
+			],
+			"pivot": [
+				0.5,
+				0.9524
+			],
+			"transparency": "required",
+			"directions": "right; left = mirrored",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Recoloured placeholder of the player figure (tools/art/gen_station.py) - replace with tablet art."
+		}
+	]
+}

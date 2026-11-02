@@ -9,5 +9,9 @@
 	"hydration_per_drink": 40,
 	"thirsty_below": 25,
 	"dehydrated_health_loss_per_minute": 3,
-	"dehydrated_health_floor": 25
+	"dehydrated_health_floor": 25,
+	"hunger_loss_per_minute": 1.4,
+	"hungry_below": 25,
+	"starving_health_loss_per_minute": 3,
+	"starving_health_floor": 20
 }
