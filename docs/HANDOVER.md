@@ -9,6 +9,9 @@
 
 > This file is the creator's handover, stored verbatim in substance as project context.
 > It describes intentions and inherited lessons. It does **not** mean any system below exists in this repository.
+>
+> **Visual direction** (palette, illustration style, atmosphere) is defined in
+> [`visual_direction/`](visual_direction/README.md), which also records how it reconciles with this handover.
 
 ---
 
@@ -371,6 +374,7 @@ Brainstorms are not automatically feature requests.
 - **Zombie threats:** wandering, periodic attacks, escalation, other?
 - **Death and recovery:** respawn and lost items?
 - **Atmosphere:** grounded horror, grim survival, stylized adventure, dark humour, mixture?
+  *Visual atmosphere is now APPROVED in [`visual_direction/`](visual_direction/README.md) (VD-02, VD-09); overall game tone remains open.*
 - **Progression:** equipment-, character-, settlement-driven, combination?
 
 Explore gradually according to impact on the first playable prototype. Not an enormous questionnaire.

@@ -27,6 +27,13 @@ Creator tests on Windows: GitHub → branch → Download ZIP → open `project.g
   overwrite creator-owned art or audio.
 - Build small, understandable foundations. No speculative frameworks.
 
+## Visual direction
+- Source of truth: `docs/visual_direction/` (spec v0.1 + moodboard; README holds the
+  APPROVED / EXPLORING / DEFERRED register).
+- Adopt palette, hand-drawn non-pixel illustration, lighting contrast and atmosphere.
+  Never infer camera perspective, composition, proportions or content from the moodboard.
+- Gameplay perspective and surface/bunker presentation are undecided. Zombie design is deferred.
+
 ## Workflow
 - Small fixes stay small. Major iterations: verify base branch + SHA, numbered iteration
   branch, meaningful commits, relevant tests, docs updated, verified push.

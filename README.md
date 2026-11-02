@@ -7,4 +7,5 @@ A 2D co-op zombie-survival and underground bunker-management game, built in Godo
 **Status:** pre-production — design phase. No playable build yet.
 
 - Design context and inherited engineering lessons: [`docs/HANDOVER.md`](docs/HANDOVER.md)
+- Visual direction (palette, style, atmosphere): [`docs/visual_direction/`](docs/visual_direction/README.md)
 - Permanent project rules for contributors and AI agents: [`CLAUDE.md`](CLAUDE.md)
