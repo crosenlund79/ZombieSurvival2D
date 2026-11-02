@@ -1,10 +1,33 @@
 {
-	"_comment": "Item definitions (iteration 003). Quantities are whole units; every unit takes one carrying slot.",
+	"_comment": "Item definitions (iterations 003 + 007). Stackable items are whole units, one carrying slot per unit. Gear (stack: false) are individual items with an id and condition, one slot each. 'use' = what Use does (drink/eat/heal/read). All numbers are EXPLORING prototype values.",
 	"carry_slots": 30,
 	"items": {
-		"wood": {"name_key": "ITEM_WOOD"},
-		"fuel": {"name_key": "ITEM_FUEL"},
-		"water_dirty": {"name_key": "ITEM_WATER_DIRTY"},
-		"water_clean": {"name_key": "ITEM_WATER_CLEAN"}
-	}
+		"wood": {"name_key": "ITEM_WOOD", "desc_key": "ITEM_WOOD_DESC", "cat": "material"},
+		"scrap_metal": {"name_key": "ITEM_SCRAP_METAL", "desc_key": "ITEM_SCRAP_METAL_DESC", "cat": "material"},
+		"cement": {"name_key": "ITEM_CEMENT", "desc_key": "ITEM_CEMENT_DESC", "cat": "material"},
+		"cloth": {"name_key": "ITEM_CLOTH", "desc_key": "ITEM_CLOTH_DESC", "cat": "material"},
+		"electrical_parts": {"name_key": "ITEM_ELECTRICAL", "desc_key": "ITEM_ELECTRICAL_DESC", "cat": "material"},
+		"fuel": {"name_key": "ITEM_FUEL", "desc_key": "ITEM_FUEL_DESC", "cat": "supply"},
+		"water_dirty": {"name_key": "ITEM_WATER_DIRTY", "desc_key": "ITEM_WATER_DIRTY_DESC", "cat": "supply"},
+		"water_clean": {"name_key": "ITEM_WATER_CLEAN", "desc_key": "ITEM_WATER_CLEAN_DESC", "cat": "supply", "use": "drink", "hydration": 40},
+		"canned_food": {"name_key": "ITEM_CANNED_FOOD", "desc_key": "ITEM_CANNED_FOOD_DESC", "cat": "food", "use": "eat", "food": 40},
+		"potato": {"name_key": "ITEM_POTATO", "desc_key": "ITEM_POTATO_DESC", "cat": "food", "use": "eat", "food": 20},
+		"bandage": {"name_key": "ITEM_BANDAGE", "desc_key": "ITEM_BANDAGE_DESC", "cat": "supply", "use": "heal", "heal": 35},
+		"timber_frame": {"name_key": "ITEM_TIMBER_FRAME", "desc_key": "ITEM_TIMBER_FRAME_DESC", "cat": "part"},
+		"spike_kit": {"name_key": "ITEM_SPIKE_KIT", "desc_key": "ITEM_SPIKE_KIT_DESC", "cat": "part"},
+		"grow_light": {"name_key": "ITEM_GROW_LIGHT", "desc_key": "ITEM_GROW_LIGHT_DESC", "cat": "part"},
+		"club": {"name_key": "ITEM_CLUB", "desc_key": "ITEM_CLUB_DESC", "cat": "gear", "stack": false, "slot": "hand",
+			"damage": 34, "range": 74, "cooldown_ticks": 6, "chop": 1, "durability": 120, "repair": {"wood": 1}},
+		"machete": {"name_key": "ITEM_MACHETE", "desc_key": "ITEM_MACHETE_DESC", "cat": "gear", "stack": false, "slot": "hand",
+			"damage": 55, "range": 80, "cooldown_ticks": 6, "chop": 1, "durability": 160, "repair": {"scrap_metal": 1}},
+		"hatchet": {"name_key": "ITEM_HATCHET", "desc_key": "ITEM_HATCHET_DESC", "cat": "gear", "stack": false, "slot": "hand",
+			"damage": 28, "range": 66, "cooldown_ticks": 6, "chop": 2, "durability": 140, "repair": {"wood": 1}},
+		"felling_axe": {"name_key": "ITEM_FELLING_AXE", "desc_key": "ITEM_FELLING_AXE_DESC", "cat": "gear", "stack": false, "slot": "hand",
+			"damage": 42, "range": 76, "cooldown_ticks": 7, "chop": 4, "durability": 220, "repair": {"scrap_metal": 1}},
+		"padded_jacket": {"name_key": "ITEM_JACKET", "desc_key": "ITEM_JACKET_DESC", "cat": "gear", "stack": false, "slot": "body",
+			"armor": 0.35, "durability": 150, "repair": {"cloth": 1}},
+		"carburetor": {"name_key": "ITEM_CARBURETOR", "desc_key": "ITEM_CARBURETOR_DESC", "cat": "part", "stack": false, "unique": true},
+		"workshop_manual": {"name_key": "ITEM_MANUAL", "desc_key": "ITEM_MANUAL_DESC", "cat": "part", "stack": false, "unique": true, "use": "read", "unlocks": ["felling_axe"]}
+	},
+	"bare_hands": {"damage": 12, "range": 54, "cooldown_ticks": 5, "chop": 1}
 }

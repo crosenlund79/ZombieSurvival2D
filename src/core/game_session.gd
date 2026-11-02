@@ -29,6 +29,10 @@ signal combat_event(event: Dictionary)
 signal vitals_changed(player_id: String)
 signal zombies_updated
 signal terrain_changed(region_id: String)
+## A built structure or ground pile changed, appeared or disappeared.
+signal object_changed(region_id: String, object_id: String)
+## Weather, threat heat, defence event, discoveries or settlement data changed.
+signal world_meta_changed
 
 enum Mode { NONE, SINGLE, HOST, CLIENT }
 
@@ -245,7 +249,8 @@ func _physics_process(delta: float) -> void:
 ## Advances the shared clock and publishes constructions that completed.
 func _advance(ticks: int) -> void:
 	for res in Simulation.advance(world, ticks):
-		SessionLog.info("world", "construction_completed", {"changes": res["changes"], "bunkers": res["bunkers"]})
+		if not (res["changes"] as Array).is_empty() or not (res["bunkers"] as Array).is_empty():
+			SessionLog.info("world", "construction_completed", {"changes": res["changes"], "bunkers": res["bunkers"]})
 		_publish_result(res)
 
 
@@ -367,6 +372,48 @@ func _host_handle_drink(peer_id: int) -> void:
 	var res := WorldActions.request_drink(world, pid)
 	if res["ok"]:
 		_publish_result(res)
+	_send_action_result(peer_id, 0, res["ok"], res["reason"], res["reason_args"])
+
+
+## Place a structure (content/buildables.json) at a world position.
+func request_build(def_id: String, pos: Vector2) -> void:
+	if not in_world():
+		return
+	if is_authority():
+		_host_handle_build(1, def_id, pos)
+	else:
+		_rpc_request_build.rpc_id(1, def_id, pos)
+
+
+## Act on a built object or ground pile in the local player's region.
+func request_object(object_id: String, action: String, arg: String = "") -> void:
+	if not in_world():
+		return
+	if is_authority():
+		_host_handle_object(1, object_id, action, arg)
+	else:
+		_rpc_request_object.rpc_id(1, object_id, action, arg)
+
+
+func _host_handle_build(peer_id: int, def_id: String, pos: Vector2) -> void:
+	var pid: String = _peer_to_player.get(peer_id, "")
+	var res := Build.request_build(world, pid, def_id, pos)
+	if res["ok"]:
+		SessionLog.info("world", "build", {"def": def_id, "pos": [pos.x, pos.y], "by": pid.substr(0, 6), "objects": res["objects"]})
+		_publish_result(res)
+	else:
+		SessionLog.info("world", "build_rejected", {"def": def_id, "reason": res["reason"], "by": pid.substr(0, 6)})
+	_send_action_result(peer_id, 0, res["ok"], res["reason"], res["reason_args"])
+
+
+func _host_handle_object(peer_id: int, object_id: String, action: String, arg: String) -> void:
+	var pid: String = _peer_to_player.get(peer_id, "")
+	var res := Build.request_object(world, pid, object_id, action, arg)
+	if res["ok"]:
+		SessionLog.info("world", "object_action", {"oid": object_id, "action": action, "arg": arg, "by": pid.substr(0, 6)})
+		_publish_result(res)
+		if not (res["notice"] as Dictionary).is_empty():
+			_send_notice(peer_id, res["notice"]["key"], res["notice"]["args"])
 	_send_action_result(peer_id, 0, res["ok"], res["reason"], res["reason_args"])
 
 
@@ -509,7 +556,7 @@ func _host_handle_attack(peer_id: int, aim: Vector2) -> void:
 
 
 static func _vitals_row(p: PlayerState) -> Array:
-	return [snappedf(p.health, 0.1), snappedf(p.hydration, 0.1), p.dead, p.weapon]
+	return [snappedf(p.health, 0.1), snappedf(p.hydration, 0.1), p.dead, p.weapon, snappedf(p.hunger, 0.1)]
 
 
 ## Sends everything a WorldActions result changed to all peers, in an order
@@ -530,6 +577,18 @@ func _publish_result(res: Dictionary) -> void:
 		terrain_changed.emit(rid)
 		if mode == Mode.HOST and not multiplayer.get_peers().is_empty():
 			_rpc_terrain.rpc(rid, tr.terrain)
+	for ro in res.get("objects", []):
+		var orr: RegionState = world.region(ro[0])
+		if orr == null:
+			continue
+		var data: Dictionary = orr.objects.get(ro[1], {})
+		object_changed.emit(ro[0], ro[1])
+		if mode == Mode.HOST and not multiplayer.get_peers().is_empty():
+			_rpc_object.rpc(ro[0], ro[1], data)
+	if res.get("env", false) or res.get("meta", false):
+		world_meta_changed.emit()
+		if mode == Mode.HOST and not multiplayer.get_peers().is_empty():
+			_rpc_world_meta.rpc(world.env, world.meta)
 	for c in res["changes"]:
 		var region := world.region(c["region_id"])
 		if region != null:
@@ -541,7 +600,7 @@ func _publish_result(res: Dictionary) -> void:
 			continue
 		player_resources_changed.emit(pid)
 		if mode == Mode.HOST and not multiplayer.get_peers().is_empty():
-			_rpc_player_carried.rpc(pid, p.carried)
+			_rpc_player_carried.rpc(pid, p.inventory_dict())
 	for pid in res.get("vitals", []):
 		var pv: PlayerState = world.players.get(pid)
 		if pv == null:
@@ -596,9 +655,18 @@ func _host_dev_command(peer_id: int, cmd: String, arg: Variant) -> void:
 			var p7: PlayerState = world.players.get(pid)
 			var parts := str(arg).split(":")
 			if p7 != null and Items.exists(parts[0]):
-				p7.carried[parts[0]] = p7.carrying(parts[0]) + (int(parts[1]) if parts.size() > 1 else 1)
+				var n7 := int(parts[1]) if parts.size() > 1 else 1
 				var gi := WorldActions._ok()
 				gi["players"] = [pid]
+				if Items.is_stack(parts[0]):
+					var pile7 := Inv.give_stack(world, p7, parts[0], n7)
+					if pile7 != "":
+						gi["objects"] = [[p7.region_id, pile7]]
+				else:
+					for k7 in n7:
+						var pile8 := Inv.give_gear(world, p7, Inv.new_gear(world, parts[0]))
+						if pile8 != "":
+							gi["objects"] = [[p7.region_id, pile8]]
 				_publish_result(gi)
 		"thirst":
 			var p8: PlayerState = world.players.get(pid)
@@ -618,6 +686,37 @@ func _host_dev_command(peer_id: int, cmd: String, arg: Variant) -> void:
 				var gr := WorldActions._ok()
 				gr["bunkers"] = [bk.bunker_id]
 				_publish_result(gr)
+		"damage_structures", "repair_structures":
+			# Developer: damage (arg = amount) or fully repair every structure in the player's region.
+			var p9: PlayerState = world.players.get(pid)
+			var reg9 := world.region(p9.region_id) if p9 != null else null
+			if reg9 != null:
+				var out := WorldActions._ok()
+				for oid in reg9.objects.keys():
+					if Build.is_pile(reg9.objects[oid]):
+						continue
+					if cmd == "repair_structures":
+						reg9.objects[oid]["hp"] = Build.max_hp(reg9.objects[oid])
+						out["objects"].append([reg9.region_id, oid])
+					else:
+						var dr := Build.damage_object(world, reg9, oid, float(arg) if arg != null else 40.0)
+						out["objects"].append_array(dr["objects"])
+						out["events"].append_array(dr["events"])
+				for eid in Content.entity_ids(reg9.def_id):
+					if Build.entity_structure(reg9, eid).is_empty():
+						continue
+					if cmd == "repair_structures":
+						reg9.set_fields(eid, {"hp": float(Build.entity_structure(reg9, eid).get("hp", 0)), "broken": false})
+						out["changes"].append({"region_id": reg9.region_id, "entity_id": eid, "cause": "repaired"})
+					else:
+						var de := Build.damage_entity(world, reg9, eid, float(arg) if arg != null else 40.0)
+						out["changes"].append_array(de["changes"])
+				_publish_result(out)
+		"weather":
+			EnvSim.set_weather(world, "rain" if str(arg) == "rain" else "clear")
+			var wr := WorldActions._ok()
+			wr["env"] = true
+			_publish_result(wr)
 		"peaceful":
 			world.threat.enabled = arg == null or float(arg) == 0.0
 			if world.threat.enabled:
@@ -934,7 +1033,8 @@ static func _apply_vitals(p: PlayerState, row: Array) -> void:
 	p.health = float(row[0])
 	p.hydration = float(row[1])
 	p.dead = bool(row[2])
-	p.weapon = str(row[3])
+	if row.size() > 4:
+		p.hunger = float(row[4])
 
 
 @rpc("authority", "call_remote", "reliable")
@@ -952,11 +1052,44 @@ func _rpc_bunker(bunker_id: String, data: Dictionary) -> void:
 
 
 @rpc("authority", "call_remote", "reliable")
-func _rpc_player_carried(player_id: String, carried: Dictionary) -> void:
+func _rpc_player_carried(player_id: String, inventory: Dictionary) -> void:
 	if mode != Mode.CLIENT or world == null or not world.players.has(player_id):
 		return
-	(world.players[player_id] as PlayerState).carried = carried.duplicate()
+	(world.players[player_id] as PlayerState).apply_inventory(inventory)
 	player_resources_changed.emit(player_id)
+
+
+@rpc("any_peer", "call_remote", "reliable")
+func _rpc_request_build(def_id: String, pos: Vector2) -> void:
+	if mode == Mode.HOST:
+		_host_handle_build(multiplayer.get_remote_sender_id(), def_id, pos)
+
+
+@rpc("any_peer", "call_remote", "reliable")
+func _rpc_request_object(object_id: String, action: String, arg: String) -> void:
+	if mode == Mode.HOST:
+		_host_handle_object(multiplayer.get_remote_sender_id(), object_id, action, arg)
+
+
+@rpc("authority", "call_remote", "reliable")
+func _rpc_object(region_id: String, object_id: String, data: Dictionary) -> void:
+	if mode != Mode.CLIENT or world == null or world.region(region_id) == null:
+		return
+	var r := world.region(region_id)
+	if data.is_empty():
+		r.objects.erase(object_id)
+	else:
+		r.objects[object_id] = data.duplicate(true)
+	object_changed.emit(region_id, object_id)
+
+
+@rpc("authority", "call_remote", "reliable")
+func _rpc_world_meta(env: Dictionary, meta: Dictionary) -> void:
+	if mode != Mode.CLIENT or world == null:
+		return
+	world.env = env.duplicate(true)
+	world.meta = meta.duplicate(true)
+	world_meta_changed.emit()
 
 
 @rpc("authority", "call_remote", "reliable")

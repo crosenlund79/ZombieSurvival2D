@@ -17,6 +17,12 @@ var bunkers := {}             # bunker_id -> BunkerState
 var jobs: Array = []
 var zombies := {}             # zombie_id -> ZombieState (host: simulated; clients: mirrored)
 var next_zombie := 0          # id counter (saved, so ids are never reused)
+## Persistent world progress: {"heat": {region: n}, "siege": {...}, "discoveries": {id: tick},
+## "unlocks": {recipe: true}} (EventSim, discoveries, crafting unlocks).
+var meta := {}
+var npcs := {}                # npc_id -> NpcState (survivors; host simulates, saved)
+var env := {}                 # weather: {"weather", "until", "seq"} (EnvSim; saved)
+var next_uid := 1             # id counter for built objects, piles and gear (saved, never reused)
 var threat := ThreatState.new()   # noise + attention (transient, never saved)
 var _sim_rng: RandomNumberGenerator
 ## Runtime-only per-player cooldowns ("<player_id>:<action>" -> tick). Never saved.
@@ -74,6 +80,13 @@ func sim_rng() -> RandomNumberGenerator:
 		_sim_rng = RandomNumberGenerator.new()
 		_sim_rng.seed = hash("%d:sim:%d" % [world_seed, tick])
 	return _sim_rng
+
+
+## A new world-unique id with a prefix ("o12" objects, "g7" gear). Host only.
+func new_uid(prefix: String) -> String:
+	var id := "%s%d" % [prefix, next_uid]
+	next_uid += 1
+	return id
 
 
 func online_players() -> Array:
@@ -143,6 +156,11 @@ func rebuild_jobs() -> void:
 			if str(st.get("stage", "")) == "building":
 				jobs.append({"region_id": rid, "entity_id": eid,
 					"done_tick": int(st.get("started", 0)) + int(st.get("ticks", 0))})
+		for oid in r.objects:
+			var o: Dictionary = r.objects[oid]
+			if str(o.get("stage", "")) == "building":
+				jobs.append({"region_id": rid, "entity_id": "object:" + oid,
+					"done_tick": int(o.get("started", 0)) + int(o.get("ticks", 0))})
 		# Terrain jobs: digs and supports in progress ("terrain:dig:c,r" / "terrain:support:c,r").
 		var dig: Dictionary = r.terrain.get("digging", {})
 		for k in dig:

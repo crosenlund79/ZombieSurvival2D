@@ -1,0 +1,11 @@
+{
+	"_comment": "Day/night and weather (iteration 008). EXPLORING prototype values. A day lasts day_seconds of game time; the world starts at start_hour. Weather alternates clear and rain spells with seeded, reproducible lengths (minutes of game time).",
+	"day_seconds": 1440,
+	"start_hour": 8.0,
+	"dawn": [5.0, 7.0],
+	"dusk": [19.0, 21.0],
+	"clear_minutes": [10, 18],
+	"rain_minutes": [3, 6],
+	"night": {"sight_scale": 0.6, "extra_population": 2},
+	"rain": {"sight_scale": 0.8, "hearing_scale": 0.75}
+}

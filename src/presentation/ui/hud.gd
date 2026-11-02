@@ -91,6 +91,9 @@ func _process(_delta: float) -> void:
 	_down.text = tr("HUD_DOWNED") if me.dead else ""
 	var sensor := get_tree().get_first_node_in_group("local_sensor") as InteractionSensor
 	_prompt.text = sensor.focused.prompt_text() if sensor != null and sensor.focused != null and not PlayerAvatar.input_blocked else ""
+	var main := get_tree().root.get_node_or_null("Main")
+	if BuildMode.placing != "" and main != null and main.get("build_mode") != null:
+		_prompt.text = main.build_mode.hint_text()
 
 
 ## "The Homestead", "The Farmhouse", "Shelter · Level -2" …
@@ -139,7 +142,7 @@ func _bar(at: Vector2, frac: float, col: Color, label: String) -> void:
 	_vitals.draw_string(font, at + Vector2(0, 13), label, HORIZONTAL_ALIGNMENT_LEFT, -1, 13, UITheme.PAPER)
 
 
-static func _bag_text(bag: Dictionary) -> String:
+static func bag_text(bag: Dictionary) -> String:
 	var bits: Array[String] = []
 	for item in Items.ids():
 		if Items.amount(bag, item) > 0:
@@ -147,9 +150,16 @@ static func _bag_text(bag: Dictionary) -> String:
 	return " · ".join(bits) if not bits.is_empty() else "—"
 
 
+static func gear_text(gear: Array) -> String:
+	var bits: Array[String] = []
+	for g in gear:
+		bits.append(TranslationServer.translate(Items.name_key(str(g.get("item", "")))))
+	return (" · " + " · ".join(bits)) if not bits.is_empty() else ""
+
+
 func _resource_line(me: PlayerState) -> String:
 	var parts: Array[String] = []
-	parts.append(UITheme.fmt("HUD_CARRYING", [Items.total(me.carried), Items.carry_slots()]) + "  " + _bag_text(me.carried))
+	parts.append(UITheme.fmt("HUD_CARRYING", [Inv.slots_used(me), Items.carry_slots()]) + "  " + bag_text(me.carried))
 	if me.carrying("water_clean") > 0:
 		parts.append(UITheme.fmt("HUD_DRINK_HINT", [me.carrying("water_clean")]))
 	if InfraSim.is_thirsty(me):
@@ -158,7 +168,7 @@ func _resource_line(me: PlayerState) -> String:
 	if b == null and Session.world.bunkers.size() == 1:
 		b = Session.world.bunkers.values()[0]
 	if b != null:
-		parts.append(UITheme.fmt("HUD_STOCKPILE", [_bag_text(b.resources)]))
+		parts.append(UITheme.fmt("HUD_STOCKPILE", [bag_text(b.resources)]))
 		if not BunkerState.parse_region_id(me.region_id).is_empty():
 			parts.append(tr("HUD_POWER_ON") if InfraSim.is_powered(Session.world, me.region_id) else tr("HUD_POWER_OFF"))
 	var r := Session.world.region(me.region_id)

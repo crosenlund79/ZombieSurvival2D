@@ -20,6 +20,7 @@ var def_id := ""
 var local_avatar: PlayerAvatar
 var _avatars := {}  # player_id -> PlayerAvatar
 var _zombies := {}  # zombie_id -> ZombieView
+var _objects := {}  # object_id -> StructureView
 var _actors: Node2D
 
 
@@ -46,7 +47,9 @@ func _ready() -> void:
 	Session.roster_changed.connect(_sync_avatars)
 	Session.vitals_changed.connect(func(_p: String) -> void: _refresh_vitals())
 	Session.combat_event.connect(_on_combat_event)
+	Session.object_changed.connect(_on_object_changed)
 	_sync_avatars()
+	_sync_objects()
 	if ambience_id != "":
 		Audio.play_loop("ambience", ambience_id)
 	SessionLog.info("view", "region_view_built", {"region": region_id, "def": def_id})
@@ -100,6 +103,37 @@ func _sync_zombies() -> void:
 			_zombies.erase(id)
 
 
+## One StructureView per built object / ground pile of this region.
+func _sync_objects() -> void:
+	var r := Session.world.region(region_id) if Session.world != null else null
+	if r == null:
+		return
+	for oid in r.objects:
+		if not _objects.has(oid):
+			var v := StructureView.create(region_id, oid)
+			_actors.add_child(v)
+			_objects[oid] = v
+	for oid2 in _objects.keys():
+		if not r.objects.has(oid2) or not is_instance_valid(_objects[oid2]):
+			if is_instance_valid(_objects[oid2]):
+				(_objects[oid2] as Node).queue_free()
+			_objects.erase(oid2)
+
+
+func _on_object_changed(rid: String, _oid: String) -> void:
+	if rid == region_id:
+		_sync_objects()
+
+
+func structure_view(oid: String) -> StructureView:
+	var v = _objects.get(oid)
+	return v if v != null and is_instance_valid(v) else null
+
+
+func object_count() -> int:
+	return _objects.size()
+
+
 func zombie_count() -> int:
 	return _zombies.size()
 
@@ -132,6 +166,34 @@ func _on_combat_event(ev: Dictionary) -> void:
 			var a3: PlayerAvatar = _avatars.get(ev["player_id"])
 			if a3 != null:
 				a3.set_downed(true)
+		"struct_hit", "struct_destroyed", "build_started", "build_done", "upgraded", "repaired", "trap_hit", "door_toggled", "dismantled", "crop_ripe", "watered":
+			if str(ev.get("region_id", "")) != region_id:
+				return
+			var at := Vector2(float(ev.get("x", 0)), float(ev.get("y", 0)))
+			var sv := structure_view(str(ev.get("oid", "")))
+			match str(ev["kind"]):
+				"struct_hit":
+					Audio.play("sfx.struct_hit", at)
+					if sv != null:
+						sv.hit_flash()
+				"struct_destroyed":
+					Audio.play("sfx.struct_break", at)
+				"build_started":
+					Audio.play("sfx.build_hammer", at)
+				"build_done":
+					Audio.play("sfx.build_done", at)
+				"upgraded":
+					Audio.play("sfx.upgrade", at)
+				"repaired":
+					Audio.play("sfx.build_hammer", at)
+				"trap_hit":
+					Audio.play("sfx.spikes", at)
+				"door_toggled":
+					Audio.play("sfx.door_open" if bool(ev.get("open", false)) else "sfx.door_close", at)
+				"dismantled":
+					Audio.play("sfx.build_hammer", at)
+				"watered":
+					Audio.play("sfx.water_pour", at)
 
 
 func avatar_count() -> int:

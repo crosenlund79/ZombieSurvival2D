@@ -190,7 +190,7 @@ func snap_camera() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if not is_local or input_blocked:
 		return
-	if event.is_action_pressed("attack") and not _downed:
+	if event.is_action_pressed("attack") and not _downed and BuildMode.placing == "":
 		var aim := _facing_vector()
 		if event is InputEventMouseButton:
 			aim = (get_global_mouse_position() - (global_position + Vector2(0, -30))).normalized()

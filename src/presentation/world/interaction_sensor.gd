@@ -34,7 +34,11 @@ func _process(_delta: float) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if PlayerAvatar.input_blocked:
+	if PlayerAvatar.input_blocked or BuildMode.placing != "":
+		return
+	if event.is_action_pressed("repair") and focused != null and focused.on_repair.is_valid() and focused.secondary_key != "":
+		get_viewport().set_input_as_handled()
+		focused.on_repair.call()
 		return
 	if event.is_action_pressed("interact") and focused != null:
 		get_viewport().set_input_as_handled()

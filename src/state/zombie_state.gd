@@ -28,6 +28,10 @@ var lost_sight := 0.0               # seconds since the target was last seen
 var attack_cooldown := 0.0
 var dead_time := 0.0
 var leaving := false                # transient zombie walking back off the map
+var target_struct := ""             # "o:<oid>" / "e:<eid>": structure it is breaking through
+var stuck := 0.0                    # seconds without progress toward a structure
+var trap_time := 0.0                # seconds spent on spikes since the last trap hit
+var siege := false                  # part of a defence event (EventSim)
 
 
 func is_dead() -> bool:

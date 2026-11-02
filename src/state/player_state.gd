@@ -9,11 +9,21 @@ var display_name := "Survivor"
 var region_id := ""
 var position := Vector2.ZERO
 var facing := 0          # 0 down, 1 up, 2 left, 3 right (presentation hint)
-var carried := {}        # resource id -> amount the player is carrying, e.g. {"wood": 4}
+var carried := {}        # stackable item id -> amount the player is carrying, e.g. {"wood": 4}
+var gear: Array = []     # individual items: [{uid, item, cond}] (tools, weapons, clothing, unique finds)
+var equipped := {}       # slot ("hand", "body") -> gear uid
+var hunger := 100.0      # 100 = fed, 0 = starving
 var health := 100.0
 var hydration := 100.0
 var dead := false
-var weapon := ""         # "" = bare hands, "club" = wooden club
+## Item id of the usable tool/weapon in the hand ("" = bare hands). Derived from
+## the equipped gear (a broken item counts as bare hands); read-only.
+var weapon: String:
+	get:
+		var g := equipped_gear("hand")
+		return str(g.get("item", "")) if not g.is_empty() and float(g.get("cond", 1.0)) > 0.0 else ""
+	set(_v):
+		pass
 var respawn_tick := 0    # runtime
 var last_hurt_tick := -100000  # runtime
 var online := false      # runtime only — never saved
@@ -24,11 +34,37 @@ func carrying(resource: String) -> int:
 	return int(carried.get(resource, 0))
 
 
+## Index of a gear item in `gear` by uid (-1 if not carried).
+func find_gear(uid: String) -> int:
+	for i in gear.size():
+		if str(gear[i].get("uid", "")) == uid:
+			return i
+	return -1
+
+
+## The gear record equipped in a slot, or {}.
+func equipped_gear(slot: String) -> Dictionary:
+	var i := find_gear(str(equipped.get(slot, "")))
+	return gear[i] if i >= 0 else {}
+
+
+## Inventory snapshot replicated to clients: stacks, gear and equipped slots.
+func inventory_dict() -> Dictionary:
+	return {"carried": carried.duplicate(), "gear": gear.duplicate(true), "equipped": equipped.duplicate()}
+
+
+func apply_inventory(d: Dictionary) -> void:
+	carried = (d.get("carried", {}) as Dictionary).duplicate()
+	gear = (d.get("gear", []) as Array).duplicate(true)
+	equipped = (d.get("equipped", {}) as Dictionary).duplicate()
+
+
 func to_dict() -> Dictionary:
 	return {"name": display_name, "region_id": region_id,
 		"position": [snappedf(position.x, 0.01), snappedf(position.y, 0.01)],
 		"facing": facing, "last_seen_unix": last_seen_unix, "carried": carried.duplicate(),
-		"health": snappedf(health, 0.1), "hydration": snappedf(hydration, 0.1), "weapon": weapon}
+		"health": snappedf(health, 0.1), "hydration": snappedf(hydration, 0.1),
+		"hunger": snappedf(hunger, 0.1), "gear": gear.duplicate(true), "equipped": equipped.duplicate()}
 
 
 static func from_dict(id: String, d: Dictionary) -> PlayerState:
@@ -43,7 +79,14 @@ static func from_dict(id: String, d: Dictionary) -> PlayerState:
 	# A player saved while dead comes back alive (respawn rule: keep everything).
 	p.health = clampf(float(d.get("health", 100.0)), 1.0, 100.0)
 	p.hydration = clampf(float(d.get("hydration", 100.0)), 0.0, 100.0)
-	p.weapon = str(d.get("weapon", ""))
+	p.hunger = clampf(float(d.get("hunger", 100.0)), 0.0, 100.0)
+	for g in d.get("gear", []):
+		if g is Dictionary and Items.exists(str(g.get("item", ""))) and str(g.get("uid", "")) != "":
+			p.gear.append({"uid": str(g["uid"]), "item": str(g["item"]), "cond": float(g.get("cond", 100.0))})
+	var eq: Dictionary = d.get("equipped", {})
+	for slot in eq:
+		if p.find_gear(str(eq[slot])) >= 0:
+			p.equipped[str(slot)] = str(eq[slot])
 	var c: Dictionary = d.get("carried", {})
 	for k in c:
 		p.carried[str(k)] = maxi(0, int(c[k]))

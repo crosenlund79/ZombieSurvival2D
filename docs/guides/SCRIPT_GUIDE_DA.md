@@ -29,6 +29,7 @@ Beskrivelse i almindeligt sprog af hver GDScript-fil. Identifikatorer og stier e
 | Script | Afhænger af | Hvad det gør |
 |---|---|---|
 | `src/content/content.gd` | SafeFile | Læser forfattede områdefiler (`content/regions/*.json`): entiteter, positioner, rækkevidde, starttilstand, startpunkter; beregner et indholdsfingeraftryk, så vært og klient kan bekræfte, at de matcher. |
+| `src/state/npc_state.gd` | — | Én overlevende som rene data: identitet, navn, sted, rekrutteringstilstand, helbred, job, aktivitet, status og bosættelse. Alt gemmes. |
 | `src/state/zombie_state.gd` | — | Én zombie som rene data: identitet, område, position, helbred, AI-tilstand og korttidshukommelse. Kun grundbestandens identitet/position/helbred gemmes. |
 | `src/state/threat_state.gd` | — | Verdens støjkø og opmærksomhed pr. grov zone (midlertidig: gemmes aldrig, så en genindlæst verden starter rolig). |
 | `src/state/world_state.gd` | Content, RegionState, PlayerState, Simulation | Hele den fælles verden som rene data: id, seed, urtik, områder, spillere. Giver også seedede tilfældighedsstrømme. |
@@ -40,6 +41,10 @@ Beskrivelse i almindeligt sprog af hver GDScript-fil. Identifikatorer og stier e
 | `src/sim/survival_sim.gd` | WorldActions | Kun værten: spillerens livstegn — langsom genopretning af helbred og den milde genoplivningsregel (behold alt, vågn i stuehuset). |
 | `src/content/items.gd` | SafeFile | Genstandskatalog (`content/items.json`): faste genstands-id'er, navnenøgler, bæreplads og `move()`, der flytter mellem to beholdninger i ét trin, så intet dubleres. |
 | `src/sim/infra_sim.gd` | Simulation, WorldActions, ZombieSim, Content | Kun værten: infrastruktur på det fælles ur: generatorens brændstofforbrug og automatiske stop, logisk strøm i bunkeren (`is_powered`), vandrenserens omdannelse over tid med strøm, væskebalancens fald og mild dehydrering. |
+| `src/sim/inventory.gd` | Items, WorldState | Lagertransaktioner: bæreplads, hvilke beholdninger der betaler (din taske, så tilflugtsrummets lager under jorden), betaling, udstyrsposter, at give ting (overskud lægges i en bunke på jorden), overførsler til beholdere. |
+| `src/sim/build.gd` | Content, Terrain, Inv, NavGrid, ZombieSim | Byggeregler: definitioner, fodaftryk, placeringskontrol (zoner, åbent bunkergulv, optaget plads, frihold, aldrig afskære et bunkerområde), opførelse, opgradering, reparation, nedtagning, bunker og kasser, skade på konstruktioner, hvad zombier bryder igennem. |
+| `src/sim/farm_sim.gd` | Build, InfraSim, EnvSim, Inv | Produktion fra byggede ting på det fælles ur: regnvandsopsamleren (hurtigere i regn) og det hydroponiske plantebed (kræver rent vand og strøm). Handlinger til at tømme, vande og høste. |
+| `src/sim/env_sim.gd` | WorldState | Døgn og vejr fra det fælles ur: tid på døgnet, dagslys, seedede perioder med regn/klart vejr og virkningen på zombiers syn og hørelse. |
 | `src/sim/terrain.gd` | Content, RegionState | Udgravningsregler for et områdes gitter af jordceller: åbne/faste celler, permanente celler, støtteregel (sikker margen + forstærkede støtters radius), begrundelser ved afvisning. |
 | `src/sim/simulation.gd` | WorldState | Det ene fælles ur (10 tik pr. sekund). Fremtidige tidsstyrede systemer kobles på her. |
 | `src/sim/world_actions.gd` | WorldState, Content | Værtens regler: kontrollerer en interaktionsanmodning (hvem, hvor, hvor langt, hvilken revision) og udfører den; kontrollerer at rapporteret bevægelse er fysisk mulig. |
@@ -57,6 +62,8 @@ Beskrivelse i almindeligt sprog af hver GDScript-fil. Identifikatorer og stier e
 | `src/presentation/ui/map_panel.gd` | Session, Assets, Hud | Verdenskort (M): veje, områder og kendemærker fra indholdet; træer, tilflugtsrum og spillere fra den aktuelle tilstand; dybde under jorden. |
 | `src/presentation/ui/hud.gd` | Session, InteractionSensor | Overlay i spillet: statuslinje, interaktionsprompt, korte beskeder. |
 | `src/presentation/ui/machine_panel.gd` | UITheme, Session | Lille panel i verden for én maskine (lager, generator, vandrenser): titel, statuslinjer og knapper bygget af maskinvisningen; opdateres fra verdensdata og lukker uden for rækkevidde eller med Esc. Knapper sender kun anmodninger til værten. |
+| `src/presentation/ui/build_mode.gd` | Build, Inv, Session | Byggemenuen (B) og placeringsvisningen: grønt/rødt spøgelse, der følger musen efter samme regler som værten, begrundelse ved afvisning, og placering. |
+| `src/presentation/ui/craft_panel.gd` | Craft, Session, MachinePanel | Arbejdsbænkspanelet: opskrifter med materialer og tid, fremstillingsjob, afhentning og reparation af slidt udstyr. |
 | `src/presentation/ui/pause_menu.gd` | Session | Esc-menu: fortsæt, gem (vært), indstillinger, forlad. Den fælles verden kører videre. |
 | `src/presentation/ui/dev_overlay.gd` | Session, Net, Assets, Audio, SessionLog | F3-udviklerpanel: build, netværks- og verdenstilstand, spillere, entitetstilstande, gemmestatus, udskiftninger, logsti og nogle få værtskontrollerede kommandoer. |
 
@@ -87,6 +94,7 @@ Beskrivelse i almindeligt sprog af hver GDScript-fil. Identifikatorer og stier e
 | `src/presentation/world/weapon_rack_view.gd` | EntityView | Køllestativet i stuehuset; at tage en kølle udruster spilleren (én hver, løber aldrig tør). |
 | `src/presentation/world/machine_view.gd` | EntityView, MachinePanel, InfraSim, Items, Audio | Lagerskab, generator, vandrenser og ransagningssteder på overfladen: grafik for tændt/slukket/tom, maskinpanelets indhold, direkte ransagning af fundsteder, generatorens brummen mens den kører. |
 | `src/presentation/world/lamp_view.gd` | EntityView, InfraSim, LightSpot | Elektrisk bunkerlampe: tændt med lys, mens bunkeren har strøm, ellers mørk. Læser kun den logiske strømtilstand. |
+| `src/presentation/world/structure_view.gd` | Session, Build, Assets, MachinePanel | Viser én bygget ting eller bunke på jorden: grafik efter tilstand, kollision mens den spærrer, tilstands-/fremskridtsbjælke, træffeffekt; panelet med reparation, opgradering, nedtagning og beholder-/produktionshandlinger. |
 | `src/presentation/world/terrain_view.gd` | Terrain, Session, Assets | Tegner udgravet gulv, fast jord, 3/4-vægflader og blækkanter ud fra gitteret; genopbygger kollision ved ændringer; placerer støttestolper; den kontekstuelle grav/støtte-prompt med farvet målramme. |
 | `src/presentation/world/placeholder_block.gd` | — | Gråboks-hjælper (brugt i fase A, beholdt til skitsering af nye områder): et farvet rektangel med tilsvarende kollision. |
 | `src/presentation/world/placeholder_ground.gd` | — | Gråboks-jord med et 100 px gitter (ikke brugt i den nuværende scene). |
@@ -101,6 +109,7 @@ Beskrivelse i almindeligt sprog af hver GDScript-fil. Identifikatorer og stier e
 | `tests/test_runner.gd` | TestCase, ContentCheck | Kører alle testfiler i tests/unit og indholdskontrollen, skriver resultater og afslutter med fejlkode ved fejl. |
 | `tests/unit/test_threat.gd` | ZombieSim, WorldActions, NavGrid | Tester navigation, syn, hørelse, opmærksomhed op/ned, eskaleringslofter, nærkampsautoritet, vægge, skade efter optakt, genoplivning, stuehusets grænse og gemmepolitikken. |
 | `tests/unit/test_infra.gd` | Items, InfraSim, WorldActions, SaveCodec | Tester genstandsflytning, kapløb om fælles lager, ransagning og genopfyldning, generatorens brændstof/strøm, at vandrenseren kræver strøm og tid, væske/drikke og gem-indlæs. |
+| `tests/unit/test_build.gd` | Build, Inv, ZombieSim, SaveCodec | Tester placering og dens regler, betal-én-gang, samtidig placering, opgradering/skade/reparation/ødelæggelse, refusion og indhold ved nedtagning, zombiers gennembrud, pigfælder, bunkerregler, opgraderingen af lemmen, gemning og migreringen 3→4. |
 | `tests/unit/test_terrain.gd` | Terrain, WorldActions, SaveCodec | Tester gitteret, gravevalidering og -tid, samtidige gravninger, støtters forbrug/radius/afstand, gemning og afbrudte gravninger. |
 | `tests/unit/test_world.gd` | WorldState, WorldActions, Simulation | Tester oprettelse af verden, lagring af ændringer, seedet tilfældighed, uret, validering af interaktioner, samtidige anmodninger, bevægelsesplausibilitet. |
 | `tests/unit/test_bunker.gd` | WorldActions, Simulation, SaveCodec | Tester tilflugtsrummets byggetid, ingen dobbelt lem, portaler, træ kun givet én gang, nedkøling, forstærkning der kun bruger træ én gang, ubegrænsede udviklerniveauer, gemte spil, migrering. |

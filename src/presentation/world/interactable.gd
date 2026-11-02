@@ -16,6 +16,11 @@ var enabled := true
 var prompt_args: Array = []
 ## Optional custom action (e.g. terrain digging); default requests the entity interaction.
 var on_activate: Callable
+## Optional second action on the repair key (repair a damaged structure, upgrade a hatch).
+var on_repair: Callable
+## Translation key describing on_repair in the prompt ("" = not offered right now).
+var secondary_key := ""
+var secondary_args: Array = []
 
 
 ## def_id: the content definition of the region (see RegionView.def_id).
@@ -35,7 +40,13 @@ func prompt_text() -> String:
 	var key_names := []
 	for code in Settings.action_keys("interact"):
 		key_names.append(Settings.key_label(code))
-	return "[%s] %s" % [" / ".join(key_names), UITheme.fmt(prompt_key, prompt_args)]
+	var text := "[%s] %s" % [" / ".join(key_names), UITheme.fmt(prompt_key, prompt_args)]
+	if on_repair.is_valid() and secondary_key != "":
+		var rk := []
+		for code in Settings.action_keys("repair"):
+			rk.append(Settings.key_label(code))
+		text += "    [%s] %s" % [" / ".join(rk), UITheme.fmt(secondary_key, secondary_args)]
+	return text
 
 
 func activate() -> void:

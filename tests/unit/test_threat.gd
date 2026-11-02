@@ -104,10 +104,16 @@ func test_escalation_recruits_then_reinforces_within_limits() -> void:
 	check(w.zombies.size() <= int(ZombieSim.c("max_active", 16)) + 1, "active cap respected")
 
 
+func _arm(w: WorldState, p: PlayerState, item: String) -> void:
+	var g := Inv.new_gear(w, item)
+	p.gear.append(g)
+	p.equipped["hand"] = g["uid"]
+
+
 func test_player_attack_damages_and_kills_with_cooldown() -> void:
 	var w := _world()
 	var p := _player(w, PID, "homestead", Vector2(600, 1100))
-	p.weapon = "club"
+	_arm(w, p, "club")
 	var z := _zombie(w, Vector2(640, 1100), Vector2.LEFT)
 	var r := WorldActions.request_attack(w, PID, Vector2.RIGHT)
 	check(r["ok"], "swing ok")
@@ -130,7 +136,7 @@ func test_player_attack_damages_and_kills_with_cooldown() -> void:
 func test_no_attacks_through_walls() -> void:
 	var w := _world()
 	var p := _player(w, PID, "homestead", Vector2(830, 925))
-	p.weapon = "club"
+	_arm(w, p, "club")
 	var z := _zombie(w, Vector2(860, 860))  # behind the yard fence
 	WorldActions.request_attack(w, PID, (z.position - p.position).normalized())
 	eq(z.health, 100.0, "fence blocks the swing")

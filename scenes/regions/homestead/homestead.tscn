@@ -114,6 +114,17 @@ position = Vector2(1150, 900)
 entity_id = "homestead.yard_gate"
 blocker_size = Vector2(104, 14)
 
+[node name="Tractor" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(1600, 1150)
+asset_id = "prop.tractor"
+footprint = Vector2(170, 36)
+occlude = true
+
+[node name="TractorScrap" type="Node2D" parent="YSort"]
+script = ExtResource("machinev")
+entity_id = "homestead.tractor"
+
 [node name="Shed" type="Node2D" parent="YSort"]
 script = ExtResource("prop")
 position = Vector2(1560, 610)

@@ -13,13 +13,16 @@ var _title: Label
 var _lines: Label
 var _buttons: VBoxContainer
 var _builder: Callable   # func() -> {"title", "lines": [..], "buttons": [[label, action, arg, enabled], ..]}
+## func(action, arg) sending the request; default: Session.request_entity_action(entity_id, ...).
+var _request: Callable
 var _anchor: Node2D
 var _sig := ""
 
 
-static func open(anchor: Node2D, rid: String, eid: String, builder: Callable) -> void:
+static func open(anchor: Node2D, rid: String, eid: String, builder: Callable, request: Callable = Callable()) -> void:
 	close_current()
 	var p := MachinePanel.new()
+	p._request = request
 	p.region_id = rid
 	p.entity_id = eid
 	p._builder = builder
@@ -67,7 +70,7 @@ func _process(_delta: float) -> void:
 	if me == null or me.region_id != region_id or not is_instance_valid(_anchor) or me.dead:
 		close_current()
 		return
-	if me.position.distance_to(_anchor.global_position) > 140.0:
+	if me.position.distance_to(_anchor.global_position) > 170.0:
 		close_current()
 		return
 	_refresh()
@@ -97,5 +100,8 @@ func _refresh() -> void:
 		var arg: Variant = b[2]
 		btn.pressed.connect(func() -> void:
 			Audio.play("ui.click")
-			Session.request_entity_action(entity_id, action, arg))
+			if _request.is_valid():
+				_request.call(action, str(arg))
+			else:
+				Session.request_entity_action(entity_id, action, arg))
 		_buttons.add_child(btn)

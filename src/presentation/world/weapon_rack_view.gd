@@ -13,4 +13,8 @@ func _refresh(_cause: String) -> void:
 	show_art("Main", "item.club_rack")
 	if interact != null:
 		var me := Session.local_player()
-		interact.enabled = me == null or me.weapon != str(def.get("weapon", "club"))
+		var has := false
+		if me != null:
+			for g in me.gear:
+				has = has or str(g.get("item", "")) == str(def.get("weapon", "club"))
+		interact.enabled = not has

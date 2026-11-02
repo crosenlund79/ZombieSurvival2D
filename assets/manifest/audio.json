@@ -261,6 +261,46 @@
 			"loop": false,
 			"status": "READY",
 			"notes": "Generated placeholder (tools/art/gen_infra_audio.py)."
+		},
+		{
+			"id": "sfx.struct_hit",
+			"name": "Structure hit by a zombie",
+			"template": "res://assets/templates/audio/world/template_struct_hit.wav",
+			"bus": "SFX",
+			"volume_db": -3.0,
+			"loop": false,
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_build_audio.py)."
+		},
+		{
+			"id": "sfx.struct_break",
+			"name": "Structure broken",
+			"template": "res://assets/templates/audio/world/template_struct_break.wav",
+			"bus": "SFX",
+			"volume_db": -2.0,
+			"loop": false,
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_build_audio.py)."
+		},
+		{
+			"id": "sfx.upgrade",
+			"name": "Structure upgraded (metal clank)",
+			"template": "res://assets/templates/audio/world/template_upgrade_clank.wav",
+			"bus": "SFX",
+			"volume_db": -4.0,
+			"loop": false,
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_build_audio.py)."
+		},
+		{
+			"id": "sfx.spikes",
+			"name": "Spike trap hit",
+			"template": "res://assets/templates/audio/world/template_spikes.wav",
+			"bus": "SFX",
+			"volume_db": -4.0,
+			"loop": false,
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_build_audio.py)."
 		}
 	]
 }

@@ -18,6 +18,7 @@ func run() -> Array[Dictionary]:
 	_check_level_templates()
 	_check_manifests()
 	_check_code_references()
+	_check_data()
 	_check_locale()
 	return lines
 
@@ -190,7 +191,7 @@ func _check_manifests() -> void:
 ## Asset IDs written in code or scenes must exist in a manifest.
 func _check_code_references() -> void:
 	var rx := RegEx.new()
-	rx.compile("\"((?:char|world|env|prop|sfx|ui|amb|fx)\\.[a-z0-9_.]+)\"")
+	rx.compile("\"((?:char|world|env|prop|sfx|ui|amb|fx|build|item)\\.[a-z0-9_.]+)\"")
 	var missing := 0
 	for path in _files("res://src", ["gd"]) + _files("res://scenes", ["tscn", "gd"]):
 		var text := FileAccess.get_file_as_string(path)
@@ -203,6 +204,55 @@ func _check_code_references() -> void:
 				_add("FAIL", "%s references unknown asset id %s" % [path, id])
 	if missing == 0:
 		_add("PASS", "all asset ids referenced in code/scenes exist")
+
+
+## Construction, item, recipe and loot data: every referenced item, asset and
+## translation key must exist.
+func _check_data() -> void:
+	var problems := 0
+	var keys := {}
+	var data = SafeFile.read_json(Localization.PATH)
+	for id in Items.ids():
+		for k in ["name_key", "desc_key"]:
+			keys[str(Items.info(id).get(k, ""))] = "items.json:" + id
+	for id in Build.defs():
+		var d := Build.def(id)
+		keys[str(d.get("name_key", ""))] = "buildables.json:" + id
+		keys[str(d.get("desc_key", ""))] = "buildables.json:" + id
+		for t in d.get("tiers", []):
+			keys[str(t.get("name_key", ""))] = "buildables.json:" + id
+			for item in t.get("cost", {}):
+				if not Items.exists(item):
+					problems += 1
+					_add("FAIL", "buildable %s costs unknown item %s" % [id, item])
+			if not Items.exists(str(t.get("repair_item", "wood"))):
+				problems += 1
+				_add("FAIL", "buildable %s repairs with unknown item" % id)
+			for ak in ["art", "art_open", "art_worn", "art_growing", "art_ripe", "art_full", "bunker_art"]:
+				if t.has(ak) and not AssetCatalog.has(str(t[ak])):
+					problems += 1
+					_add("FAIL", "buildable %s uses unknown asset %s" % [id, t[ak]])
+	for id in Build.menu():
+		if id != "support" and Build.def(id).is_empty():
+			problems += 1
+			_add("FAIL", "build menu lists unknown definition " + str(id))
+	for def_id in Content.region_ids() + Content.level_template_ids().map(func(t): return Content.level_def_id(t)):
+		for eid in Content.entity_ids(def_id):
+			var e := Content.entity_def(def_id, eid)
+			for item in e.get("loot", {}):
+				if not Items.exists(item):
+					problems += 1
+					_add("FAIL", "%s loot has unknown item %s" % [eid, item])
+			for k2 in ["prompt_key"]:
+				if e.has(k2):
+					keys[str(e[k2])] = def_id + ":" + eid
+	if data is Dictionary:
+		for k in keys:
+			if k != "" and not data.has(k):
+				problems += 1
+				_add("FAIL", "translation key %s (%s) missing from locale" % [k, keys[k]])
+	if problems == 0:
+		_add("PASS", "items, buildables and loot reference valid items, assets and text")
 
 
 func _check_locale() -> void:

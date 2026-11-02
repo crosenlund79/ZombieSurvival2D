@@ -1,0 +1,68 @@
+{
+	"_comment": "Construction definitions (iteration 006). Every number is an EXPLORING prototype value. 'where': surface (inside a region's build_zones), bunker (open excavated cells; one object per cell). Tiers are upgrade steps; 'repair_item' restores repair_fraction of max condition per unit. 'refund' is the share of the current tier's cost returned when dismantled.",
+	"defs": {
+		"barricade": {
+			"name_key": "BUILD_BARRICADE", "desc_key": "BUILD_BARRICADE_DESC",
+			"where": ["surface", "bunker"], "size": [64, 18], "blocks": true, "build_seconds": 3,
+			"refund": 0.5, "repair_fraction": 0.5,
+			"tiers": [
+				{"id": "wood", "name_key": "TIER_WOOD", "cost": {"wood": 3}, "hp": 120, "armor": 0, "repair_item": "wood", "art": "build.barricade_wood", "bunker_art": "build.wall_wood"},
+				{"id": "metal", "name_key": "TIER_METAL", "cost": {"scrap_metal": 3}, "hp": 260, "armor": 3, "repair_item": "scrap_metal", "art": "build.barricade_metal", "bunker_art": "build.wall_metal"},
+				{"id": "concrete", "name_key": "TIER_CONCRETE", "cost": {"cement": 2, "scrap_metal": 1}, "hp": 480, "armor": 6, "repair_item": "cement", "art": "build.barricade_concrete", "bunker_art": "build.wall_concrete"}
+			]
+		},
+		"door": {
+			"name_key": "BUILD_DOOR", "desc_key": "BUILD_DOOR_DESC",
+			"where": ["surface", "bunker"], "size": [64, 18], "blocks": true, "openable": true, "build_seconds": 4,
+			"refund": 0.5, "repair_fraction": 0.5,
+			"tiers": [
+				{"id": "reinforced", "name_key": "TIER_REINFORCED", "cost": {"timber_frame": 1, "scrap_metal": 2}, "hp": 220, "armor": 3, "repair_item": "scrap_metal", "art": "build.door_closed", "art_open": "build.door_open"}
+			]
+		},
+		"spike_trap": {
+			"name_key": "BUILD_SPIKES", "desc_key": "BUILD_SPIKES_DESC",
+			"where": ["surface"], "size": [56, 40], "blocks": false, "build_seconds": 3, "floor": true,
+			"refund": 0.0, "repair_fraction": 1.0,
+			"trap": {"damage_per_second": 16, "wear_per_second": 3, "slow": 0.45},
+			"tiers": [
+				{"id": "spikes", "name_key": "TIER_SPIKES", "cost": {"spike_kit": 1}, "hp": 60, "armor": 0, "repair_item": "wood", "art": "build.spike_trap", "art_worn": "build.spike_trap_worn"}
+			]
+		},
+		"crate": {
+			"name_key": "BUILD_CRATE", "desc_key": "BUILD_CRATE_DESC",
+			"where": ["surface", "bunker"], "size": [48, 30], "blocks": true, "build_seconds": 2,
+			"container_slots": 20, "refund": 0.5, "repair_fraction": 0.5,
+			"tiers": [
+				{"id": "wood", "name_key": "TIER_WOOD", "cost": {"wood": 4}, "hp": 80, "armor": 0, "repair_item": "wood", "art": "build.crate"}
+			]
+		},
+		"workbench": {
+			"name_key": "BUILD_WORKBENCH", "desc_key": "BUILD_WORKBENCH_DESC",
+			"where": ["surface", "bunker"], "size": [80, 34], "blocks": true, "build_seconds": 4,
+			"station": "workbench", "refund": 0.5, "repair_fraction": 0.5,
+			"tiers": [
+				{"id": "wood", "name_key": "TIER_WOOD", "cost": {"wood": 6, "scrap_metal": 2}, "hp": 150, "armor": 1, "repair_item": "wood", "art": "build.workbench"}
+			]
+		},
+		"planter": {
+			"name_key": "BUILD_PLANTER", "desc_key": "BUILD_PLANTER_DESC",
+			"where": ["bunker"], "size": [80, 34], "blocks": true, "build_seconds": 4,
+			"refund": 0.5, "repair_fraction": 0.5, "farm": true,
+			"tiers": [
+				{"id": "hydroponic", "name_key": "TIER_HYDROPONIC", "cost": {"wood": 4, "grow_light": 1}, "hp": 100, "armor": 0, "repair_item": "wood", "art": "build.planter_empty", "art_growing": "build.planter_growing", "art_ripe": "build.planter_ripe"}
+			]
+		},
+		"rain_collector": {
+			"name_key": "BUILD_RAIN_COLLECTOR", "desc_key": "BUILD_RAIN_COLLECTOR_DESC",
+			"where": ["surface"], "size": [50, 36], "blocks": true, "build_seconds": 3,
+			"refund": 0.5, "repair_fraction": 0.5, "collector": true,
+			"tiers": [
+				{"id": "wood", "name_key": "TIER_WOOD", "cost": {"wood": 3, "scrap_metal": 2}, "hp": 90, "armor": 0, "repair_item": "wood", "art": "build.rain_collector", "art_full": "build.rain_collector_full"}
+			]
+		}
+	},
+	"menu": ["barricade", "door", "spike_trap", "crate", "workbench", "planter", "rain_collector", "support"],
+	"keep_clear_radius": 90,
+	"interact_reach": 110,
+	"rain_collector": {"capacity": 4, "seconds_per_unit_rain": 30, "seconds_per_unit_dry": 240}
+}

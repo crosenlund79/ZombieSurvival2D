@@ -24,6 +24,8 @@ var _sprite: Sprite2D
 var _shape: CollisionShape2D
 var _interact: Interactable
 var _open := false
+var _broken := false
+var _hp_frac := 1.0
 
 
 func _ready() -> void:
@@ -54,6 +56,8 @@ func _ready() -> void:
 	_interact.setup(def_id, entity_id)
 	_interact.focus_changed.connect(func(f: bool) -> void:
 		_sprite.modulate = Color(1.3, 1.22, 1.0) if f else Color.WHITE)
+	if def.has("structure"):
+		_interact.on_repair = func() -> void: Session.request_entity_action(entity_id, "repair")
 	add_child(_interact)
 	Session.entity_changed.connect(_on_entity_changed)
 	Assets.reloaded.connect(_refresh)
@@ -82,20 +86,53 @@ func _refresh() -> void:
 	var region := Session.world.region(region_id)
 	if region == null:
 		return
-	_open = bool(region.entity_state(entity_id).get("open", false))
+	var st := region.entity_state(entity_id)
+	_open = bool(st.get("open", false))
 	Assets.apply_to_sprite(_sprite, open_asset if _open else closed_asset)
 	if _shape != null:
 		_shape.set_deferred("disabled", _open)
 	_interact.prompt_key = prompt_close_key if _open else prompt_open_key
+	_interact.on_activate = Callable()
+	_interact.secondary_key = ""
+	var s := Build.entity_structure(region, entity_id)
+	if not s.is_empty():
+		_broken = bool(st.get("broken", false))
+		_hp_frac = Build.entity_hp(region, entity_id) / maxf(1.0, float(s.get("hp", 1)))
+		var cost := Items.describe(s.get("repair", {}))
+		if _broken:
+			_interact.prompt_key = "PROMPT_REPAIR_BROKEN"
+			_interact.prompt_args = [cost]
+			_interact.on_activate = func() -> void: Session.request_entity_action(entity_id, "repair")
+			_sprite.self_modulate = Color(0.75, 0.62, 0.55)
+		else:
+			_sprite.self_modulate = Color.WHITE
+			if _hp_frac < 1.0:
+				_interact.secondary_key = "PROMPT_REPAIR"
+				_interact.secondary_args = [cost]
+		queue_redraw()
 
 
 func _on_entity_changed(rid: String, eid: String, _state: Dictionary, cause: String) -> void:
 	if rid != region_id or eid != entity_id:
 		return
 	_refresh()
+	if cause == "broken":
+		Audio.play("sfx.struct_break", global_position)
+	elif cause == "damaged":
+		Audio.play("sfx.struct_hit", global_position)
+	elif cause == "repaired":
+		Audio.play("sfx.build_hammer", global_position)
 	if cause == "action":
 		Audio.play("sfx.door_open" if _open else "sfx.door_close", global_position)
 
 
 func is_open() -> bool:
 	return _open
+
+
+func _draw() -> void:
+	if _hp_frac >= 1.0 and not _broken:
+		return
+	var at := Vector2(-30, -blocker_size.y - 46)
+	draw_rect(Rect2(at, Vector2(60, 6)).grow(2), Color(0.06, 0.05, 0.04, 0.8))
+	draw_rect(Rect2(at, Vector2(60 * _hp_frac, 6)), Color("#B5543A") if _hp_frac < 0.35 else Color("#C9A23A"))

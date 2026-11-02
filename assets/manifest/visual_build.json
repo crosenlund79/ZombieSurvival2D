@@ -1,0 +1,468 @@
+{
+	"kind": "visual",
+	"category": "build",
+	"assets": [
+		{
+			"id": "build.barricade_wood",
+			"name": "Barricade - wood",
+			"template": "res://assets/templates/world/build/template_barricade_wood.png",
+			"display_size": [
+				64,
+				44
+			],
+			"source_size": [
+				128,
+				88
+			],
+			"pivot": [
+				0.5,
+				0.93
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_build.py) - replace with tablet art."
+		},
+		{
+			"id": "build.wall_wood",
+			"name": "Bunker wall - wood",
+			"template": "res://assets/templates/world/build/template_wall_wood.png",
+			"display_size": [
+				64,
+				84
+			],
+			"source_size": [
+				128,
+				168
+			],
+			"pivot": [
+				0.5,
+				0.96
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_build.py) - replace with tablet art."
+		},
+		{
+			"id": "build.barricade_metal",
+			"name": "Barricade - metal",
+			"template": "res://assets/templates/world/build/template_barricade_metal.png",
+			"display_size": [
+				64,
+				44
+			],
+			"source_size": [
+				128,
+				88
+			],
+			"pivot": [
+				0.5,
+				0.93
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_build.py) - replace with tablet art."
+		},
+		{
+			"id": "build.wall_metal",
+			"name": "Bunker wall - metal",
+			"template": "res://assets/templates/world/build/template_wall_metal.png",
+			"display_size": [
+				64,
+				84
+			],
+			"source_size": [
+				128,
+				168
+			],
+			"pivot": [
+				0.5,
+				0.96
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_build.py) - replace with tablet art."
+		},
+		{
+			"id": "build.barricade_concrete",
+			"name": "Barricade - concrete",
+			"template": "res://assets/templates/world/build/template_barricade_concrete.png",
+			"display_size": [
+				64,
+				44
+			],
+			"source_size": [
+				128,
+				88
+			],
+			"pivot": [
+				0.5,
+				0.93
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_build.py) - replace with tablet art."
+		},
+		{
+			"id": "build.wall_concrete",
+			"name": "Bunker wall - concrete",
+			"template": "res://assets/templates/world/build/template_wall_concrete.png",
+			"display_size": [
+				64,
+				84
+			],
+			"source_size": [
+				128,
+				168
+			],
+			"pivot": [
+				0.5,
+				0.96
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_build.py) - replace with tablet art."
+		},
+		{
+			"id": "build.door_closed",
+			"name": "Reinforced door - closed",
+			"template": "res://assets/templates/world/build/template_door_closed.png",
+			"display_size": [
+				64,
+				84
+			],
+			"source_size": [
+				128,
+				168
+			],
+			"pivot": [
+				0.5,
+				0.96
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_build.py) - replace with tablet art."
+		},
+		{
+			"id": "build.door_open",
+			"name": "Reinforced door - open",
+			"template": "res://assets/templates/world/build/template_door_open.png",
+			"display_size": [
+				64,
+				84
+			],
+			"source_size": [
+				128,
+				168
+			],
+			"pivot": [
+				0.5,
+				0.96
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_build.py) - replace with tablet art."
+		},
+		{
+			"id": "build.spike_trap",
+			"name": "Spike trap",
+			"template": "res://assets/templates/world/build/template_spike_trap.png",
+			"display_size": [
+				60,
+				44
+			],
+			"source_size": [
+				120,
+				88
+			],
+			"pivot": [
+				0.5,
+				0.91
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_build.py) - replace with tablet art."
+		},
+		{
+			"id": "build.spike_trap_worn",
+			"name": "Spike trap - worn",
+			"template": "res://assets/templates/world/build/template_spike_trap_worn.png",
+			"display_size": [
+				60,
+				44
+			],
+			"source_size": [
+				120,
+				88
+			],
+			"pivot": [
+				0.5,
+				0.91
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_build.py) - replace with tablet art."
+		},
+		{
+			"id": "build.crate",
+			"name": "Storage crate",
+			"template": "res://assets/templates/world/build/template_crate.png",
+			"display_size": [
+				52,
+				46
+			],
+			"source_size": [
+				104,
+				92
+			],
+			"pivot": [
+				0.5,
+				0.93
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_build.py) - replace with tablet art."
+		},
+		{
+			"id": "build.workbench",
+			"name": "Workbench",
+			"template": "res://assets/templates/world/build/template_workbench.png",
+			"display_size": [
+				90,
+				66
+			],
+			"source_size": [
+				180,
+				132
+			],
+			"pivot": [
+				0.5,
+				0.94
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_build.py) - replace with tablet art."
+		},
+		{
+			"id": "build.planter_empty",
+			"name": "Hydroponic planter - empty",
+			"template": "res://assets/templates/world/build/template_planter_empty.png",
+			"display_size": [
+				90,
+				60
+			],
+			"source_size": [
+				180,
+				120
+			],
+			"pivot": [
+				0.5,
+				0.93
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_build.py) - replace with tablet art."
+		},
+		{
+			"id": "build.planter_growing",
+			"name": "Hydroponic planter - growing",
+			"template": "res://assets/templates/world/build/template_planter_growing.png",
+			"display_size": [
+				90,
+				60
+			],
+			"source_size": [
+				180,
+				120
+			],
+			"pivot": [
+				0.5,
+				0.93
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_build.py) - replace with tablet art."
+		},
+		{
+			"id": "build.planter_ripe",
+			"name": "Hydroponic planter - ripe",
+			"template": "res://assets/templates/world/build/template_planter_ripe.png",
+			"display_size": [
+				90,
+				60
+			],
+			"source_size": [
+				180,
+				120
+			],
+			"pivot": [
+				0.5,
+				0.93
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_build.py) - replace with tablet art."
+		},
+		{
+			"id": "build.rain_collector",
+			"name": "Rain collector",
+			"template": "res://assets/templates/world/build/template_rain_collector.png",
+			"display_size": [
+				56,
+				80
+			],
+			"source_size": [
+				112,
+				160
+			],
+			"pivot": [
+				0.5,
+				0.95
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_build.py) - replace with tablet art."
+		},
+		{
+			"id": "build.rain_collector_full",
+			"name": "Rain collector - water ready",
+			"template": "res://assets/templates/world/build/template_rain_collector_full.png",
+			"display_size": [
+				56,
+				80
+			],
+			"source_size": [
+				112,
+				160
+			],
+			"pivot": [
+				0.5,
+				0.95
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_build.py) - replace with tablet art."
+		},
+		{
+			"id": "build.pile",
+			"name": "Dropped items",
+			"template": "res://assets/templates/world/build/template_pile.png",
+			"display_size": [
+				40,
+				28
+			],
+			"source_size": [
+				80,
+				56
+			],
+			"pivot": [
+				0.5,
+				0.9
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_build.py) - replace with tablet art."
+		},
+		{
+			"id": "world.hatch_steel_closed",
+			"name": "Steel floor hatch - closed",
+			"template": "res://assets/templates/world/shelter/template_hatch_steel_closed.png",
+			"display_size": [
+				140,
+				110
+			],
+			"source_size": [
+				280,
+				220
+			],
+			"pivot": [
+				0.5,
+				0.545
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_build.py) - replace with tablet art."
+		},
+		{
+			"id": "world.hatch_steel_open",
+			"name": "Steel floor hatch - open",
+			"template": "res://assets/templates/world/shelter/template_hatch_steel_open.png",
+			"display_size": [
+				140,
+				140
+			],
+			"source_size": [
+				280,
+				280
+			],
+			"pivot": [
+				0.5,
+				0.643
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_build.py) - replace with tablet art."
+		},
+		{
+			"id": "prop.tractor",
+			"name": "Rusting tractor (scrap metal)",
+			"template": "res://assets/templates/props/template_tractor.png",
+			"display_size": [
+				200,
+				130
+			],
+			"source_size": [
+				400,
+				260
+			],
+			"pivot": [
+				0.5,
+				0.95
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_build.py) - replace with tablet art."
+		}
+	]
+}

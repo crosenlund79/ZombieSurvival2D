@@ -88,12 +88,14 @@ func in_grid(c: Vector2i) -> bool:
 	return c.x >= 0 and c.y >= 0 and c.x < w and c.y < h
 
 
-## Dynamic blockers for a region: standing trees and closed doors (cell indices).
+## Dynamic blockers for a region: standing trees, closed doors and solid
+## player-built structures (cell indices).
 static func dynamic_blocked(world: WorldState, region_id: String, grid: NavGrid) -> Dictionary:
 	var out := {}
 	var r := world.region(region_id)
 	if r == null:
 		return out
+	var rects: Array = Build.blocking_rects(world, region_id)
 	for eid in Content.entity_ids(r.def_id):
 		var d := r.entity_def(eid)
 		var t := str(d.get("type", ""))
@@ -104,7 +106,10 @@ static func dynamic_blocked(world: WorldState, region_id: String, grid: NavGrid)
 			var bs: Array = d["blocker"]
 			rect = Rect2(Content.entity_position(d) + Vector2(-float(bs[0]) * 0.5, -float(bs[1])), Vector2(float(bs[0]), float(bs[1])))
 		if rect.has_area():
-			var rr := rect.grow(AGENT_RADIUS)
+			rects.append(rect)
+	for rect2 in rects:
+		if true:
+			var rr := (rect2 as Rect2).grow(AGENT_RADIUS)
 			var c0 := grid.to_cell(rr.position)
 			var c1 := grid.to_cell(rr.end)
 			for y in range(c0.y, c1.y + 1):

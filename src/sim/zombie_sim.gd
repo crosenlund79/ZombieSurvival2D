@@ -113,6 +113,7 @@ static func _tick(world: WorldState) -> Array:
 	_decay(world, DT)
 	_escalate(world, results)
 	var budget := [int(c("path_budget_per_tick", 3))]
+	_traps(world, results)
 	var dyn_cache := {}
 	for z in world.zombies.values().duplicate():
 		if not dyn_cache.has(z.region_id):
@@ -131,7 +132,7 @@ static func _process_noise(world: WorldState) -> void:
 	var th := world.threat
 	if th.queue.is_empty():
 		return
-	var mult := float(c("hearing_multiplier", 1.0))
+	var mult := float(c("hearing_multiplier", 1.0)) * EnvSim.hearing_scale(world)
 	for ev in th.queue:
 		var key := ThreatState.zone_key(ev["region_id"], ev["position"])
 		th.zones[key] = float(th.zones.get(key, 0.0)) + float(ev["attention"])
@@ -251,6 +252,16 @@ static func _update(world: WorldState, z: ZombieState, grid: NavGrid, dyn: Dicti
 				z.ai = ZombieState.AI.CHASE if z.target_player != "" else ZombieState.AI.INVESTIGATE
 			return
 		ZombieState.AI.WINDUP:
+			if z.target_struct != "":
+				z.timer -= DT
+				if z.timer <= 0.0:
+					var rect := Build.target_rect(world, z.region_id, z.target_struct)
+					if rect.has_area() and Build.edge_distance(rect, z.position) <= Build.ATTACK_GAP + 12.0:
+						results.append(Build.damage_target(world, z.region_id, z.target_struct, float(c("structure_damage", 14))))
+					z.attack_cooldown = float(c("attack_cooldown", 1.3))
+					z.ai = ZombieState.AI.RECOVER
+					z.timer = 0.35
+				return
 			var tp := _target(world, z)
 			if tp != null:
 				z.facing = (tp.position - z.position).normalized()
@@ -278,6 +289,11 @@ static func _update(world: WorldState, z: ZombieState, grid: NavGrid, dyn: Dicti
 		z.lost_sight = 0.0
 		z.ai = ZombieState.AI.CHASE
 		z.leaving = false
+	if seen != null:
+		z.target_struct = ""
+	if z.target_struct != "":
+		_breach(world, z, grid, dyn)
+		return
 	match z.ai:
 		ZombieState.AI.CHASE:
 			var tp := _target(world, z)
@@ -366,7 +382,7 @@ static func _target(world: WorldState, z: ZombieState) -> PlayerState:
 static func _look(world: WorldState, z: ZombieState, grid: NavGrid, dyn: Dictionary) -> PlayerState:
 	var best: PlayerState = null
 	var best_d := INF
-	var sight := float(c("sight_range", 300))
+	var sight := float(c("sight_range", 300)) * EnvSim.sight_scale(world)
 	var omni := float(c("omni_sense_range", 110))
 	var cos_half := cos(deg_to_rad(float(c("sight_cone_degrees", 140)) * 0.5))
 	for p in world.online_players():
@@ -401,7 +417,13 @@ static func _move(world: WorldState, z: ZombieState, grid: NavGrid, dyn: Diction
 			z.path = grid.find_path(z.position, z.goal, dyn)
 			z.path_goal = z.goal
 			if z.path.is_empty():
-				z.goal = z.position
+				# No way through: something built is in the way. Hunting or
+				# investigating zombies break through it; wanderers give up.
+				if z.ai in [ZombieState.AI.CHASE, ZombieState.AI.INVESTIGATE]:
+					z.target_struct = Build.breach_target(world, z.region_id, z.position, z.goal)
+					z.stuck = 0.0
+				if z.target_struct == "":
+					z.goal = z.position
 				return
 		while not z.path.is_empty() and z.position.distance_to(z.path[0]) < 10.0:
 			z.path.pop_front()
@@ -422,6 +444,8 @@ static func _move(world: WorldState, z: ZombieState, grid: NavGrid, dyn: Diction
 		var dd: float = away.length()
 		if dd < spacing and dd > 0.01:
 			sep += away / dd * (spacing - dd) / spacing
+	if z.trap_time > 0.0:
+		speed *= _trap_slow()
 	var v := (dir + sep * 1.2).normalized() * speed * DT
 	z.facing = z.facing.lerp(dir, 0.35).normalized()
 	var np := z.position + v
@@ -431,6 +455,83 @@ static func _move(world: WorldState, z: ZombieState, grid: NavGrid, dyn: Diction
 		z.position += Vector2(v.x, 0)
 	elif not grid.is_blocked(grid.to_cell(z.position + Vector2(0, v.y)), dyn):
 		z.position += Vector2(0, v.y)
+
+
+## Walks up to the structure in the way and hits it until it breaks (or the
+## zombie notices a player, or the structure stops blocking).
+static func _breach(world: WorldState, z: ZombieState, grid: NavGrid, dyn: Dictionary) -> void:
+	var rect := Build.target_rect(world, z.region_id, z.target_struct)
+	if not rect.has_area():
+		z.target_struct = ""
+		z.path.clear()
+		return
+	var d := Build.edge_distance(rect, z.position)
+	if d <= Build.ATTACK_GAP:
+		z.stuck = 0.0
+		if z.attack_cooldown <= 0.0:
+			z.ai = ZombieState.AI.WINDUP
+			z.timer = float(c("attack_windup", 0.6))
+			z.facing = (rect.get_center() - z.position).normalized()
+		return
+	var target := Vector2(clampf(z.position.x, rect.position.x, rect.end.x), clampf(z.position.y, rect.position.y, rect.end.y))
+	var before := z.position
+	var dir := (target - z.position).normalized()
+	var v := dir * float(c("speed_investigate", 62)) * DT
+	z.facing = z.facing.lerp(dir, 0.35).normalized()
+	for step in [v, Vector2(v.x, 0), Vector2(0, v.y)]:
+		if not grid.is_blocked(grid.to_cell(z.position + step), dyn):
+			z.position += step
+			break
+	if before.distance_to(z.position) < 0.2:
+		z.stuck += DT
+		if z.stuck > 2.0:
+			# Cannot get at it from here: forget it and look around.
+			z.target_struct = ""
+			z.stuck = 0.0
+			z.ai = ZombieState.AI.WANDER
+			z.goal = z.position
+
+
+## Spike traps hurt and slow zombies standing on them, and wear out doing so.
+static func _traps(world: WorldState, results: Array) -> void:
+	var by_region := {}
+	for rid in world.regions:
+		var r: RegionState = world.regions[rid]
+		for oid in r.objects:
+			var o: Dictionary = r.objects[oid]
+			if Build.def(str(o.get("def", ""))).has("trap") and Build.is_built(o) and float(o.get("hp", 0)) > 0.0:
+				if not by_region.has(rid):
+					by_region[rid] = []
+				by_region[rid].append(oid)
+	for z in world.zombies.values():
+		if z.is_dead():
+			continue
+		var on := ""
+		if by_region.has(z.region_id):
+			var r2: RegionState = world.regions[z.region_id]
+			for oid2 in by_region[z.region_id]:
+				if Build.footprint(r2, r2.objects[oid2]).has_point(z.position):
+					on = oid2
+					break
+		if on == "":
+			z.trap_time = 0.0
+			continue
+		z.trap_time += DT
+		if z.trap_time < 0.5:
+			continue
+		z.trap_time = 0.01
+		var reg: RegionState = world.regions[z.region_id]
+		var o2: Dictionary = reg.objects[on]
+		var trap: Dictionary = Build.def(str(o2["def"]))["trap"]
+		var hit := damage_zombie(world, z, float(trap.get("damage_per_second", 16)) * 0.5, null, Vector2.ZERO)
+		o2["hp"] = maxf(0.0, float(o2.get("hp", 0)) - float(trap.get("wear_per_second", 3)) * 0.5)
+		hit["objects"] = [[z.region_id, on]]
+		hit["events"].append({"kind": "trap_hit", "region_id": z.region_id, "oid": on, "x": z.position.x, "y": z.position.y})
+		results.append(hit)
+
+
+static func _trap_slow() -> float:
+	return float(Build.def("spike_trap").get("trap", {}).get("slow", 0.45))
 
 
 # ======================================================================
@@ -464,14 +565,16 @@ static func damage_zombie(world: WorldState, z: ZombieState, amount: float, atta
 	else:
 		z.ai = ZombieState.AI.STAGGER
 		z.timer = float(c("stagger_time", 0.35))
-		z.target_player = attacker.player_id
-		z.last_known = attacker.position
+		if attacker != null:
+			z.target_player = attacker.player_id
+			z.last_known = attacker.position
+			z.target_struct = ""
 		var grid := NavGrid.for_def(world.region(z.region_id).def_id)
 		var np := z.position + knock
 		if not grid.is_blocked(grid.to_cell(np), {}):
 			z.position = np
 	return _event_result({"kind": "zombie_hit", "zombie_id": z.zombie_id, "amount": amount,
-		"player_id": attacker.player_id, "killed": killed})
+		"player_id": attacker.player_id if attacker != null else "", "killed": killed})
 
 
 static func _event_result(ev: Dictionary) -> Dictionary:

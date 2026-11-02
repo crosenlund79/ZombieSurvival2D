@@ -18,9 +18,13 @@ extends RefCounted
 ## 3 = iteration 003: world.zombies (persistent base population only:
 ## {id: {region_id, position, health}}), world.next_zombie, player health /
 ## hydration / weapon. Noise, attention and horde reinforcements are never saved.
+## 4 = iterations 006-009: region objects (built structures, ground piles),
+## world.next_uid, world.env (weather), world.meta (threat heat, defence
+## event, discoveries, unlocks), world.npcs (survivors), bunker gear, player
+## hunger / gear / equipped. Every new field is optional with a safe default.
 ## World identity (world) and player identity (players) are separate blocks.
 
-const SCHEMA_VERSION := 3
+const SCHEMA_VERSION := 4
 const GAME_ID := "Aftergrowth"
 
 ## Migration extension point: from_version -> Callable(Dictionary) -> Dictionary
@@ -28,7 +32,25 @@ const GAME_ID := "Aftergrowth"
 static var MIGRATIONS := {
 	1: SaveCodec._migrate_1_to_2,
 	2: SaveCodec._migrate_2_to_3,
+	3: SaveCodec._migrate_3_to_4,
 }
+
+
+## 3 -> 4: a carried club (iteration 003 "weapon") becomes a gear item that is
+## equipped in the hand; everything else new starts empty.
+static func _migrate_3_to_4(d: Dictionary) -> Dictionary:
+	var next := int(d["world"].get("next_uid", 1))
+	for pid in d.get("players", {}):
+		var p: Dictionary = d["players"][pid]
+		if str(p.get("weapon", "")) != "" and not p.has("gear"):
+			var uid := "g%d" % next
+			next += 1
+			p["gear"] = [{"uid": uid, "item": str(p["weapon"]), "cond": float(Items.info(str(p["weapon"])).get("durability", 100))}]
+			p["equipped"] = {"hand": uid}
+		p["weapon"] = ""
+	d["world"]["next_uid"] = next
+	d["schema_version"] = 4
+	return d
 
 
 ## 2 -> 3: no zombies yet (the host tops up the base population on start);
@@ -80,6 +102,10 @@ static func encode(world: WorldState) -> Dictionary:
 			"bunkers": bunkers,
 			"zombies": zombies,
 			"next_zombie": world.next_zombie,
+			"next_uid": world.next_uid,
+			"env": world.env.duplicate(true),
+			"meta": world.meta.duplicate(true),
+			"npcs": NpcState.encode_all(world),
 		},
 		"players": players,
 	}
@@ -182,6 +208,12 @@ static func decode(d: Dictionary) -> Dictionary:
 			p.position = Content.spawn_point(p.region_id, 0)
 		w.players[pid] = p
 	w.next_zombie = int(wd.get("next_zombie", 0))
+	w.next_uid = maxi(1, int(wd.get("next_uid", 1)))
+	if wd.get("env") is Dictionary:
+		w.env = (wd["env"] as Dictionary).duplicate(true)
+	if wd.get("meta") is Dictionary:
+		w.meta = (wd["meta"] as Dictionary).duplicate(true)
+	NpcState.decode_all(w, wd.get("npcs", {}), warnings)
 	var zs: Dictionary = wd.get("zombies", {})
 	for zid in zs:
 		var z := ZombieState.from_dict(str(zid), zs[zid])

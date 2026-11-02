@@ -1,0 +1,15 @@
+{
+	"_comment": "Workbench recipes (iteration 007). EXPLORING prototype values. 'in' is paid when crafting starts (your bag first, then shelter storage when the bench is in the bunker); 'out' is collected from the bench when done. 'requires' names an unlock (e.g. from the workshop manual).",
+	"recipes": {
+		"club": {"in": {"wood": 3}, "out": {"club": 1}, "seconds": 4},
+		"hatchet": {"in": {"wood": 2, "scrap_metal": 1}, "out": {"hatchet": 1}, "seconds": 6},
+		"machete": {"in": {"scrap_metal": 3, "wood": 1}, "out": {"machete": 1}, "seconds": 10},
+		"felling_axe": {"in": {"scrap_metal": 3, "wood": 2}, "out": {"felling_axe": 1}, "seconds": 12, "requires": "felling_axe"},
+		"padded_jacket": {"in": {"cloth": 4, "scrap_metal": 1}, "out": {"padded_jacket": 1}, "seconds": 10},
+		"bandage": {"in": {"cloth": 2}, "out": {"bandage": 2}, "seconds": 3},
+		"timber_frame": {"in": {"wood": 4}, "out": {"timber_frame": 1}, "seconds": 4},
+		"spike_kit": {"in": {"wood": 3, "scrap_metal": 1}, "out": {"spike_kit": 1}, "seconds": 5},
+		"grow_light": {"in": {"electrical_parts": 2, "scrap_metal": 1}, "out": {"grow_light": 1}, "seconds": 8}
+	},
+	"order": ["bandage", "club", "hatchet", "machete", "felling_axe", "padded_jacket", "timber_frame", "spike_kit", "grow_light"]
+}

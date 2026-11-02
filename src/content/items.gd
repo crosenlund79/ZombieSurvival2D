@@ -61,3 +61,30 @@ static func move(from: Dictionary, to: Dictionary, item: String, qty: int, to_li
 		from.erase(item)
 	to[item] = amount(to, item) + n
 	return n
+
+
+static func info(item: String) -> Dictionary:
+	return data().get("items", {}).get(item, {})
+
+
+static func is_stack(item: String) -> bool:
+	return bool(info(item).get("stack", true))
+
+
+static func desc_key(item: String) -> String:
+	return str(info(item).get("desc_key", ""))
+
+
+static func bare_hands() -> Dictionary:
+	return data().get("bare_hands", {"damage": 12, "range": 54, "cooldown_ticks": 5, "chop": 1})
+
+
+## "2 Wood, 1 Scrap metal" for a {item: amount} dictionary.
+static func describe(bag: Dictionary) -> String:
+	var parts: Array[String] = []
+	var keys := bag.keys()
+	keys.sort()
+	for k in keys:
+		if int(bag[k]) > 0:
+			parts.append("%d %s" % [int(bag[k]), TranslationServer.translate(name_key(str(k)))])
+	return ", ".join(parts)

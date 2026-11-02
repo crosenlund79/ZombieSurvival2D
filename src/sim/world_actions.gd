@@ -43,11 +43,20 @@ static func request_interact(world: WorldState, player_id: String, entity_id: St
 			ZombieSim.make_noise(world, region.region_id, Content.entity_position(def), "door")
 			return _changed(region, entity_id, "action")
 		"weapon_rack":
-			if p.weapon == str(def.get("weapon", "club")):
-				return _fail("ACTION_ALREADY_ARMED")
-			p.weapon = str(def.get("weapon", "club"))
+			# One club per player from the rack (it never runs out).
+			var wid := str(def.get("weapon", "club"))
+			for g in p.gear:
+				if str(g.get("item", "")) == wid:
+					return _fail("ACTION_ALREADY_ARMED")
+			if Inv.free_slots(p) <= 0:
+				return _fail("ACTION_CARRY_FULL", [Items.carry_slots()])
+			var club := Inv.new_gear(world, wid)
+			p.gear.append(club)
+			if str(p.equipped.get("hand", "")) == "":
+				p.equipped["hand"] = club["uid"]
 			var wr := _ok()
 			wr["vitals"] = [p.player_id]
+			wr["players"] = [p.player_id]
 			wr["notice"] = {"key": "WEAPON_TAKEN", "args": []}
 			return wr
 		"shelter_site":
@@ -89,6 +98,8 @@ static func complete_construction(world: WorldState, region_id: String, eid: Str
 	var region := world.region(region_id)
 	if region != null and eid.begins_with("terrain:"):
 		return _complete_terrain(world, region, eid)
+	if region != null and eid.begins_with("object:"):
+		return Build.complete(world, region, eid.substr(7))
 	if region == null or not region.has_entity(eid):
 		return _fail("ACTION_UNKNOWN_OBJECT")
 	var state := region.entity_state(eid)
@@ -299,6 +310,10 @@ static func request_entity_action(world: WorldState, player_id: String, eid: Str
 	res["players"] = [p.player_id]
 	if b != null:
 		res["bunkers"] = [b.bunker_id]
+	if action == "repair" and def.has("structure"):
+		return Build.repair_entity(world, p, region, eid)
+	if action == "upgrade" and str(def.get("type", "")) == "shelter_site":
+		return _upgrade_hatch(world, p, region, eid, def)
 	match str(def.get("type", "")) + ":" + action:
 		"storage:store":
 			if Items.move(p.carried, store, arg, 9999) <= 0:
@@ -355,6 +370,36 @@ static func request_entity_action(world: WorldState, player_id: String, eid: Str
 			res["events"] = [{"kind": "drank", "player_id": p.player_id}]
 		_:
 			return _fail("ACTION_NOT_SUPPORTED")
+	return res
+
+
+## The shelter hatch can be upgraded (wood -> steel). A stronger hatch keeps
+## more bunker noise from reaching the surface (EventSim noise leak).
+static func _upgrade_hatch(world: WorldState, p: PlayerState, region: RegionState, eid: String, def: Dictionary) -> Dictionary:
+	var st := region.entity_state(eid)
+	if str(st.get("stage", "")) != "built":
+		return _fail("ACTION_NOT_AVAILABLE")
+	var ups: Dictionary = def.get("upgrades", {})
+	var cur := str(st.get("tier", "wood"))
+	var next := str(ups.get(cur, {}).get("to", ""))
+	if next == "":
+		return _fail("ACTION_ALREADY_DONE")
+	var cost: Dictionary = ups[cur].get("cost", {})
+	var bags := Inv.sources(world, p)
+	var short := Inv.missing(bags, cost)
+	if not short.is_empty():
+		return _fail("ACTION_NEED_MATERIALS", [Items.describe(short)])
+	var touched := Inv.uses_storage(p, cost)
+	Inv.pay(bags, cost)
+	region.set_fields(eid, {"tier": next})
+	ZombieSim.make_noise(world, region.region_id, Content.entity_position(def), "build")
+	var res := _changed(region, eid, "upgraded")
+	res["players"] = [p.player_id]
+	if touched:
+		res["bunkers"] = [world.bunker_for_region(region.region_id).bunker_id]
+	res["notice"] = {"key": "HATCH_UPGRADED", "args": []}
+	var pos := Content.entity_position(def)
+	res["events"] = [{"kind": "upgraded", "region_id": region.region_id, "eid": eid, "x": pos.x, "y": pos.y}]
 	return res
 
 
@@ -465,10 +510,10 @@ static func _complete_terrain(world: WorldState, region: RegionState, job: Strin
 
 # ------------------------------------------------------------------ combat
 
-const WEAPONS := {
-	"": {"damage": 12.0, "range": 54.0, "cooldown_ticks": 5},
-	"club": {"damage": 34.0, "range": 74.0, "cooldown_ticks": 6},
-}
+## Melee numbers of what the player holds (content/items.json; bare hands otherwise).
+static func weapon_stats(p: PlayerState) -> Dictionary:
+	var item := p.weapon
+	return Items.info(item) if item != "" else Items.bare_hands()
 const ARC_COS := 0.42  # ~65 degrees either side of the swing direction
 
 
@@ -478,7 +523,7 @@ static func request_attack(world: WorldState, player_id: String, aim: Vector2) -
 	var p: PlayerState = world.players.get(player_id, null)
 	if p == null or not p.online or p.dead:
 		return _fail("ACTION_DEAD")
-	var w: Dictionary = WEAPONS.get(p.weapon, WEAPONS[""])
+	var w: Dictionary = weapon_stats(p)
 	var key := player_id + ":attack"
 	if world.tick - int(world.cooldowns.get(key, -1000)) < int(w["cooldown_ticks"]):
 		return _fail("ACTION_TOO_FAST")
@@ -508,7 +553,21 @@ static func request_attack(world: WorldState, player_id: String, aim: Vector2) -
 	if best != null:
 		var hit := ZombieSim.damage_zombie(world, best, float(w["damage"]), p, aim * 16.0)
 		res["events"].append_array(hit["events"])
+		if wear_hand(p, 1.0):
+			res["players"] = [p.player_id]
+			res["vitals"] = [p.player_id]
 	return res
+
+
+## Uses up a little of the held tool's condition. Returns true when it changed
+## (the inventory must be republished). A broken item works like bare hands
+## until it is repaired at a workbench.
+static func wear_hand(p: PlayerState, amount: float) -> bool:
+	var g := p.equipped_gear("hand")
+	if g.is_empty() or float(g.get("cond", 0)) <= 0.0:
+		return false
+	g["cond"] = maxf(0.0, float(g["cond"]) - amount)
+	return true
 
 
 # ------------------------------------------------------------------ developer
@@ -549,7 +608,7 @@ static func is_plausible_move(from: Vector2, to: Vector2, dt_sec: float) -> bool
 
 static func _ok() -> Dictionary:
 	return {"ok": true, "reason": "", "reason_args": [], "changes": [], "bunkers": [], "players": [],
-		"transition": {}, "notice": {}, "events": [], "vitals": [], "terrain": []}
+		"transition": {}, "notice": {}, "events": [], "vitals": [], "terrain": [], "objects": []}
 
 
 static func _changed(region: RegionState, eid: String, cause: String) -> Dictionary:

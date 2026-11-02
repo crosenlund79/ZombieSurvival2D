@@ -126,6 +126,26 @@ func _run(line: String) -> void:
 			ku.pressed = false
 			Input.parse_input_event(ku)
 			await get_tree().create_timer(0.5).timeout
+		"build":
+			Session.request_build(a[0], Vector2(float(a[1]), float(a[2])))
+			await get_tree().create_timer(0.5).timeout
+		"obj":
+			Session.request_object(a[0], a[1], a[2] if a.size() > 2 else "")
+			await get_tree().create_timer(0.5).timeout
+		"build_ghost":
+			BuildMode.forced_pos = Vector2(float(a[1]), float(a[2]))
+			main.build_mode.start(a[0])
+			await get_tree().create_timer(0.3).timeout
+		"build_cancel":
+			main.build_mode.cancel()
+			BuildMode.forced_pos = Vector2.INF
+			await get_tree().create_timer(0.2).timeout
+		"build_menu":
+			if a.size() > 0 and a[0] == "off":
+				main.build_mode.close_menu()
+			else:
+				main.build_mode.open_menu()
+			await get_tree().create_timer(0.3).timeout
 		"panel_close":
 			MachinePanel.close_current()
 			await get_tree().create_timer(0.2).timeout
@@ -296,6 +316,21 @@ func _state() -> Dictionary:
 			if not rr.terrain.is_empty():
 				terrains[rid] = (rr.terrain.get("dug", {}) as Dictionary).keys()
 		s["terrains"] = terrains
+		var objs := {}
+		for rid2 in w.regions:
+			var r2: RegionState = w.regions[rid2]
+			if r2.objects.is_empty():
+				continue
+			var row := {}
+			for oid in r2.objects:
+				var o: Dictionary = r2.objects[oid]
+				row[oid] = {"def": o.get("def"), "tier": o.get("tier", 0), "hp": o.get("hp", 0), "stage": o.get("stage", "built"),
+					"x": o.get("x"), "y": o.get("y"), "open": o.get("open", false), "items": o.get("items", {}),
+					"stored": o.get("stored", 0), "crop": o.get("crop", ""), "water": o.get("water", 0)}
+			objs[rid2] = row
+		s["objects"] = objs
+		s["env"] = w.env
+		s["meta"] = w.meta
 		s["jobs"] = w.jobs.size()
 		var zs := []
 		for z in w.zombies.values():
@@ -312,6 +347,9 @@ func _state() -> Dictionary:
 		if me != null:
 			s["region"] = me.region_id
 			s["carried"] = me.carried
+			s["gear"] = me.gear
+			s["equipped"] = me.equipped
+			s["hunger"] = me.hunger
 			s["health"] = me.health
 			s["hydration"] = me.hydration
 			s["dead"] = me.dead
@@ -356,6 +394,9 @@ func _state() -> Dictionary:
 		for n in view.find_children("*", "LampView", true, false):
 			lamps[(n as LampView).entity_id] = (n as LampView)._powered
 		v["lamps"] = lamps
+		v["objects"] = view.object_count()
+		v["placing"] = BuildMode.placing
+		v["build_problem"] = main.build_mode.problem if BuildMode.placing != "" else ""
 		v["panel"] = MachinePanel.current.entity_id if MachinePanel.current != null and is_instance_valid(MachinePanel.current) else ""
 		var sensor := get_tree().get_first_node_in_group("local_sensor") as InteractionSensor
 		v["focused"] = sensor.focused.entity_id if sensor != null and sensor.focused != null else ""

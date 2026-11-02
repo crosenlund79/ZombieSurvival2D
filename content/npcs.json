@@ -1,0 +1,14 @@
+{
+	"_comment": "Recruitable survivors (iteration 009). 'wants' is what they need before they will come to your shelter. Tuning values are EXPLORING prototype values (seconds of game time, px/s).",
+	"npcs": {
+		"mara": {
+			"name": "Mara",
+			"desc_key": "NPC_MARA_DESC",
+			"region": "service_station",
+			"position": [1530, 505],
+			"wants": {"canned_food": 1, "water_clean": 1},
+			"art": "char.npc"
+		}
+	},
+	"tuning": {"travel_seconds": 60, "speed": 70, "work_seconds": 4}
+}

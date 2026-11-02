@@ -928,7 +928,136 @@ def scenario_infra_multi():
             i.kill()
 
 
-SCENARIOS = {"accept": scenario_accept, "infra_multi": scenario_infra_multi, "dig_multi": scenario_dig_multi, "danger_single": scenario_danger_single, "danger_multi": scenario_danger_multi, "settings": scenario_settings, "bunker_single": scenario_bunker_single, "bunker_multi": scenario_bunker_multi, "single": scenario_single, "multiplayer": scenario_multiplayer,
+
+def objs(state, region="homestead"):
+    return state.get("objects", {}).get(region, {})
+
+
+def obj_of(state, d, region="homestead"):
+    return {k: v for k, v in objs(state, region).items() if v["def"] == d}
+
+
+def send_both(a, b, line_a, line_b=None):
+    """Queue a command on two instances at the same moment (true concurrency)."""
+    with open(a.inbox, "a") as f: f.write(line_a + "\n")
+    with open(b.inbox, "a") as f: f.write((line_b or line_a) + "\n")
+    a.seq += 1; b.seq += 1
+    return a._wait(a.seq, 10), b._wait(b.seq, 10)
+
+
+def scenario_build_multi():
+    host = Instance("t_bhost2"); c = Instance("t_bclient2")
+    for i in (host, c):
+        i.wipe()
+    try:
+        host.start(); c.start()
+        host.cmd(f"host {PORT} new 66 Hosty"); host.cmd("dev peaceful 1")
+        r = c.cmd(f"join 127.0.0.1 {PORT} Cleo")
+        check("build: client joins", r["ok"], r["error"])
+        # Client gathers its own timber; host is granted materials (host-only dev command).
+        to_west_trees(c); c.cmd("walk_to 200 685"); chop(c); c.cmd("walk_to 380 945"); r = chop(c)
+        check("build: client chops timber", r["state"]["carried"].get("wood", 0) >= 6, r["state"]["carried"])
+        c_wood = r["state"]["carried"]["wood"]
+        r = c.cmd("dev grant wood:20")
+        check("build: dev grant refused for the client", r["state"]["carried"].get("wood", 0) == c_wood and any("DEV_HOST_ONLY" in n for n in r["state"]["notices"]), r["state"]["notices"][-2:])
+        host.cmd("dev grant wood:12"); host.cmd("dev grant scrap_metal:6"); host.cmd("dev grant cement:2")
+        host.cmd("walk_to 1150 960")
+        if not host.state()["entities"]["homestead.yard_gate"]["state"]["open"]:
+            host.cmd("press_interact")
+        host.cmd("walk_to 1150 760"); host.cmd("walk_to 1340 790")
+        c.cmd("walk_to 1150 960"); c.cmd("walk_to 1150 790"); c.cmd("walk_to 1400 790")
+        rh, rc = send_both(host, c, "build barricade 1360 700")
+        time.sleep(4.0)
+        sh, sc = host.state(), c.state()
+        bars = obj_of(sh, "barricade")
+        check("build: simultaneous placement on one spot -> one structure", len(bars) == 1, bars)
+        paid = (12 - sh["carried"].get("wood", 0)) + (c_wood - sc["carried"].get("wood", 0))
+        check("build: materials spent exactly once", paid == 3, paid)
+        check("build: both peers see it built", list(obj_of(sc, "barricade").values())[0]["stage"] == "built" and list(bars.values())[0]["stage"] == "built", (bars, obj_of(sc, "barricade")))
+        oid = list(bars.keys())[0]
+        r = host.cmd(f"obj {oid} upgrade")
+        time.sleep(0.4)
+        check("build: host upgrades to metal; client sees tier and condition", obj_of(c.state(), "barricade")[oid]["tier"] == 1 and obj_of(c.state(), "barricade")[oid]["hp"] == 260, obj_of(c.state(), "barricade"))
+        host.cmd("dev damage_structures 60")
+        time.sleep(0.4)
+        hp_c = obj_of(c.state(), "barricade")[oid]["hp"]
+        check("build: damage replicated", hp_c == 260 - (60 - 3), hp_c)
+        c.cmd("dev grant scrap_metal:1")
+        host.cmd("dev grant scrap_metal:0")
+        r = host.cmd(f"obj {oid} repair")
+        time.sleep(0.4)
+        check("build: repair restores condition on both peers", obj_of(c.state(), "barricade")[oid]["hp"] == 260 and obj_of(host.state(), "barricade")[oid]["hp"] == 260, obj_of(c.state(), "barricade"))
+        r = c.cmd("walk_to 1360 640", timeout=30)
+        st = c.state()
+        check("build: the barricade blocks the client's movement", st["me_y"] > 690, (st["me_x"], st["me_y"]))
+        c.cmd("walk_to 1300 860")
+        r = c.cmd("build crate 1260 820")
+        time.sleep(2.6)
+        crates = obj_of(host.state(), "crate")
+        check("build: client builds a crate; host sees it", len(crates) == 1 and list(crates.values())[0]["stage"] == "built", crates)
+        coid = list(crates.keys())[0]
+        host_wood = host.state()["carried"].get("wood", 0)
+        c_before = c.state()["carried"].get("wood", 0)
+        r = host.cmd(f"obj {coid} store wood")
+        time.sleep(0.3)
+        boxed = obj_of(c.state(), "crate")[coid]["items"].get("wood", 0)
+        check("build: host stores into the client's crate; client sees it", boxed == host_wood and boxed > 3, (boxed, host_wood))
+        c.cmd(f"obj {coid} take wood")
+        c.cmd(f"obj {coid} store wood") if False else None
+        st = c.state()
+        check("build: client takes it out (moved, not copied)", st["carried"].get("wood", 0) == c_before + boxed and obj_of(host.state(), "crate")[coid]["items"].get("wood", 0) == 0,
+              (st["carried"], obj_of(host.state(), "crate")[coid]["items"]))
+        r = c.cmd(f"obj {coid} store wood")
+        time.sleep(0.3)
+        boxed = obj_of(host.state(), "crate")[coid]["items"].get("wood", 0)
+        r = c.cmd(f"obj {coid} dismantle")
+        time.sleep(0.4)
+        sh = host.state()
+        piles = obj_of(sh, "pile")
+        check("build: dismantled crate leaves its contents on the ground", not obj_of(sh, "crate") and len(piles) == 1 and list(piles.values())[0]["items"].get("wood", 0) == boxed, piles)
+        check("build: dismantling refunds half the crate", c.state()["carried"].get("wood", 0) == 2, c.state()["carried"])
+        r = c.cmd(f"obj {list(piles.keys())[0]} pickup")
+        check("build: pile picked up (no loss, no duplication)", r["state"]["carried"].get("wood", 0) == boxed + 2 and not obj_of(host.state(), "pile"), r["state"]["carried"])
+        # Underground construction: shared storage pays; concurrent builds never overspend it.
+        host.cmd("walk_to 1150 760"); host.cmd("walk_to 1160 690")
+        if not host.state()["entities"]["homestead.farmhouse_door"]["state"]["open"]:
+            host.cmd("press_interact")
+        host.cmd("walk_to 1160 664 4"); host.cmd("press_interact")
+        host.cmd("walk_to 300 492"); host.cmd("press_interact"); host.cmd("wait 8.5"); host.cmd("press_interact")
+        host.cmd("walk_to 300 452 4"); r = host.cmd("press_interact")
+        check("build: host underground", r["state"]["region"] == L1, r["state"].get("region"))
+        go_inside(c); c.cmd("walk_to 300 452 4"); r = c.cmd("press_interact")
+        check("build: client underground too", r["state"]["region"] == L1, r["state"].get("region"))
+        host.cmd("walk_to 650 345 6")
+        host.cmd("dev grant wood:12")
+        for item in ("wood",):
+            host.cmd(f"entity_action storage store {item}")
+        stock = host.state()["bunkers"][SITE]["resources"].get("wood", 0)
+        x1, y1 = cell_xy(16, 14); x2, y2 = cell_xy(18, 15)
+        host.cmd(f"walk_to {x1} {y1 + 70} 8"); c.cmd(f"walk_to {x2} {y2 + 70} 8")
+        cw0 = c.state()["carried"].get("wood", 0); hw0 = host.state()["carried"].get("wood", 0)
+        rh, rc = send_both(host, c, f"build barricade {x1} {y1}", f"build barricade {x2} {y2}")
+        time.sleep(3.6)
+        sh = host.state()
+        walls = obj_of(sh, "barricade", L1)
+        check("build: both underground walls built from shared storage", len(walls) == 2 and all(v["stage"] == "built" for v in walls.values()), walls)
+        spent = (stock - sh["bunkers"][SITE]["resources"].get("wood", 0)) + (cw0 - c.state()["carried"].get("wood", 0)) + (hw0 - sh["carried"].get("wood", 0))
+        check("build: bags + shared storage paid exactly twice (bag first, then storage)", spent == 6, (stock, sh["bunkers"][SITE]["resources"], cw0, c.state()["carried"]))
+        check("build: client sees the walls", len(obj_of(c.state(), "barricade", L1)) == 2, obj_of(c.state(), "barricade", L1))
+        snap = host.state()
+        host.cmd("save"); host.quit()
+        wait_for(c, lambda s: not s["in_world"], timeout=12)
+        host.start(); host.cmd(f"host {PORT} continue Hosty"); host.cmd("dev peaceful 1")
+        r = c.cmd(f"join 127.0.0.1 {PORT} Cleo")
+        st = r["state"]
+        same = {k: (v["def"], v["tier"], v["hp"]) for k, v in objs(st).items() if v["def"] != "pile"} == {k: (v["def"], v["tier"], v["hp"]) for k, v in objs(snap).items() if v["def"] != "pile"}
+        check("build: structures, tiers and condition persist across a host restart", same and len(obj_of(st, "barricade", L1)) == 2, objs(st))
+    finally:
+        for i in (host, c):
+            i.kill()
+
+
+SCENARIOS = {"build_multi": scenario_build_multi, "accept": scenario_accept, "infra_multi": scenario_infra_multi, "dig_multi": scenario_dig_multi, "danger_single": scenario_danger_single, "danger_multi": scenario_danger_multi, "settings": scenario_settings, "bunker_single": scenario_bunker_single, "bunker_multi": scenario_bunker_multi, "single": scenario_single, "multiplayer": scenario_multiplayer,
              "netfail": scenario_connection_failure, "assets": scenario_assets}
 
 if __name__ == "__main__":

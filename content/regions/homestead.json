@@ -41,7 +41,14 @@
 			"blocker": [
 				104,
 				14
-			]
+			],
+			"structure": {
+				"hp": 150,
+				"armor": 2,
+				"repair": {
+					"wood": 2
+				}
+			}
 		},
 		{
 			"id": "homestead.farmhouse_door",
@@ -197,7 +204,8 @@
 			"prompt_key": "PROMPT_SEARCH_CAR",
 			"loot": {
 				"fuel": 2,
-				"water_dirty": 1
+				"water_dirty": 1,
+				"scrap_metal": 1
 			},
 			"restock_minutes": 15,
 			"initial": {
@@ -215,7 +223,8 @@
 			"prompt_key": "PROMPT_SEARCH_SHED",
 			"loot": {
 				"fuel": 1,
-				"water_dirty": 1
+				"water_dirty": 1,
+				"cement": 1
 			},
 			"restock_minutes": 20,
 			"initial": {
@@ -235,6 +244,23 @@
 				"water_dirty": 2
 			},
 			"restock_minutes": 4,
+			"initial": {
+				"looted_at": -1
+			}
+		},
+		{
+			"id": "homestead.tractor",
+			"type": "loot",
+			"position": [
+				1600,
+				1150
+			],
+			"interact_range": 90,
+			"prompt_key": "PROMPT_SALVAGE_TRACTOR",
+			"loot": {
+				"scrap_metal": 3
+			},
+			"restock_minutes": 20,
 			"initial": {
 				"looted_at": -1
 			}
@@ -437,6 +463,14 @@
 					1306
 				],
 				"label_key": "MAP_SIGN"
+			},
+			{
+				"kind": "point",
+				"position": [
+					1600,
+					1120
+				],
+				"label_key": "MAP_TRACTOR"
 			}
 		]
 	},
@@ -514,5 +548,13 @@
 				20
 			]
 		]
-	}
+	},
+	"build_zones": [
+		[
+			700,
+			400,
+			1140,
+			660
+		]
+	]
 }

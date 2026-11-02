@@ -1,0 +1,6 @@
+{
+	"_comment": "Hydroponic planter (iteration 007). EXPLORING prototype values, in seconds of game time.",
+	"grow_seconds": 150,
+	"tank_capacity": 3,
+	"yield": 3
+}

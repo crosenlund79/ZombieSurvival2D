@@ -13,6 +13,7 @@ var dev_overlay: DevOverlay
 var build_label: Label
 var settings_panel: SettingsPanel
 var map_panel: MapPanel
+var build_mode: BuildMode
 
 
 func _ready() -> void:
@@ -43,6 +44,9 @@ func _ready() -> void:
 	map_panel = MapPanel.new()
 	map_panel.hide()
 	ui.add_child(map_panel)
+	build_mode = BuildMode.new()
+	build_mode.main = self
+	ui.add_child(build_mode)
 	build_label = UITheme.small(BuildInfo.label(), 11)
 	build_label.set_anchors_preset(Control.PRESET_BOTTOM_RIGHT)
 	build_label.grow_horizontal = Control.GROW_DIRECTION_BEGIN
@@ -65,7 +69,7 @@ func _process(_delta: float) -> void:
 	var focus := get_viewport().gui_get_focus_owner()
 	PlayerAvatar.input_blocked = pause_menu.visible or settings_panel != null or menu.visible or map_panel.visible \
 		or (MachinePanel.current != null and is_instance_valid(MachinePanel.current)) \
-		or (focus is LineEdit)
+		or (focus is LineEdit) or (build_mode != null and build_mode.menu_open())
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -125,6 +129,8 @@ func build_region_view() -> void:
 
 func clear_region_view() -> void:
 	MachinePanel.close_current()
+	if build_mode != null:
+		build_mode.cancel()
 	if region_view != null and is_instance_valid(region_view):
 		world_layer.remove_child(region_view)
 		region_view.free()

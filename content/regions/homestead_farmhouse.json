@@ -54,6 +54,15 @@
 				"stage": "none",
 				"open": false,
 				"tier": "wood"
+			},
+			"upgrades": {
+				"wood": {
+					"to": "steel",
+					"cost": {
+						"scrap_metal": 4,
+						"cement": 1
+					}
+				}
 			}
 		},
 		{

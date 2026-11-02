@@ -43,7 +43,12 @@
 	"replenish_every": 60,
 	"path_budget_per_tick": 3,
 	"ai_catchup_ticks": 10,
+	"structure_damage": 14,
 	"noise": {
+		"build": {
+			"radius": 320,
+			"attention": 0.45
+		},
 		"chop": {
 			"radius": 460,
 			"attention": 1.0

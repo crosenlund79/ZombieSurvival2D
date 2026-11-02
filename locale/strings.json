@@ -934,5 +934,1101 @@
 	"DEV_THIRST": {
 		"da": "Gør tørstig",
 		"en": "Make thirsty"
+	},
+	"ITEM_WOOD_DESC": {
+		"da": "Tømmer fra fældede træer. Bruges til barrikader, støtter og møbler.",
+		"en": "Timber from felled trees. Builds barricades, supports and furniture."
+	},
+	"ITEM_SCRAP_METAL": {
+		"da": "Metalskrot",
+		"en": "Scrap metal"
+	},
+	"ITEM_SCRAP_METAL_DESC": {
+		"da": "Bjærget plade- og stangmetal. Giver stærkere forsvar og værktøj.",
+		"en": "Salvaged sheet and bar metal. Makes stronger defences and tools."
+	},
+	"ITEM_CEMENT": {
+		"da": "Cement",
+		"en": "Cement"
+	},
+	"ITEM_CEMENT_DESC": {
+		"da": "En sæk cement. Betonvægge og stållemmen kræver det.",
+		"en": "A bag of cement. Concrete walls and the steel hatch need it."
+	},
+	"ITEM_CLOTH": {
+		"da": "Stof",
+		"en": "Cloth"
+	},
+	"ITEM_CLOTH_DESC": {
+		"da": "Klude og gammelt tøj. Til forbindinger og polstring.",
+		"en": "Rags and old clothes. Bandages and padding."
+	},
+	"ITEM_ELECTRICAL": {
+		"da": "Elektriske dele",
+		"en": "Electrical parts"
+	},
+	"ITEM_ELECTRICAL_DESC": {
+		"da": "Ledning, kontakter og et par hele pærer.",
+		"en": "Wire, switches and a few working bulbs."
+	},
+	"ITEM_FUEL_DESC": {
+		"da": "En dunk brændstof. Driver generatoren.",
+		"en": "A can of fuel. Runs the generator."
+	},
+	"ITEM_WATER_DIRTY_DESC": {
+		"da": "Ikke til at drikke. Rens det i bunkeren.",
+		"en": "Unsafe to drink. Purify it underground."
+	},
+	"ITEM_WATER_CLEAN_DESC": {
+		"da": "Rent drikkevand. +40 vand.",
+		"en": "Safe drinking water. +40 water."
+	},
+	"ITEM_CANNED_FOOD": {
+		"da": "Dåsemad",
+		"en": "Canned food"
+	},
+	"ITEM_CANNED_FOOD_DESC": {
+		"da": "Bulet, men lukket. +40 mad.",
+		"en": "Dented but sealed. +40 food."
+	},
+	"ITEM_POTATO": {
+		"da": "Kartofler",
+		"en": "Potatoes"
+	},
+	"ITEM_POTATO_DESC": {
+		"da": "Dyrket under bunkerens lamper. +20 mad.",
+		"en": "Grown under the bunker's lamps. +20 food."
+	},
+	"ITEM_BANDAGE": {
+		"da": "Forbinding",
+		"en": "Bandage"
+	},
+	"ITEM_BANDAGE_DESC": {
+		"da": "Rene stofstrimler. Giver 35 helbred.",
+		"en": "Clean cloth strips. Restores 35 health."
+	},
+	"ITEM_TIMBER_FRAME": {
+		"da": "Tømmerramme",
+		"en": "Timber frame"
+	},
+	"ITEM_TIMBER_FRAME_DESC": {
+		"da": "En afstivet træramme. Bruges til forstærkede døre.",
+		"en": "A braced wooden frame. Needed for reinforced doors."
+	},
+	"ITEM_SPIKE_KIT": {
+		"da": "Pigsæt",
+		"en": "Spike kit"
+	},
+	"ITEM_SPIKE_KIT_DESC": {
+		"da": "Spidse pæle på en planke. Placeres som en pigfælde.",
+		"en": "Sharpened stakes on a board. Place it as a spike trap."
+	},
+	"ITEM_GROW_LIGHT": {
+		"da": "Vækstlampe",
+		"en": "Grow light"
+	},
+	"ITEM_GROW_LIGHT_DESC": {
+		"da": "En lampe, planter kan leve af. Bruges til et hydroponisk plantebed.",
+		"en": "A lamp that plants can live by. Needed for a hydroponic planter."
+	},
+	"ITEM_CLUB": {
+		"da": "Kølle",
+		"en": "Club"
+	},
+	"ITEM_CLUB_DESC": {
+		"da": "Et tungt stykke træ. 34 skade.",
+		"en": "A heavy length of wood. 34 damage."
+	},
+	"ITEM_MACHETE": {
+		"da": "Machete",
+		"en": "Machete"
+	},
+	"ITEM_MACHETE_DESC": {
+		"da": "Et langt blad slebet af skrot. 55 skade, længere rækkevidde.",
+		"en": "A long blade ground from scrap. 55 damage, longer reach."
+	},
+	"ITEM_HATCHET": {
+		"da": "Håndøkse",
+		"en": "Hatchet"
+	},
+	"ITEM_HATCHET_DESC": {
+		"da": "Fælder træer dobbelt så hurtigt. 28 skade.",
+		"en": "Chops trees twice as fast. 28 damage."
+	},
+	"ITEM_FELLING_AXE": {
+		"da": "Fældeøkse",
+		"en": "Felling axe"
+	},
+	"ITEM_FELLING_AXE_DESC": {
+		"da": "Fælder et træ i få hug og giver mere tømmer. 42 skade.",
+		"en": "Fells a tree in a few blows and yields more timber. 42 damage."
+	},
+	"ITEM_JACKET": {
+		"da": "Polstret jakke",
+		"en": "Padded jacket"
+	},
+	"ITEM_JACKET_DESC": {
+		"da": "Lag af stof og metalplader. Tager 35 % af zombiers slag.",
+		"en": "Layers of cloth and metal plates. Takes 35% off zombie hits."
+	},
+	"ITEM_CARBURETOR": {
+		"da": "Justeret karburator",
+		"en": "Tuned carburetor"
+	},
+	"ITEM_CARBURETOR_DESC": {
+		"da": "En omhyggeligt genopbygget karburator. Monter den på generatoren for at halvere brændstofforbruget.",
+		"en": "A carefully rebuilt carburetor. Fit it to the generator to halve its fuel use."
+	},
+	"ITEM_MANUAL": {
+		"da": "Værkstedshåndbog",
+		"en": "Workshop manual"
+	},
+	"ITEM_MANUAL_DESC": {
+		"da": "Slidte noter om værktøj. Læs den for at lære at lave en fældeøkse.",
+		"en": "Dog-eared notes on tools. Read it to learn to make a felling axe."
+	},
+	"BUILD_BARRICADE": {
+		"da": "Barrikade",
+		"en": "Barricade"
+	},
+	"BUILD_BARRICADE_DESC": {
+		"da": "Spærrer for zombier og mennesker. Kan opgraderes fra træ til metal til beton.",
+		"en": "Blocks zombies and people. Upgrade wood → metal → concrete."
+	},
+	"TIER_WOOD": {
+		"da": "træ",
+		"en": "wood"
+	},
+	"TIER_METAL": {
+		"da": "metal",
+		"en": "metal"
+	},
+	"TIER_CONCRETE": {
+		"da": "beton",
+		"en": "concrete"
+	},
+	"TIER_REINFORCED": {
+		"da": "forstærket",
+		"en": "reinforced"
+	},
+	"TIER_SPIKES": {
+		"da": "pigge",
+		"en": "spikes"
+	},
+	"TIER_HYDROPONIC": {
+		"da": "hydroponisk",
+		"en": "hydroponic"
+	},
+	"BUILD_DOOR": {
+		"da": "Forstærket dør",
+		"en": "Reinforced door"
+	},
+	"BUILD_DOOR_DESC": {
+		"da": "En dør i forsvaret. Zombier må slå den i stykker; folk kan åbne den.",
+		"en": "A door in your defences. Zombies have to break it; people can open it."
+	},
+	"BUILD_SPIKES": {
+		"da": "Pigfælde",
+		"en": "Spike trap"
+	},
+	"BUILD_SPIKES_DESC": {
+		"da": "Skader og sinker zombier, der går over den. Slides med brug; repareres med træ.",
+		"en": "Hurts and slows zombies that cross it. Wears out with use; repair with wood."
+	},
+	"BUILD_CRATE": {
+		"da": "Opbevaringskasse",
+		"en": "Storage crate"
+	},
+	"BUILD_CRATE_DESC": {
+		"da": "Rummer 20 ting, hvor du end sætter den.",
+		"en": "Holds 20 items wherever you put it."
+	},
+	"BUILD_WORKBENCH": {
+		"da": "Arbejdsbænk",
+		"en": "Workbench"
+	},
+	"BUILD_WORKBENCH_DESC": {
+		"da": "Lav værktøj, våben, dele og forsyninger. Reparér udstyr.",
+		"en": "Craft tools, weapons, parts and supplies. Repair gear."
+	},
+	"BUILD_PLANTER": {
+		"da": "Hydroponisk plantebed",
+		"en": "Hydroponic planter"
+	},
+	"BUILD_PLANTER_DESC": {
+		"da": "Dyrker kartofler af rent vand, mens bunkeren har strøm.",
+		"en": "Grows potatoes from clean water while the bunker has power."
+	},
+	"BUILD_RAIN_COLLECTOR": {
+		"da": "Regnvandsopsamler",
+		"en": "Rain collector"
+	},
+	"BUILD_RAIN_COLLECTOR_DESC": {
+		"da": "Fyldes med beskidt vand, hurtigt i regn. Står frit: zombier kan ødelægge den.",
+		"en": "Fills with dirty water, fast in rain. Exposed: zombies can wreck it."
+	},
+	"BUILD_SUPPORT": {
+		"da": "Tømmerstøtte (bunker)",
+		"en": "Timber support (bunker)"
+	},
+	"BUILD_SUPPORT_DESC": {
+		"da": "Lader dig grave længere omkring den. Betales fra tilflugtsrummets lager.",
+		"en": "Lets you dig further around it. Paid from shelter storage."
+	},
+	"PROMPT_SALVAGE_TRACTOR": {
+		"da": "Bjærg skrot fra traktoren",
+		"en": "Salvage scrap from the tractor"
+	},
+	"MAP_TRACTOR": {
+		"da": "Gammel traktor",
+		"en": "Old tractor"
+	},
+	"BUILD_MENU_TITLE": {
+		"da": "Byg",
+		"en": "Build"
+	},
+	"BUILD_MENU_HINT": {
+		"da": "Vælg noget at placere. Materialer tages fra din taske (og tilflugtsrummets lager under jorden).",
+		"en": "Pick something to place. Materials come from your bag (and shelter storage when underground)."
+	},
+	"BUILD_NOT_HERE_SHORT": {
+		"da": "ikke her",
+		"en": "not here"
+	},
+	"BUILD_MISSING_SHORT": {
+		"da": "mangler %s",
+		"en": "need %s"
+	},
+	"BUILD_OK": {
+		"da": "klar til at placere",
+		"en": "ready to place"
+	},
+	"BUILD_PLACING_HINT": {
+		"da": "Placerer %s — %s\n[Venstreklik / E] placér    [Højreklik / Esc] fortryd",
+		"en": "Placing %s — %s\n[Left click / E] place    [Right click / Esc] cancel"
+	},
+	"BUILD_NEED_MATERIALS": {
+		"da": "Du har ikke materialerne til det.",
+		"en": "You don't have the materials for that."
+	},
+	"BUILD_DISMANTLED": {
+		"da": "Taget ned. Fik tilbage: %s",
+		"en": "Dismantled. Recovered: %s"
+	},
+	"ACTION_NEED_MATERIALS": {
+		"da": "Mangler: %s",
+		"en": "Missing: %s"
+	},
+	"ACTION_BUILD_NOT_HERE": {
+		"da": "Det kan ikke bygges her.",
+		"en": "That can't be built here."
+	},
+	"ACTION_BUILD_OUTSIDE_ZONE": {
+		"da": "For langt hjemmefra til at bygge.",
+		"en": "Too far from home to build."
+	},
+	"ACTION_BUILD_OCCUPIED": {
+		"da": "Der står allerede noget i vejen.",
+		"en": "Something is already in the way."
+	},
+	"ACTION_BUILD_BLOCKS_ACCESS": {
+		"da": "Det ville spærre en dør, stige eller maskine.",
+		"en": "That would block a door, ladder or machine."
+	},
+	"ACTION_BUILD_PLAYER_IN_WAY": {
+		"da": "Der står nogen der.",
+		"en": "Someone is standing there."
+	},
+	"ACTION_BUILD_NEEDS_FLOOR": {
+		"da": "Kræver åbent, udgravet gulv.",
+		"en": "Needs open, dug floor."
+	},
+	"ACTION_BUILD_WOULD_TRAP": {
+		"da": "Det ville afskære en del af bunkeren.",
+		"en": "That would wall off part of the bunker."
+	},
+	"ACTION_NOT_DAMAGED": {
+		"da": "Den er ikke beskadiget.",
+		"en": "It isn't damaged."
+	},
+	"ACTION_NOT_RIPE": {
+		"da": "Intet at høste endnu.",
+		"en": "Nothing to harvest yet."
+	},
+	"PROMPT_REPAIR": {
+		"da": "Reparér (%s)",
+		"en": "Repair (%s)"
+	},
+	"PROMPT_REPAIR_BROKEN": {
+		"da": "Reparér den ødelagte låge (%s)",
+		"en": "Repair the broken gate (%s)"
+	},
+	"PROMPT_UPGRADE_HATCH": {
+		"da": "Opgradér til en stållem (%s)",
+		"en": "Upgrade to a steel hatch (%s)"
+	},
+	"HATCH_UPGRADED": {
+		"da": "Stållem monteret. Mindre støj når op til overfladen.",
+		"en": "Steel hatch fitted. Less noise will reach the surface."
+	},
+	"PROMPT_PICK_UP": {
+		"da": "Saml op",
+		"en": "Pick up"
+	},
+	"PROMPT_UNDER_CONSTRUCTION": {
+		"da": "%s (under opførelse)",
+		"en": "%s (being built)"
+	},
+	"PROMPT_OPEN_CRATE": {
+		"da": "Åbn kassen",
+		"en": "Open the crate"
+	},
+	"PROMPT_WORKBENCH": {
+		"da": "Brug arbejdsbænken",
+		"en": "Use the workbench"
+	},
+	"PROMPT_PLANTER": {
+		"da": "Pas plantebedet",
+		"en": "Tend the planter"
+	},
+	"PROMPT_COLLECTOR": {
+		"da": "Se til regnvandsopsamleren",
+		"en": "Check the rain collector"
+	},
+	"PROMPT_INSPECT": {
+		"da": "Undersøg %s",
+		"en": "Inspect %s"
+	},
+	"STRUCT_CONDITION": {
+		"da": "Tilstand %s / %s · %s · panser %s",
+		"en": "Condition %s / %s · %s · armour %s"
+	},
+	"STRUCT_BUILDING": {
+		"da": "Under opførelse…",
+		"en": "Being built…"
+	},
+	"STRUCT_CONTAINS": {
+		"da": "Indhold: %s (%s / %s)",
+		"en": "Contains: %s (%s / %s)"
+	},
+	"STRUCT_STORE": {
+		"da": "Læg %s %s i",
+		"en": "Put in %s %s"
+	},
+	"STRUCT_TAKE": {
+		"da": "Tag %s %s",
+		"en": "Take %s %s"
+	},
+	"STRUCT_COLLECTOR": {
+		"da": "Beskidt vand: %s / %s. Vejr: %s.",
+		"en": "Dirty water: %s / %s. Weather: %s."
+	},
+	"STRUCT_COLLECT": {
+		"da": "Tag vandet",
+		"en": "Collect the water"
+	},
+	"STRUCT_WATER_PLANTER": {
+		"da": "Tilsæt 1 rent vand (%s til rådighed)",
+		"en": "Add 1 clean water (%s available)"
+	},
+	"STRUCT_HARVEST": {
+		"da": "Høst",
+		"en": "Harvest"
+	},
+	"STRUCT_REPAIR": {
+		"da": "Reparér (%s)",
+		"en": "Repair (%s)"
+	},
+	"STRUCT_UPGRADE": {
+		"da": "Opgradér til %s (%s)",
+		"en": "Upgrade to %s (%s)"
+	},
+	"STRUCT_DISMANTLE": {
+		"da": "Tag ned (få halvdelen tilbage)",
+		"en": "Dismantle (get half back)"
+	},
+	"STRUCT_CANCEL_BUILD": {
+		"da": "Fortryd (få alt tilbage)",
+		"en": "Cancel (get everything back)"
+	},
+	"WEATHER_RAIN": {
+		"da": "regn",
+		"en": "rain"
+	},
+	"WEATHER_CLEAR": {
+		"da": "klart",
+		"en": "clear"
+	},
+	"PLANTER_EMPTY": {
+		"da": "Tomt: tilsæt rent vand for at starte en afgrøde (tank %s / %s).",
+		"en": "Empty: add clean water to start a crop (tank %s / %s)."
+	},
+	"PLANTER_GROWING": {
+		"da": "Vokser: %s %% (tank %s / %s)",
+		"en": "Growing: %s %% (tank %s / %s)"
+	},
+	"PLANTER_NO_POWER": {
+		"da": "Står stille på %s %% — ingen strøm til vækstlampen (tank %s / %s)",
+		"en": "Paused at %s %% — no power for the grow light (tank %s / %s)"
+	},
+	"PLANTER_RIPE": {
+		"da": "Moden. Høst kartoflerne. (%s %%, tank %s / %s)",
+		"en": "Ripe. Harvest the potatoes. (%s %%, tank %s / %s)"
+	},
+	"HARVESTED": {
+		"da": "Høstede %s kartofler.",
+		"en": "Harvested %s potatoes."
+	},
+	"INV_TITLE": {
+		"da": "Oppakning — %s / %s pladser",
+		"en": "Inventory — %s / %s slots"
+	},
+	"INV_EQUIPPED": {
+		"da": "Udrustet",
+		"en": "Equipped"
+	},
+	"INV_SLOT_HAND": {
+		"da": "I hånden: %s",
+		"en": "In hand: %s"
+	},
+	"INV_SLOT_BODY": {
+		"da": "Påklædning: %s",
+		"en": "Worn: %s"
+	},
+	"INV_EMPTY_SLOT": {
+		"da": "intet",
+		"en": "nothing"
+	},
+	"INV_GEAR": {
+		"da": "Udstyr",
+		"en": "Gear"
+	},
+	"INV_ITEMS": {
+		"da": "Ting",
+		"en": "Items"
+	},
+	"INV_NOTHING": {
+		"da": "Du bærer intet.",
+		"en": "Nothing carried."
+	},
+	"INV_EQUIP": {
+		"da": "Tag på / i hånden",
+		"en": "Equip"
+	},
+	"INV_UNEQUIP": {
+		"da": "Læg væk",
+		"en": "Put away"
+	},
+	"INV_DROP": {
+		"da": "Smid",
+		"en": "Drop"
+	},
+	"INV_USE_EAT": {
+		"da": "Spis",
+		"en": "Eat"
+	},
+	"INV_USE_DRINK": {
+		"da": "Drik",
+		"en": "Drink"
+	},
+	"INV_USE_HEAL": {
+		"da": "Brug",
+		"en": "Use"
+	},
+	"INV_USE_READ": {
+		"da": "Læs",
+		"en": "Read"
+	},
+	"INV_GEAR_COND": {
+		"da": "%s (%s%%)",
+		"en": "%s (%s%%)"
+	},
+	"INV_GEAR_BROKEN": {
+		"da": "%s (i stykker — reparér ved en arbejdsbænk)",
+		"en": "%s (broken — repair at a workbench)"
+	},
+	"INV_STATS_WEAPON": {
+		"da": "Skade %s · rækkevidde %s · fældning ×%s",
+		"en": "Damage %s · reach %s · chopping ×%s"
+	},
+	"INV_STATS_ARMOR": {
+		"da": "Tager %s%% af zombiers slag",
+		"en": "Takes %s%% off zombie hits"
+	},
+	"ACTION_CANT_USE": {
+		"da": "Det kan ikke bruges sådan.",
+		"en": "That can't be used like that."
+	},
+	"ACTION_RECIPE_LOCKED": {
+		"da": "Du ved ikke, hvordan man laver det endnu.",
+		"en": "You don't know how to make that yet."
+	},
+	"ACTION_COLLECT_FIRST": {
+		"da": "Tag først det, der ligger på bænken.",
+		"en": "Collect what's on the bench first."
+	},
+	"ACTION_FULLY_FED": {
+		"da": "Du er ikke sulten.",
+		"en": "You're not hungry."
+	},
+	"ACTION_NO_FOOD": {
+		"da": "Du har ingen mad.",
+		"en": "You have no food."
+	},
+	"ACTION_NOT_HURT": {
+		"da": "Du er ikke såret.",
+		"en": "You're not hurt."
+	},
+	"RECIPES_LEARNED": {
+		"da": "Du har lært: %s",
+		"en": "You learned: %s"
+	},
+	"ATE": {
+		"da": "Du spiser. (+%s mad)",
+		"en": "You eat. (+%s food)"
+	},
+	"CRAFT_TITLE": {
+		"da": "Arbejdsbænk",
+		"en": "Workbench"
+	},
+	"CRAFT_IDLE": {
+		"da": "Klar. Materialer tages fra din taske (og tilflugtsrummets lager under jorden).",
+		"en": "Ready. Materials come from your bag (and shelter storage when underground)."
+	},
+	"CRAFT_WORKING": {
+		"da": "Laver %s… %s%%",
+		"en": "Making %s… %s%%"
+	},
+	"CRAFT_READY": {
+		"da": "Klar til at hente: %s",
+		"en": "Ready to collect: %s"
+	},
+	"CRAFT_RECIPE": {
+		"da": "Lav %s — %s (%s s)",
+		"en": "Make %s — %s (%s s)"
+	},
+	"CRAFT_LOCKED": {
+		"da": "%s (ukendt — find en vejledning)",
+		"en": "%s (unknown — find instructions)"
+	},
+	"CRAFT_COLLECT": {
+		"da": "Hent",
+		"en": "Collect"
+	},
+	"CRAFT_REPAIR": {
+		"da": "Reparér %s (%s)",
+		"en": "Repair %s (%s)"
+	},
+	"HUD_HUNGER": {
+		"da": "Mad",
+		"en": "Food"
+	},
+	"HUD_HUNGRY": {
+		"da": "Sulten — intet helbred kommer tilbage, før du spiser",
+		"en": "Hungry — no health recovery until you eat"
+	},
+	"HUD_EAT_HINT": {
+		"da": "[X] Spis (%s)",
+		"en": "[X] Eat (%s)"
+	},
+	"HUD_HOLDING": {
+		"da": "I hånden: %s",
+		"en": "Holding: %s"
+	},
+	"PROMPT_SEARCH_PANTRY": {
+		"da": "Gennemsøg spisekammeret",
+		"en": "Search the pantry"
+	},
+	"PROMPT_SEARCH_LINEN": {
+		"da": "Gennemsøg linnedkisten",
+		"en": "Search the linen chest"
+	},
+	"MAP_PANTRY": {
+		"da": "Spisekammer",
+		"en": "Pantry"
+	},
+	"REGION_SERVICE_STATION": {
+		"da": "Tankstationen",
+		"en": "The Service Station"
+	},
+	"PROMPT_ROAD_EAST": {
+		"da": "Følg vejen mod øst",
+		"en": "Follow the road east"
+	},
+	"PROMPT_ROAD_HOME": {
+		"da": "Følg vejen hjem",
+		"en": "Follow the road home"
+	},
+	"PROMPT_PUMP_FUEL": {
+		"da": "Pump brændstof op af tanken",
+		"en": "Hand-pump fuel from the tank"
+	},
+	"PROMPT_SEARCH_SHOP": {
+		"da": "Gennemsøg butikkens hylder",
+		"en": "Search the shop shelves"
+	},
+	"PROMPT_SEARCH_STOREROOM": {
+		"da": "Gennemsøg lagerrummet",
+		"en": "Search the storeroom"
+	},
+	"PROMPT_SALVAGE_WRECK": {
+		"da": "Bjærg vraget",
+		"en": "Salvage the wreck"
+	},
+	"PROMPT_SEARCH_WORKSHOP": {
+		"da": "Gennemsøg værkstedsbænken",
+		"en": "Search the workshop bench"
+	},
+	"PROMPT_FORCE_LOCKER": {
+		"da": "Bryd værktøjsskabet op",
+		"en": "Force open the tool locker"
+	},
+	"MAP_STATION_SHOP": {
+		"da": "Butik",
+		"en": "Shop"
+	},
+	"MAP_WORKSHOP": {
+		"da": "Værksted",
+		"en": "Workshop"
+	},
+	"MAP_PUMPS": {
+		"da": "Standere",
+		"en": "Pumps"
+	},
+	"MAP_UNEXPLORED": {
+		"da": "Vejen mod øst — uudforsket",
+		"en": "Road east — unexplored"
+	},
+	"DISCOVERED_REGION": {
+		"da": "Opdaget: %s",
+		"en": "Discovered: %s"
+	},
+	"DISCOVERY_FOUND": {
+		"da": "Fundet: %s",
+		"en": "Found: %s"
+	},
+	"ACTION_LOOT_GONE": {
+		"da": "Allerede tømt — der er intet tilbage.",
+		"en": "Already emptied — nothing left here."
+	},
+	"GEN_FIT_PART": {
+		"da": "Montér den justerede karburator (halverer forbruget)",
+		"en": "Fit the tuned carburetor (halves fuel use)"
+	},
+	"GEN_EFFICIENT": {
+		"da": "Justeret karburator monteret: halvt forbrug.",
+		"en": "Tuned carburetor fitted: half fuel use."
+	},
+	"GEN_PART_FITTED": {
+		"da": "Karburator monteret. Generatoren bruger nu halvt så meget brændstof.",
+		"en": "Carburetor fitted. The generator now burns half as much fuel."
+	},
+	"ACTION_NEED_PART": {
+		"da": "Du skal bruge den justerede karburator.",
+		"en": "You need the tuned carburetor."
+	},
+	"HUD_CLOCK": {
+		"da": "Dag %s · %s",
+		"en": "Day %s · %s"
+	},
+	"HUD_WEATHER_RAIN": {
+		"da": "Regn",
+		"en": "Rain"
+	},
+	"HUD_WEATHER_CLEAR": {
+		"da": "Klart",
+		"en": "Clear"
+	},
+	"HUD_NIGHT": {
+		"da": "Nat",
+		"en": "Night"
+	},
+	"HUD_HEAT_0": {
+		"da": "Området er roligt",
+		"en": "Area calm"
+	},
+	"HUD_HEAT_1": {
+		"da": "Området er uroligt",
+		"en": "Area unsettled"
+	},
+	"HUD_HEAT_2": {
+		"da": "Området er farligt",
+		"en": "Area dangerous"
+	},
+	"HUD_HEAT_3": {
+		"da": "Området er overrendt",
+		"en": "Area overrun"
+	},
+	"SIEGE_WARNING_HUD": {
+		"da": "En horde samler sig — den når gården om %s s. Gør klar!",
+		"en": "A horde is gathering — it reaches the homestead in %s s. Prepare!"
+	},
+	"SIEGE_ACTIVE_HUD": {
+		"da": "Horden er ved gården! %s tilbage.",
+		"en": "The horde is at the homestead! %s left."
+	},
+	"SIEGE_WARNING": {
+		"da": "Stønnen i skoven… for meget larm har trukket en horde mod gården.",
+		"en": "Groans in the woods… too much noise has drawn a horde toward the homestead."
+	},
+	"SIEGE_STARTED": {
+		"da": "Horden er ankommet!",
+		"en": "The horde has arrived!"
+	},
+	"SIEGE_REPELLED": {
+		"da": "Horden er slået. Se efter skader på forsvaret.",
+		"en": "The horde is beaten. Check your defences for damage."
+	},
+	"SIEGE_DISPERSED": {
+		"da": "Horden driver væk. Se efter skader på forsvaret.",
+		"en": "The horde drifts away. Check your defences for damage."
+	},
+	"WEATHER_STARTS_RAIN": {
+		"da": "Det begynder at regne. Lyd bærer kortere; regnvandsopsamlere fyldes.",
+		"en": "It starts to rain. Sounds carry less; rain collectors fill."
+	},
+	"WEATHER_STARTS_CLEAR": {
+		"da": "Regnen holder op.",
+		"en": "The rain stops."
+	},
+	"NPC_MARA_DESC": {
+		"da": "En mekaniker, der gemte sig på tankstationen, da butikken blev overrendt. Praktisk, træt, sparsom med vandet.",
+		"en": "A mechanic who hid in the service station when the shop was overrun. Practical, tired, careful with water."
+	},
+	"PROMPT_NPC_HAIL": {
+		"da": "Råb an %s",
+		"en": "Call out to %s"
+	},
+	"PROMPT_NPC_HELP": {
+		"da": "Hjælp %s",
+		"en": "Help %s"
+	},
+	"PROMPT_NPC_TALK": {
+		"da": "Tal med %s",
+		"en": "Talk to %s"
+	},
+	"NPC_MET": {
+		"da": "%s: \"Vær sød — jeg har ikke spist i dagevis. Kom med %s, så går jeg med dig.\"",
+		"en": "%s: \"Please — I haven't eaten in days. Bring me %s and I'll come with you.\""
+	},
+	"NPC_STILL_NEEDS": {
+		"da": "%s mangler stadig: %s",
+		"en": "%s still needs: %s"
+	},
+	"NPC_NEEDS_SHELTER": {
+		"da": "%s: \"Har du et sikkert sted? Grav et tilflugtsrum først.\"",
+		"en": "%s: \"Have you got somewhere safe? Dig a shelter first.\""
+	},
+	"NPC_RECRUITED": {
+		"da": "%s går mod dit tilflugtsrum. Hun er der snart.",
+		"en": "%s heads for your shelter. She'll be there soon."
+	},
+	"NPC_GREETING": {
+		"da": "%s: \"Stadig her. Job: %s.\"",
+		"en": "%s: \"Still here. Job: %s.\""
+	},
+	"NPC_ASSIGNED": {
+		"da": "%s arbejder nu med: %s.",
+		"en": "%s will now work: %s."
+	},
+	"NPC_NOT_RECRUITED": {
+		"da": "%s bor ikke hos dig (endnu).",
+		"en": "%s doesn't live with you (yet)."
+	},
+	"NPC_ARRIVED": {
+		"da": "%s er ankommet til tilflugtsrummet.",
+		"en": "%s has arrived in the shelter."
+	},
+	"JOB_NONE": {
+		"da": "fri",
+		"en": "free time"
+	},
+	"JOB_WATER": {
+		"da": "vand (vandrenser)",
+		"en": "water (purifier)"
+	},
+	"JOB_FARM": {
+		"da": "dyrkning (plantebede)",
+		"en": "farming (planters)"
+	},
+	"JOB_ASSIGN_NONE": {
+		"da": "Hold fri",
+		"en": "Take a break"
+	},
+	"JOB_ASSIGN_WATER": {
+		"da": "Pas vandrenseren",
+		"en": "Tend the water purifier"
+	},
+	"JOB_ASSIGN_FARM": {
+		"da": "Pas plantebedene",
+		"en": "Tend the planters"
+	},
+	"NPC_ACT_IDLE": {
+		"da": "ledig",
+		"en": "idle"
+	},
+	"NPC_ACT_WALKING": {
+		"da": "går",
+		"en": "walking"
+	},
+	"NPC_ACT_WORKING": {
+		"da": "arbejder",
+		"en": "working"
+	},
+	"NPC_ACT_RESTING": {
+		"da": "hviler",
+		"en": "resting"
+	},
+	"NPC_ACT_SHELTERING": {
+		"da": "søger ly",
+		"en": "sheltering"
+	},
+	"NPC_ACT_TRAVELLING": {
+		"da": "på vej",
+		"en": "on the way"
+	},
+	"NPC_STATUS_NO_POWER": {
+		"da": "Venter: ingen strøm.",
+		"en": "Waiting: no power."
+	},
+	"NPC_STATUS_NO_DIRTY_WATER": {
+		"da": "Venter: intet beskidt vand på lageret.",
+		"en": "Waiting: no dirty water in storage."
+	},
+	"NPC_STATUS_NO_CLEAN_WATER": {
+		"da": "Venter: intet rent vand på lageret.",
+		"en": "Waiting: no clean water in storage."
+	},
+	"NPC_STATUS_NO_PURIFIER": {
+		"da": "Ingen vandrenser på dette niveau.",
+		"en": "No purifier on this level."
+	},
+	"NPC_STATUS_NO_PLANTER": {
+		"da": "Intet plantebed bygget endnu.",
+		"en": "No planter built yet."
+	},
+	"NPC_STATUS_WAITING": {
+		"da": "Intet at lave lige nu.",
+		"en": "Nothing to do right now."
+	},
+	"NPC_STATUS_SHELTERING": {
+		"da": "Søger ly for horden.",
+		"en": "Sheltering from the horde."
+	},
+	"NPC_STATUS_UNFED": {
+		"da": "Sulten — bosættelsen løb tør for mad eller rent vand (arbejder i halvt tempo).",
+		"en": "Hungry — the settlement ran out of food or clean water (works at half speed)."
+	},
+	"SETTLEMENT_TITLE": {
+		"da": "Bosættelse",
+		"en": "Settlement"
+	},
+	"SETTLEMENT_NO_SHELTER": {
+		"da": "Intet tilflugtsrum endnu. Grav et under stuehuset.",
+		"en": "No shelter yet. Dig one beneath the farmhouse."
+	},
+	"SETTLEMENT_SUPPLIES": {
+		"da": "Lager: mad %s · rent vand %s · beskidt vand %s · brændstof %s",
+		"en": "Storage: food %s · clean water %s · dirty water %s · fuel %s"
+	},
+	"SETTLEMENT_POWER_ON": {
+		"da": "Strøm: tændt",
+		"en": "Power: on"
+	},
+	"SETTLEMENT_POWER_OFF": {
+		"da": "Strøm: slukket",
+		"en": "Power: off"
+	},
+	"SETTLEMENT_PERSON": {
+		"da": "%s — job: %s — %s",
+		"en": "%s — job: %s — %s"
+	},
+	"SETTLEMENT_ASSIGN": {
+		"da": "%s: %s",
+		"en": "%s: %s"
+	},
+	"SETTLEMENT_NOBODY": {
+		"da": "Ingen andre bor her endnu. Måske er der nogen derude.",
+		"en": "Nobody else lives here yet. Someone may be out there."
+	},
+	"SETTLEMENT_NEEDS": {
+		"da": "Behov: %s",
+		"en": "Needs: %s"
+	},
+	"NEED_FOOD": {
+		"da": "mad",
+		"en": "food"
+	},
+	"NEED_WATER": {
+		"da": "rent vand",
+		"en": "clean water"
+	},
+	"NEED_FUEL": {
+		"da": "brændstof",
+		"en": "fuel"
+	},
+	"NEED_NOTHING": {
+		"da": "intet akut",
+		"en": "nothing urgent"
+	},
+	"GUIDE_TITLE": {
+		"da": "Overlevelsesguide",
+		"en": "Survival guide"
+	},
+	"GUIDE_TIPS_ON": {
+		"da": "Vis tips",
+		"en": "Show tips"
+	},
+	"GUIDE_GOT_IT": {
+		"da": "Forstået",
+		"en": "Got it"
+	},
+	"GUIDE_OBJECTIVES": {
+		"da": "Fremskridt",
+		"en": "Progress"
+	},
+	"OBJ_SHELTER": {
+		"da": "Grav et tilflugtsrum under stuehuset",
+		"en": "Dig a shelter beneath the farmhouse"
+	},
+	"OBJ_DEFENCES": {
+		"da": "Byg forsvar omkring gården",
+		"en": "Build defences around the yard"
+	},
+	"OBJ_POWER": {
+		"da": "Få generatoren i gang",
+		"en": "Get the generator running"
+	},
+	"OBJ_WATER": {
+		"da": "Opbevar rent vand",
+		"en": "Store clean water"
+	},
+	"OBJ_WORKBENCH": {
+		"da": "Byg en arbejdsbænk",
+		"en": "Build a workbench"
+	},
+	"OBJ_TOOL": {
+		"da": "Lav bedre værktøj, våben eller jakke",
+		"en": "Craft a better tool, weapon or jacket"
+	},
+	"OBJ_FOOD": {
+		"da": "Byg et hydroponisk plantebed",
+		"en": "Build a hydroponic planter"
+	},
+	"OBJ_EXPLORE": {
+		"da": "Følg vejen mod øst",
+		"en": "Follow the road east"
+	},
+	"OBJ_DISCOVERY": {
+		"da": "Find det, værkstedet gemmer",
+		"en": "Find what the workshop hides"
+	},
+	"OBJ_HATCH": {
+		"da": "Montér en stållem",
+		"en": "Fit a steel hatch"
+	},
+	"OBJ_SURVIVOR": {
+		"da": "Få en overlevende med hjem",
+		"en": "Bring a survivor home"
+	},
+	"OBJ_SIEGE": {
+		"da": "Overlev en horde ved gården",
+		"en": "Survive a horde at the homestead"
+	},
+	"GUIDE_MOVE": {
+		"da": "At komme rundt",
+		"en": "Getting around"
+	},
+	"TIP_MOVE": {
+		"da": "WASD/piletaster for at gå, Shift for at løbe (larmer), E for at bruge det, prompten viser. M = kort, H = denne guide, I = oppakning, B = byg, N = bosættelse.",
+		"en": "WASD/arrows to move, Shift to sprint (noisy), E to use what the prompt shows. M = map, H = this guide, I = inventory, B = build, N = settlement."
+	},
+	"GUIDE_GATHER": {
+		"da": "Indsamling og larm",
+		"en": "Gathering and noise"
+	},
+	"TIP_GATHER": {
+		"da": "Fældning og bjærgning larmer. Zombier går hen, hvor de hørte lyden. Bedre værktøj (håndøkse, fældeøkse) klarer det med færre hug.",
+		"en": "Chopping and salvaging are loud. Zombies walk to where they heard a noise. Better tools (hatchet, felling axe) finish the job in fewer, quieter-overall blows."
+	},
+	"GUIDE_NOISE": {
+		"da": "Opmærksomhed og horder",
+		"en": "Attention and hordes"
+	},
+	"TIP_NOISE": {
+		"da": "Jo mere larm ét sted, jo flere zombier kommer — fortsæt, og en horde dannes. Flyt dig eller stop, så daler opmærksomheden. Meget larm nær hjemmet kan lokke en horde til gården.",
+		"en": "The more noise in one place, the more zombies come — keep it up and a horde forms. Move on or stop and attention fades. Lots of noise near home can bring a horde to the homestead."
+	},
+	"GUIDE_COMBAT": {
+		"da": "Kamp",
+		"en": "Fighting"
+	},
+	"TIP_COMBAT": {
+		"da": "F eller venstreklik svinger det, du holder. En zombie løfter armene (rødt), før den slår: træd tilbage, slå så. En machete slår hårdere; en polstret jakke tager af for slagene.",
+		"en": "F or left click swings what you hold. A zombie raises its arms (red) before it strikes: step back, then hit. A machete hits harder; a padded jacket softens blows."
+	},
+	"GUIDE_RETREAT": {
+		"da": "Træk dig tilbage",
+		"en": "Retreat and recover"
+	},
+	"TIP_RETREAT": {
+		"da": "Zombier følger aldrig efter dig ind i stuehuset eller bunkeren. Kom indenfor, spis og drik, så kommer helbredet tilbage. Forbindinger giver 35.",
+		"en": "Zombies never follow you into the farmhouse or the bunker. Get inside, eat and drink, and health recovers. Bandages heal 35."
+	},
+	"GUIDE_BUILD": {
+		"da": "Byggeri og forsvar",
+		"en": "Building and defences"
+	},
+	"TIP_BUILD": {
+		"da": "B åbner byggemenuen. Barrikader lukker hullerne mod nord i gården; opgradér dem til metal og beton. Pigfælder skader zombier, der går over dem. Beskadiget? Tryk R for at reparere.",
+		"en": "B opens the build menu. Barricades close the gaps on the north side of the yard; upgrade them to metal and concrete. Spike traps hurt zombies that cross them. Damaged? Press R to repair."
+	},
+	"GUIDE_DIG": {
+		"da": "Gravning og støtter",
+		"en": "Digging and supports"
+	},
+	"TIP_DIG": {
+		"da": "Sigt mod en jordvæg og tryk E for at grave. Langt fra det første rum skal du bruge en tømmerstøtte (B → støtte) — den lader dig grave cirka tre celler omkring den. Vægge, kasser, plantebede og bænke kan stå på udgravet gulv.",
+		"en": "Aim at an earth wall and press E to dig. Far from the first room you need a timber support (B → support) — it lets you dig about three cells around it. Walls, crates, planters and benches can go on dug floor."
+	},
+	"GUIDE_CRAFT": {
+		"da": "Fremstilling",
+		"en": "Crafting"
+	},
+	"TIP_CRAFT": {
+		"da": "Byg en arbejdsbænk (B). Den laver værktøj, våben, dele (tømmerrammer, pigsæt, vækstlamper), forbindinger og en polstret jakke, og reparerer slidt udstyr.",
+		"en": "Build a workbench (B). It makes tools, weapons, parts (timber frames, spike kits, grow lights), bandages and a padded jacket, and repairs worn gear."
+	},
+	"GUIDE_POWER": {
+		"da": "Strøm og vand",
+		"en": "Power and water"
+	},
+	"TIP_POWER": {
+		"da": "Fyld generatoren og start den: lamper, vandrenseren og vækstlamper kræver strøm. Hæld beskidt vand i vandrenseren; rent vand kommer ud over tid. Q drikker.",
+		"en": "Fuel the generator and start it: lamps, the purifier and grow lights need power. Pour dirty water into the purifier; clean water comes out over time. Q drinks."
+	},
+	"GUIDE_FOOD": {
+		"da": "Mad",
+		"en": "Food"
+	},
+	"TIP_FOOD": {
+		"da": "Maden falder langsomt. Spis med X eller fra oppakningen. Dåser findes i spisekammeret og på tankstationen; et hydroponisk plantebed dyrker kartofler af rent vand, når der er strøm.",
+		"en": "Food falls slowly. Eat with X or from the inventory. Cans come from the pantry and the service station; a hydroponic planter grows potatoes from clean water while powered."
+	},
+	"GUIDE_SURVIVOR": {
+		"da": "Overlevende",
+		"en": "Survivors"
+	},
+	"TIP_SURVIVOR": {
+		"da": "Nogen har overlevet på tankstationen. Hjælp dem, så flytter de ind i dit tilflugtsrum. Tildel arbejde i bosættelsesoversigten (N) eller ved at tale med dem: de passer vandrenseren eller plantebedene med det, der er på lageret.",
+		"en": "Someone survived at the service station. Help them and they will move into your shelter. Assign work in the settlement overview (N) or by talking to them: they tend the purifier or the planters using what is in storage."
+	},
+	"GUIDE_SIEGE": {
+		"da": "At forsvare gården",
+		"en": "Defending the homestead"
+	},
+	"TIP_SIEGE": {
+		"da": "En horde er på vej til gården. Luk lågen, forsvar barrikaderne, eller vent det af nedenunder — men alt bygget udenfor kan blive beskadiget. Det slutter, når horden er slået eller giver op.",
+		"en": "A horde is coming to the homestead. Close the gate, man the barricades, or wait it out below — but anything built outside may be damaged. It ends when the horde is beaten or gives up."
 	}
 }
