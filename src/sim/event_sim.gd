@@ -262,6 +262,11 @@ static func _drive(world: WorldState, z: ZombieState) -> void:
 	if z.ai in [ZombieState.AI.CHASE, ZombieState.AI.WINDUP, ZombieState.AI.RECOVER, ZombieState.AI.STAGGER] or z.target_struct != "":
 		return
 	var anchor := home_anchor()
+	var t0 := exposed_target(world, z.region_id, z.position)
+	if t0 != "" and z.position.distance_to(anchor) < float(c("siege_target_radius", 520)):
+		z.target_struct = t0
+		z.stuck = 0.0
+		return
 	if z.position.distance_to(anchor) > 160.0:
 		if z.ai != ZombieState.AI.INVESTIGATE or z.goal.distance_to(anchor) > 200.0:
 			z.ai = ZombieState.AI.INVESTIGATE

@@ -365,6 +365,13 @@ static func _after_search(world: WorldState, z: ZombieState) -> void:
 	z.ai = ZombieState.AI.WANDER
 	z.goal = z.position
 	z.timer = world.sim_rng().randf_range(1.0, 3.0)
+	if z.siege:
+		# Horde zombies stay on task until the defence event ends (EventSim sends them off).
+		var t := EventSim.exposed_target(world, z.region_id, z.position)
+		if t != "":
+			z.target_struct = t
+			z.stuck = 0.0
+		return
 	if not z.persistent and world.threat.local_attention(z.region_id, z.position) < 0.8:
 		# Reinforcements drift back off-map once things calm down.
 		var entries: Array = region_cfg(z.region_id, world).get("entries", [])
