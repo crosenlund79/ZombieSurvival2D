@@ -16,7 +16,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)
 
 # Palette (docs/visual_direction/README.md, sampled + greens for living grass)
 OLIVE_D, OLIVE, KHAKI, STRAW, STRAW2, GREYGREEN = map(hexc, ["#52502C", "#7A733F", "#998A57", "#CFB88D", "#B3A177", "#827D68"])
-WOOD, WOOD_L, WOOD_M, RUST, RUST_D, STONE = map(hexc, ["#7B5538", "#C69464", "#BF8354", "#954C33", "#6A372C", "#61615E"])
+WOOD, WOOD_L, WOOD_M, RUST, RUST_D, STONE = map(hexc, ["#6E5039", "#A68D6E", "#9A7A5A", "#954C33", "#6A372C", "#61615E"])
 GRASS, GRASS_L, GRASS_D, LEAF, LEAF_D, LEAF_L = map(hexc, ["#6F7A3C", "#93984E", "#4E5A2C", "#667538", "#3F4A25", "#9AA052"])
 AMBER = hexc("#F2B347")
 STEEL = hexc("#4D5246")

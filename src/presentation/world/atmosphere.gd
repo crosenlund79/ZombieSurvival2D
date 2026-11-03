@@ -9,6 +9,8 @@ extends Node2D
 @export var powered_tint := Color(0, 0, 0, 0)
 @export var grain_strength := 0.07
 @export var vignette_strength := 0.28
+@export var contrast := 1.1
+@export var saturation := 0.88
 @export var drift_amount := 36
 ## Night colour grade for outdoor regions (day/night follows the shared clock).
 @export var night_tint := Color(0.30, 0.34, 0.52)
@@ -19,18 +21,31 @@ var _rain_on := false
 
 const OVERLAY_SHADER := """
 shader_type canvas_item;
+// Screen-space "dirty ink" grade for the world (the HUD sits on a higher layer):
+// gentle S-curve contrast, slight desaturation, cool green-grey shadows and warm
+// highlights, an ink-brown vignette and paper grain. Presentation only.
+uniform sampler2D screen_tex : hint_screen_texture, filter_linear;
 uniform sampler2D grain : repeat_enable, filter_linear;
 uniform float grain_strength = 0.07;
 uniform float vignette_strength = 0.28;
+uniform float contrast = 1.1;
+uniform float saturation = 0.88;
+uniform vec3 shadow_tone = vec3(0.88, 0.94, 0.96);
+uniform vec3 highlight_tone = vec3(1.05, 1.0, 0.9);
 uniform vec2 screen_size = vec2(1280.0, 720.0);
 void fragment() {
 	vec2 uv = SCREEN_UV;
+	vec3 c = texture(screen_tex, uv).rgb;
+	float l = dot(c, vec3(0.299, 0.587, 0.114));
+	c = mix(vec3(l), c, saturation);
+	c = clamp((c - 0.5) * contrast + 0.5, 0.0, 1.0);
+	c *= mix(shadow_tone, highlight_tone, smoothstep(0.12, 0.8, l));
 	float g = texture(grain, uv * screen_size / 256.0).r;
 	vec2 d = uv - 0.5;
-	float v = smoothstep(0.35, 0.85, length(d * vec2(1.0, 0.8)));
-	float dark = v * vignette_strength;
-	float paper = (g - 0.5) * grain_strength * 2.0;
-	COLOR = vec4(vec3(0.12, 0.10, 0.07) * (1.0 - paper), clamp(dark + abs(paper) * 0.6, 0.0, 1.0));
+	float v = smoothstep(0.32, 0.85, length(d * vec2(1.0, 0.8)));
+	c = mix(c, c * vec3(0.5, 0.45, 0.38), clamp(v * vignette_strength * 1.8, 0.0, 1.0));
+	c *= 1.0 + (g - 0.5) * grain_strength * 2.0;
+	COLOR = vec4(clamp(c, 0.0, 1.0), 1.0);
 }
 """
 
@@ -89,6 +104,8 @@ func _add_overlay() -> void:
 	mat.set_shader_parameter("grain", Assets.texture("fx.paper_grain"))
 	mat.set_shader_parameter("grain_strength", grain_strength)
 	mat.set_shader_parameter("vignette_strength", vignette_strength)
+	mat.set_shader_parameter("contrast", contrast)
+	mat.set_shader_parameter("saturation", saturation)
 	_overlay.material = mat
 	layer.add_child(_overlay)
 

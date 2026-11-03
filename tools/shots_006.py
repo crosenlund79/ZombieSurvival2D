@@ -5,7 +5,7 @@ import os, sys, time
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from aftergrowth_driver import Instance, ROOT
 from mp_test import go_inside, to_west_trees, zs, wait_for, cell_xy
-OUT = os.path.join(ROOT, "docs", "screenshots", "iteration_006")
+OUT = os.environ.get("SHOTS_OUT") or os.path.join(ROOT, "docs", "screenshots", "iteration_006")
 os.makedirs(OUT, exist_ok=True)
 only = sys.argv[1:]
 

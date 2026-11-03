@@ -1,15 +1,21 @@
-"""Tiny "dirty ink" illustration kit for generated placeholder art.
+""""Dirty ink" illustration kit for the generated template art (v2, visual overhaul).
 
-Everything is drawn supersampled (SS×) and downsampled, giving soft, slightly
-irregular ink lines over textured fills — a stand-in for tablet-drawn art.
-Coordinates are in output (source) pixels.
+Everything is drawn supersampled (SS×) and downsampled. v2 aims at the approved
+visual direction (hand-drawn, non-pixel, rough expressive ink over textured,
+muted colour): painterly two-tone fills with paper fibre, tapered dry-brush
+ink strokes, shadow-side hatching, grime and drips, moss and ivy, leaf
+clusters, and a finishing pass on save() that gives every sprite a rough ink
+silhouette, inner edge shading and ink grain, so all assets read as one
+illustrated set. Coordinates are in output (source) pixels.
 """
 import math, random
 import numpy as np
 from PIL import Image, ImageDraw, ImageFilter, ImageChops
 
 SS = 2
-INK = (38, 32, 25, 255)
+INK = (33, 27, 21, 255)
+WARM = (214, 176, 112, 255)   # faded warm light (straw/amber family)
+COOL = (46, 52, 50, 255)      # cool shadow (charcoal / soot)
 
 
 def hexc(h, a=255):
@@ -79,24 +85,42 @@ class Canvas:
 
     # ---- fills ----
     def fill(self, poly, color, tex=0.18, cell=24, grain=0.06, mask=None, light=None):
-        """Textured fill. light=(dx,dy,strength): gradient brightening toward a side."""
+        """Painterly textured fill: brightness noise plus a warm-light / cool-shadow
+        hue drift, fine paper fibre and an optional directional light
+        light=(dx, dy, strength) that brightens toward one side and cools the other."""
         m = mask if mask is not None else self.mask(poly)
+        bbox = m.getbbox()
+        if not bbox:
+            return m
         W, H = self.img.size
-        n = value_noise(W, H, cell * SS, self.rng.randint(0, 1 << 30))
-        g = np.random.default_rng(self.rng.randint(0, 1 << 30)).random((H, W)).astype(np.float32)
-        shade = 1.0 + (n - 0.5) * 2 * tex + (g - 0.5) * 2 * grain
+        x0, y0, x1, y1 = bbox
+        w, h = x1 - x0, y1 - y0
+        seed = self.rng.randint(0, 1 << 30)
+        n = value_noise(w, h, cell * SS, seed)
+        n2 = value_noise(w, h, max(4, cell * SS * 3), seed + 7, octaves=2)
+        g = np.random.default_rng(seed + 3).random((h, w)).astype(np.float32)
+        fib = value_noise(w, h, 3, seed + 11, octaves=1)
+        shade = 1.0 + (n - 0.5) * 1.3 * tex + (g - 0.5) * 1.6 * grain + (fib - 0.5) * 0.07
+        lit = np.zeros((h, w), dtype=np.float32)
         if light:
-            bbox = m.getbbox() or (0, 0, W, H)
-            yy, xx = np.mgrid[0:H, 0:W].astype(np.float32)
-            cx = (xx - bbox[0]) / max(1, bbox[2] - bbox[0])
-            cy = (yy - bbox[1]) / max(1, bbox[3] - bbox[1])
-            dx, dy, s = light
-            shade *= 1.0 + s * ((cx - 0.5) * dx + (cy - 0.5) * dy)
-        arr = np.zeros((H, W, 4), dtype=np.float32)
-        for i in range(3):
-            arr[..., i] = np.clip(color[i] * shade, 0, 255)
+            yy, xx = np.mgrid[0:h, 0:w].astype(np.float32)
+            dx, dy, st = light
+            lit = st * (-(xx / max(1, w) - 0.5) * dx - (yy / max(1, h) - 0.5) * dy)
+            shade *= 1.0 + lit
+        warmth = np.clip((n2 - 0.5) * 0.9 + lit * 1.0, -1, 1)
+        base = np.array(color[:3], dtype=np.float32)
+        warm = base * 0.82 + np.array(WARM[:3], dtype=np.float32) * 0.18
+        cool = base * 0.80 + np.array(COOL[:3], dtype=np.float32) * 0.20
+        wpos = np.clip(warmth, 0, 1)[..., None]
+        wneg = np.clip(-warmth, 0, 1)[..., None]
+        rgb = base * (1 - wpos * 0.45 - wneg * 0.55) + warm * wpos * 0.45 + cool * wneg * 0.55
+        rgb = np.clip(rgb * shade[..., None], 0, 255)
+        arr = np.zeros((h, w, 4), dtype=np.uint8)
+        arr[..., :3] = rgb.astype(np.uint8)
         arr[..., 3] = color[3] if len(color) > 3 else 255
-        self.paste_layer(Image.fromarray(arr.astype(np.uint8), "RGBA"), m)
+        layer = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+        layer.paste(Image.fromarray(arr, "RGBA"), (x0, y0), m.crop(bbox))
+        self.img = Image.alpha_composite(self.img, layer)
         return m
 
     def ellipse_fill(self, box, color, tex=0.15, cell=20, light=None):
@@ -151,7 +175,10 @@ class Canvas:
         placed = []
         for i, (x, y, tx, ty) in enumerate(path):
             off = (math.sin(phase + i * 0.7) * 0.5 + self.rng.uniform(-0.5, 0.5)) * wobble
-            wv = width * (0.75 + 0.45 * (math.sin(phase * 1.7 + i * 0.35) * 0.5 + 0.5)) * self.rng.uniform(0.9, 1.1)
+            wv = width * (0.7 + 0.55 * (math.sin(phase * 1.7 + i * 0.35) * 0.5 + 0.5)) * self.rng.uniform(0.85, 1.12)
+            if not closed and len(path) > 6:  # tapered ends like a brush pen
+                t = i / max(1, len(path) - 1)
+                wv *= 0.45 + 0.55 * min(1.0, min(t, 1 - t) * 5.0)
             placed.append(((x - ty * off) * SS, (y + tx * off) * SS, wv * SS))
         pad = max(p[2] for p in placed) + 2
         x0 = int(max(0, min(p[0] for p in placed) - pad)); y0 = int(max(0, min(p[1] for p in placed) - pad))
@@ -169,6 +196,17 @@ class Canvas:
                 d.line([prev, (px, py)], fill=c, width=max(1, int(w)))
             d.ellipse((px - r, py - r, px + r, py + r), fill=c)
             prev = (px, py)
+        # dry-brush ghost: a broken, thinner second pass slightly off the line
+        if width >= 1.6 and alpha >= 150 and len(placed) > 3:
+            ga = c[:3] + (int(alpha * 0.38),)
+            k0 = self.rng.randint(0, max(0, len(placed) // 3))
+            k1 = min(len(placed), k0 + self.rng.randint(len(placed) // 3, len(placed)))
+            gp = None
+            for px, py, w in placed[k0:k1]:
+                q = (px - x0 + 0.9 * SS, py - y0 + 0.7 * SS)
+                if gp and self.rng.random() > 0.12:
+                    d.line([gp, q], fill=ga, width=max(1, int(w * 0.45)))
+                gp = q
         self.img.alpha_composite(layer, dest=(x0, y0))
 
     def ink_poly(self, poly, width=2.2, **kw):
@@ -197,7 +235,133 @@ class Canvas:
             pts.append((cx + math.cos(a) * rx * r, cy + math.sin(a) * ry * r))
         return pts
 
-    def save(self, path, size=None):
+    # ---- illustration helpers (v2) ----
+    def shade(self, mask, dx=1.0, dy=0.6, spacing=4.5, alpha=95, angle=-55, cross=False, reach=0.55):
+        """Hatch only the shadow side of a shape (light comes from -dx, -dy)."""
+        bbox = mask.getbbox()
+        if not bbox:
+            return
+        W, H = self.img.size
+        x0, y0, x1, y1 = bbox
+        yy, xx = np.mgrid[0:H, 0:W].astype(np.float32)
+        u = ((xx - x0) / max(1, x1 - x0) - 0.5) * dx + ((yy - y0) / max(1, y1 - y0) - 0.5) * dy
+        side = np.clip((u + 0.5 - (1 - reach)) / max(0.05, reach), 0, 1)
+        m2 = (np.asarray(mask, dtype=np.float32) * side).astype(np.uint8)
+        sm = Image.fromarray(m2, "L")
+        self.hatch(sm, spacing=spacing, angle=angle, alpha=alpha, width=1.0)
+        if cross:
+            m3 = Image.fromarray((np.asarray(mask, dtype=np.float32) * np.clip(side * 2 - 1, 0, 1)).astype(np.uint8), "L")
+            self.hatch(m3, spacing=spacing * 1.2, angle=angle + 85, alpha=int(alpha * 0.8), width=1.0)
+
+    def grime(self, mask, amount=0.35, drips=True, color=None):
+        """Dirt, stains and rain drips inside a shape (weathering)."""
+        bbox = mask.getbbox()
+        if not bbox:
+            return
+        col = color or mix(INK, (80, 62, 40, 255), 0.4)
+        W, H = self.img.size
+        x0, y0, x1, y1 = bbox
+        w, h = x1 - x0, y1 - y0
+        n = value_noise(w, h, max(6, int(min(w, h) / 5)), self.rng.randint(0, 1 << 30), octaves=4)
+        a = np.clip((n - (0.62 - amount * 0.35)) * 3.2, 0, 1) * 0.55
+        if drips:
+            for _ in range(int(w / (14 * SS)) + 1):
+                cx = self.rng.randint(0, max(1, w - 1))
+                top = self.rng.randint(0, max(1, h // 2))
+                ln = self.rng.randint(h // 6, max(h // 6 + 1, h // 2))
+                wd = self.rng.randint(1, 2 * SS)
+                ys = np.arange(top, min(h, top + ln))
+                fade = np.linspace(0.45, 0.0, len(ys)) if len(ys) else ys
+                for k, yv in enumerate(ys):
+                    a[yv, max(0, cx - wd):cx + wd] = np.maximum(a[yv, max(0, cx - wd):cx + wd], fade[k] * amount)
+        m = np.asarray(mask.crop(bbox), dtype=np.float32) / 255.0
+        alpha = np.clip(a * m * 255, 0, 255).astype(np.uint8)
+        layer = Image.new("RGBA", (w, h), col[:3] + (0,))
+        layer.putalpha(Image.fromarray(alpha, "L"))
+        self.img.alpha_composite(layer, dest=(x0, y0))
+
+    def moss(self, mask, amount=0.4, colors=None):
+        """Patchy moss and lichen: clumps biased toward the top of a shape."""
+        bbox = mask.getbbox()
+        if not bbox:
+            return
+        cols = colors or [(82, 98, 44, 255), (110, 122, 56, 255), (150, 152, 82, 255)]
+        x0, y0, x1, y1 = bbox
+        w, h = x1 - x0, y1 - y0
+        n = value_noise(w, h, max(5, int(min(w, h) / 6)), self.rng.randint(0, 1 << 30), octaves=3)
+        yy = np.linspace(1.0, 0.25, h)[:, None]
+        a = np.clip((n * yy - (0.55 - amount * 0.3)) * 4.0, 0, 1)
+        m = np.asarray(mask.crop(bbox), dtype=np.float32) / 255.0
+        g = np.random.default_rng(self.rng.randint(0, 1 << 30)).random((h, w))
+        idx = np.clip((n * 3).astype(int), 0, 2)
+        rgb = np.array([c[:3] for c in cols], dtype=np.float32)[idx] * (0.85 + 0.3 * g[..., None])
+        arr = np.zeros((h, w, 4), dtype=np.uint8)
+        arr[..., :3] = np.clip(rgb, 0, 255).astype(np.uint8)
+        arr[..., 3] = np.clip(a * m * 235 * (g > 0.18), 0, 255).astype(np.uint8)
+        self.img.alpha_composite(Image.fromarray(arr, "RGBA"), dest=(x0, y0))
+
+    def leaf(self, x, y, size, angle, color, ink_alpha=170):
+        """One almond-shaped leaf with an inked edge and a midrib."""
+        a = math.radians(angle)
+        dx, dy = math.cos(a), math.sin(a)
+        nx, ny = -dy, dx
+        L, Wd = size, size * 0.42
+        pts = [(x, y), (x + dx * L * 0.5 + nx * Wd, y + dy * L * 0.5 + ny * Wd), (x + dx * L, y + dy * L),
+               (x + dx * L * 0.5 - nx * Wd, y + dy * L * 0.5 - ny * Wd)]
+        d = ImageDraw.Draw(self.img)
+        d.polygon(self.S(pts), fill=color[:3] + (255,))
+        self.ink([pts[0], pts[1], pts[2]], width=max(0.8, size * 0.09), alpha=ink_alpha, wobble=0.25, seg=3)
+        if size > 7:
+            self.ink([(x + dx * L * 0.15, y + dy * L * 0.15), (x + dx * L * 0.8, y + dy * L * 0.8)], width=0.7,
+                     color=mix(color, INK, 0.5), alpha=140, wobble=0.1, seg=4)
+
+    def ivy(self, x, y, length, direction=-90, colors=None, leaves=12, size=7):
+        """A creeping vine with leaves (overgrowth on walls, posts, wrecks)."""
+        cols = colors or [(70, 86, 40, 255), (102, 117, 56, 255), (138, 146, 74, 255)]
+        pts = [(x, y)]
+        a = math.radians(direction)
+        for i in range(int(length / 8)):
+            a += self.rng.uniform(-0.45, 0.45)
+            x += math.cos(a) * 8; y += math.sin(a) * 8
+            pts.append((x, y))
+        self.ink(pts, width=1.6, color=(64, 58, 36, 255), alpha=220, wobble=0.4, seg=4)
+        for _ in range(leaves):
+            px, py = pts[self.rng.randint(0, len(pts) - 1)]
+            self.leaf(px, py, size * self.rng.uniform(0.7, 1.3), self.rng.uniform(0, 360), self.rng.choice(cols))
+
+    def finish(self, outline=2.6, burn=0.32, grain=0.05):
+        """Unifying finish: rough ink silhouette around the whole sprite, inner
+        edge shading (form) and ink grain. Applied by save() to every sprite."""
+        a = self.img.split()[3]
+        A = np.asarray(a, dtype=np.float32) / 255.0
+        if A.max() <= 0 or A.min() >= 0.99:
+            return
+        k_thin = max(3, int(outline * SS * 0.7) | 1)
+        k_thick = max(3, int(outline * SS * 1.5) | 1)
+        thin = np.asarray(a.filter(ImageFilter.MaxFilter(k_thin)), dtype=np.float32) / 255.0
+        thick = np.asarray(a.filter(ImageFilter.MaxFilter(k_thick)), dtype=np.float32) / 255.0
+        H, W = A.shape
+        n = value_noise(W, H, 9 * SS, self.seed + 991, octaves=3)
+        ring = np.clip(np.where(n > 0.5, thick, thin) - A, 0, 1)
+        ring *= (0.7 + 0.3 * (np.random.default_rng(self.seed).random((H, W)) > 0.08))
+        rgb = np.asarray(self.img, dtype=np.float32)[..., :3]
+        blur = np.asarray(a.filter(ImageFilter.GaussianBlur(5 * SS)), dtype=np.float32) / 255.0
+        edge = np.clip((A - blur) * 2.2, 0, 1)
+        top = np.linspace(0.9, 1.06, H)[:, None]  # sprites read slightly darker toward their base
+        top = top[::-1]
+        g = 1.0 + (n - 0.5) * 2 * grain
+        rgb = rgb * (1 - edge[..., None] * burn) * top[..., None] * g[..., None]
+        ink = np.array(INK[:3], dtype=np.float32)
+        tot = np.clip(A + ring, 0, 1)
+        safe = np.maximum(tot, 1e-6)[..., None]
+        out = np.zeros((H, W, 4), dtype=np.float32)
+        out[..., :3] = (rgb * A[..., None] + ink * ring[..., None]) / safe
+        out[..., 3] = tot * 255
+        self.img = Image.fromarray(np.clip(out, 0, 255).astype(np.uint8), "RGBA")
+
+    def save(self, path, size=None, finish=True):
+        if finish:
+            self.finish()
         out = self.img.resize(size or (self.w, self.h), Image.LANCZOS)
         out.save(path, optimize=True)
         return out

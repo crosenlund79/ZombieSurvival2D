@@ -10,7 +10,7 @@ from inkkit import Canvas, hexc, mix, INK
 from gen_homestead import out, ROOT, STEEL, RUST, RUST_D, STONE, WOOD, WOOD_L, CONCRETE, PAINT, SLATE, GLASS, GRASS_D
 
 ENTRIES = []
-TEAL = hexc("#346773"); CREAM = hexc("#CFB88D"); OLIVE = hexc("#5A6142"); LEAF = hexc("#667538"); LEAF_L = hexc("#9AA052")
+TEAL = hexc("#3D5C60"); CREAM = hexc("#CFB88D"); OLIVE = hexc("#5A6142"); LEAF = hexc("#667538"); LEAF_L = hexc("#9AA052")
 
 
 def entry(aid, name, rel, display, source, pivot, kind="visual"):
@@ -27,6 +27,28 @@ def vines(c, x0, x1, y, n=6):
         c.ink(pts, width=2.6, color=LEAF)
         for (px, py) in pts[1:]:
             c.fill(c.blob(px + c.rng.uniform(-6, 6), py, 6, 4, n=8, irregular=0.3), LEAF_L if c.rng.random() < 0.5 else LEAF, tex=0.2)
+
+
+def overgrow(c, front, roof, base, x0, x1, bushes):
+    """Weathering + nature reclaiming a building (visual overhaul): grime and rain
+    streaks, hatched shade under the eaves, moss on the roof, ivy, corner shrubs, weeds."""
+    from gen_overhaul import moss_carpet, weeds, foliage, LEAF_D as OL_D, LEAF as OL, LEAF_M as OL_M, SAGE
+    fm = c.mask(front)
+    c.grime(fm, 0.6, drips=True)
+    ys = [p[1] for p in front]
+    top = min(ys)
+    c.shade(c.mask([(x0, top), (x1, top), (x1, top + 40), (x0, top + 40)]), 0, -1, 5, 80, reach=1.0)
+    c.shade(c.mask([(x1 - 80, top), (x1, top), (x1, base), (x1 - 60, base)]), 1, 0, 5, 60, reach=1.0)
+    rys = [p[1] for p in roof]
+    for _ in range(4):
+        moss_carpet(c, c.rng.uniform(x0 + 40, x1 - 40), c.rng.uniform(min(rys) + 8, max(rys) - 6), c.rng.uniform(18, 40), c.rng.uniform(5, 9))
+    for k in range(3):
+        c.ivy(x0 + 8 + k * 18, base - 4, c.rng.uniform(90, (base - top) * 0.9), -88 + c.rng.uniform(-12, 12), leaves=18, size=8)
+    c.ivy(x1 - 14, base - 4, (base - top) * 0.6, -95, leaves=12, size=8)
+    for bx, brx, bry in bushes:
+        foliage(c, bx, base - bry * 0.6, brx, bry, palette=(mix(OL_D, INK, 0.2), OL_D, OL, mix(OL_M, SAGE, 0.3)), lobes=12, leaf_size=8)
+    for xx in range(int(x0) - 10, int(x1) + 20, 46):
+        weeds(c, xx + c.rng.uniform(-8, 8), base + 4, 56, c.rng.uniform(18, 34), n=14, flowers=0.08)
 
 
 def shop():
@@ -54,8 +76,8 @@ def shop():
         c.ink([(60, y), (290, y + 8)], width=9, color=WOOD); c.ink([(60, y), (290, y + 8)], width=1.4)
     for _ in range(14):
         c.fill(c.blob(c.rng.uniform(50, 550), c.rng.uniform(200, 400), c.rng.uniform(6, 18), c.rng.uniform(4, 10), n=8, irregular=0.5),
-               mix(RUST, CONCRETE, 0.6), tex=0.3)
-    vines(c, 40, 120, base, 5); vines(c, 480, 560, base, 4)
+               mix(RUST_D, CONCRETE, 0.45)[:3] + (120,), tex=0.3)
+    overgrow(c, front, roof, base, 40, 560, [(60, 50, 34), (540, 44, 30)])
     c.save(out("world/station/template_shop.png"))
     entry("world.station_shop", "Service station shop", "world/station/template_shop.png", (300, 220), (W, H), (0.5, 0.955))
 
@@ -104,8 +126,8 @@ def workshop():
     c.fill(gap, hexc("#141210"), tex=0.1)  # roller door jammed half-open
     c.fill([(420, 220), (490, 220), (490, 290), (420, 290)], GLASS, tex=0.2); c.ink_poly([(420, 220), (490, 220), (490, 290), (420, 290)], width=2)
     for _ in range(10):
-        c.fill(c.blob(c.rng.uniform(60, 510), c.rng.uniform(150, 380), c.rng.uniform(8, 20), c.rng.uniform(5, 10), n=8, irregular=0.5), RUST_D, tex=0.3)
-    vines(c, 40, 140, base, 6)
+        c.fill(c.blob(c.rng.uniform(60, 510), c.rng.uniform(150, 380), c.rng.uniform(8, 20), c.rng.uniform(5, 10), n=8, irregular=0.5), mix(RUST_D, STEEL, 0.3)[:3] + (130,), tex=0.3)
+    overgrow(c, body, roof, base, 40, 520, [(70, 54, 36)])
     c.save(out("world/station/template_workshop.png"))
     entry("world.station_workshop", "Workshop garage", "world/station/template_workshop.png", (280, 210), (W, H), (0.5, 0.952))
 

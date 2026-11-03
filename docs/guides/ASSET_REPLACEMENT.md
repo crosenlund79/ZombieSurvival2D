@@ -20,6 +20,8 @@ Open the manifest for its category in `assets/manifest/`:
 | `audio.json` | door/gate, menu click, ambience loops (countryside, underground), chop, tree fall, wood stacking, digging, hammering, build done, hatch, ladder |
 
 All current templates are **generated placeholders** (tools/art) waiting for your tablet art.
+To regenerate every visual template (graphics only, never audio, never `assets/overrides/`):
+`python3 tools/art/regenerate_all.py`. Your overrides keep winning over the templates.
 
 Each entry tells you: `template` (the placeholder file), `display_size` (how big it appears in game,
 in game pixels), `source_size` (recommended drawing size — about 2× display), `pivot` (which point

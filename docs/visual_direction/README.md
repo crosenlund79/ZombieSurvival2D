@@ -118,6 +118,23 @@ and `../screenshots/iteration_001/`) **tried** these EXPLORING options. None of 
 All illustrations are **generated placeholders** (`tools/art/`) in the APPROVED palette. They are
 meant to judge scale and mood, not as final art.
 
+## Visual overhaul findings ("dirty ink" pass)
+
+The visual overhaul (branch `art/visual-overhaul`, see
+[`../iterations/visual_overhaul.md`](../iterations/visual_overhaul.md) and
+`../screenshots/visual_overhaul/`) redrew the placeholder art toward VD-01 to VD-07. Gameplay
+perspective, sprite sizes, pivots, layering and collision did not change. It **tried** these EXPLORING
+treatments. None of them is approved yet:
+
+| Register item | What the overhaul used |
+|---|---|
+| Line | Rough, noise-modulated ink silhouette ring and inner edge burn on every sprite. Tapered, dry-brush strokes. |
+| Colour / material | Painterly fills: value noise, warm-light / cool-shadow hue drift, paper fibre. Weathered grey-brown wood instead of orange timber. |
+| Shading | Ink hatching on the shadow side only, plus grime, rain streaks and moss. |
+| Nature reclaiming | Moss carpets, ivy, corner shrubs and weeds on the farmhouse, shed and station buildings. Inked grass tufts and straw patches in the meadow. |
+| Figures | Survivor and zombie rebuilt with natural proportions (about 5.5 heads, tapered limbs, curved torsos). The zombie look is a placeholder only, because zombie design is DEFERRED. |
+| VX-05 Lighting | Screen-space world grade: S-curve contrast, slight desaturation, cool shadows, warm highlights, an ink-brown vignette and paper grain. The HUD is not graded. |
+
 ## Rules for future visual work
 
 - Make new mockups in the APPROVED palette and material language, translated into whatever perspective

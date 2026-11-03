@@ -16,7 +16,7 @@ from gen_homestead import (out, tuft, grass_fringe, post, rail, tile_from_noise,
                            STONE, GRASS, GRASS_L, GRASS_D, LEAF, LEAF_D, LEAF_L, AMBER, STEEL, CONCRETE, PAINT, SLATE, GLASS)
 
 EARTH = hexc("#6B5034"); EARTH_D = hexc("#3E2D1E"); EARTH_L = hexc("#8C6C48"); CLAY = hexc("#9A7650")
-PLANK = hexc("#9C7650"); PLANK_D = hexc("#6E5034"); CONC = hexc("#8F8B82"); CONC_D = hexc("#5F5C56")
+PLANK = hexc("#8C7458"); PLANK_D = hexc("#5F4B38"); CONC = hexc("#8F8B82"); CONC_D = hexc("#5F5C56")
 
 
 def board(c, pts, col=PLANK, grain=3):
