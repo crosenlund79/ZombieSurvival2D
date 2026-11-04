@@ -124,6 +124,8 @@ EXPLORING, RF-01 … RF-06 DEFERRED) and the visual register
   presentation.
 - Also fixed: the NPC sprite was drawn about 40 px below its ground point (a pre-existing presentation
   bug).
+- Fixed during verification: a client's own replica row is not updated while it walks. Omens, mutters and
+  the test driver now use the local avatar's real position, so a joining player hears laughter near them.
 
 ## 8. Burnt Ones and hunts
 
@@ -145,11 +147,11 @@ EXPLORING, RF-01 … RF-06 DEFERRED) and the visual register
 
 | Kind | Result |
 |---|---|
-| Unit tests + content check | RESULTS_UNIT |
+| Unit tests + content check | **96/96 PASS**, including 7 new (`test_red_thaw`): opening spawns by the bag; one kit per player, also after a reload; kit items; no automatic threats; hunt pursuit, attack and give-up; the protected cabin; hunters never saved; deterministic day/night omens. The content check also validates the new entity type, items and assets |
 | Script guides | 99/99 scripts documented (EN + DA) |
-| Real separate processes (`tools/mp_test.py`, all scenarios) | RESULTS_MP |
-| Rendered gameplay + runtime checks (`tools/shots_red_thaw.py`) | RESULTS_SHOTS |
-| Creator overrides / replacement pipeline | RESULTS_ASSETS |
+| Real separate processes (`tools/mp_test.py`, all scenarios) | Full run of all 22 scenarios: **343/344**. The one failure (`slice 16`) exposed a real bug: the decorative pines were blocking the Burnt Ones' navigation. After the fix, the affected scenarios were re-run: `slice`, `danger_single`, `danger_multi`, `accept`, `red_thaw_multi`, `perf_multi` **115/115**. The new `red_thaw_multi` scenario covers: both players wake by the bag and get one kit each (host authority); a host-started hunt finds and hurts a remote client; the client's hits are applied by the host; both peers hear the same laugh from the same spot and see the same silhouette on the same path; the frightened survivor is shared and persistent; after a host restart the kit claims persist and no hunter is restored. Older scenarios that test the automatic loop switch it on explicitly (`dev ambient 1`). Performance: host simulation of 26 Burnt Ones with two players is at most 1.08 ms per frame |
+| Rendered gameplay + runtime checks (`tools/shots_red_thaw.py`) | Every scenario passed. Checks: opening by the shed; the kit; one kit only; water and crackers consumed; gate reachable on foot; cabin interior; bunker by ladder; road to the settlement; laughter heard by day with no source; survivor dialogue; a night silhouette that is not an encounter; hunt spawns, pursues, attacks and can be fought; never follows into the cabin; not restored after save and reload; two-player kits. All 17 screenshots were inspected |
+| Creator overrides / replacement pipeline | `assets` scenario PASS: template by default; external image and sound overrides used; **a Red Thaw asset (the hunter's cabin) overridden**; a corrupt PNG is rejected; removing an override restores the template; gameplay is unaffected |
 | Windows / exported build | **Not tested — no Windows machine or export templates in the test environment. Windows acceptance pending.** |
 
 Screenshots: `docs/screenshots/iteration_010/`.
