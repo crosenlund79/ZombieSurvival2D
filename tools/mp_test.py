@@ -1242,7 +1242,7 @@ def scenario_settlement_multi():
         host.cmd("walk_to 540 296 4"); host.cmd("press_interact"); host.cmd("walk_to 480 600"); host.cmd("press_interact")
         host.cmd("dev teleport 2340 1400"); r = host.cmd("interact homestead.road_east")
         check("settle: host reaches the station", r["state"]["region"] == "service_station", r["state"].get("region"))
-        host.cmd("walk_to 1530 560 10")
+        host.cmd("walk_to 372 664 10")   # Red Thaw: she hides in the collapsed house
         r = host.cmd("npc mara talk")
         check("settle: host meets Mara", r["state"]["npcs"]["mara"]["recruit"] == "met", r["state"]["npcs"]["mara"])
         r = host.cmd("npc mara talk")
@@ -1415,7 +1415,7 @@ def scenario_slice():
         s.cmd("walk_to 1700 720"); s.cmd("walk_to 2000 575 10"); r = s.cmd("interact service_station.tool_locker"); heal_if_low(s)
         items = [g["item"] for g in r["state"]["gear"]]
         check("slice 14: discovery — carburetor and workshop manual", "carburetor" in items and "workshop_manual" in items, items)
-        s.cmd("walk_to 1700 720"); s.cmd("walk_to 1530 560 10"); s.cmd("npc mara talk")
+        s.cmd("walk_to 1700 720"); s.cmd("walk_to 600 720"); s.cmd("walk_to 372 664 10"); s.cmd("npc mara talk")
         r = s.cmd("npc mara talk")
         check("slice 17: survivor recruited (food + clean water handed over)", r["state"]["npcs"]["mara"]["recruit"] == "travelling", (r["state"]["npcs"]["mara"], r["state"]["carried"]))
         s.cmd("walk_to 150 710"); s.cmd("walk_to 80 710 8"); s.cmd("interact service_station.road_west"); heal_if_low(s)
