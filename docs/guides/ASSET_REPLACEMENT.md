@@ -18,10 +18,17 @@ Open the manifest for its category in `assets/manifest/`:
 | `visual_bunker.json` | earth floor/wall, reinforcement (exposed / building / done), ladders, lantern, tools, concrete test level |
 | `visual_ui.json` | world map paper |
 | `audio.json` | door/gate, menu click, ambience loops (countryside, underground), chop, tree fall, wood stacking, digging, hammering, build done, hatch, ladder |
+| `visual_winter.json` | **Red Thaw** winter set: snow / frozen-mud / snowy-road tiles, pines, bare birch, frozen shrubs, dead grass, snowy stump, **hunter's cabin**, **burned shed**, woodshed, truck wreck, settlement houses (two + collapsed), sled, **starter bag** (full / emptied), thawed-blood decal, snowflake, fog |
+| `visual_burnt.json` | **Burnt Ones** (down / up / side, two lunges, fallen), the frightened survivor huddled, the night silhouette |
+| `audio_red_thaw.json` | cold wind, snowfall, muffled indoor wind, suppressed laughter, giggling, distant laughter, muttering, Burnt One breathing / notice / attack / hit / fall |
+
+The older zombie, farmhouse, oak and grass entries are still listed in their manifests but are no longer
+used by the scenes. They stay so nothing breaks if you have already drawn them.
 
 All current templates are **generated placeholders** (tools/art) waiting for your tablet art.
 To regenerate every visual template (graphics only, never audio, never `assets/overrides/`):
-`python3 tools/art/regenerate_all.py`. Your overrides keep winning over the templates.
+`python3 tools/art/regenerate_all.py`. Red Thaw sounds are generated separately with
+`python3 tools/art/gen_red_thaw_audio.py` (it only writes its own new files). Your overrides keep winning over the templates.
 
 Each entry tells you: `template` (the placeholder file), `display_size` (how big it appears in game,
 in game pixels), `source_size` (recommended drawing size — about 2× display), `pivot` (which point

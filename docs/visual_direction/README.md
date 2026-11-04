@@ -135,6 +135,29 @@ treatments. None of them is approved yet:
 | Figures | Survivor and zombie rebuilt with natural proportions (about 5.5 heads, tapered limbs, curved torsos). The zombie look is a placeholder only, because zombie design is DEFERRED. |
 | VX-05 Lighting | Screen-space world grade: S-curve contrast, slight desaturation, cool shadows, warm highlights, an ink-brown vignette and paper grain. The HUD is not graded. |
 
+## Red Thaw visual direction (iteration 010)
+
+The concept changed to **Red Thaw**: a nuclear winter in a northern pine wilderness, with human madness
+instead of zombies. The dirty-ink illustration language carries over: hand-drawn non-pixel art,
+expressive irregular ink, strong silhouettes, muted colour, deliberate shadow shapes, controlled texture
+and readability at gameplay scale. The setting palette and mood replace the overgrown, living-nature
+direction.
+
+| Status | ID | Item |
+|---|---|---|
+| APPROVED | RT-01 | Nuclear-winter northern pine wilderness: frost-covered ground, snow-laden pines, snowy forest floor, frozen mud and slush, dead brittle grass, charred timber, weathered buildings, frosted vehicles, blackened ruins, cold washed-out daylight, cold fog. It replaces VD-01 to VD-03 (lush greens, nature reclaiming) |
+| APPROVED | RT-02 | Restrained palette: icy blue-grey, dirty white, charcoal, muted pine green, faded timber brown, dark rust. Stronger red is kept for meaningful details (blood, the local player's map ring) |
+| APPROVED | RT-03 | Warm light is rare and meaningful: the cabin interior, the stove and the powered bunker are graded warm, and everything outside is cold. It refines VD-05 and VD-08 |
+| APPROVED | RT-04 | Burnt Ones: human survivors in damaged winter clothing, with scarred or burned skin, dried and frozen blood, ragged silhouettes and unnatural but plausible body language. Faces are restrained (a hood shadow hides the eyes). No demons, no supernatural. This settles the old VF-01 at concept level |
+| APPROVED | RT-05 | Hunter's cabin instead of the farmhouse: timber, modest, weathered, snow on the roof, sparse interior, quiet traces of past occupation (antlers, empty rifle pegs, snowshoes) |
+| APPROVED | RT-06 | The burned shed is the opening landmark: charred, partly collapsed, ash and frost, blackened debris, snow drifting around it, a fire long out |
+| APPROVED | RT-07 | World map as a weathered, hand-inked field map: pine-symbol forests, pale clearings, contour hints, tracks, sparse buildings, ruin marks, restrained typography |
+| EXPLORING | RTX-01 | Winter treatment of generated templates. inkkit's winter pass settles snow on the upward-facing surfaces of every outdoor sprite, adds frost, turns living green dead and cools the palette. Key assets are hand-composed (gen_winter, gen_figures) |
+| EXPLORING | RTX-02 | Lighting. Outdoors: a screen-space cold grade (desaturation, cool split toning), world-anchored drifting fog, slow snowfall and a cold ink vignette. Snowfall replaces the old rain spell. Indoors and in the bunker: a warm grade. No 2D light pipeline yet |
+| EXPLORING | RTX-03 | Burnt One exact design. The placeholder is built on the earlier figure body; it is not a final character design |
+| EXPLORING | RTX-04 | The frozen-blood "red thaw" motif appears only as small cosmetic illustration (RX-05 in the gameplay register) |
+| DEFERRED | RTF-01 | VD-06 (AI visual language) and VF-02 (rogue-AI canon) are on hold. Red Thaw has no AI antagonist |
+
 ## Rules for future visual work
 
 - Make new mockups in the APPROVED palette and material language, translated into whatever perspective

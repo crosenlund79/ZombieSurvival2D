@@ -1,4 +1,4 @@
-# Aftergrowth — Playtest Guide (iterations 006–009 vertical slice)
+# Red Thaw — Playtest Guide (iteration 010; earlier systems from 001–009)
 
 This guide is for playing the game and reporting problems. Technical details are in
 [`guides/TESTING_AND_LAUNCH.md`](guides/TESTING_AND_LAUNCH.md). Every number in the game is a prototype
@@ -7,11 +7,10 @@ value, and the [design decision register](DESIGN_DECISIONS.md) lists what is sti
 ## 1. Getting started (Windows)
 
 1. Install **Godot 4.7.2 (standard)**.
-2. On GitHub, pick the branch **`iteration/006-world-worth-surviving`** and choose **Code → Download ZIP**.
+2. On GitHub, pick the branch **`iteration/010-red-thaw`** and choose **Code → Download ZIP**.
 3. Extract the ZIP, open Godot, choose **Import**, select `project.godot`, then **Import & Edit**. Press **F5**.
 4. In the main menu:
-   - **Single Player → New World** is the normal game. You start with an undeveloped shelter site and no
-     supplies.
+   - **Single Player → New World** is the normal game. You wake by a burned shed with only a small bag.
    - **Single Player → Developer Test World** is a prepared world: a dug shelter, a running generator,
      a workbench, a planter, materials, tools and the survivor already at home. Use it to look at
      specific systems quickly. It is **not** a replacement for testing the normal game.
@@ -31,8 +30,8 @@ Two pieces of on-screen help:
 | F / left mouse | Swing what you hold |
 | B | Build menu. Left click or E places; right click or Esc cancels |
 | I / Tab | Inventory |
-| Q / X | Drink clean water / eat |
-| M | Map |
+| Q / X | Drink (clean water or the large bottle) / eat |
+| M | Map (or Read the field map in the inventory) |
 | N | Settlement overview |
 | H | Survival guide |
 | Esc | Menu. The world keeps running |
@@ -40,77 +39,35 @@ Two pieces of on-screen help:
 | F3 | Developer overlay |
 | F12 | Screenshot |
 
-## 3. What to try
+## 3. What to try (Red Thaw)
 
-**Survival and combat.**
-- Take the club in the farmhouse.
-- Zombies wander the map edges. They raise their arms (red) before they hit.
-- At 0 health you wake up in the farmhouse and keep your items.
-- Zombies never enter buildings or the bunker.
-- Watch three bars: Health, Water and Food.
-  - Below 25 water or food you stop regenerating health.
-  - At 0 you slowly lose health, but never below a floor.
+**The opening.** Start a **New World**. You wake on the forest floor by a burned shed. Press **E** on the
+bag beside you: it holds a large bottle of water, a pack of crackers and a map. Drink with **Q**, eat with
+**X**, and open the map with **M** (or **Read** it in the inventory, **I**). Nothing explains itself.
 
-**Noise and hordes.**
-- Chopping, salvaging, building, sprinting and fighting are loud, and zombies go to where they heard the
-  noise.
-- Keep making noise in one place and more zombies come.
-- The top-left line shows how disturbed the area is (calm → overrun). It fades if you stay quiet.
-- Lots of noise near home, including digging and machinery heard through the hatch, eventually
-  draws a **horde to the homestead**. You get a warning first.
+**Find the cabin.** The map shows a hunter's cabin in the clearing to the east. Open the gate, enter the
+cabin, and do what the farmhouse used to offer: mark and dig a shelter beneath it, climb down, dig and
+reinforce, build, store, and run the generator, purifier and planter. All survival and bunker systems are
+unchanged.
 
-**Gathering and crafting.**
-- Fell trees for wood.
-- Search places for supplies: the car, the shed, the tractor and the rain barrel on the farm; the pantry
-  and linen chest inside. Searched places refill over time.
-- Build a **workbench** (B). It makes:
-  - tools: hatchet (chops faster), machete (hits harder)
-  - a padded jacket (zombie hits hurt less)
-  - parts: timber frames, spike kits, grow lights
-  - bandages
-- It also repairs worn tools.
+**The settlement.** Follow the road east (the right edge of the map) to the abandoned settlement. You
+might hear something by day near the houses, and you might not. Nothing will be there. Someone is hiding
+in the collapsed house on the left: speak to her softly with **E**. She may come to your shelter if you
+bring her what she asks for. Search the houses, the shop and the workshop for supplies.
 
-**Underground expansion.**
-- Dig the shelter under the farmhouse and climb down.
-- Aim at earth walls and press E to dig.
-- Far from the first room you need a **timber support** (B → support).
-- You can place walls, crates, planters and benches on dug floor. The game refuses anything that would
-  wall off part of the bunker.
+**Night.** Stay out after dark (F3 → *Night*) and watch the gaps between the houses, the road and the
+trees. Sightings are brief and rare, and they are not fights.
 
-**Construction and defences.**
-- The yard is fenced on three sides; the north side has gaps.
-- Build **barricades** in the gaps and upgrade them from wood to metal to concrete.
-- Add **spike traps** where zombies will walk. A **reinforced door** lets people through a barricade line.
-- Damaged structures show a bar. Press R to repair, and refused actions say why.
-- Upgrade the **hatch to steel** to keep bunker noise in.
+**The Burnt Ones.** Nothing hunts you on its own in this build, because what starts a hunt is not decided
+yet. F3 → **Start a Burnt One hunt (on me)** sends one after you. Check that:
+- it arrives from out of sight and finds you
+- it attacks (it draws back before it strikes) and you can fight it
+- it loses you and picks up your trail again
+- it never follows you into the cabin or the bunker
+- it gives up after about 4 minutes
 
-**Power, water and food.**
-- Fuel and start the generator: the lights and purifier work, and so do the planter's grow lights.
-- Pour dirty water into the purifier to get clean water.
-- A **rain collector** (outdoors) fills with dirty water, faster when it rains.
-- A **hydroponic planter** grows potatoes from clean water while the power is on.
-
-**Exploration and discoveries.**
-- Walk **east along the road** from the homestead to reach the **service station**. It has fuel, food,
-  cloth, cement, scrap metal and electrical parts, plus resident zombies.
-- The workshop's **tool locker** holds a tuned carburetor and a workshop manual. Neither respawns:
-  - Fit the carburetor to the generator to halve its fuel use.
-  - Read the manual to learn the felling axe.
-- The map (M) shows places once you have found them.
-
-**Survivor management.**
-- Someone is hiding at the service station. Talk to her and bring what she needs.
-- She walks to your shelter and lives there.
-- Give her a job by talking to her or in the settlement overview (N):
-  - the **water** job tends the purifier
-  - the **farm** job tends the planters
-- She only uses what is in storage and the machines you built. If she can't work, she says why.
-- The settlement feeds her once a day from storage.
-
-**Day, night and weather.**
-- Days last 24 minutes. Nights are dark, so carry yourself carefully; zombies see less at night, but more
-  of them roam.
-- Rain hides your noise.
+**Multiplayer.** A second player who joins wakes by the same bag and gets their own kit. Players can be
+in different places: one in the bunker, one in the settlement.
 
 ## 4. Two players
 
@@ -118,7 +75,7 @@ Two pieces of on-screen help:
 - **Joining:**
   - Same computer: **Join Game** with address `127.0.0.1`, port 24680, and a different player name.
   - Over the network: use the host's LAN address.
-- Players can be in completely different places (homestead, farmhouse, bunker levels, service station).
+- Players can be in completely different places (the pine woods, the cabin, bunker levels, the settlement).
 - Things worth trying together:
   - one explores while the other builds
   - both use storage or the workbench at the same time
@@ -138,14 +95,14 @@ crops, weather, discoveries and the survivor. Please report anything that comes 
 
 | Group | Commands |
 |---|---|
-| World | save, advance the clock 1 h, set the time to night or day, rain on/off, rebuild the view, screenshot |
-| Threat | zombies on/off, spawn a zombie or a group, make noise, raise home heat, **start a horde** |
+| World | save, advance the clock 1 h, set the time to night or day, snowfall on/off, rebuild the view, screenshot |
+| Threat | **start a Burnt One hunt (on me)**, automatic threats on/off (the old loop), Burnt Ones on/off, spawn one or a group, make noise, raise home heat, start a cabin attack, AI labels |
 | Player | hurt, heal, make thirsty, make hungry |
 | Materials | timber to storage, fuel + dirty water, a construction kit (metal, cement, parts) |
 | Structures | damage all structures here, repair all |
 | Bunker | create an underground test level |
 | Survivor | recruit the survivor to the shelter, assign her water or farm work |
-| Diagnostics | **write problem report** |
+| Diagnostics | **write problem report** (includes the hunt state). The overlay shows the hunt line: state, target, distance, time left |
 
 Joining players cannot use these unless the host enables client dev commands in the settings file.
 
@@ -163,10 +120,12 @@ Joining players cannot use these unless the host enables client dev commands in 
 
 ## 8. Known limitations (worth knowing while testing)
 
-- All art and sound are generated placeholders. Zombie design is deferred.
+- All art and sound are generated placeholders, ready to be replaced with your own drawings and recordings.
+- Nothing starts a Burnt One hunt on its own yet (developer trigger only). Laughter and night sightings are
+  atmosphere only.
 - **This build has not been run on Windows.** Windows acceptance is pending: it was tested on Linux
   only, and no exported Windows build exists.
 - Movement collision is checked on each player's own computer. The host checks speed and reach.
-- There is one point of interest, one survivor with two jobs, one weather type (rain) and one defence
-  event type.
+- There is one settlement, one survivor with two jobs, and one weather type (snowfall, which has the old
+  rain spell's effects).
 - Inventory is text-based (no item icons).

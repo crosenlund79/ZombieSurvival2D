@@ -109,7 +109,7 @@ func test_developer_hunt_pursues_and_attacks() -> void:
 
 func test_hunt_is_refused_indoors_and_ends() -> void:
 	var w := WorldState.create_new("w_hunt2", 9)
-	_player(w, PID, "homestead_farmhouse", Vector2(300, 480))
+	_player(w, PID, "homestead.farmhouse", Vector2(300, 480))
 	var r := ZombieSim.start_hunt(w, PID)
 	check(not r["ok"], "no hunt inside the cabin (protected shelter boundary)")
 	eq(str(r["reason"]), "HUNT_TARGET_SHELTERED", "clear reason")
@@ -119,7 +119,7 @@ func test_hunt_is_refused_indoors_and_ends() -> void:
 	var r2 := ZombieSim.start_hunt(w, PID)
 	check(r2["ok"], "outside it works")
 	var z: ZombieState = w.zombies[r2["zombie_id"]]
-	p.region_id = "homestead_farmhouse"  # player goes inside: it can never follow
+	p.region_id = "homestead.farmhouse"  # player goes inside: it can never follow
 	_step(w, 5.0)
 	eq(z.region_id, "homestead", "the hunter stays outside")
 	check(z.target_player == "" or z.target_player == PID and z.ai != ZombieState.AI.WINDUP, "no attack through the boundary")

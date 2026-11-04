@@ -1,10 +1,11 @@
-# Aftergrowth (repository: ZombieSurvival2D)
+# Red Thaw (working title; repository: ZombieSurvival2D, internal project name Aftergrowth)
 
-A 2D co-op zombie-survival and underground bunker-management game, built in Godot (GDScript).
+A bleak 2D co-op survival and underground bunker game set in a nuclear winter, built in Godot (GDScript).
+Civilisation is gone; the people who remain have gone mad. No zombies — the Burnt Ones are human.
 
-> Danger above. Security below. But security must be earned and can be threatened.
+> A frozen world. Abandoned places. The remnants of humanity.
 
-**Status:** iterations 006–009 "A World Worth Surviving" — integrated vertical slice: building and defences, crafting, food and equipment, a reacting world (threat, horde events, day/night, rain, the service station), and a recruitable survivor. Windows acceptance pending. Play: [`docs/PLAYTEST_GUIDE.md`](docs/PLAYTEST_GUIDE.md).
+**Status:** iteration 010 "Red Thaw" on `iteration/010-red-thaw` — concept and visual rebirth (burned-shed opening, hunter's cabin, frozen pine woods, abandoned settlement, omens, a frightened survivor, developer-triggered Burnt One hunts) on top of iterations 001–009 (building and defences, crafting, food and equipment, day/night and weather, bunker life). Windows acceptance pending. Play: [`docs/PLAYTEST_GUIDE.md`](docs/PLAYTEST_GUIDE.md).
 Godot 4.7.2 · open `project.godot` · press F5. Two players: see the testing guide.
 
 - Design context and inherited engineering lessons: [`docs/HANDOVER.md`](docs/HANDOVER.md)

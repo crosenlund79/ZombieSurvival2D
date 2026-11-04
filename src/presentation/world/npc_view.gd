@@ -105,6 +105,7 @@ func _process(delta: float) -> void:
 	var huddled: bool = n.recruit in ["waiting", "met"] and NpcSim.defn(npc_id).has("huddle_art")
 	if huddled != _huddled:
 		_huddled = huddled
+		interact.position = Vector2(0, -8) if huddled else Vector2(0, -30)  # sitting vs standing
 		_art()
 	_t += delta
 	var moving := position.distance_to(n.position) > 1.0

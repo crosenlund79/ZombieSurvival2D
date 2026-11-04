@@ -11,6 +11,13 @@ in [`HANDOVER.md`](HANDOVER.md) §1.2.
 
 Update this file whenever an iteration adds or settles a decision.
 
+> **Iteration 010 — Red Thaw concept conversion.** The game is now *Red Thaw* (working title): a nuclear
+> winter with human madness instead of zombies. Earlier zombie decisions still describe working systems.
+> The simulation code keeps the name "zombie" internally, and the hostiles are presented as **Burnt Ones**.
+> The protected farmhouse rule (GD-07/GD-22) now protects the **hunter's cabin** and its bunker. Automatic
+> threat loops (GD-06, GD-09, GD-10, GD-28, GD-29) are kept in code but switched off by default until the
+> creator decides what starts a hunt (RX-01).
+
 ## APPROVED
 
 | ID | Decision | Source |
@@ -48,7 +55,35 @@ Update this file whenever an iteration adds or settles a decision.
 | GD-31 | One additional small point of interest with scavenging, risk and a useful discovery; map integration; no fast travel | Commission (I008) |
 | GD-32 | One recruitable persistent survivor who lives in the bunker and does two useful jobs with real resources; light settlement overview | Commission (I009) |
 
+### Red Thaw (iteration 010)
+
+| ID | Decision | Source |
+|---|---|---|
+| RD-01 | Nuclear-winter survival setting in a northern pine wilderness; civilisation has collapsed | Red Thaw commission |
+| RD-02 | Human madness instead of zombies: the hostiles are surviving people, notably the Burnt Ones. They stay human in presentation (no demons, no supernatural) | Red Thaw commission |
+| RD-03 | *Red Thaw* is the working title. It is shown in the window, menu, build label and documentation. The repository, project folder and save ids are not renamed | Red Thaw commission |
+| RD-04 | Opening: you wake on the forest floor by a burned shed with a small bag: one large bottle of water, a pack of crackers and a field map. No tools, weapons or bunker, and no cinematic or exposition. Joining players get their own kit, and shared loot is never duplicated | Red Thaw commission |
+| RD-05 | Winter / pine-forest visual direction in the dirty-ink style (see visual register RT-xx) | Red Thaw commission |
+| RD-06 | The farmhouse is presented as a remote **hunter's cabin**. Its gameplay (entry, hatch, ladder, bunker, excavation, construction) is unchanged, and so is the protected boundary | Red Thaw commission |
+| RD-07 | One small abandoned settlement with intermittent, spatial, daytime laughter. No source is ever shown, and investigating reveals nothing | Red Thaw commission |
+| RD-08 | Occasional night-time human silhouettes. They are atmospheric, not encounters, and are coherent for nearby players without synchronised camera effects | Red Thaw commission |
+| RD-09 | One frightened, persistent, non-hostile survivor huddled in a sheltered corner. She trembles, mutters and gives short fragmented lines, with no explanation of the catastrophe. The existing NPC architecture (and recruitment) is reused | Red Thaw commission |
+| RD-10 | The existing bunker, survival, construction, crafting, infrastructure, multiplayer, persistence and map systems are preserved | Red Thaw commission |
+| RD-11 | One Burnt One can detect, pursue, navigate, attack, lose and reacquire a target, consistently in multiplayer under host authority. What starts a hunt is undecided: there is only a developer trigger plus diagnostics | Red Thaw commission |
+
 ## EXPLORING (prototype choices awaiting a creator decision)
+
+| ID | Topic | Current prototype (Red Thaw) | Where to tune |
+|---|---|---|---|
+| RX-01 | What starts a Burnt One hunt | Undecided. There is no permanent trigger. `dev hunt` / F3 "Start a Burnt One hunt" starts one against the caller. Noise, attention and heat still run and can steer an existing hunter later | `ZombieSim.start_hunt` |
+| RX-02 | Hunt behaviour numbers | Spawns about 760 px away (at least 480 px from every player) at an authored map entry. It is told the target position at the start, catches the scent again every 12 s while searching, and gives up after 240 s and walks off. Combat uses the existing Burnt One numbers (GX-02) | `content/tuning/zombies.json` (`hunt_*`) |
+| RX-03 | Automatic threat loop | Off by default (`ThreatState.ambient = false`): no base population, noise reinforcements, night/heat wanderers or automatic cabin attacks. `dev ambient 1` restores the old loop for testing | `ThreatState.ambient` |
+| RX-04 | Omen frequency | Laughter: a 35 s slot with a 30 % chance, by day only, heard within 650 px of one of six building spots. Shadows: a 45 s slot with a 32 % chance, at night only, a 3.5–6 s walk along one of six authored paths. Both are seeded from the world seed and clock | `content/tuning/omens.json`, region `omens` |
+| RX-05 | Frozen blood / thaw motif | Cosmetic only: dried and frozen blood on Burnt One art, one thawed-blood decal in the settlement, and blood soaking the snow under a fallen Burnt One. No temperature, bleeding or tracking system | art only |
+| RX-06 | Deeper psychological horror (sanity, hallucination, voices) | Not built | — |
+| RX-07 | Starter kit numbers | Large bottle +70 water, crackers +25 food, map never used up. The drink key uses the bottle when there is no clean water | `content/items.json`, homestead `starter_bag` |
+
+### Earlier prototype choices (still valid unless noted)
 
 | ID | Topic | Current prototype | Where to tune |
 |---|---|---|---|
@@ -84,6 +119,12 @@ Update this file whenever an iteration adds or settles a decision.
 
 | ID | Item | Notes |
 |---|---|---|
+| RF-01 | Elaborate catastrophe lore; where the Burnt Ones come from | The mystery is intentional |
+| RF-02 | Full blood-tracking gameplay (temperature-driven thawing, trails, tracking) | The motif exists only as art (RX-05) |
+| RF-03 | Large settlements and factions | One small settlement |
+| RF-04 | Narrative campaign | Sandbox only |
+| RF-05 | New major biome systems | Pine woods and the settlement only |
+| RF-06 | Fast travel, route planning and ambush travel | The map shows and never moves you |
 | GF-01 | Zombie visual design and further zombie types | Visual design deferred (VF-01); one placeholder figure exists |
 | GF-02 | Rogue AI / drones as an antagonist | Open design question (visual register C-3) |
 | GF-03 | Zombies entering the farmhouse or bunker, raids, cave-ins | Defence events stay outside (GD-22); no collapse simulation |

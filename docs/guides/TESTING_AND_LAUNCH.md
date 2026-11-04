@@ -152,6 +152,7 @@ xvfb-run -a python3 tools/shots_phase_b.py                # rendered screenshots
 python3 tools/mp_test.py slice                            # the integrated vertical-slice loop (19 steps, one real game)
 python3 tools/mp_test.py build_multi craft_multi world_multi settlement_multi   # 006-009 two-process scenarios
 xvfb-run -a -s "-screen 0 1700x1000x24" python3 tools/shots_006.py   # 006-009 screenshots
+xvfb-run -a -s "-screen 0 1700x1000x24" python3 tools/shots_red_thaw.py   # 010 Red Thaw screenshots + runtime checks (CHECK lines)
 python3 tools/mp_test.py accept                           # the 25-step survival-slice acceptance run
 python3 tools/mp_test.py infra_multi dig_multi danger_multi   # iteration 003 two-process scenarios
 xvfb-run -a -s "-screen 0 1700x1000x24" python3 tools/shots_003.py   # iteration 003 screenshots

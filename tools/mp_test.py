@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Real multi-process acceptance tests for Aftergrowth.
+"""Real multi-process acceptance tests for Red Thaw (internal name Aftergrowth).
 
 Starts separate Godot processes (host + clients) that talk over ENet on
 localhost, drives them through the --autotest channel and checks results.
@@ -503,7 +503,7 @@ def to_west_trees(i):
 def scenario_danger_single():
     s = Instance("t_danger"); s.wipe(); s.start()
     try:
-        r = s.cmd("single new 31 Scout")
+        r = s.cmd("single new 31 Scout"); s.cmd("dev ambient 1")  # legacy automatic loop under test
         base = len(zs(r["state"]))
         check("danger: base zombie population exists away from the homestead", base >= 4, base)
         r = take_club(s)
@@ -562,7 +562,7 @@ def scenario_danger_multi():
         i.wipe()
     try:
         host.start(); c.start()
-        host.cmd(f"host {PORT} new 47 Hosty")
+        host.cmd(f"host {PORT} new 47 Hosty"); host.cmd("dev ambient 1")  # legacy automatic loop under test
         r = c.cmd(f"join 127.0.0.1 {PORT} Cleo")
         check("dmp: client joins a world with zombies", r["ok"], r["error"])
         time.sleep(0.6)
@@ -607,7 +607,7 @@ def scenario_danger_multi():
         host.cmd("save"); host.quit()
         wait_for(c, lambda s: not s["in_world"], timeout=12)
         host.start()
-        r = host.cmd(f"host {PORT} continue Hosty")
+        r = host.cmd(f"host {PORT} continue Hosty"); host.cmd("dev ambient 1")
         r = c.cmd(f"join 127.0.0.1 {PORT} Cleo")
         check("dmp: rejoin after restart", r["ok"], r["error"])
         time.sleep(0.6)
@@ -735,7 +735,7 @@ def scenario_accept():
         i.wipe()
     s.start()
     try:
-        r = s.cmd("single new 91 Survivor")
+        r = s.cmd("single new 91 Survivor"); s.cmd("dev ambient 1")  # legacy automatic loop under test
         check("accept 01: new world starts on the surface", r["ok"] and r["state"]["region"] == "homestead", r["state"].get("region"))
         r = go_inside(s)
         check("accept 02: reach the farmhouse", r["state"]["region"] == "homestead.farmhouse", r["state"].get("region"))
@@ -830,7 +830,7 @@ def scenario_accept():
         st = s.cmd("wait 0.5")["state"]
         check("accept 24b: lamps lit after reload (power derived)", st["view"]["lamps"] and all(st["view"]["lamps"].values()), st["view"]["lamps"])
         s.cmd("save"); s.quit(); s.start()
-        s.cmd(f"host {PORT} continue Survivor")
+        s.cmd(f"host {PORT} continue Survivor"); s.cmd("dev ambient 1")
         c.start()
         r = c.cmd(f"join 127.0.0.1 {PORT} Rejoiner")
         check("accept 25a: second player joins the reloaded world", r["ok"], r["error"])
@@ -1334,7 +1334,7 @@ def scenario_slice():
     immediately (its natural trigger is unit-tested), and as a safety heal so a bad roll cannot end the run."""
     s = Instance("t_slice"); s.wipe(); s.start()
     try:
-        r = s.cmd("single new 101 Pioneer"); s.cmd("tips off")
+        r = s.cmd("single new 101 Pioneer"); s.cmd("tips off"); s.cmd("dev ambient 1")  # legacy automatic loop under test
         check("slice 00: new survival world, nothing prepared", r["ok"] and not r["state"]["bunkers"] and not r["state"]["gear"], "")
         # 1. Establish the bunker.
         go_inside(s); s.cmd("walk_to 300 492"); s.cmd("press_interact")
@@ -1495,6 +1495,97 @@ def scenario_slice():
 
 
 
+def _to_settlement_on_foot(inst):
+    """From the burned-shed opening to the settlement, the way a player walks it."""
+    inst.cmd("walk_to 700 1180"); inst.cmd("walk_to 1150 1400"); inst.cmd("walk_to 2340 1400 10")
+    return inst.cmd("interact homestead.road_east")
+
+
+def scenario_red_thaw_multi():
+    """Iteration 010: the opening kit per player, a developer Burnt One hunt against a remote
+    client under host authority, coherent omens on both peers, and persistence."""
+    host = Instance("t_rthost"); c = Instance("t_rtclient")
+    for i in (host, c):
+        i.wipe()
+    try:
+        host.start(); c.start()
+        host.cmd(f"host {PORT} new 120 Hosty"); host.cmd("tips off")
+        r = c.cmd(f"join 127.0.0.1 {PORT} Cleo"); c.cmd("tips off")
+        check("rt: client joins", r["ok"], r["error"])
+        sh = host.state()
+        for name in ("Hosty", "Cleo"):
+            p = player(sh, name)
+            check(f"rt: {name} wakes by the burned shed", p and p["region"] == "homestead" and abs(p["x"] - 420) < 120 and abs(p["y"] - 1130) < 80, p)
+        check("rt: no Burnt Ones roam on their own", len(zs(sh)) == 0, len(zs(sh)))
+        host.cmd("interact homestead.starter_bag")
+        c.cmd("interact homestead.starter_bag")
+        c.cmd("interact homestead.starter_bag")
+        time.sleep(0.4)
+        sh = host.state()
+        hp_, cp_ = player(sh, "Hosty"), player(sh, "Cleo")
+        check("rt: each player has exactly one kit (host authority)", hp_["carried"].get("crackers") == 1 and cp_["carried"].get("crackers") == 1
+              and cp_["carried"].get("water_bottle") == 1 and cp_["gear"].count("field_map") == 1, (hp_["carried"], cp_["carried"], cp_["gear"]))
+        check("rt: the bag remembers both claims", len(sh["entities"][f"homestead.starter_bag"]["state"].get("taken_by", [])) == 2, sh["entities"]["homestead.starter_bag"])
+        r = _to_settlement_on_foot(c)
+        check("rt: the client walks to the settlement", r["state"]["region"] == "service_station", r["state"].get("region"))
+        c.cmd("walk_to 1200 860")
+        # host-started hunt against the remote client
+        host.cmd("dev hunt Cleo")
+        time.sleep(0.5)
+        sh = host.state()
+        hunters = [z for z in sh["zombie_rows"] if z["hunter"]]
+        check("rt: the host starts a hunt against the remote client", len(hunters) == 1 and hunters[0]["region"] == "service_station", sh.get("hunts"))
+        hp0 = c.state()["health"]
+        sc = wait_for(c, lambda st: st["health"] < hp0 or st["dead"], timeout=30)
+        check("rt: the Burnt One finds and hurts the client", sc["health"] < hp0 or sc["dead"], (hp0, sc["health"], host.state().get("hunts")))
+        check("rt: the client mirrors the hunter", len([z for z in zs(c.state()) if z["region"] == "service_station"]) >= 1, len(zs(c.state())))
+        c.cmd("attack_nearest 6")
+        time.sleep(0.3)
+        check("rt: the client's hits are applied by the host", any(z["hp"] < 100 for z in host.state()["zombie_rows"]), [(z["ai"], z["hp"]) for z in host.state()["zombie_rows"]])
+        check("rt: hunt diagnostics on the host", any("hunt" in line for line in host.state().get("hunts", [])) or not host.state()["zombie_rows"], host.state().get("hunts"))
+        host.cmd("dev heal"); c.cmd("wait 0.1")
+        host.cmd("dev peaceful 1"); host.cmd("dev peaceful 0")   # clear the hunter
+        # the host walks to the settlement too; both stand by the houses and listen
+        host.cmd("dev teleport 2300 1400"); host.cmd("walk_to 2340 1400 10"); host.cmd("interact homestead.road_east")
+        host.cmd("dev teleport 1300 880"); c.cmd("walk_to 1240 880")
+        host.cmd("dev time 11")
+        st_h = wait_for(host, lambda st: any(o["kind"] == "laugh" for o in st.get("omens", [])), timeout=240)
+        time.sleep(1.0)
+        lh = [o for o in st_h.get("omens", []) if o["kind"] == "laugh"]
+        lc = [o for o in c.state().get("omens", []) if o["kind"] == "laugh"]
+        check("rt: laughter is heard near the houses by day", len(lh) >= 1, lh)
+        check("rt: both players hear the same laugh from the same spot", lh and lc and (lh[-1]["slot"], lh[-1]["spot"]) == (lc[-1]["slot"], lc[-1]["spot"]), (lh[-1:], lc[-1:]))
+        check("rt: the laughter has no visible source", len(zs(host.state())) == 0, len(zs(host.state())))
+        host.cmd("dev time 22")
+        st_h = wait_for(host, lambda st: any(o["kind"] == "shadow" for o in st.get("omens", [])), timeout=420)
+        time.sleep(1.0)
+        sh_ = [o for o in st_h.get("omens", []) if o["kind"] == "shadow"]
+        sc_ = [o for o in c.state().get("omens", []) if o["kind"] == "shadow"]
+        check("rt: a silhouette appears at night", len(sh_) >= 1, sh_)
+        check("rt: both players see the same silhouette on the same path", sh_ and sc_ and (sh_[-1]["slot"], sh_[-1]["from"]) == (sc_[-1]["slot"], sc_[-1]["from"]), (sh_[-1:], sc_[-1:]))
+        # the frightened survivor: one persistent, shared identity at her hiding place
+        c.cmd("walk_to 360 700")
+        c.cmd("npc mara talk")
+        time.sleep(0.5)
+        mh = host.state().get("npcs", {}).get("mara", {})
+        mc = c.state().get("npcs", {}).get("mara", {})
+        check("rt: the frightened survivor waits huddled at her hiding place (persistent identity)",
+              mh.get("region") == "service_station" and abs(mh.get("x", 0) - 346) < 5, mh)
+        check("rt: talking to her is validated by the host and seen by both",
+              mh.get("recruit") == "met" and mc.get("recruit") == "met", (mh.get("recruit"), mc.get("recruit")))
+        host.cmd("save"); host.quit()
+        wait_for(c, lambda st: not st["in_world"], timeout=12)
+        host.start(); host.cmd(f"host {PORT} continue Hosty")
+        r = c.cmd(f"join 127.0.0.1 {PORT} Cleo")
+        st = r["state"]
+        check("rt: after restart the client rejoins in the settlement with their kit", st["region"] == "service_station" and st["carried"].get("crackers") == 1, (st["region"], st["carried"]))
+        check("rt: kit claims persist (no second kit after restart)", len(host.state()["entities"]["homestead.starter_bag"]["state"].get("taken_by", [])) == 2, "")
+        check("rt: no hunter is restored by a reload", not any(z["hunter"] for z in host.state()["zombie_rows"]), host.state()["zombie_rows"])
+    finally:
+        for i in (host, c):
+            i.kill()
+
+
 def scenario_perf_multi():
     """Two connected players, a horde plus extra groups active around them: measure host simulation cost."""
     host = Instance("t_phost"); c = Instance("t_pclient")
@@ -1502,7 +1593,7 @@ def scenario_perf_multi():
         i.wipe()
     try:
         host.start(); c.start()
-        host.cmd(f"host {PORT} new 70 Hosty"); host.cmd("tips off")
+        host.cmd(f"host {PORT} new 70 Hosty"); host.cmd("tips off"); host.cmd("dev ambient 1")
         c.cmd(f"join 127.0.0.1 {PORT} Cleo"); c.cmd("tips off")
         host.cmd("walk_to 1150 960"); c.cmd("walk_to 1190 960")
         host.cmd("dev siege 1"); host.cmd("wait 2")
@@ -1522,7 +1613,7 @@ def scenario_perf_multi():
             i.kill()
 
 
-SCENARIOS = {"perf_multi": scenario_perf_multi, "slice": scenario_slice, "settlement_multi": scenario_settlement_multi, "world_multi": scenario_world_multi, "craft_multi": scenario_craft_multi, "build_multi": scenario_build_multi, "accept": scenario_accept, "infra_multi": scenario_infra_multi, "dig_multi": scenario_dig_multi, "danger_single": scenario_danger_single, "danger_multi": scenario_danger_multi, "settings": scenario_settings, "bunker_single": scenario_bunker_single, "bunker_multi": scenario_bunker_multi, "single": scenario_single, "multiplayer": scenario_multiplayer,
+SCENARIOS = {"red_thaw_multi": scenario_red_thaw_multi, "perf_multi": scenario_perf_multi, "slice": scenario_slice, "settlement_multi": scenario_settlement_multi, "world_multi": scenario_world_multi, "craft_multi": scenario_craft_multi, "build_multi": scenario_build_multi, "accept": scenario_accept, "infra_multi": scenario_infra_multi, "dig_multi": scenario_dig_multi, "danger_single": scenario_danger_single, "danger_multi": scenario_danger_multi, "settings": scenario_settings, "bunker_single": scenario_bunker_single, "bunker_multi": scenario_bunker_multi, "single": scenario_single, "multiplayer": scenario_multiplayer,
              "netfail": scenario_connection_failure, "assets": scenario_assets}
 
 if __name__ == "__main__":

@@ -3,9 +3,9 @@
 Single source of permanent project rules. Full design context: `docs/HANDOVER.md`.
 
 ## Status
-Working title **Aftergrowth**. Iterations 006–009 "A World Worth Surviving" (construction/defences,
-crafting/food/equipment, threat + defence event + day/night/weather + service station, recruitable survivor)
-implemented on `iteration/006-world-worth-surviving`; Windows acceptance pending for 001–009.
+Visible working title **Red Thaw** (iteration 010: nuclear winter, human madness, Burnt Ones) on
+`iteration/010-red-thaw`; internal project name and save id remain `Aftergrowth`. Systems from
+iterations 001–009 are preserved. Windows acceptance pending for 001–010.
 Gameplay decision register: `docs/DESIGN_DECISIONS.md` (keep it updated each iteration).
 Do not implement anything that has not been explicitly approved as an assignment by the
 creator. Brainstorms are not feature requests.
@@ -50,7 +50,8 @@ Architecture: `docs/guides/ARCHITECTURE.md`. Tests/launch: `docs/guides/TESTING_
   APPROVED / EXPLORING / DEFERRED register).
 - Adopt palette, hand-drawn non-pixel illustration, lighting contrast and atmosphere.
   Never infer camera perspective, composition, proportions or content from the moodboard.
-- Gameplay perspective and surface/bunker presentation are undecided. Zombie design is deferred.
+- Gameplay perspective and surface/bunker presentation are undecided. Red Thaw winter direction and the
+  Burnt One concept are APPROVED (register RT-xx); exact Burnt One design is EXPLORING.
 
 ## Workflow
 - Small fixes stay small. Major iterations: verify base branch + SHA, numbered iteration
