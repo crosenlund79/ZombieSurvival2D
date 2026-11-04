@@ -218,8 +218,9 @@ def scenario_assets():
     fix = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "tests", "fixtures", "overrides")
     img_dst = os.path.join(over, "characters", "player", "survivor_down.png")
     snd_dst = os.path.join(over, "audio", "world", "door_open.wav")
+    cab_dst = os.path.join(over, "world", "buildings", "hunter_cabin.png")   # a Red Thaw asset
     s = Instance("t_assets"); s.wipe()
-    for p in (img_dst, snd_dst):
+    for p in (img_dst, snd_dst, cab_dst):
         if os.path.exists(p):
             os.remove(p)
     s.start()
@@ -233,19 +234,22 @@ def scenario_assets():
         os.makedirs(os.path.dirname(snd_dst), exist_ok=True)
         shutil.copy(os.path.join(fix, "characters", "player", "survivor_down.png"), img_dst)
         shutil.copy(os.path.join(fix, "audio", "world", "door_open.wav"), snd_dst)
+        os.makedirs(os.path.dirname(cab_dst), exist_ok=True)
+        shutil.copy(os.path.join(fix, "characters", "player", "survivor_down.png"), cab_dst)
         r = s.cmd("reload_assets")
         r = s.cmd(f"walk_to {GATE_STAND}")
         r = s.cmd("press_interact")   # door sound requested after reload
         srcs = r["state"]["asset_sources"]
         check("assets: external image override used", srcs.get("char.player") == "external", srcs)
         check("assets: external sound override used", srcs.get("sfx.door_open") == "external", srcs)
+        check("assets: Red Thaw art (hunter's cabin) can be overridden too", srcs.get("world.hunter_cabin") == "external", srcs.get("world.hunter_cabin"))
         check("assets: gameplay unaffected by art swap (gate still works)", gate(r["state"])["state"]["open"] is True, gate(r["state"]))
         # Corrupt override is rejected -> template.
         shutil.copy(os.path.join(fix, "characters", "player", "corrupt_survivor_down.png"), img_dst)
         r = s.cmd("reload_assets")
         r = s.cmd("rebuild_view")
         check("assets: corrupt PNG rejected, template used", r["state"]["asset_sources"].get("char.player") == "template", r["state"]["asset_sources"])
-        os.remove(img_dst); os.remove(snd_dst)
+        os.remove(img_dst); os.remove(snd_dst); os.remove(cab_dst)
         r = s.cmd("reload_assets")
         r = s.cmd("press_interact")   # closes (door_close)
         r = s.cmd("press_interact")   # opens again (door_open resolved after reload)
@@ -254,7 +258,7 @@ def scenario_assets():
         check("assets: removing override restores template (sound)", srcs.get("sfx.door_open") == "template", srcs)
     finally:
         s.kill()
-        for p in (img_dst, snd_dst):
+        for p in (img_dst, snd_dst, cab_dst):
             if os.path.exists(p):
                 os.remove(p)
 
