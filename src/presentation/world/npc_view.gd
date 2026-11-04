@@ -124,7 +124,9 @@ func _process(delta: float) -> void:
 		var me := Session.local_player()
 		if _mutter_timer <= 0.0:
 			_mutter_timer = randf_range(12.0, 26.0)
-			if me != null and me.region_id == n.region_id and me.position.distance_to(n.position) < 520.0:
+			var avatar := get_tree().get_first_node_in_group("local_avatar") as Node2D
+			var here: Vector2 = avatar.global_position if avatar != null else (me.position if me != null else Vector2.INF)
+			if me != null and me.region_id == n.region_id and here.distance_to(n.position) < 520.0:
 				var snd := _random_line("mutters")
 				if snd != "":
 					Audio.play(snd, global_position)

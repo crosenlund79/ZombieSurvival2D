@@ -50,6 +50,13 @@ func _process(delta: float) -> void:
 	_shadows(w, delta)
 
 
+## Where the local player really is: the avatar (a client's own replica row is
+## not updated while it walks).
+func _my_position(me: PlayerState) -> Vector2:
+	var avatar := get_tree().get_first_node_in_group("local_avatar") as Node2D
+	return avatar.global_position if avatar != null else me.position
+
+
 func _laughter(w: WorldState, me: PlayerState) -> void:
 	var slot := w.tick / OmenSim.slot_ticks("laugh")
 	for s in [slot - 1, slot]:
@@ -63,12 +70,13 @@ func _laughter(w: WorldState, me: PlayerState) -> void:
 		if w.tick < int(ev["tick"]):
 			continue
 		_laugh_done = s
-		var near: bool = me.position.distance_to(ev["spot"]) <= float(ev["radius"])
+		var here := _my_position(me)
+		var near: bool = here.distance_to(ev["spot"]) <= float(ev["radius"])
 		if near and w.tick - int(ev["tick"]) < 3 * Simulation.TICK_RATE:
 			Audio.play(str(ev["sound"]), ev["spot"])
 			_note({"kind": "laugh", "slot": s, "spot": [roundi(ev["spot"].x), roundi(ev["spot"].y)], "sound": ev["sound"],
-				"distance": roundi(me.position.distance_to(ev["spot"])), "region": region_id})
-			SessionLog.info("omen", "laugh", {"slot": s, "sound": ev["sound"], "distance": roundi(me.position.distance_to(ev["spot"]))})
+				"distance": roundi(here.distance_to(ev["spot"])), "region": region_id})
+			SessionLog.info("omen", "laugh", {"slot": s, "sound": ev["sound"], "distance": roundi(here.distance_to(ev["spot"]))})
 
 
 func _shadows(w: WorldState, delta: float) -> void:

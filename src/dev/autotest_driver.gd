@@ -106,12 +106,17 @@ func _run(line: String) -> void:
 			# Swing at the nearest zombie n times (aim recomputed each swing).
 			for i in int(a[0]):
 				var me := Session.local_player()
+				# Aim from where the avatar really is (a client's own replica row is not
+				# updated while it walks; the avatar is, and that is what it reports).
+				var from := me.position
+				if main.region_view != null and main.region_view.local_avatar != null:
+					from = main.region_view.local_avatar.global_position
 				var best: ZombieState = null
 				for z in Session.world.zombies.values():
 					if z.region_id == me.region_id and not z.is_dead():
-						if best == null or z.position.distance_to(me.position) < best.position.distance_to(me.position):
+						if best == null or z.position.distance_to(from) < best.position.distance_to(from):
 							best = z
-				var aim := Vector2.DOWN if best == null else (best.position - me.position).normalized()
+				var aim := Vector2.DOWN if best == null else (best.position - from).normalized()
 				if main.region_view != null and main.region_view.local_avatar != null:
 					main.region_view.local_avatar.play_swing(aim)
 				Session.request_attack(aim)
@@ -395,8 +400,14 @@ func _state() -> Dictionary:
 			for key in w.threat.zones:
 				total += float(w.threat.zones[key])
 			s["attention_total"] = total
-			s["me_x"] = me.position.x
-			s["me_y"] = me.position.y
+			# Where the local player really is (a client's own replica row is not
+			# updated while it walks; its avatar is). The raw row stays available.
+			s["me_row_x"] = me.position.x
+			s["me_row_y"] = me.position.y
+			var av: Node2D = main.region_view.local_avatar if main.region_view != null else null
+			var pos: Vector2 = av.global_position if av != null and main.region_view.region_id == me.region_id else me.position
+			s["me_x"] = pos.x
+			s["me_y"] = pos.y
 			s["threat_label"] = Hud.threat_label(me)
 	var view: RegionView = main.region_view if main != null else null
 	var v := {"exists": view != null and is_instance_valid(view)}
