@@ -5,8 +5,8 @@ extends EntityView
 ## the last blow. Presentation: shake + chips per chop, a simple fall
 ## animation, then a stump. Collision comes from the footprints, not the art.
 
-@export var tree_asset := "env.tree_oak_a"
-@export var stump_asset := "env.tree_stump"
+@export var tree_asset := "env.pine_a"
+@export var stump_asset := "env.stump_snow"
 @export var flip_h := false
 @export var trunk_footprint := Vector2(36, 14)
 

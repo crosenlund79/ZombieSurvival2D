@@ -9,10 +9,11 @@ after gen_overhaul.py (tools/art/regenerate_all.py does this).
 """
 import math, os, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from inkkit import Canvas, hexc, mix, INK
+from PIL import ImageFilter
+from inkkit import Canvas, hexc, mix, INK, SS
 from gen_homestead import out
 
-SKIN, SKIN_D = hexc("#C09676"), hexc("#8E6A4E")
+SKIN, SKIN_D = hexc("#BC9A80"), hexc("#8A6C56")  # cold, pale
 Z_SKIN, Z_SKIN_D, Z_SKIN_L = hexc("#8A8E78"), hexc("#5C6152"), hexc("#A6A68E")
 LIGHT = (-1, -1, 0.32)
 
@@ -99,11 +100,12 @@ def hand(c, x, y, r, col):
 
 
 # ---------------------------------------------------------------- survivor
-JACKET, JACKET_D, JACKET_L = hexc("#5A6034"), hexc("#3D4224"), hexc("#7A7E46")
-TROUSER, TROUSER_D = hexc("#4A4236"), hexc("#322B23")
+# Red Thaw: a faded blue-grey winter parka, dark wool trousers, grey knit hat
+JACKET, JACKET_D, JACKET_L = hexc("#56625F"), hexc("#3A4442"), hexc("#7A8582")
+TROUSER, TROUSER_D = hexc("#3E3B37"), hexc("#2A2725")
 PACK, PACK_D = hexc("#76644A"), hexc("#504330")
-SCARF, SCARF_D = hexc("#7A4632"), hexc("#55301F")
-HAIR, BEARD, CAP = hexc("#3A2A1D"), hexc("#4A3426"), hexc("#4E4A3C")
+SCARF, SCARF_D = hexc("#6A5546"), hexc("#4A3A30")
+HAIR, BEARD, CAP = hexc("#3A2A1D"), hexc("#4A3426"), hexc("#55524C")
 
 
 def survivor(view):
@@ -432,8 +434,207 @@ def _zombie_side(c, base, lunge):
               width=1.5, color=mix(Z_SKIN_D, INK, 0.4))
 
 
+# ---------------------------------------------------------------- Burnt Ones (Red Thaw)
+# Human survivors gone wrong: damaged winter coats, scarred and burned skin, dried
+# and frozen blood, ragged silhouettes. Built on the zombie body (same canvas, base
+# line and proportions) with a new palette and overlays. Restrained faces: a hood
+# shadow hides the eyes.
+B_SKIN, B_SKIN_D, B_SKIN_L = hexc("#A09488"), hexc("#6E645C"), hexc("#B8AEA2")
+B_COAT, B_COAT_D, B_SHIRT = hexc("#3E3934"), hexc("#28241F"), hexc("#4E4740")
+B_BURN, B_RAW, B_BLOOD, B_BLOOD_D = hexc("#1E1A18"), hexc("#6A3A32"), hexc("#561814"), hexc("#30100E")
+FROST = hexc("#DDE3E6")
+
+
+def _burn(c, x, y, rx, ry):
+    """Charred patch with a raw, healed-red rim."""
+    b = c.blob(x, y, rx, ry, n=10, irregular=0.35)
+    c.fill(c.blob(x, y, rx * 1.35, ry * 1.35, n=10, irregular=0.3), B_RAW[:3] + (200,), tex=0.3)
+    c.fill(b, B_BURN, tex=0.4)
+
+
+def _blood(c, x, y, rx, ry, drips=2, frost=True):
+    b = c.blob(x, y, rx, ry, n=10, irregular=0.45)
+    c.fill(b, mix(B_BLOOD, B_BLOOD_D, 0.3 + c.rng.random() * 0.5)[:3] + (205,), tex=0.3)
+    for _ in range(drips):
+        dx = x + c.rng.uniform(-rx * 0.6, rx * 0.6)
+        c.ink([(dx, y), (dx + c.rng.uniform(-1, 1), y + ry + c.rng.uniform(4, 11))], width=1.6, color=B_BLOOD_D, alpha=220)
+    if frost:  # the blood is frozen: rime crystals over it
+        for _ in range(int(rx * ry / 14) + 1):
+            fx, fy = x + c.rng.uniform(-rx * 0.7, rx * 0.7), y + c.rng.uniform(-ry * 0.7, ry * 0.7)
+            c.ellipse_fill((fx - 0.45, fy - 0.45, fx + 0.45, fy + 0.45), mix(FROST, B_BLOOD, 0.35))
+
+
+def _tatters(c, x0, x1, y, n, length=(6, 16), col=None):
+    col = col or B_COAT_D
+    for _ in range(n):
+        x = c.rng.uniform(x0, x1); L = c.rng.uniform(*length); w = c.rng.uniform(3, 6)
+        p = [(x - w / 2, y - 2), (x + w / 2, y - 2), (x + w * 0.2 + c.rng.uniform(-2, 2), y + L)]
+        c.fill(p, col, tex=0.3)
+        c.ink([p[0], p[2], p[1]], width=1.0, alpha=200)
+
+
+def _hood(c, hx, hy, side=False, back=False):
+    if back:
+        hood = spline([(hx - 15, 34), (hx - 13, 16), (hx, 9), (hx + 13, 15), (hx + 15, 34), (hx + 9, 46), (hx - 9, 46)], steps=4)
+        part(c, hood, B_COAT, tex=0.4, ink=2.0, shade=(0.5, 1, 3.4, 90))
+        _burn(c, hx + 6, 22, 5, 3.5)
+        return
+    if side:
+        hood = spline([(hx - 14, 40), (hx - 12, 18), (hx + 2, 11), (hx + 12, 16), (hx + 13, 22), (hx + 4, 21), (hx - 2, 30), (hx - 4, 44)], steps=4)
+    else:
+        hood = spline([(hx - 15, 40), (hx - 14, 18), (hx, 10), (hx + 14, 17), (hx + 15, 40), (hx + 10, 30), (hx + 7, 22), (hx, 20),
+                       (hx - 7, 22), (hx - 10, 30)], steps=4)
+    part(c, hood, B_COAT, tex=0.4, ink=2.0)
+    # shadow over the eyes: the face stays restrained, almost unseen
+    eye = [(hx - 9, 24), (hx + 10, 24), (hx + 9, 33), (hx - 8, 33)] if not side else [(hx - 2, 24), (hx + 12, 24), (hx + 12, 33), (hx - 1, 33)]
+    eye = c.blob(sum(p[0] for p in eye) / 4, 27, 10 if not side else 7, 5.5, n=14, irregular=0.15)
+    c.fill(eye, (22, 19, 17, 205), tex=0.2)
+    c.fill(c.blob(eye[0][0] - 10 if not side else hx + 5, 25, 11 if not side else 8, 3, n=10, irregular=0.1), (22, 19, 17, 150), tex=0.2)
+
+
+def burnt(view, lunge=False):
+    g = globals()
+    saved = {k: g[k] for k in ("Z_SKIN", "Z_SKIN_D", "Z_SKIN_L", "Z_CLOTH", "Z_CLOTH_D", "Z_SHIRT", "Z_STAIN", "Z_HAIR")}
+    g.update(Z_SKIN=B_SKIN, Z_SKIN_D=B_SKIN_D, Z_SKIN_L=B_SKIN_L, Z_CLOTH=B_COAT, Z_CLOTH_D=B_COAT_D, Z_SHIRT=B_SHIRT,
+             Z_STAIN=B_BLOOD_D, Z_HAIR=B_COAT_D)
+    try:
+        W, H = 110, 172
+        c = Canvas(W, H, seed=5601 + ["down", "up", "side"].index(view) + (10 if lunge else 0))
+        base = 164
+        c.soft_shadow((24, base - 9, 88, base + 6), alpha=130, blur=4)
+        if view == "side":
+            lean = 8 if lunge else 4
+            _zombie_side(c, base, lunge)
+            hx = 52 + 8 + lean * 1.4
+            _tatters(c, 40, 68, 108, 6)
+            _hood(c, hx, 34, side=True)
+            _burn(c, hx + 8, 38, 3.5, 2.5)
+            _blood(c, 60, 74, 6, 8, drips=2)
+            _blood(c, 47, 96, 4, 3, drips=1)
+        else:
+            front = view == "down"
+            _zombie_front(c, base, front, lunge)
+            _tatters(c, 36, 74, 108, 9)
+            _hood(c, 58, 33, back=not front)
+            if front:
+                _burn(c, 52, 37, 4, 3)
+                _burn(c, 64, 88, 6, 4)
+                _blood(c, 50, 70, 8, 10, drips=3)
+                _blood(c, 66, 100, 5, 4, drips=1)
+                c.ink([(54, 41), (62, 40)], width=1.0, color=B_BLOOD_D, alpha=220)  # cracked lips
+            else:
+                _blood(c, 62, 76, 6, 6, drips=2)
+                _burn(c, 46, 64, 7, 5)
+        suffix = "_lunge" if lunge else ""
+        c.save(out("characters/burnt/template_burnt_%s%s.png" % (view, suffix)), size=(W, H))
+    finally:
+        g.update(saved)
+
+
+def burnt_dead():
+    W, H = 190, 90
+    c = Canvas(W, H, seed=5701)
+    base = 60
+    c.soft_shadow((14, base - 14, 176, base + 12), alpha=110, blur=5)
+    coat = spline([(30, 40), (70, 30), (130, 32), (162, 44), (150, 62), (90, 66), (36, 60)], steps=4)
+    part(c, coat, B_COAT, tex=0.4, ink=2.0, shade=(0, 1, 3.5, 80))
+    _tatters(c, 40, 150, 62, 7, (4, 10))
+    hood = c.blob(164, 44, 15, 13, n=14, irregular=0.1)
+    part(c, hood, B_COAT_D, tex=0.4, ink=1.8)
+    arm = limb([(120, 40), (150, 22), (172, 18)], [10, 8, 7])
+    part(c, arm, B_SKIN_D, tex=0.3, ink=1.6)
+    leg = limb([(40, 50), (16, 46), (6, 52)], [12, 10, 9])
+    part(c, leg, B_COAT_D, tex=0.3, ink=1.6)
+    _blood(c, 96, 48, 14, 7, drips=0)
+    # blood that thawed under it and soaked the snow (Red Thaw motif, cosmetic)
+    c.fill(c.blob(110, 70, 34, 8, n=14, irregular=0.4), mix(B_BLOOD, (200, 205, 207, 255), 0.25)[:3] + (180,), tex=0.2)
+    c.save(out("characters/burnt/template_burnt_dead.png"), size=(W, H))
+
+
+def npc_huddled():
+    """The frightened survivor: sitting against a wall, knees drawn up, arms around
+    them, head down, a blanket over the shoulders. Same canvas/pivot as char.npc."""
+    W, H = 104, 168
+    c = Canvas(W, H, seed=5801)
+    base = 160
+    c.soft_shadow((18, base - 10, 88, base + 6), alpha=130, blur=4)
+    coat, coat_d = hexc("#4E5A64"), hexc("#34404A")   # Mara's faded blue coat
+    blanket = hexc("#5E4E40")
+    # feet / boots in front
+    boot(c, 38, base - 1, 16)
+    boot(c, 64, base - 1, 16)
+    # shins rising to the knees
+    for x in (40, 62):
+        part(c, limb([(x, base - 10), (x + 1, 116)], [14, 15]), mix(TROUSER, coat_d, 0.3), shade=(1, 0.2, 4, 60))
+    # blanket over back and shoulders, a hump behind the knees
+    bl = spline([(16, 150), (14, 112), (24, 90), (52, 80), (80, 90), (90, 112), (88, 150)], steps=5)
+    m = part(c, bl, blanket, tex=0.4, ink=2.1, shade=(1, 0.5, 4, 85))
+    c.grime(m, 0.3, drips=False)
+    for k in range(5):
+        c.ink([(20 + k * 14, 96 + abs(2 - k) * 3), (18 + k * 15, 148)], width=0.9, alpha=110)
+    # knees (in front of the blanket)
+    for x in (40, 62):
+        part(c, c.blob(x, 116, 10, 9, n=12, irregular=0.05), mix(TROUSER, coat_d, 0.3), tex=0.25, ink=1.6)
+    # arms wrapped around the knees, hands clasped
+    part(c, limb([(24, 104), (34, 126), (52, 128)], [12, 10, 9]), coat, shade=(0.3, 1, 4, 60))
+    part(c, limb([(82, 104), (72, 126), (54, 128)], [12, 10, 9]), coat_d)
+    hand(c, 53, 127, 5, SKIN)
+    # head bowed onto the knees: only the top of the head and hair visible
+    head = c.blob(51, 98, 13, 11, n=16, irregular=0.05)
+    part(c, head, hexc("#4A3A2C"), tex=0.4, ink=2.0, shade=(0.4, 1, 3.4, 70))
+    for k in range(5):
+        c.ink([(42 + k * 4, 90), (40 + k * 4.5, 104)], width=0.8, alpha=120)
+    c.save(out("characters/survivor/template_npc_huddled.png"), size=(W, H))
+
+
+def shadow_figure():
+    """A distant human silhouette for night sightings: flat ink, softened edges."""
+    W, H = 104, 168
+    c = Canvas(W, H, seed=5901)
+    base = 160
+    col = hexc("#0F0E0E")
+    for x, ofs in ((46, -4), (58, 5)):
+        c.fill(limb([(x, 100), (x + ofs * 0.5, 128), (x + ofs, base - 2)], [14, 11, 10]), col)
+    c.fill(spline([(30, 56), (44, 46), (66, 48), (76, 58), (74, 82), (72, 104), (32, 106), (30, 82)], steps=5), col)
+    c.fill(limb([(32, 58), (26, 84), (28, 108)], [11, 9, 8]), col)
+    c.fill(limb([(74, 60), (80, 86), (78, 110)], [11, 9, 8]), col)
+    c.fill(c.blob(56, 34, 11, 13, n=16, irregular=0.06), col)   # head, a little tilted
+    c.img = c.img.filter(ImageFilter.GaussianBlur(1.4 * SS))
+    c.save(out("characters/shadow/template_shadow_figure.png"), size=(W, H), finish=False, winter=False)
+
+
+
+def write_manifest():
+    """Manifest for the Red Thaw figures (Burnt Ones, huddled survivor, night silhouette)."""
+    import json
+    from gen_homestead import ROOT
+    def e(aid, name, rel, display, source, pivot):
+        return {"id": aid, "name": name, "template": "res://assets/templates/" + rel, "display_size": display,
+                "source_size": source, "pivot": pivot, "transparency": "required", "directions": "none",
+                "complexity": "moderate", "status": "READY",
+                "notes": "Generated placeholder (tools/art/gen_figures.py) - replace with tablet art."}
+    z = ([56, 88], [110, 172], [0.5, 0.953])
+    assets = [
+        e("char.burnt", "Burnt One — facing down", "characters/burnt/template_burnt_down.png", *z),
+        e("char.burnt_up", "Burnt One — facing up", "characters/burnt/template_burnt_up.png", *z),
+        e("char.burnt_side", "Burnt One — side", "characters/burnt/template_burnt_side.png", *z),
+        e("char.burnt_lunge", "Burnt One — lunging (down)", "characters/burnt/template_burnt_down_lunge.png", *z),
+        e("char.burnt_side_lunge", "Burnt One — lunging (side)", "characters/burnt/template_burnt_side_lunge.png", *z),
+        e("char.burnt_dead", "Burnt One — fallen", "characters/burnt/template_burnt_dead.png", [95, 45], [190, 90], [0.5, 0.67]),
+        e("char.npc_huddled", "Frightened survivor — huddled", "characters/survivor/template_npc_huddled.png", [52, 84], [104, 168], [0.5, 0.9524]),
+        e("char.shadow_figure", "Night silhouette (distant human shape)", "characters/shadow/template_shadow_figure.png", [52, 84], [104, 168], [0.5, 0.9524]),
+    ]
+    with open(os.path.join(ROOT, "assets", "manifest", "visual_burnt.json"), "w") as f:
+        json.dump({"kind": "visual", "category": "burnt", "assets": assets}, f, indent="\t"); f.write("\n")
+
+
 if __name__ == "__main__":
     for v in ("down", "up", "side"):
         survivor(v); zombie(v)
     zombie("down", True); zombie("side", True)
+    for v in ("down", "up", "side"):
+        burnt(v)
+    burnt("down", True); burnt("side", True); burnt_dead()
+    npc_huddled(); shadow_figure()
+    write_manifest()
     print("figures generated")

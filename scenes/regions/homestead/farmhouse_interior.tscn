@@ -15,7 +15,7 @@
 [node name="FarmhouseInterior" type="Node2D"]
 script = ExtResource("region")
 region_id = "homestead.farmhouse"
-ambience_id = "amb.countryside"
+ambience_id = "amb.wind_muffled"
 camera_limits = false
 
 [node name="Ground" type="Node2D" parent="."]
@@ -148,6 +148,8 @@ energy = 0.5
 [node name="Atmosphere" type="Node2D" parent="."]
 script = ExtResource("atmo")
 tint = Color(0.72, 0.66, 0.58, 1)
+warm = true
+saturation = 0.85
 drift_amount = 0
 vignette_strength = 0.4
 area = Rect2(110, 236, 740, 414)

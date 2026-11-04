@@ -23,7 +23,7 @@ size = Vector2(40, 1440)
 [node name="ServiceStation" type="Node2D"]
 script = ExtResource("region")
 region_id = "service_station"
-ambience_id = "amb.countryside"
+ambience_id = "amb.cold_wind"
 
 [node name="Ground" type="Node2D" parent="."]
 z_index = -10
@@ -31,23 +31,23 @@ z_index = -10
 [node name="Meadow" type="Polygon2D" parent="Ground"]
 script = ExtResource("ground")
 polygon = PackedVector2Array(-400, -400, 2600, -400, 2600, 1800, -400, 1800)
-asset_id = "env.ground_grass"
+asset_id = "env.ground_snow"
 
 [node name="Road" type="Polygon2D" parent="Ground"]
 script = ExtResource("ground")
 polygon = PackedVector2Array(-400, 658, 0, 650, 400, 658, 800, 650, 1200, 658, 1600, 650, 2000, 658, 2400, 650, 2600, 773, 2200, 779, 1800, 773, 1400, 779, 1000, 773, 600, 779, 200, 773, -200, 779)
-asset_id = "env.ground_asphalt"
+asset_id = "env.ground_road_snow"
 
 [node name="Forecourt" type="Polygon2D" parent="Ground"]
 script = ExtResource("ground")
 polygon = PackedVector2Array(860, 380, 1740, 380, 1760, 655, 850, 655)
-asset_id = "env.ground_asphalt"
+asset_id = "env.ground_road_snow"
 color = Color(0.92, 0.9, 0.86, 1)
 
 [node name="WorkshopYard" type="Polygon2D" parent="Ground"]
 script = ExtResource("ground")
 polygon = PackedVector2Array(1720, 390, 2120, 400, 2140, 700, 1700, 690)
-asset_id = "env.ground_dirt"
+asset_id = "env.ground_frozen_mud"
 color = Color(1, 1, 1, 0.9)
 
 [node name="Bounds" type="StaticBody2D" parent="."]
@@ -141,7 +141,7 @@ footprint = Vector2(30, 14)
 [node name="Tree00" type="Node2D" parent="YSort"]
 script = ExtResource("prop")
 position = Vector2(150, 250)
-asset_id = "env.tree_oak_a"
+asset_id = "env.pine_a"
 footprint = Vector2(36, 14)
 occlude = true
 sway = true
@@ -149,7 +149,7 @@ sway = true
 [node name="Tree01" type="Node2D" parent="YSort"]
 script = ExtResource("prop")
 position = Vector2(420, 180)
-asset_id = "env.tree_birch"
+asset_id = "env.birch_bare"
 footprint = Vector2(26, 14)
 occlude = true
 sway = true
@@ -158,7 +158,7 @@ flip_h = true
 [node name="Tree02" type="Node2D" parent="YSort"]
 script = ExtResource("prop")
 position = Vector2(700, 260)
-asset_id = "env.tree_oak_a"
+asset_id = "env.pine_a"
 footprint = Vector2(36, 14)
 occlude = true
 sway = true
@@ -166,7 +166,7 @@ sway = true
 [node name="Tree03" type="Node2D" parent="YSort"]
 script = ExtResource("prop")
 position = Vector2(2080, 200)
-asset_id = "env.tree_birch"
+asset_id = "env.birch_bare"
 footprint = Vector2(26, 14)
 occlude = true
 sway = true
@@ -175,7 +175,7 @@ flip_h = true
 [node name="Tree04" type="Node2D" parent="YSort"]
 script = ExtResource("prop")
 position = Vector2(220, 1100)
-asset_id = "env.tree_oak_a"
+asset_id = "env.pine_a"
 footprint = Vector2(36, 14)
 occlude = true
 sway = true
@@ -183,7 +183,7 @@ sway = true
 [node name="Tree05" type="Node2D" parent="YSort"]
 script = ExtResource("prop")
 position = Vector2(900, 1150)
-asset_id = "env.tree_birch"
+asset_id = "env.birch_bare"
 footprint = Vector2(26, 14)
 occlude = true
 sway = true
@@ -192,7 +192,7 @@ flip_h = true
 [node name="Tree06" type="Node2D" parent="YSort"]
 script = ExtResource("prop")
 position = Vector2(1300, 1200)
-asset_id = "env.tree_oak_a"
+asset_id = "env.pine_a"
 footprint = Vector2(36, 14)
 occlude = true
 sway = true
@@ -200,7 +200,7 @@ sway = true
 [node name="Tree07" type="Node2D" parent="YSort"]
 script = ExtResource("prop")
 position = Vector2(1980, 1150)
-asset_id = "env.tree_oak_a"
+asset_id = "env.pine_a"
 footprint = Vector2(36, 14)
 occlude = true
 sway = true
@@ -209,7 +209,7 @@ flip_h = true
 [node name="Tree08" type="Node2D" parent="YSort"]
 script = ExtResource("prop")
 position = Vector2(2120, 900)
-asset_id = "env.tree_birch"
+asset_id = "env.birch_bare"
 footprint = Vector2(26, 14)
 occlude = true
 sway = true
@@ -217,7 +217,7 @@ sway = true
 [node name="Tree09" type="Node2D" parent="YSort"]
 script = ExtResource("prop")
 position = Vector2(90, 520)
-asset_id = "env.tree_birch"
+asset_id = "env.birch_bare"
 footprint = Vector2(26, 14)
 occlude = true
 sway = true
@@ -226,7 +226,7 @@ flip_h = true
 [node name="Tree10" type="Node2D" parent="YSort"]
 script = ExtResource("prop")
 position = Vector2(560, 1300)
-asset_id = "env.tree_oak_a"
+asset_id = "env.pine_a"
 footprint = Vector2(36, 14)
 occlude = true
 sway = true
@@ -234,7 +234,7 @@ sway = true
 [node name="Tree11" type="Node2D" parent="YSort"]
 script = ExtResource("prop")
 position = Vector2(1700, 1300)
-asset_id = "env.tree_birch"
+asset_id = "env.birch_bare"
 footprint = Vector2(26, 14)
 occlude = true
 sway = true
@@ -272,7 +272,7 @@ entity_id = "service_station.road_west"
 script = ExtResource("scatter")
 area = Rect2(20, 40, 2160, 1320)
 avoid = Array[Rect2]([Rect2(-60, 630, 2320, 160), Rect2(840, 360, 1300, 340), Rect2(480, 860, 260, 80), Rect2(1480, 950, 260, 80)])
-asset_ids = Array[String](["env.grass_a", "env.grass_b", "env.grass_c"])
+asset_ids = Array[String](["env.dead_grass_a", "env.dead_grass_b", "env.dead_grass_c"])
 count = 140
 layout_seed = 23
 min_spacing = 60.0
@@ -280,7 +280,7 @@ min_spacing = 60.0
 [node name="RoadEdge" type="Node2D" parent="YSort"]
 script = ExtResource("scatter")
 area = Rect2(0, 780, 2200, 40)
-asset_ids = Array[String](["env.grass_a", "env.grass_b"])
+asset_ids = Array[String](["env.dead_grass_a", "env.dead_grass_b"])
 count = 40
 layout_seed = 29
 min_spacing = 34.0
@@ -288,4 +288,3 @@ min_spacing = 34.0
 [node name="Atmosphere" type="Node2D" parent="."]
 script = ExtResource("atmo")
 area = Rect2(0, 0, 2200, 1400)
-tint = Color(0.97, 0.94, 0.88, 1)

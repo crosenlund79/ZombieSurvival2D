@@ -1,13 +1,13 @@
 class_name ZombieView
 extends Node2D
-## Presentation of one zombie. Position, facing, AI state and health come
+## Presentation of one Burnt One (the simulation still calls them zombies). Position, facing, AI state and health come
 ## from Session.world.zombies (host: live simulation; clients: snapshots) and
 ## are interpolated here. Readable cues: "?" while investigating, "!" when it
 ## spots someone, a red wind-up pose before an attack, hit flash, fall on death.
 ## Sounds are local presentation of state changes — the noise that zombies
 ## *hear* is a separate host-side system.
 
-const IDS_DOWN := "char.zombie"
+const IDS_DOWN := "char.burnt"
 static var show_debug := false
 
 var zombie_id := ""
@@ -21,6 +21,9 @@ var _shown := ""
 var _bob := 0.0
 var _flash := 0.0
 var _groan_timer := 0.0
+var _twitch := 0.0
+var _twitch_timer := 2.0
+var _lean := 0.0
 
 
 func setup(z: ZombieState) -> void:
@@ -44,6 +47,7 @@ func setup(z: ZombieState) -> void:
 	_bar.draw.connect(_draw_bar)
 	add_child(_bar)
 	_groan_timer = randf_range(3.0, 9.0)
+	_lean = randf_range(-0.09, 0.09)
 	Assets.reloaded.connect(func() -> void: _shown = "")
 
 
@@ -62,9 +66,15 @@ func _process(delta: float) -> void:
 	position = position.lerp(_target, 1.0 - exp(-10.0 * delta))
 	var moving := before.distance_to(position) > 0.2
 	_art(z)
-	# Shamble: uneven bob and lean.
+	# Body language: a held, slightly wrong lean, an uneven gait and now and then a
+	# sudden jerk of the whole body (unsettling, but physically plausible).
 	_bob = _bob + delta * (7.0 if moving else 1.5)
-	_sprite.rotation = sin(_bob * 0.5) * (0.07 if moving else 0.03)
+	_twitch_timer -= delta
+	if _twitch_timer <= 0.0 and not z.is_dead():
+		_twitch_timer = randf_range(1.5, 6.0)
+		_twitch = randf_range(-0.16, 0.16)
+	_twitch = move_toward(_twitch, 0.0, delta * 0.9)
+	_sprite.rotation = _lean + sin(_bob * 0.5) * (0.06 if moving else 0.02) + _twitch
 	_sprite.offset.y = -absf(sin(_bob)) * 3.0 / maxf(_sprite.scale.y, 0.01)
 	_flash = maxf(0.0, _flash - delta * 4.0)
 	var tint := Color(1, 1, 1).lerp(Color(1.8, 0.6, 0.5), _flash)
@@ -84,23 +94,23 @@ func _process(delta: float) -> void:
 	_groan_timer -= delta
 	if _groan_timer <= 0.0 and not z.is_dead():
 		_groan_timer = randf_range(6.0, 14.0)
-		Audio.play("sfx.zombie_groan", global_position)
+		Audio.play("sfx.burnt_breath", global_position)
 
 
 func _art(z: ZombieState) -> void:
 	var id := IDS_DOWN
 	var flip := false
 	if z.is_dead():
-		id = "char.zombie_dead"
+		id = "char.burnt_dead"
 	else:
 		var f := z.facing
 		var side := absf(f.x) > absf(f.y)
 		if z.ai == ZombieState.AI.WINDUP:
-			id = "char.zombie_side_lunge" if side else "char.zombie_lunge"
+			id = "char.burnt_side_lunge" if side else "char.burnt_lunge"
 		elif side:
-			id = "char.zombie_side"
+			id = "char.burnt_side"
 		elif f.y < 0:
-			id = "char.zombie_up"
+			id = "char.burnt_up"
 		flip = side and f.x < 0
 	if id != _shown:
 		Assets.apply_to_sprite(_sprite, id)
@@ -112,12 +122,12 @@ func _on_ai_changed(z: ZombieState) -> void:
 	match z.ai:
 		ZombieState.AI.CHASE:
 			if _last_ai in [ZombieState.AI.WANDER, ZombieState.AI.INVESTIGATE, -1]:
-				Audio.play("sfx.zombie_alert", global_position)
+				Audio.play("sfx.burnt_notice", global_position)
 		ZombieState.AI.INVESTIGATE:
 			if _last_ai == ZombieState.AI.WANDER and randf() < 0.5:
-				Audio.play("sfx.zombie_groan", global_position)
+				Audio.play("sfx.burnt_breath", global_position)
 		ZombieState.AI.WINDUP:
-			Audio.play("sfx.zombie_attack", global_position)
+			Audio.play("sfx.burnt_attack", global_position)
 		ZombieState.AI.DEAD:
 			var tw := create_tween()
 			tw.tween_interval(4.5)

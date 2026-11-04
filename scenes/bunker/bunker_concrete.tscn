@@ -84,5 +84,7 @@ energy = 0.6
 script = ExtResource("atmo")
 tint = Color(0.4, 0.4, 0.4, 1)
 drift_amount = 0
+warm = true
+saturation = 0.85
 vignette_strength = 0.5
 area = Rect2(80, 240, 840, 410)

@@ -1,0 +1,182 @@
+{
+	"kind": "visual",
+	"category": "burnt",
+	"assets": [
+		{
+			"id": "char.burnt",
+			"name": "Burnt One \u2014 facing down",
+			"template": "res://assets/templates/characters/burnt/template_burnt_down.png",
+			"display_size": [
+				56,
+				88
+			],
+			"source_size": [
+				110,
+				172
+			],
+			"pivot": [
+				0.5,
+				0.953
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_figures.py) - replace with tablet art."
+		},
+		{
+			"id": "char.burnt_up",
+			"name": "Burnt One \u2014 facing up",
+			"template": "res://assets/templates/characters/burnt/template_burnt_up.png",
+			"display_size": [
+				56,
+				88
+			],
+			"source_size": [
+				110,
+				172
+			],
+			"pivot": [
+				0.5,
+				0.953
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_figures.py) - replace with tablet art."
+		},
+		{
+			"id": "char.burnt_side",
+			"name": "Burnt One \u2014 side",
+			"template": "res://assets/templates/characters/burnt/template_burnt_side.png",
+			"display_size": [
+				56,
+				88
+			],
+			"source_size": [
+				110,
+				172
+			],
+			"pivot": [
+				0.5,
+				0.953
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_figures.py) - replace with tablet art."
+		},
+		{
+			"id": "char.burnt_lunge",
+			"name": "Burnt One \u2014 lunging (down)",
+			"template": "res://assets/templates/characters/burnt/template_burnt_down_lunge.png",
+			"display_size": [
+				56,
+				88
+			],
+			"source_size": [
+				110,
+				172
+			],
+			"pivot": [
+				0.5,
+				0.953
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_figures.py) - replace with tablet art."
+		},
+		{
+			"id": "char.burnt_side_lunge",
+			"name": "Burnt One \u2014 lunging (side)",
+			"template": "res://assets/templates/characters/burnt/template_burnt_side_lunge.png",
+			"display_size": [
+				56,
+				88
+			],
+			"source_size": [
+				110,
+				172
+			],
+			"pivot": [
+				0.5,
+				0.953
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_figures.py) - replace with tablet art."
+		},
+		{
+			"id": "char.burnt_dead",
+			"name": "Burnt One \u2014 fallen",
+			"template": "res://assets/templates/characters/burnt/template_burnt_dead.png",
+			"display_size": [
+				95,
+				45
+			],
+			"source_size": [
+				190,
+				90
+			],
+			"pivot": [
+				0.5,
+				0.67
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_figures.py) - replace with tablet art."
+		},
+		{
+			"id": "char.npc_huddled",
+			"name": "Frightened survivor \u2014 huddled",
+			"template": "res://assets/templates/characters/survivor/template_npc_huddled.png",
+			"display_size": [
+				52,
+				84
+			],
+			"source_size": [
+				104,
+				168
+			],
+			"pivot": [
+				0.5,
+				0.9524
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_figures.py) - replace with tablet art."
+		},
+		{
+			"id": "char.shadow_figure",
+			"name": "Night silhouette (distant human shape)",
+			"template": "res://assets/templates/characters/shadow/template_shadow_figure.png",
+			"display_size": [
+				52,
+				84
+			],
+			"source_size": [
+				104,
+				168
+			],
+			"pivot": [
+				0.5,
+				0.9524
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_figures.py) - replace with tablet art."
+		}
+	]
+}

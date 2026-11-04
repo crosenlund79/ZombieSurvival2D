@@ -1,0 +1,146 @@
+{
+	"kind": "audio",
+	"category": "red_thaw",
+	"assets": [
+		{
+			"id": "amb.cold_wind",
+			"name": "Cold wind through pines (outdoor ambience)",
+			"template": "res://assets/templates/audio/red_thaw/template_cold_wind.wav",
+			"bus": "Ambience",
+			"volume_db": -10.0,
+			"loop": true,
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_red_thaw_audio.py). WAV or OGG override accepted."
+		},
+		{
+			"id": "amb.snow_wind",
+			"name": "Snowfall and gusting wind (weather loop)",
+			"template": "res://assets/templates/audio/red_thaw/template_snow_wind.wav",
+			"bus": "Ambience",
+			"volume_db": -12.0,
+			"loop": true,
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_red_thaw_audio.py). WAV or OGG override accepted."
+		},
+		{
+			"id": "amb.wind_muffled",
+			"name": "Wind outside, heard indoors",
+			"template": "res://assets/templates/audio/red_thaw/template_wind_muffled.wav",
+			"bus": "Ambience",
+			"volume_db": -14.0,
+			"loop": true,
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_red_thaw_audio.py). WAV or OGG override accepted."
+		},
+		{
+			"id": "sfx.laugh_suppressed",
+			"name": "Suppressed laughter (settlement)",
+			"template": "res://assets/templates/audio/red_thaw/template_laugh_suppressed.wav",
+			"bus": "SFX",
+			"volume_db": -12.0,
+			"loop": false,
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_red_thaw_audio.py). WAV or OGG override accepted."
+		},
+		{
+			"id": "sfx.giggle",
+			"name": "Giggling behind a wall",
+			"template": "res://assets/templates/audio/red_thaw/template_giggle.wav",
+			"bus": "SFX",
+			"volume_db": -13.0,
+			"loop": false,
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_red_thaw_audio.py). WAV or OGG override accepted."
+		},
+		{
+			"id": "sfx.laugh_distant",
+			"name": "Distant laughter (settlement)",
+			"template": "res://assets/templates/audio/red_thaw/template_laugh_distant.wav",
+			"bus": "SFX",
+			"volume_db": -14.0,
+			"loop": false,
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_red_thaw_audio.py). WAV or OGG override accepted."
+		},
+		{
+			"id": "sfx.giggle_close",
+			"name": "A stifled giggle, very close",
+			"template": "res://assets/templates/audio/red_thaw/template_giggle_close.wav",
+			"bus": "SFX",
+			"volume_db": -16.0,
+			"loop": false,
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_red_thaw_audio.py). WAV or OGG override accepted."
+		},
+		{
+			"id": "sfx.mutter_a",
+			"name": "Frightened muttering",
+			"template": "res://assets/templates/audio/red_thaw/template_mutter_a.wav",
+			"bus": "SFX",
+			"volume_db": -14.0,
+			"loop": false,
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_red_thaw_audio.py). WAV or OGG override accepted."
+		},
+		{
+			"id": "sfx.mutter_b",
+			"name": "Frightened muttering",
+			"template": "res://assets/templates/audio/red_thaw/template_mutter_b.wav",
+			"bus": "SFX",
+			"volume_db": -14.0,
+			"loop": false,
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_red_thaw_audio.py). WAV or OGG override accepted."
+		},
+		{
+			"id": "sfx.burnt_breath",
+			"name": "Burnt One \u2014 ragged breathing",
+			"template": "res://assets/templates/audio/red_thaw/template_burnt_breath.wav",
+			"bus": "SFX",
+			"volume_db": -10.0,
+			"loop": false,
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_red_thaw_audio.py). WAV or OGG override accepted."
+		},
+		{
+			"id": "sfx.burnt_notice",
+			"name": "Burnt One \u2014 sharp breath and a short laugh (noticed you)",
+			"template": "res://assets/templates/audio/red_thaw/template_burnt_notice.wav",
+			"bus": "SFX",
+			"volume_db": -6.0,
+			"loop": false,
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_red_thaw_audio.py). WAV or OGG override accepted."
+		},
+		{
+			"id": "sfx.burnt_attack",
+			"name": "Burnt One \u2014 effort grunt (attack)",
+			"template": "res://assets/templates/audio/red_thaw/template_burnt_attack.wav",
+			"bus": "SFX",
+			"volume_db": -5.0,
+			"loop": false,
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_red_thaw_audio.py). WAV or OGG override accepted."
+		},
+		{
+			"id": "sfx.burnt_hit",
+			"name": "Burnt One \u2014 hit (pain)",
+			"template": "res://assets/templates/audio/red_thaw/template_burnt_hit.wav",
+			"bus": "SFX",
+			"volume_db": -5.0,
+			"loop": false,
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_red_thaw_audio.py). WAV or OGG override accepted."
+		},
+		{
+			"id": "sfx.burnt_death",
+			"name": "Burnt One \u2014 choked fall",
+			"template": "res://assets/templates/audio/red_thaw/template_burnt_death.wav",
+			"bus": "SFX",
+			"volume_db": -5.0,
+			"loop": false,
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_red_thaw_audio.py). WAV or OGG override accepted."
+		}
+	]
+}

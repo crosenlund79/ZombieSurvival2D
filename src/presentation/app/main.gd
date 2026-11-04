@@ -20,6 +20,7 @@ var settlement_panel: SettlementPanel
 
 
 func _ready() -> void:
+	get_window().title = BuildInfo.GAME_TITLE
 	world_layer = Node2D.new()
 	world_layer.name = "WorldLayer"
 	add_child(world_layer)

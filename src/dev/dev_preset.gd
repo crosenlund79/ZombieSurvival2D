@@ -56,7 +56,7 @@ static func write_report(world: WorldState, player_id: String) -> String:
 	var path := dir + "report_%s.txt" % Time.get_datetime_string_from_system().replace(":", "-")
 	var p: PlayerState = world.players.get(player_id)
 	var lines: Array[String] = []
-	lines.append("Aftergrowth problem report")
+	lines.append(BuildInfo.GAME_TITLE + " problem report")
 	lines.append(BuildInfo.label())
 	lines.append("world %s · seed %d · tick %d · day %d %s · weather %s" % [world.world_id, world.world_seed, world.tick,
 		EnvSim.day_number(world), EnvSim.clock_text(world), EnvSim.weather(world)])

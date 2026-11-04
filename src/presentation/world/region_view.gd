@@ -178,7 +178,7 @@ func _on_combat_event(ev: Dictionary) -> void:
 			var v: ZombieView = _zombies.get(ev["zombie_id"])
 			if v != null:
 				v.hit_flash()
-				Audio.play("sfx.zombie_death" if ev["killed"] else "sfx.zombie_hit", v.global_position)
+				Audio.play("sfx.burnt_death" if ev["killed"] else "sfx.burnt_hit", v.global_position)
 		"player_hit":
 			var a2: PlayerAvatar = _avatars.get(ev["player_id"])
 			if a2 != null:

@@ -200,8 +200,8 @@
 		"en": "Interface"
 	},
 	"DEV_AI_LABELS": {
-		"da": "Zombie-AI-etiketter",
-		"en": "Zombie AI labels"
+		"da": "AI-etiketter for de Brændte",
+		"en": "Burnt One AI labels"
 	},
 	"DEV_CLOCK": {
 		"da": "Ur +1 t",
@@ -268,8 +268,8 @@
 		"en": "Spawn group (4)"
 	},
 	"DEV_SPAWN_ZOMBIE": {
-		"da": "Skab zombie",
-		"en": "Spawn zombie"
+		"da": "Skab en Brændt (vandrer)",
+		"en": "Spawn a Burnt One (wanderer)"
 	},
 	"DEV_TITLE": {
 		"da": "Udvikler (F3)",
@@ -344,8 +344,8 @@
 		"en": "Carrying %s/%s:"
 	},
 	"HUD_DOWNED": {
-		"da": "Du blev overmandet… vågner op i stuehuset.",
-		"en": "You were overwhelmed… waking up in the farmhouse."
+		"da": "Du gik ned… du vågner inde i hytten.",
+		"en": "You went down… you come to inside the cabin."
 	},
 	"HUD_DRINK_HINT": {
 		"da": "[Q] Drik rent vand (%s)",
@@ -396,8 +396,8 @@
 		"en": "They are gathering"
 	},
 	"HUD_THREAT_HORDE": {
-		"da": "En horde nærmer sig!",
-		"en": "A horde is converging!"
+		"da": "De samler sig!",
+		"en": "They are converging!"
 	},
 	"HUD_THREAT_NOTICED": {
 		"da": "Du er blevet hørt",
@@ -488,8 +488,8 @@
 		"en": "Abandoned car"
 	},
 	"MAP_FARMHOUSE": {
-		"da": "Stuehus",
-		"en": "Farmhouse"
+		"da": "Jagthytte",
+		"en": "Hunter's cabin"
 	},
 	"MAP_LEGEND": {
 		"da": "● dig   ● andre overlevende   ▲ tilflugtsrum   ○ træer (små = fældede)   [M] luk",
@@ -572,8 +572,8 @@
 		"en": "Single Player"
 	},
 	"MENU_SUBTITLE": {
-		"da": "En farlig verden ovenover. Et hjem nedenunder.",
-		"en": "A dangerous world above. A home beneath."
+		"da": "En frossen verden. Forladte steder. Resterne af menneskeheden.",
+		"en": "A frozen world. Abandoned places. The remnants of humanity."
 	},
 	"MODE_CLIENT": {
 		"da": "Forbundet",
@@ -700,16 +700,16 @@
 		"en": "Unstable earth — needs a timber support closer"
 	},
 	"PROMPT_ENTER_HOUSE": {
-		"da": "Gå ind i stuehuset",
-		"en": "Enter the farmhouse"
+		"da": "Gå ind i hytten",
+		"en": "Enter the cabin"
 	},
 	"PROMPT_EXIT_HOUSE": {
 		"da": "Gå udenfor",
 		"en": "Go outside"
 	},
 	"PROMPT_FILL_WATER": {
-		"da": "Fyld flasker ved regntønden",
-		"en": "Fill bottles at the rain barrel"
+		"da": "Fyld flasker med sne (smeltevand)",
+		"en": "Scoop snow into bottles (melt water)"
 	},
 	"PROMPT_GENERATOR": {
 		"da": "Generator",
@@ -796,12 +796,12 @@
 		"en": "Purifying…"
 	},
 	"REGION_FARMHOUSE": {
-		"da": "Stuehuset",
-		"en": "The Farmhouse"
+		"da": "Jagthytten",
+		"en": "The Hunter's Cabin"
 	},
 	"REGION_HOMESTEAD": {
-		"da": "Husmandsstedet",
-		"en": "The Homestead"
+		"da": "Fyrreskoven",
+		"en": "The Pine Woods"
 	},
 	"REGION_SHELTER": {
 		"da": "Tilflugtsrum",
@@ -920,8 +920,8 @@
 		"en": "+%s wood (carrying %s)"
 	},
 	"DEV_PEACEFUL": {
-		"da": "Zombier til/fra (fredelig)",
-		"en": "Zombies on/off (peaceful)"
+		"da": "De Brændte til/fra (fredeligt)",
+		"en": "Burnt Ones on/off (peaceful)"
 	},
 	"DEV_GRANT_TIMBER": {
 		"da": "Giv 12 tømmer til lageret",
@@ -1068,8 +1068,8 @@
 		"en": "Padded jacket"
 	},
 	"ITEM_JACKET_DESC": {
-		"da": "Lag af stof og metalplader. Tager 35 % af zombiers slag.",
-		"en": "Layers of cloth and metal plates. Takes 35% off zombie hits."
+		"da": "Lag af stof og metalplader. Tager 35 % af slag.",
+		"en": "Layers of cloth and metal plates. Takes 35% off hits."
 	},
 	"ITEM_CARBURETOR": {
 		"da": "Justeret karburator",
@@ -1092,8 +1092,8 @@
 		"en": "Barricade"
 	},
 	"BUILD_BARRICADE_DESC": {
-		"da": "Spærrer for zombier og mennesker. Kan opgraderes fra træ til metal til beton.",
-		"en": "Blocks zombies and people. Upgrade wood → metal → concrete."
+		"da": "Spærrer for alle til fods. Opgradér træ → metal → beton.",
+		"en": "Blocks anyone on foot. Upgrade wood → metal → concrete."
 	},
 	"TIER_WOOD": {
 		"da": "træ",
@@ -1124,16 +1124,16 @@
 		"en": "Reinforced door"
 	},
 	"BUILD_DOOR_DESC": {
-		"da": "En dør i forsvaret. Zombier må slå den i stykker; folk kan åbne den.",
-		"en": "A door in your defences. Zombies have to break it; people can open it."
+		"da": "En dør i dit forsvar. Ubudne gæster må bryde den op; du kan åbne den.",
+		"en": "A door in your defences. Intruders have to break it; you can open it."
 	},
 	"BUILD_SPIKES": {
 		"da": "Pigfælde",
 		"en": "Spike trap"
 	},
 	"BUILD_SPIKES_DESC": {
-		"da": "Skader og sinker zombier, der går over den. Slides med brug; repareres med træ.",
-		"en": "Hurts and slows zombies that cross it. Wears out with use; repair with wood."
+		"da": "Sårer og bremser fjendtlige, der krydser den. Slides; repareres med træ.",
+		"en": "Hurts and slows anyone hostile who crosses it. Wears out; repair with wood."
 	},
 	"BUILD_CRATE": {
 		"da": "Opbevaringskasse",
@@ -1160,12 +1160,12 @@
 		"en": "Grows potatoes from clean water while the bunker has power."
 	},
 	"BUILD_RAIN_COLLECTOR": {
-		"da": "Regnvandsopsamler",
-		"en": "Rain collector"
+		"da": "Smeltevandssamler",
+		"en": "Meltwater collector"
 	},
 	"BUILD_RAIN_COLLECTOR_DESC": {
-		"da": "Fyldes med beskidt vand, hurtigt i regn. Står frit: zombier kan ødelægge den.",
-		"en": "Fills with dirty water, fast in rain. Exposed: zombies can wreck it."
+		"da": "Samler beskidt smeltevand, hurtigt mens det sner. Står ude og kan ødelægges.",
+		"en": "Collects dirty meltwater, fast while it snows. Outside, so it can be wrecked."
 	},
 	"BUILD_SUPPORT": {
 		"da": "Tømmerstøtte (bunker)",
@@ -1176,12 +1176,12 @@
 		"en": "Lets you dig further around it. Paid from shelter storage."
 	},
 	"PROMPT_SALVAGE_TRACTOR": {
-		"da": "Bjærg skrot fra traktoren",
-		"en": "Salvage scrap from the tractor"
+		"da": "Skrab skrot af den gamle lastbil",
+		"en": "Salvage scrap from the old truck"
 	},
 	"MAP_TRACTOR": {
-		"da": "Gammel traktor",
-		"en": "Old tractor"
+		"da": "Gammel lastbil",
+		"en": "Old truck"
 	},
 	"BUILD_MENU_TITLE": {
 		"da": "Byg",
@@ -1292,8 +1292,8 @@
 		"en": "Tend the planter"
 	},
 	"PROMPT_COLLECTOR": {
-		"da": "Se til regnvandsopsamleren",
-		"en": "Check the rain collector"
+		"da": "Tjek smeltevandssamleren",
+		"en": "Check the meltwater collector"
 	},
 	"PROMPT_INSPECT": {
 		"da": "Undersøg %s",
@@ -1352,8 +1352,8 @@
 		"en": "Cancel (get everything back)"
 	},
 	"WEATHER_RAIN": {
-		"da": "regn",
-		"en": "rain"
+		"da": "sne",
+		"en": "snow"
 	},
 	"WEATHER_CLEAR": {
 		"da": "klart",
@@ -1452,8 +1452,8 @@
 		"en": "Damage %s · reach %s · chopping ×%s"
 	},
 	"INV_STATS_ARMOR": {
-		"da": "Tager %s%% af zombiers slag",
-		"en": "Takes %s%% off zombie hits"
+		"da": "Tager %s%% af slag",
+		"en": "Takes %s%% off hits"
 	},
 	"ACTION_CANT_USE": {
 		"da": "Det kan ikke bruges sådan.",
@@ -1548,8 +1548,8 @@
 		"en": "Pantry"
 	},
 	"REGION_SERVICE_STATION": {
-		"da": "Tankstationen",
-		"en": "The Service Station"
+		"da": "Den forladte bebyggelse",
+		"en": "The Abandoned Settlement"
 	},
 	"PROMPT_ROAD_EAST": {
 		"da": "Følg vejen mod øst",
@@ -1632,8 +1632,8 @@
 		"en": "Day %s · %s"
 	},
 	"HUD_WEATHER_RAIN": {
-		"da": "Regn",
-		"en": "Rain"
+		"da": "Sne",
+		"en": "Snow"
 	},
 	"HUD_WEATHER_CLEAR": {
 		"da": "Klart",
@@ -1660,40 +1660,40 @@
 		"en": "Area overrun"
 	},
 	"SIEGE_WARNING_HUD": {
-		"da": "En horde samler sig — den når gården om %s s. Gør klar!",
-		"en": "A horde is gathering — it reaches the homestead in %s s. Prepare!"
+		"da": "Bevægelse mellem træerne — de når hytten om %s s.",
+		"en": "Movement in the trees — they reach the cabin in %s s."
 	},
 	"SIEGE_ACTIVE_HUD": {
-		"da": "Horden er ved gården! %s tilbage.",
-		"en": "The horde is at the homestead! %s left."
+		"da": "De er ved hytten. %s tilbage.",
+		"en": "They are at the cabin. %s left."
 	},
 	"SIEGE_WARNING": {
-		"da": "Stønnen i skoven… for meget larm har trukket en horde mod gården.",
-		"en": "Groans in the woods… too much noise has drawn a horde toward the homestead."
+		"da": "Latter i skoven… for meget larm har lokket dem mod hytten.",
+		"en": "Laughter in the woods… too much noise has drawn them toward the cabin."
 	},
 	"SIEGE_STARTED": {
-		"da": "Horden er ankommet!",
-		"en": "The horde has arrived!"
+		"da": "De er her.",
+		"en": "They are here."
 	},
 	"SIEGE_REPELLED": {
-		"da": "Horden er slået. Se efter skader på forsvaret.",
-		"en": "The horde is beaten. Check your defences for damage."
+		"da": "De er væk. Tjek dit forsvar for skader.",
+		"en": "They are gone. Check your defences for damage."
 	},
 	"SIEGE_DISPERSED": {
-		"da": "Horden driver væk. Se efter skader på forsvaret.",
-		"en": "The horde drifts away. Check your defences for damage."
+		"da": "De glider tilbage mellem træerne. Tjek dit forsvar.",
+		"en": "They drift back into the trees. Check your defences."
 	},
 	"WEATHER_STARTS_RAIN": {
-		"da": "Det begynder at regne. Lyd bærer kortere; regnvandsopsamlere fyldes.",
-		"en": "It starts to rain. Sounds carry less; rain collectors fill."
+		"da": "Det begynder at sne. Lyde bærer mindre; smeltevandssamlere fyldes.",
+		"en": "It starts to snow. Sounds carry less; meltwater collectors fill."
 	},
 	"WEATHER_STARTS_CLEAR": {
-		"da": "Regnen holder op.",
-		"en": "The rain stops."
+		"da": "Sneen holder op.",
+		"en": "The snow stops."
 	},
 	"NPC_MARA_DESC": {
-		"da": "En mekaniker, der gemte sig på tankstationen, da butikken blev overrendt. Praktisk, træt, sparsom med vandet.",
-		"en": "A mechanic who hid in the service station when the shop was overrun. Practical, tired, careful with water."
+		"da": "Mara. Fundet sammenkrøben i et sammenstyrtet hus i bebyggelsen. Ryster og hvisker for sig selv. Praktisk, når hun stoler på dig.",
+		"en": "Mara. Found huddled in a collapsed house in the settlement. Shaking, whispering to herself. Practical once she trusts you."
 	},
 	"PROMPT_NPC_HAIL": {
 		"da": "Råb an %s",
@@ -1812,8 +1812,8 @@
 		"en": "Nothing to do right now."
 	},
 	"NPC_STATUS_SHELTERING": {
-		"da": "Søger ly for horden.",
-		"en": "Sheltering from the horde."
+		"da": "Søger ly. For bange til at arbejde.",
+		"en": "Sheltering. Too frightened to work."
 	},
 	"NPC_STATUS_UNFED": {
 		"da": "Sulten — bosættelsen løb tør for mad eller rent vand (arbejder i halvt tempo).",
@@ -1824,8 +1824,8 @@
 		"en": "Settlement"
 	},
 	"SETTLEMENT_NO_SHELTER": {
-		"da": "Intet tilflugtsrum endnu. Grav et under stuehuset.",
-		"en": "No shelter yet. Dig one beneath the farmhouse."
+		"da": "Intet tilflugtsrum endnu. Grav et under jagthytten.",
+		"en": "No shelter yet. Dig one beneath the hunter's cabin."
 	},
 	"SETTLEMENT_SUPPLIES": {
 		"da": "Lager: mad %s · rent vand %s · beskidt vand %s · brændstof %s",
@@ -1888,12 +1888,12 @@
 		"en": "Progress"
 	},
 	"OBJ_SHELTER": {
-		"da": "Grav et tilflugtsrum under stuehuset",
-		"en": "Dig a shelter beneath the farmhouse"
+		"da": "Grav et tilflugtsrum under jagthytten",
+		"en": "Dig a shelter beneath the hunter's cabin"
 	},
 	"OBJ_DEFENCES": {
-		"da": "Byg forsvar omkring gården",
-		"en": "Build defences around the yard"
+		"da": "Byg forsvar rundt om hyttens lysning",
+		"en": "Build defences around the cabin clearing"
 	},
 	"OBJ_POWER": {
 		"da": "Få generatoren i gang",
@@ -1932,8 +1932,8 @@
 		"en": "Bring a survivor home"
 	},
 	"OBJ_SIEGE": {
-		"da": "Overlev en horde ved gården",
-		"en": "Survive a horde at the homestead"
+		"da": "Hold hytten, når de kommer",
+		"en": "Hold the cabin when they come"
 	},
 	"GUIDE_MOVE": {
 		"da": "At komme rundt",
@@ -1948,40 +1948,40 @@
 		"en": "Gathering and noise"
 	},
 	"TIP_GATHER": {
-		"da": "Fældning og bjærgning larmer. Zombier går hen, hvor de hørte lyden. Bedre værktøj (håndøkse, fældeøkse) klarer det med færre hug.",
-		"en": "Chopping and salvaging are loud. Zombies walk to where they heard a noise. Better tools (hatchet, felling axe) finish the job in fewer, quieter-overall blows."
+		"da": "Fældning og skrotning larmer, og lyd bærer langt i kulden. Bedre værktøj (økse, fældeøkse) klarer det med færre hug.",
+		"en": "Chopping and salvaging are loud, and sound carries far in the cold. Better tools (hatchet, felling axe) finish the job in fewer blows."
 	},
 	"GUIDE_NOISE": {
-		"da": "Opmærksomhed og horder",
-		"en": "Attention and hordes"
+		"da": "Larm og opmærksomhed",
+		"en": "Noise and attention"
 	},
 	"TIP_NOISE": {
-		"da": "Jo mere larm ét sted, jo flere zombier kommer — fortsæt, og en horde dannes. Flyt dig eller stop, så daler opmærksomheden. Meget larm nær hjemmet kan lokke en horde til gården.",
-		"en": "The more noise in one place, the more zombies come — keep it up and a horde forms. Move on or stop and attention fades. Lots of noise near home can bring a horde to the homestead."
+		"da": "Larm samler opmærksomhed i et område og falmer, når du går videre eller stopper. Ikke alt derude lytter — men noget gør.",
+		"en": "Noise collects attention in an area and fades when you move on or stop. Not everything out there is listening — but some of it is."
 	},
 	"GUIDE_COMBAT": {
 		"da": "Kamp",
 		"en": "Fighting"
 	},
 	"TIP_COMBAT": {
-		"da": "F eller venstreklik svinger det, du holder. En zombie løfter armene (rødt), før den slår: træd tilbage, slå så. En machete slår hårdere; en polstret jakke tager af for slagene.",
-		"en": "F or left click swings what you hold. A zombie raises its arms (red) before it strikes: step back, then hit. A machete hits harder; a padded jacket softens blows."
+		"da": "F eller venstreklik svinger det, du holder. En Brændt trækker sig tilbage før slaget: træd væk, og slå så. En machete slår hårdere; en polstret jakke dæmper slag.",
+		"en": "F or left click swings what you hold. A Burnt One draws back before it strikes: step away, then hit. A machete hits harder; a padded jacket softens blows."
 	},
 	"GUIDE_RETREAT": {
 		"da": "Træk dig tilbage",
 		"en": "Retreat and recover"
 	},
 	"TIP_RETREAT": {
-		"da": "Zombier følger aldrig efter dig ind i stuehuset eller bunkeren. Kom indenfor, spis og drik, så kommer helbredet tilbage. Forbindinger giver 35.",
-		"en": "Zombies never follow you into the farmhouse or the bunker. Get inside, eat and drink, and health recovers. Bandages heal 35."
+		"da": "De følger dig aldrig ind i hytten eller bunkeren. Kom indenfor, spis og drik, så kommer helbredet igen. Forbindinger heler 35.",
+		"en": "They never follow you into the cabin or the bunker. Get inside, eat and drink, and health recovers. Bandages heal 35."
 	},
 	"GUIDE_BUILD": {
 		"da": "Byggeri og forsvar",
 		"en": "Building and defences"
 	},
 	"TIP_BUILD": {
-		"da": "B åbner byggemenuen. Barrikader lukker hullerne mod nord i gården; opgradér dem til metal og beton. Pigfælder skader zombier, der går over dem. Beskadiget? Tryk R for at reparere.",
-		"en": "B opens the build menu. Barricades close the gaps on the north side of the yard; upgrade them to metal and concrete. Spike traps hurt zombies that cross them. Damaged? Press R to repair."
+		"da": "B åbner byggemenuen. Barrikader lukker hullerne rundt om lysningen; opgradér til metal og beton. Pigfælder sårer fjender. Skadet? Tryk R for at reparere.",
+		"en": "B opens the build menu. Barricades close the gaps around the cabin clearing; upgrade them to metal and concrete. Spike traps hurt anyone hostile. Damaged? Press R to repair."
 	},
 	"GUIDE_DIG": {
 		"da": "Gravning og støtter",
@@ -2012,24 +2012,24 @@
 		"en": "Food"
 	},
 	"TIP_FOOD": {
-		"da": "Maden falder langsomt. Spis med X eller fra oppakningen. Dåser findes i spisekammeret og på tankstationen; et hydroponisk plantebed dyrker kartofler af rent vand, når der er strøm.",
-		"en": "Food falls slowly. Eat with X or from the inventory. Cans come from the pantry and the service station; a hydroponic planter grows potatoes from clean water while powered."
+		"da": "Mæthed falder langsomt. Spis med X eller fra inventaret. Dåser findes i hyttens spisekammer og i bebyggelsen; en hydroponisk plantekasse dyrker kartofler af rent vand, når der er strøm.",
+		"en": "Food falls slowly. Eat with X or from the inventory. Cans come from the cabin pantry and the settlement; a hydroponic planter grows potatoes from clean water while powered."
 	},
 	"GUIDE_SURVIVOR": {
 		"da": "Overlevende",
 		"en": "Survivors"
 	},
 	"TIP_SURVIVOR": {
-		"da": "Nogen har overlevet på tankstationen. Hjælp dem, så flytter de ind i dit tilflugtsrum. Tildel arbejde i bosættelsesoversigten (N) eller ved at tale med dem: de passer vandrenseren eller plantebedene med det, der er på lageret.",
-		"en": "Someone survived at the service station. Help them and they will move into your shelter. Assign work in the settlement overview (N) or by talking to them: they tend the purifier or the planters using what is in storage."
+		"da": "Nogen er i live i bebyggelsen og gemmer sig. Hjælp dem, så kommer de måske til dit tilflugtsrum. Fordel arbejde i oversigten (N) eller ved at tale med dem.",
+		"en": "Someone is alive in the settlement, hiding. Help them and they may come to your shelter. Assign work in the settlement overview (N) or by talking to them."
 	},
 	"GUIDE_SIEGE": {
-		"da": "At forsvare gården",
-		"en": "Defending the homestead"
+		"da": "Når de kommer til hytten",
+		"en": "When they come to the cabin"
 	},
 	"TIP_SIEGE": {
-		"da": "En horde er på vej til gården. Luk lågen, forsvar barrikaderne, eller vent det af nedenunder — men alt bygget udenfor kan blive beskadiget. Det slutter, når horden er slået eller giver op.",
-		"en": "A horde is coming to the homestead. Close the gate, man the barricades, or wait it out below — but anything built outside may be damaged. It ends when the horde is beaten or gives up."
+		"da": "De kommer til hytten. Luk lågen, hold barrikaderne, eller vent det ud nedenunder — men alt bygget udenfor kan blive skadet. Det slutter, når de er slået eller giver op.",
+		"en": "They are coming to the cabin. Close the gate, hold the barricades, or wait it out below — but anything built outside may be damaged. It ends when they are beaten or give up."
 	},
 	"MENU_DEV_WORLD": {
 		"da": "Udviklerens testverden",
@@ -2044,16 +2044,16 @@
 		"en": "Time: day"
 	},
 	"DEV_RAIN": {
-		"da": "Regn til/fra",
-		"en": "Rain on/off"
+		"da": "Snefald til/fra",
+		"en": "Snowfall on/off"
 	},
 	"DEV_HEAT": {
 		"da": "Øg varmen ved hjemmet",
 		"en": "Raise home heat"
 	},
 	"DEV_SIEGE": {
-		"da": "Start en horde (15 s)",
-		"en": "Start a horde (15 s)"
+		"da": "Start et angreb på hytten (15 s)",
+		"en": "Start a cabin attack (15 s)"
 	},
 	"DEV_HUNGER": {
 		"da": "Gør sulten",

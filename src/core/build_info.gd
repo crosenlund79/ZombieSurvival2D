@@ -3,13 +3,16 @@ extends RefCounted
 ## Build identity shown in the bottom-right developer label and written into
 ## logs and saves. Update ITERATION/STAGE when a new iteration begins.
 
-const GAME_TITLE := "Aftergrowth"
-const VERSION := "0.1.0"
-const ITERATION := "006-009"
-const STAGE := "vertical-slice"
+## Visible working title. The internal project name and save game id stay
+## "Aftergrowth" (project.godot, SaveCodec.GAME_ID) so saves and the user folder
+## keep working.
+const GAME_TITLE := "Red Thaw"
+const VERSION := "0.2.0"
+const ITERATION := "010"
+const STAGE := "red-thaw"
 const STATUS := "DEV"
 ## Bumped whenever the network protocol changes incompatibly.
-const PROTOCOL_VERSION := 5
+const PROTOCOL_VERSION := 6
 
 static var _commit := ""
 

@@ -17,6 +17,16 @@ INK = (33, 27, 21, 255)
 WARM = (214, 176, 112, 255)   # faded warm light (straw/amber family)
 COOL = (46, 52, 50, 255)      # cool shadow (charcoal / soot)
 
+# Red Thaw (nuclear winter): outdoor sprites get snow settled on their upward-facing
+# surfaces, frost and a cold, desaturated palette when saved. Interior and bunker
+# art is left as it is. Paths are matched against these fragments.
+WINTER = True
+OUTDOOR = ("/env/", "/world/buildings/", "/world/fences/", "/world/doors/template_gate", "/props/",
+           "/world/station/", "/world/settlement/", "/build/template_barricade", "/build/template_spike",
+           "/build/template_rain_collector")
+SNOW = (216, 219, 217, 255)       # dirty white
+SNOW_SHADE = (150, 162, 168, 255)  # blue-grey snow shadow
+
 
 def hexc(h, a=255):
     h = h.lstrip("#")
@@ -359,7 +369,66 @@ class Canvas:
         out[..., 3] = tot * 255
         self.img = Image.fromarray(np.clip(out, 0, 255).astype(np.uint8), "RGBA")
 
-    def save(self, path, size=None, finish=True):
+    def winterize(self, depth=10.0, cold=0.42, frost=0.6, kill_green=True):
+        """Snow resting on every upward-facing surface (thicker on flat tops, thin on
+        slopes, nothing on vertical faces), a soft overhang, frost speckle and a cold
+        desaturated grade. Works on any sprite so all outdoor art shares one winter."""
+        rgba = np.asarray(self.img, dtype=np.float32)
+        A = rgba[..., 3] / 255.0
+        if A.max() <= 0 or A.min() >= 0.99:
+            return
+        H, W = A.shape
+        solid = A > 0.5
+        above = np.zeros_like(solid); above[2:] = solid[:-2]
+        top = solid & ~above
+        n = value_noise(W, H, 7 * SS, self.seed + 4242, octaves=3)
+        d = (depth * SS * (0.45 + 0.9 * n)).astype(np.int32)
+        cap = np.zeros_like(solid)
+        sh = np.zeros_like(solid)
+        acc = top.copy()
+        dmax = int(depth * SS * 1.4)
+        for k in range(1, dmax):
+            acc2 = np.zeros_like(acc); acc2[1:] = acc[:-1]
+            acc = acc2 & solid
+            cap |= acc & (k < d)
+            sh |= acc & (k >= d * 0.65) & (k < d)
+        cap |= top
+        # overhang: a lumpy rim rising just above the surface
+        up = np.zeros_like(cap); up[:-SS] = top[SS:]
+        rim = up & ~solid & (n > 0.38)
+        cap_all = cap | rim
+        rgb = rgba[..., :3].copy()
+        if kill_green:
+            # living green -> dead, brittle straw and bark browns (nothing grows here any more)
+            r_, g_, b_ = rgb[..., 0], rgb[..., 1], rgb[..., 2]
+            green = np.clip((g_ - np.maximum(r_, b_) + 4) / 30.0, 0, 1)[..., None]
+            lum0 = (rgb @ np.array([0.299, 0.587, 0.114], dtype=np.float32))[..., None] / 255.0
+            dead = np.array([140, 128, 108], dtype=np.float32) * (0.55 + 0.75 * lum0)
+            rgb = rgb * (1 - green) + dead * green
+        # cold grade first (whole sprite), then snow on top
+        lum = (rgb @ np.array([0.299, 0.587, 0.114], dtype=np.float32))[..., None]
+        rgb = rgb * (1 - cold) + lum * cold
+        rgb = rgb * np.array([0.93, 0.97, 1.03], dtype=np.float32)
+        g = np.random.default_rng(self.seed + 77).random((H, W)).astype(np.float32)
+        fr = (g > 1 - 0.012 * frost) & solid
+        rgb[fr] = rgb[fr] * 0.4 + np.array(SNOW[:3], dtype=np.float32) * 0.6
+        snow = np.array(SNOW[:3], dtype=np.float32) * (0.96 + 0.08 * n[..., None])
+        snow_sh = np.array(SNOW_SHADE[:3], dtype=np.float32)
+        col = np.where(sh[..., None], snow_sh * 0.55 + snow * 0.45, snow)
+        rgb = np.where(cap_all[..., None], col, rgb)
+        alpha = np.where(rim, 235.0, rgba[..., 3])
+        # a thin ink line under the snow edge
+        below = np.zeros_like(cap); below[1:] = cap[:-1]
+        line = below & ~cap & solid
+        rgb[line] = rgb[line] * 0.45 + np.array(INK[:3], dtype=np.float32) * 0.55
+        out = np.dstack([np.clip(rgb, 0, 255), alpha]).astype(np.uint8)
+        self.img = Image.fromarray(out, "RGBA")
+
+    def save(self, path, size=None, finish=True, winter=None):
+        if winter is None:
+            winter = WINTER and any(f in str(path).replace("\\", "/") for f in OUTDOOR)
+        if winter:
+            self.winterize()
         if finish:
             self.finish()
         out = self.img.resize(size or (self.w, self.h), Image.LANCZOS)

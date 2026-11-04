@@ -1,0 +1,556 @@
+{
+	"kind": "visual",
+	"category": "winter",
+	"assets": [
+		{
+			"id": "env.ground_snow",
+			"name": "Ground \u2014 snow over forest floor (tile)",
+			"template": "res://assets/templates/env/ground/template_snow_tile.png",
+			"display_size": [
+				512,
+				512
+			],
+			"source_size": [
+				512,
+				512
+			],
+			"pivot": [
+				0,
+				0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_winter.py) - replace with tablet art."
+		},
+		{
+			"id": "env.ground_frozen_mud",
+			"name": "Ground \u2014 frozen mud and slush (tile)",
+			"template": "res://assets/templates/env/ground/template_frozen_mud_tile.png",
+			"display_size": [
+				384,
+				384
+			],
+			"source_size": [
+				512,
+				512
+			],
+			"pivot": [
+				0,
+				0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_winter.py) - replace with tablet art."
+		},
+		{
+			"id": "env.ground_road_snow",
+			"name": "Ground \u2014 snowy cracked road (tile)",
+			"template": "res://assets/templates/env/ground/template_road_snow_tile.png",
+			"display_size": [
+				256,
+				256
+			],
+			"source_size": [
+				256,
+				256
+			],
+			"pivot": [
+				0,
+				0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_winter.py) - replace with tablet art."
+		},
+		{
+			"id": "env.pine_a",
+			"name": "Snow-laden pine (a)",
+			"template": "res://assets/templates/env/trees/template_pine_a.png",
+			"display_size": [
+				260,
+				420
+			],
+			"source_size": [
+				520,
+				840
+			],
+			"pivot": [
+				0.5,
+				0.9714
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_winter.py) - replace with tablet art."
+		},
+		{
+			"id": "env.pine_b",
+			"name": "Snow-laden pine (b)",
+			"template": "res://assets/templates/env/trees/template_pine_b.png",
+			"display_size": [
+				260,
+				420
+			],
+			"source_size": [
+				520,
+				840
+			],
+			"pivot": [
+				0.5,
+				0.9714
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_winter.py) - replace with tablet art."
+		},
+		{
+			"id": "env.birch_bare",
+			"name": "Bare winter birch",
+			"template": "res://assets/templates/env/trees/template_birch_bare.png",
+			"display_size": [
+				170,
+				310
+			],
+			"source_size": [
+				340,
+				620
+			],
+			"pivot": [
+				0.5,
+				0.9613
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_winter.py) - replace with tablet art."
+		},
+		{
+			"id": "env.shrub_frozen_a",
+			"name": "Frozen bare shrub (a)",
+			"template": "res://assets/templates/env/plants/template_shrub_frozen_a.png",
+			"display_size": [
+				110,
+				80
+			],
+			"source_size": [
+				220,
+				160
+			],
+			"pivot": [
+				0.5,
+				0.9125
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_winter.py) - replace with tablet art."
+		},
+		{
+			"id": "env.shrub_frozen_b",
+			"name": "Frozen bare shrub (b)",
+			"template": "res://assets/templates/env/plants/template_shrub_frozen_b.png",
+			"display_size": [
+				90,
+				70
+			],
+			"source_size": [
+				180,
+				140
+			],
+			"pivot": [
+				0.5,
+				0.9
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_winter.py) - replace with tablet art."
+		},
+		{
+			"id": "env.dead_grass_a",
+			"name": "Dead brittle grass (a)",
+			"template": "res://assets/templates/env/plants/template_dead_grass_a.png",
+			"display_size": [
+				80,
+				50
+			],
+			"source_size": [
+				160,
+				100
+			],
+			"pivot": [
+				0.5,
+				0.94
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_winter.py) - replace with tablet art."
+		},
+		{
+			"id": "env.dead_grass_b",
+			"name": "Dead brittle grass (b)",
+			"template": "res://assets/templates/env/plants/template_dead_grass_b.png",
+			"display_size": [
+				80,
+				50
+			],
+			"source_size": [
+				160,
+				100
+			],
+			"pivot": [
+				0.5,
+				0.94
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_winter.py) - replace with tablet art."
+		},
+		{
+			"id": "env.dead_grass_c",
+			"name": "Dead brittle grass (c)",
+			"template": "res://assets/templates/env/plants/template_dead_grass_c.png",
+			"display_size": [
+				80,
+				50
+			],
+			"source_size": [
+				160,
+				100
+			],
+			"pivot": [
+				0.5,
+				0.94
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_winter.py) - replace with tablet art."
+		},
+		{
+			"id": "env.stump_snow",
+			"name": "Snowy tree stump",
+			"template": "res://assets/templates/env/trees/template_stump_snow.png",
+			"display_size": [
+				90,
+				60
+			],
+			"source_size": [
+				180,
+				120
+			],
+			"pivot": [
+				0.5,
+				0.8667
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_winter.py) - replace with tablet art."
+		},
+		{
+			"id": "world.hunter_cabin",
+			"name": "Hunter's cabin (exterior)",
+			"template": "res://assets/templates/world/buildings/template_hunter_cabin.png",
+			"display_size": [
+				440,
+				410
+			],
+			"source_size": [
+				880,
+				820
+			],
+			"pivot": [
+				0.5,
+				0.9634
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_winter.py) - replace with tablet art."
+		},
+		{
+			"id": "world.burned_shed",
+			"name": "Burned shed (opening landmark)",
+			"template": "res://assets/templates/world/buildings/template_burned_shed.png",
+			"display_size": [
+				300,
+				248
+			],
+			"source_size": [
+				460,
+				380
+			],
+			"pivot": [
+				0.5,
+				0.9211
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_winter.py) - replace with tablet art."
+		},
+		{
+			"id": "world.woodshed",
+			"name": "Woodshed with stacked firewood",
+			"template": "res://assets/templates/world/buildings/template_woodshed.png",
+			"display_size": [
+				200,
+				190
+			],
+			"source_size": [
+				400,
+				380
+			],
+			"pivot": [
+				0.5,
+				0.9368
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_winter.py) - replace with tablet art."
+		},
+		{
+			"id": "prop.truck_wreck",
+			"name": "Abandoned pickup truck (snowed in)",
+			"template": "res://assets/templates/props/vehicles/template_truck_wreck.png",
+			"display_size": [
+				200,
+				130
+			],
+			"source_size": [
+				400,
+				260
+			],
+			"pivot": [
+				0.5,
+				0.95
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_winter.py) - replace with tablet art."
+		},
+		{
+			"id": "world.house_a",
+			"name": "Abandoned house (a)",
+			"template": "res://assets/templates/world/settlement/template_house_a.png",
+			"display_size": [
+				320,
+				280
+			],
+			"source_size": [
+				640,
+				560
+			],
+			"pivot": [
+				0.5,
+				0.95
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_winter.py) - replace with tablet art."
+		},
+		{
+			"id": "world.house_b",
+			"name": "Abandoned house (b)",
+			"template": "res://assets/templates/world/settlement/template_house_b.png",
+			"display_size": [
+				300,
+				230
+			],
+			"source_size": [
+				600,
+				460
+			],
+			"pivot": [
+				0.5,
+				0.9478
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_winter.py) - replace with tablet art."
+		},
+		{
+			"id": "world.house_collapsed",
+			"name": "Collapsed house (sheltered corner)",
+			"template": "res://assets/templates/world/settlement/template_house_collapsed.png",
+			"display_size": [
+				260,
+				210
+			],
+			"source_size": [
+				520,
+				420
+			],
+			"pivot": [
+				0.5,
+				0.9429
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_winter.py) - replace with tablet art."
+		},
+		{
+			"id": "prop.sled",
+			"name": "Child's sled left in the snow",
+			"template": "res://assets/templates/props/clutter/template_sled.png",
+			"display_size": [
+				80,
+				45
+			],
+			"source_size": [
+				160,
+				90
+			],
+			"pivot": [
+				0.5,
+				0.8889
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_winter.py) - replace with tablet art."
+		},
+		{
+			"id": "prop.starter_bag",
+			"name": "Starter bag",
+			"template": "res://assets/templates/props/clutter/template_starter_bag.png",
+			"display_size": [
+				60,
+				45
+			],
+			"source_size": [
+				120,
+				90
+			],
+			"pivot": [
+				0.5,
+				0.9111
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_winter.py) - replace with tablet art."
+		},
+		{
+			"id": "prop.starter_bag_empty",
+			"name": "Starter bag (emptied)",
+			"template": "res://assets/templates/props/clutter/template_starter_bag_empty.png",
+			"display_size": [
+				60,
+				45
+			],
+			"source_size": [
+				120,
+				90
+			],
+			"pivot": [
+				0.5,
+				0.9111
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_winter.py) - replace with tablet art."
+		},
+		{
+			"id": "prop.blood_snow",
+			"name": "Thawed blood in snow (decal)",
+			"template": "res://assets/templates/props/clutter/template_blood_snow.png",
+			"display_size": [
+				100,
+				50
+			],
+			"source_size": [
+				200,
+				100
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_winter.py) - replace with tablet art."
+		},
+		{
+			"id": "fx.snowflake",
+			"name": "Snowflake (particle)",
+			"template": "res://assets/templates/fx/template_snowflake.png",
+			"display_size": [
+				12,
+				12
+			],
+			"source_size": [
+				24,
+				24
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_winter.py) - replace with tablet art."
+		},
+		{
+			"id": "fx.fog",
+			"name": "Cold fog (tileable overlay)",
+			"template": "res://assets/templates/fx/template_fog.png",
+			"display_size": [
+				512,
+				512
+			],
+			"source_size": [
+				512,
+				512
+			],
+			"pivot": [
+				0,
+				0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_winter.py) - replace with tablet art."
+		}
+	]
+}
