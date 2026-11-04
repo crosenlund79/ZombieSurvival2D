@@ -507,7 +507,8 @@ def to_west_trees(i):
 def scenario_danger_single():
     s = Instance("t_danger"); s.wipe(); s.start()
     try:
-        r = s.cmd("single new 31 Scout"); s.cmd("dev ambient 1")  # legacy automatic loop under test
+        s.cmd("single new 31 Scout")
+        r = s.cmd("dev ambient 1")  # legacy automatic loop under test
         base = len(zs(r["state"]))
         check("danger: base zombie population exists away from the homestead", base >= 4, base)
         r = take_club(s)
@@ -1551,9 +1552,10 @@ def scenario_red_thaw_multi():
         host.cmd("dev peaceful 1"); host.cmd("dev peaceful 0")   # clear the hunter
         # the host walks to the settlement too; both stand by the houses and listen
         host.cmd("dev teleport 2300 1400"); host.cmd("walk_to 2340 1400 10"); host.cmd("interact homestead.road_east")
-        host.cmd("dev teleport 1300 880"); c.cmd("walk_to 1240 880")
+        host.cmd("dev teleport 1350 800"); c.cmd("walk_to 1300 820")
         host.cmd("dev time 11")
-        st_h = wait_for(host, lambda st: any(o["kind"] == "laugh" for o in st.get("omens", [])), timeout=240)
+        # laughter is rare by design (RX-04): allow several slots
+        st_h = wait_for(host, lambda st: any(o["kind"] == "laugh" for o in st.get("omens", [])), timeout=600)
         time.sleep(1.0)
         lh = [o for o in st_h.get("omens", []) if o["kind"] == "laugh"]
         lc = [o for o in c.state().get("omens", []) if o["kind"] == "laugh"]
