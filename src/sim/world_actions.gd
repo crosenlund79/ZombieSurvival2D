@@ -71,7 +71,40 @@ static func request_interact(world: WorldState, player_id: String, entity_id: St
 			return _support(world, region, entity_id, def, state, expected_rev)
 		"loot":
 			return _loot(world, p, region, entity_id, def)
+		"starter_bag":
+			return _starter_bag(world, p, region, entity_id, def, state)
 	return _fail("ACTION_NOT_SUPPORTED")
+
+
+## The bag beside the burned shed: every player (including anyone who joins
+## later) can take one personal starter kit from it, exactly once. Claims are
+## stored per player in the bag's own state, so it saves, replicates and never
+## hands out shared-world loot twice.
+static func _starter_bag(world: WorldState, p: PlayerState, region: RegionState, eid: String, def: Dictionary, state: Dictionary) -> Dictionary:
+	var taken: Array = (state.get("taken_by", []) as Array).duplicate()
+	if taken.has(p.player_id):
+		return _fail("ACTION_BAG_EMPTY")
+	var kit: Dictionary = def.get("kit", {})
+	var need := 0
+	for item in kit:
+		need += int(kit[item])
+	if Inv.free_slots(p) < need:
+		return _fail("ACTION_NEED_SLOTS", [need])
+	var found: Array[String] = []
+	for item in kit:
+		if not Items.is_stack(str(item)):
+			for i in int(kit[item]):
+				p.gear.append(Inv.new_gear(world, str(item)))
+		else:
+			p.carried[item] = p.carrying(item) + int(kit[item])
+		found.append(TranslationServer.translate(Items.name_key(str(item))))
+	taken.append(p.player_id)
+	region.set_fields(eid, {"taken_by": taken})
+	var res := _changed(region, eid, "looted")
+	res["players"] = [p.player_id]
+	res["vitals"] = [p.player_id]
+	res["notice"] = {"key": "STARTER_BAG_TAKEN", "args": [", ".join(found)]}
+	return res
 
 
 # ------------------------------------------------------------------ shelter
@@ -456,6 +489,8 @@ static func request_drink(world: WorldState, player_id: String) -> Dictionary:
 	if p == null or p.dead:
 		return _fail("ACTION_UNKNOWN_PLAYER")
 	if p.carrying("water_clean") <= 0:
+		if p.carrying("water_bottle") > 0:  # the starter kit's large bottle
+			return Inv.request(world, player_id, "use", "water_bottle")
 		return _fail("ACTION_NO_CLEAN_WATER")
 	p.carried["water_clean"] = p.carrying("water_clean") - 1
 	if int(p.carried["water_clean"]) == 0:

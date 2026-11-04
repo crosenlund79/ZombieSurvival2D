@@ -72,7 +72,7 @@ static func _far_from_players(world: WorldState, region_id: String, pos: Vector2
 ## Called when a session starts and periodically; never spawns near players.
 static func ensure_population(world: WorldState) -> int:
 	var added := 0
-	if not world.threat.enabled:
+	if not world.threat.enabled or not world.threat.ambient:
 		return 0
 	for rid in world.regions:
 		var zc := region_cfg(rid, world)
@@ -123,6 +123,7 @@ static func _tick(world: WorldState) -> Array:
 	_escalate(world, results)
 	var budget := [int(c("path_budget_per_tick", 3))]
 	_traps(world, results)
+	_hunts(world, results)
 	var dyn_cache := {}
 	for z in world.zombies.values().duplicate():
 		if not dyn_cache.has(z.region_id):
@@ -135,6 +136,79 @@ static func _tick(world: WorldState) -> Array:
 	if world.tick % int(float(c("replenish_every", 60)) * Simulation.TICK_RATE) == 0:
 		ensure_population(world)
 	return results
+
+
+# ======================================================================
+# Burnt One hunts (Red Thaw). What starts a hunt is undecided: only the
+# developer command "dev hunt" does. A hunter is told where its target is at the
+# start and catches the scent again every scent_seconds while it has lost them;
+# otherwise it uses the normal sight / chase / attack / lose-target AI. It never
+# follows anyone into a building or the bunker (other regions) and gives up after
+# hunt_seconds, walking off the map. Hunters are transient: never saved.
+# ======================================================================
+
+## Starts a hunt for player_id. Returns {ok, zombie_id} or {ok: false, reason}.
+static func start_hunt(world: WorldState, player_id: String) -> Dictionary:
+	var p: PlayerState = world.players.get(player_id, null)
+	if p == null or not p.online or p.dead:
+		return {"ok": false, "reason": "HUNT_NO_TARGET"}
+	var zc := region_cfg(p.region_id, world)
+	if zc.is_empty():
+		return {"ok": false, "reason": "HUNT_TARGET_SHELTERED"}
+	var want := float(c("hunt_spawn_distance", 760))
+	var best := Vector2.INF
+	for sp in (zc.get("entries", []) as Array) + (zc.get("spawns", []) as Array):
+		var pos := Vector2(float(sp[0]), float(sp[1]))
+		if not _far_from_players(world, p.region_id, pos, float(c("hunt_min_distance", 480))):
+			continue
+		if best == Vector2.INF or absf(pos.distance_to(p.position) - want) < absf(best.distance_to(p.position) - want):
+			best = pos
+	if best == Vector2.INF:
+		return {"ok": false, "reason": "HUNT_NO_SPOT"}
+	var z := spawn(world, p.region_id, best, false)
+	z.hunter = true
+	z.hunt_target = player_id
+	z.hunt_until = world.tick + int(float(c("hunt_seconds", 240)) * Simulation.TICK_RATE)
+	_investigate(world, z, p.position)
+	SessionLog.info("threat", "hunt_started", {"zombie": z.zombie_id, "target": player_id.substr(0, 6),
+		"region": p.region_id, "from": [roundi(best.x), roundi(best.y)], "distance": roundi(best.distance_to(p.position))})
+	return {"ok": true, "zombie_id": z.zombie_id}
+
+
+static func _hunts(world: WorldState, results: Array) -> void:
+	for z in world.zombies.values():
+		if not z.hunter or z.is_dead() or z.leaving:
+			continue
+		if world.tick >= z.hunt_until:
+			z.hunter = false
+			z.target_player = ""
+			_after_search(world, z)
+			z.leaving = true
+			SessionLog.info("threat", "hunt_ended", {"zombie": z.zombie_id, "reason": "gave_up"})
+			results.append(_event_result({"kind": "hunt_ended", "zombie_id": z.zombie_id}))
+			continue
+		if z.ai == ZombieState.AI.WANDER or z.ai == ZombieState.AI.INVESTIGATE:
+			var every := int(float(c("hunt_scent_seconds", 12)) * Simulation.TICK_RATE)
+			if every > 0 and world.tick % every == 0:
+				var p: PlayerState = world.players.get(z.hunt_target, null)
+				if p != null and p.online and not p.dead and p.region_id == z.region_id:
+					_investigate(world, z, p.position)
+					SessionLog.info("threat", "hunt_scent", {"zombie": z.zombie_id, "at": [roundi(p.position.x), roundi(p.position.y)]})
+
+
+## Diagnostics: one line per hunter.
+static func hunt_lines(world: WorldState) -> Array[String]:
+	var out: Array[String] = []
+	for z in world.zombies.values():
+		if not z.hunter:
+			continue
+		var p: PlayerState = world.players.get(z.hunt_target, null)
+		var d := "-"
+		if p != null and p.region_id == z.region_id:
+			d = str(roundi(p.position.distance_to(z.position)))
+		out.append("hunt %s %s target=%s dist=%s hp=%d left=%ds" % [z.zombie_id, z.state_name(), z.hunt_target.substr(0, 6), d,
+			roundi(z.health), maxi(0, (z.hunt_until - world.tick) / Simulation.TICK_RATE)])
+	return out
 
 
 static func _process_noise(world: WorldState) -> void:
@@ -210,7 +284,7 @@ static func _escalate(world: WorldState, results: Array) -> void:
 		while engaged < want and not idle.is_empty():
 			_investigate(world, idle.pop_front(), center)
 			engaged += 1
-		if engaged >= want or level < int(c("reinforce_from_level", 1)):
+		if engaged >= want or level < int(c("reinforce_from_level", 1)) or not world.threat.ambient:
 			continue
 		var last := int(world.threat.last_spawn.get(key, -100000))
 		if world.tick - last < int(float(c("reinforcement_cooldown", 5)) * Simulation.TICK_RATE):

@@ -224,13 +224,13 @@ def frozen_mud_tile():
 
 
 def road_snow_tile():
-    S = 256
+    S = 512
     rng = random.Random(9301)
     img = _tile(S, [hexc("#2C2F31"), hexc("#3B3F41"), hexc("#4F5355")], 9302, 90)
     ov = Image.new("RGBA", img.size, (0, 0, 0, 0))
-    img = noise_snow(img, 9303, 40, 0.68, mix(SNOW, SNOW_SH, 0.35), soft=0.06, alpha=0.85)
+    img = noise_snow(img, 9303, 130, 0.62, mix(SNOW, SNOW_SH, 0.35), soft=0.1, alpha=0.8)
     cracks = []
-    for _ in range(8):
+    for _ in range(16):
         x, y = rng.uniform(0, S), rng.uniform(0, S); pts = [(x, y)]
         for _ in range(5):
             x += rng.uniform(-16, 16); y += rng.uniform(-10, 10); pts.append((x, y))
@@ -240,14 +240,14 @@ def road_snow_tile():
             d.line([(x + ox, y + oy) for x, y in pts], fill=INK[:3] + (200,), width=2)
             d.line([(x + ox + 1, y + oy - 1) for x, y in pts], fill=SNOW[:3] + (140,), width=1)
     wrap_draw(ov, fc)
-    grit = [(rng.uniform(0, S), rng.uniform(0, S)) for _ in range(500)]
+    grit = [(rng.uniform(0, S), rng.uniform(0, S)) for _ in range(1600)]
     def fg(d, ox, oy):
         for x, y in grit:
             d.point((x + ox, y + oy), fill=SNOW_L[:3] + (130,))
     wrap_draw(ov, fg)
     ov = ov.filter(ImageFilter.GaussianBlur(0.8))
     Image.alpha_composite(img, ov).save(out("env/ground/template_road_snow_tile.png"), optimize=True)
-    entry("env.ground_road_snow", "Ground — snowy cracked road (tile)", "env/ground/template_road_snow_tile.png", (256, 256), (256, 256), (0, 0))
+    entry("env.ground_road_snow", "Ground — snowy cracked road (tile)", "env/ground/template_road_snow_tile.png", (512, 512), (512, 512), (0, 0))
 
 
 # ================================================================ vegetation

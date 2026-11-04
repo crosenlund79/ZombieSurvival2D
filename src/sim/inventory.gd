@@ -203,6 +203,8 @@ static func _use(world: WorldState, p: PlayerState, arg: String, res: Dictionary
 		return WorldActions._fail("ACTION_CANT_USE")
 	if gi < 0 and p.carrying(item) <= 0:
 		return WorldActions._fail("ACTION_NOTHING_THERE")
+	if str(info.get("use", "")) == "map":
+		return res  # reading the map is local (the map panel opens); nothing is used up
 	match str(info.get("use", "")):
 		"eat":
 			p.hunger = minf(100.0, p.hunger + float(info.get("food", 20)))

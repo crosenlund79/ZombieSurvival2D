@@ -51,12 +51,12 @@
 			"name": "Ground \u2014 snowy cracked road (tile)",
 			"template": "res://assets/templates/env/ground/template_road_snow_tile.png",
 			"display_size": [
-				256,
-				256
+				512,
+				512
 			],
 			"source_size": [
-				256,
-				256
+				512,
+				512
 			],
 			"pivot": [
 				0,

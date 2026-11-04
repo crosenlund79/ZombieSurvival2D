@@ -61,6 +61,7 @@ func test_bunker_noise_leaks_less_through_steel() -> void:
 
 func test_defence_event_lifecycle() -> void:
 	var w := WorldState.create_new("w_siege", 23)
+	w.threat.ambient = true  # automatic attacks only happen with the old loop switched on
 	_player(w, PID, INTERIOR, Vector2(300, 500))  # safe indoors
 	w.tick = int(EventSim.c("first_siege_after_minutes", 15)) * 60 * Simulation.TICK_RATE + 10
 	w.meta["home_heat"] = float(EventSim.c("siege_threshold", 55)) + 5.0

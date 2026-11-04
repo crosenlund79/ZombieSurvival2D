@@ -177,6 +177,16 @@ func _open_world(world_id: String, new_seed: int) -> Dictionary:
 
 func _begin() -> void:
 	if is_authority():
+		if not world.threat.ambient:
+			# Red Thaw: worlds no longer keep a roaming population; base-population
+			# figures from older saves are released here (logged), never duplicated.
+			var gone := 0
+			for zid in world.zombies.keys():
+				if world.zombies[zid].persistent:
+					world.zombies.erase(zid)
+					gone += 1
+			if gone > 0:
+				SessionLog.info("threat", "population_released", {"count": gone})
 		var added := ZombieSim.ensure_population(world)
 		EventSim.resume_after_load(world)
 		NpcSim.ensure(world)
@@ -834,6 +844,25 @@ func _host_dev_command(peer_id: int, cmd: String, arg: Variant) -> void:
 			world.threat.enabled = arg == null or float(arg) == 0.0
 			if world.threat.enabled:
 				ZombieSim.ensure_population(world)
+		"ambient":
+			# Developer: the old automatic threat loop (populations, reinforcements,
+			# night/heat wanderers, automatic cabin attacks) on (1) or off (0).
+			world.threat.ambient = arg == null or float(arg) != 0.0
+			if world.threat.ambient:
+				ZombieSim.ensure_population(world)
+			SessionLog.info("dev", "ambient_threat", {"on": world.threat.ambient})
+		"hunt":
+			# Developer-only Burnt One hunt against the caller (or a player id prefix in arg).
+			var target := pid
+			if arg != null and str(arg) != "" and str(arg) != "0":
+				for pid2 in world.players:
+					if str(pid2).begins_with(str(arg)) or world.players[pid2].display_name == str(arg):
+						target = pid2
+			var hres := ZombieSim.start_hunt(world, target)
+			if hres["ok"]:
+				_send_notice(peer_id, "DEV_HUNT_STARTED", [hres["zombie_id"]])
+			else:
+				_send_action_result(peer_id, 0, false, hres["reason"])
 		"noise":
 			if pid != "":
 				var p4: PlayerState = world.players[pid]

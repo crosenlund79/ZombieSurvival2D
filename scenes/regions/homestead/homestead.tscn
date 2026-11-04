@@ -10,6 +10,7 @@
 [ext_resource type="Script" path="res://src/presentation/world/tree_view.gd" id="treev"]
 [ext_resource type="Script" path="res://src/presentation/world/portal_view.gd" id="portalv"]
 [ext_resource type="Script" path="res://src/presentation/world/machine_view.gd" id="machinev"]
+[ext_resource type="Script" path="res://src/presentation/world/starter_bag_view.gd" id="bagv"]
 
 [sub_resource type="RectangleShape2D" id="b0"]
 size = Vector2(2440, 40)
@@ -1052,6 +1053,10 @@ footprint = Vector2(30, 12)
 occlude = true
 sway = true
 flip_h = true
+
+[node name="StarterBag" type="Node2D" parent="YSort"]
+script = ExtResource("bagv")
+entity_id = "homestead.starter_bag"
 
 [node name="BurnedShed" type="Node2D" parent="YSort"]
 script = ExtResource("prop")

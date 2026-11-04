@@ -166,7 +166,7 @@
 					280,
 					80
 				],
-				"label_key": "MAP_STATION_SHOP"
+				"label_key": "MAP_SETTLEMENT_SHOP"
 			},
 			{
 				"kind": "building",
@@ -187,6 +187,52 @@
 					600
 				],
 				"label_key": "MAP_PUMPS"
+			},
+			{
+				"kind": "building",
+				"position": [
+					1000,
+					1010
+				],
+				"size": [
+					150,
+					60
+				],
+				"label_key": "MAP_HOUSES"
+			},
+			{
+				"kind": "building",
+				"position": [
+					1350,
+					1025
+				],
+				"size": [
+					140,
+					50
+				]
+			},
+			{
+				"kind": "building",
+				"position": [
+					1900,
+					1035
+				],
+				"size": [
+					150,
+					60
+				]
+			},
+			{
+				"kind": "ruin",
+				"position": [
+					420,
+					560
+				],
+				"size": [
+					120,
+					60
+				],
+				"label_key": "MAP_COLLAPSED"
 			}
 		]
 	},
@@ -317,7 +363,133 @@
 			"initial": {
 				"looted_at": -1
 			}
+		},
+		{
+			"id": "service_station.house_pantry",
+			"type": "loot",
+			"position": [
+				1290,
+				1066
+			],
+			"interact_range": 75,
+			"prompt_key": "PROMPT_SEARCH_HOUSE",
+			"loot": {
+				"canned_food": 1,
+				"cloth": 1
+			},
+			"restock_minutes": 30,
+			"initial": {
+				"looted_at": -1
+			}
+		},
+		{
+			"id": "service_station.house_wardrobe",
+			"type": "loot",
+			"position": [
+				1060,
+				1056
+			],
+			"interact_range": 75,
+			"prompt_key": "PROMPT_SEARCH_HOUSE",
+			"loot": {
+				"cloth": 2
+			},
+			"restock_minutes": 40,
+			"initial": {
+				"looted_at": -1
+			}
 		}
 	],
-	"discovery": "service_station"
+	"discovery": "service_station",
+	"omens": {
+		"laugh_spots": [
+			[
+				1000,
+				980
+			],
+			[
+				1350,
+				1010
+			],
+			[
+				1900,
+				1010
+			],
+			[
+				420,
+				560
+			],
+			[
+				1450,
+				380
+			],
+			[
+				1900,
+				430
+			]
+		],
+		"laugh_radius": 650,
+		"shadow_paths": [
+			[
+				[
+					1150,
+					1080
+				],
+				[
+					1300,
+					1090
+				]
+			],
+			[
+				[
+					1600,
+					1120
+				],
+				[
+					1820,
+					1110
+				]
+			],
+			[
+				[
+					700,
+					790
+				],
+				[
+					980,
+					830
+				]
+			],
+			[
+				[
+					260,
+					640
+				],
+				[
+					120,
+					600
+				]
+			],
+			[
+				[
+					2050,
+					640
+				],
+				[
+					2160,
+					600
+				]
+			],
+			[
+				[
+					1640,
+					330
+				],
+				[
+					1780,
+					320
+				]
+			]
+		]
+	}
 }

@@ -81,6 +81,7 @@ func test_attention_grows_and_decays() -> void:
 
 func test_escalation_recruits_then_reinforces_within_limits() -> void:
 	var w := _world()
+	w.threat.ambient = true  # the automatic loop (off by default in Red Thaw)
 	_player(w, PID, "homestead", Vector2(1200, 1000))
 	var idle := _zombie(w, Vector2(1200, 300), Vector2.UP)
 	w.threat.zones[ThreatState.zone_key("homestead", Vector2(1200, 1000))] = 4.0
@@ -195,6 +196,7 @@ func test_persistence_policy() -> void:
 
 func test_base_population_topped_up_away_from_players() -> void:
 	var w := _world()
+	w.threat.ambient = true  # the automatic loop (off by default in Red Thaw)
 	_player(w, PID, "homestead", Vector2(1150, 1000))
 	ZombieSim.ensure_population(w)
 	var want := int(w.region_def("homestead")["zombies"]["base_population"])

@@ -33,7 +33,16 @@ static func day_number(world: WorldState) -> int:
 
 ## 1 = full daylight, 0 = deep night (smooth dawn and dusk).
 static func daylight(world: WorldState) -> float:
-	var h := hour(world)
+	return _daylight_for_hour(hour(world))
+
+
+## Daylight at an arbitrary world tick (used by deterministic schedules).
+static func daylight_at(world: WorldState, tick: int) -> float:
+	var secs := float(tick) / Simulation.TICK_RATE
+	return _daylight_for_hour(fmod(float(c("start_hour", 8.0)) + secs / float(c("day_seconds", 1440)) * 24.0, 24.0))
+
+
+static func _daylight_for_hour(h: float) -> float:
 	var dawn: Array = c("dawn", [5.0, 7.0])
 	var dusk: Array = c("dusk", [19.0, 21.0])
 	if h >= float(dawn[1]) and h <= float(dusk[0]):

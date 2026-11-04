@@ -1,20 +1,30 @@
 class_name MapPanel
 extends Control
-## World map (M). Local to each player; never pauses the shared world.
+## World map (M, or "Read" on the field map from the starter bag). Local to each
+## player; never pauses the shared world. Red Thaw: drawn as a weathered,
+## hand-inked field map — pine-forest masses stamped with tree symbols, pale
+## snowy clearings, faint contour hints, cased roads, dashed woodland tracks,
+## hatched buildings, ruin and burn marks, a compass and a scale bar.
 ## Everything drawn comes from data: the surface region's "map" block in its
 ## content file (roads, areas, landmarks), live bunker records, and player
 ## positions. Players indoors or underground are shown at the surface point
 ## of the building/shelter they are in, with their depth.
 
-const INK := Color(0.16, 0.13, 0.09)
-const INK_SOFT := Color(0.16, 0.13, 0.09, 0.45)
-const ROAD := Color(0.36, 0.33, 0.29)
-const TRACK := Color(0.55, 0.42, 0.28)
-const WOODS := Color(0.35, 0.40, 0.20, 0.35)
-const YARD := Color(0.55, 0.43, 0.28, 0.35)
-const ME := Color("#954C33")
-const OTHER := Color("#346773")
-const BUNKER := Color("#7A5A20")
+const INK := Color(0.12, 0.13, 0.14)
+const INK_SOFT := Color(0.12, 0.13, 0.14, 0.4)
+const ROAD := Color(0.72, 0.72, 0.68)
+const TRACK := Color(0.30, 0.27, 0.24)
+const WOODS := Color(0.20, 0.27, 0.24, 0.32)
+const PINE := Color(0.13, 0.19, 0.17, 0.85)
+const CLEARING := Color(0.93, 0.94, 0.92, 0.35)
+const YARD := Color(0.45, 0.40, 0.34, 0.22)
+const CONTOUR := Color(0.32, 0.40, 0.46, 0.22)
+const ME := Color("#8E1F1A")
+const OTHER := Color("#2E4A5C")
+const BUNKER := Color("#5A4632")
+
+## The map panel of this game window (opened from the inventory's field map).
+static var instance: MapPanel
 
 var _paper: TextureRect
 var _legend: Label
@@ -22,6 +32,7 @@ var _title: Label
 
 
 func _ready() -> void:
+	instance = self
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	var dim := ColorRect.new()
@@ -158,10 +169,13 @@ func _draw() -> void:
 		if sp.is_empty() or not (sp["region_id"] in shown):
 			continue
 		var bp: Vector2 = rect.position + (sp["position"] + region_offset(w, sp["region_id"]) - bounds.position) * sc + Vector2(46, 10)
-		var tri := PackedVector2Array([bp + Vector2(0, -12), bp + Vector2(11, 8), bp + Vector2(-11, 8)])
-		draw_colored_polygon(tri, BUNKER)
-		tri.append(tri[0])
-		draw_polyline(tri, INK, 2.0)
+		# shelter: a hatch square with a downward ladder mark
+		draw_rect(Rect2(bp - Vector2(9, 9), Vector2(18, 18)), BUNKER)
+		draw_rect(Rect2(bp - Vector2(9, 9), Vector2(18, 18)), INK, false, 2.0)
+		draw_line(bp + Vector2(-4, -5), bp + Vector2(-4, 6), INK, 1.5)
+		draw_line(bp + Vector2(4, -5), bp + Vector2(4, 6), INK, 1.5)
+		for k in 3:
+			draw_line(bp + Vector2(-4, -3 + k * 4), bp + Vector2(4, -3 + k * 4), INK, 1.2)
 		_label(bp + Vector2(70, 5), UITheme.fmt("MAP_SHELTER", [bk.levels.size()]), 13)
 	# Players.
 	for p in w.online_players():
@@ -170,8 +184,9 @@ func _draw() -> void:
 			continue
 		var mp: Vector2 = rect.position + (pp["position"] + region_offset(w, pp["region_id"]) - bounds.position) * sc
 		var mine: bool = p.player_id == me.player_id
-		draw_circle(mp, 9.0 if mine else 7.0, ME if mine else OTHER)
-		draw_arc(mp, 9.0 if mine else 7.0, 0, TAU, 16, INK, 2.0)
+		# a pencilled ring with a centre dot; the local player in red ink
+		draw_arc(mp, 9.0 if mine else 7.0, 0, TAU, 20, ME if mine else OTHER, 3.0)
+		draw_circle(mp, 3.0, ME if mine else OTHER)
 		var tag: String = p.display_name
 		if int(pp["depth"]) < 0:
 			tag += " (%d)" % int(pp["depth"])
@@ -189,50 +204,147 @@ func _draw() -> void:
 	_legend.text += "\n" + tr("MAP_LEGEND")
 	_legend.position = Vector2(rect.position.x, rect.end.y + 12)
 	_legend.size = Vector2(rect.size.x, 60)
-	draw_rect(rect.grow(4), INK, false, 3.0)
+	_draw_frame(rect, sc)
+
+
+func _draw_frame(rect: Rect2, sc: float) -> void:
+	draw_rect(rect.grow(4), INK, false, 2.5)
+	draw_rect(rect.grow(9), INK_SOFT, false, 1.0)
+	for i in 9:  # graticule ticks along the border
+		var t := float(i) / 8.0
+		var x := rect.position.x + rect.size.x * t
+		var y := rect.position.y + rect.size.y * t
+		draw_line(Vector2(x, rect.position.y - 4), Vector2(x, rect.position.y - 10), INK, 1.5)
+		draw_line(Vector2(x, rect.end.y + 4), Vector2(x, rect.end.y + 10), INK, 1.5)
+		draw_line(Vector2(rect.position.x - 4, y), Vector2(rect.position.x - 10, y), INK, 1.5)
+		draw_line(Vector2(rect.end.x + 4, y), Vector2(rect.end.x + 10, y), INK, 1.5)
+	# compass
+	var c := rect.end - Vector2(46, 56)
+	draw_circle(c, 20.0, Color(0.9, 0.9, 0.87, 0.75))
+	draw_arc(c, 20.0, 0, TAU, 32, INK, 1.5)
+	draw_colored_polygon(PackedVector2Array([c + Vector2(0, -26), c + Vector2(6, 0), c + Vector2(-6, 0)]), INK)
+	draw_colored_polygon(PackedVector2Array([c + Vector2(0, 22), c + Vector2(5, 0), c + Vector2(-5, 0)]), INK_SOFT)
+	_label(c + Vector2(0, -30), "N", 14)
+	# scale bar: 500 world px (a few minutes on foot)
+	var bar := 500.0 * sc
+	var b0 := Vector2(rect.position.x + 20, rect.end.y - 24)
+	draw_rect(Rect2(b0, Vector2(bar, 6)), Color(0.9, 0.9, 0.87))
+	draw_rect(Rect2(b0, Vector2(bar * 0.5, 6)), INK)
+	draw_rect(Rect2(b0, Vector2(bar, 6)), INK, false, 1.2)
+	_label(b0 + Vector2(bar * 0.5, -6), tr("MAP_SCALE"), 11)
+
+
+## Deterministic jitter in [-1, 1] for map stamps (same picture every time).
+static func _j(a: float, b: float, k: int) -> float:
+	var h := sin(a * 12.9898 + b * 78.233 + float(k) * 37.719) * 43758.5453
+	return (h - floorf(h)) * 2.0 - 1.0
+
+
+func _pine(at: Vector2, s: float, col: Color) -> void:
+	draw_colored_polygon(PackedVector2Array([at + Vector2(0, -7) * s, at + Vector2(4.5, 1) * s, at + Vector2(-4.5, 1) * s]), col)
+	draw_colored_polygon(PackedVector2Array([at + Vector2(0, -3) * s, at + Vector2(5.5, 4) * s, at + Vector2(-5.5, 4) * s]), col)
+	draw_line(at + Vector2(0, 4) * s, at + Vector2(0, 6.5) * s, col, maxf(1.0, s))
 
 
 func _draw_region(w: WorldState, rid: String, to_map: Callable, sc: float) -> void:
 	var def := w.region_def(rid)
 	var map: Dictionary = def.get("map", {})
+	var b: Array = def.get("bounds", [0, 0, 1600, 1100])
+	var r0: Vector2 = to_map.call(Vector2(float(b[0]), float(b[1])))
+	var r1: Vector2 = to_map.call(Vector2(float(b[0]) + float(b[2]), float(b[1]) + float(b[3])))
+	var rr := Rect2(r0, r1 - r0)
+	draw_rect(rr, CLEARING)  # snowy open ground
+	# faint contour hints (muted elevation cues)
+	for k in 5:
+		var line := PackedVector2Array()
+		var y0 := rr.position.y + rr.size.y * (0.12 + 0.2 * float(k)) + _j(r0.x, r0.y, k) * 12.0
+		for i in 25:
+			var x := rr.position.x + rr.size.x * float(i) / 24.0
+			line.append(Vector2(x, y0 + sin(float(i) * 0.7 + float(k)) * 9.0 + _j(x, y0, k) * 2.0))
+		draw_polyline(line, CONTOUR, 1.2)
+	var woods_polys: Array = []
 	for area in map.get("areas", []):
 		var pts := PackedVector2Array()
 		for p in area.get("polygon", []):
 			pts.append(to_map.call(Vector2(p[0], p[1])))
-		if pts.size() >= 3:
-			draw_colored_polygon(pts, WOODS if area.get("kind") == "woods" else YARD)
+		if pts.size() < 3:
+			continue
+		if area.get("kind") == "woods":
+			draw_colored_polygon(pts, WOODS)
+			woods_polys.append(pts)
+		else:
+			draw_colored_polygon(pts, YARD)
 			pts.append(pts[0])
-			draw_polyline(pts, INK_SOFT, 1.5)
+			draw_polyline(pts, INK_SOFT, 1.2)
+	# pine symbols stamped across the forest masses
+	var step := 15.0
+	for poly in woods_polys:
+		var bb := Rect2(poly[0], Vector2.ZERO)
+		for q in poly:
+			bb = bb.expand(q)
+		var y := bb.position.y + 6.0
+		var row := 0
+		while y < bb.end.y:
+			var x := bb.position.x + (7.0 if row % 2 else 0.0)
+			while x < bb.end.x:
+				var at := Vector2(x + _j(x, y, 1) * 4.0, y + _j(x, y, 2) * 3.0)
+				if Geometry2D.is_point_in_polygon(at, poly) and _j(x, y, 3) > -0.55:
+					_pine(at, 0.9 + 0.25 * _j(x, y, 4), PINE)
+				x += step
+			y += step * 0.8
+			row += 1
 	for road in map.get("roads", []):
 		var line := PackedVector2Array()
 		for p in road.get("points", []):
 			line.append(to_map.call(Vector2(p[0], p[1])))
-		var wpx := float(road.get("width", 40)) * sc
-		var col := ROAD if road.get("kind", "road") == "road" else TRACK
-		draw_polyline(line, INK, wpx + 3.0)
-		draw_polyline(line, col, wpx)
+		var wpx := maxf(3.0, float(road.get("width", 40)) * sc * 0.6)
+		if road.get("kind", "road") == "road":
+			draw_polyline(line, INK, wpx + 3.0)   # cased road
+			draw_polyline(line, ROAD, wpx)
+		else:
+			for i in line.size() - 1:  # dashed woodland track
+				var a := line[i]
+				var d := line[i + 1] - a
+				var n := int(d.length() / 9.0)
+				for k in n:
+					if k % 2 == 0:
+						draw_line(a + d * float(k) / n, a + d * float(k + 1) / n, TRACK, 2.2)
 	for lm in map.get("landmarks", []):
 		var c: Vector2 = to_map.call(Vector2(lm["position"][0], lm["position"][1]))
 		var sz: Array = lm.get("size", [40, 40])
 		var r := Rect2(c - Vector2(sz[0], sz[1]) * sc * 0.5, Vector2(sz[0], sz[1]) * sc)
 		match str(lm.get("kind", "")):
 			"building":
-				draw_rect(r, Color(0.78, 0.70, 0.55))
+				draw_rect(r, Color(0.62, 0.60, 0.56))
+				for k in int(r.size.x / 4.0):  # hatching
+					var hx := r.position.x + 4.0 * float(k)
+					draw_line(Vector2(hx, r.end.y), Vector2(minf(hx + r.size.y, r.end.x), r.position.y + maxf(0.0, hx + r.size.y - r.end.x)), INK_SOFT, 1.0)
 				draw_rect(r, INK, false, 2.0)
+			"ruin":
+				draw_rect(r, Color(0.7, 0.7, 0.67))
+				draw_line(r.position, r.end, INK, 1.5)
+				draw_line(Vector2(r.end.x, r.position.y), Vector2(r.position.x, r.end.y), INK, 1.5)
+				draw_polyline(PackedVector2Array([r.position + Vector2(0, r.size.y), r.position, r.position + Vector2(r.size.x * 0.6, 0)]), INK, 2.0)
+			"burned":
+				draw_circle(c, maxf(5.0, r.size.x * 0.35), Color(0.08, 0.08, 0.08, 0.85))
+				for k in 6:
+					var a := TAU * float(k) / 6.0
+					draw_line(c, c + Vector2(cos(a), sin(a)) * (r.size.x * 0.6 + 3.0), INK, 1.5)
 			_:
-				draw_circle(c, 4.0, INK)
+				draw_circle(c, 3.5, INK)
 		if lm.has("label_key"):
-			_label(c + Vector2(0, r.size.y * 0.5 + 14), tr(str(lm["label_key"])), 13)
+			_label(c + Vector2(0, r.size.y * 0.5 + 14), tr(str(lm["label_key"])).to_upper(), 11)
+	if def.has("display_key"):
+		_label(rr.position + Vector2(rr.size.x * 0.5, 22), tr(str(def["display_key"])).to_upper(), 15)
 	var surf := w.region(rid)
 	for eid in Content.entity_ids(surf.def_id):
 		var ed := surf.entity_def(eid)
 		if str(ed.get("type", "")) == "tree":
 			var tp: Vector2 = to_map.call(Content.entity_position(ed))
 			if bool(surf.entity_state(eid).get("felled", false)):
-				draw_circle(tp, 2.5, TRACK)
+				draw_circle(tp, 2.0, TRACK)
 			else:
-				draw_circle(tp, 6.0, Color(0.30, 0.38, 0.18))
-				draw_arc(tp, 6.0, 0, TAU, 12, INK, 1.2)
+				_pine(tp, 1.3, INK)
 	# Player-built structures as small marks (defences, machines).
 	for oid in surf.objects:
 		var o: Dictionary = surf.objects[oid]

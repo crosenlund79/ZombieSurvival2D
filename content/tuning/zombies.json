@@ -1,5 +1,5 @@
 {
-	"_comment": "Zombie, noise and horde tuning (prototype values, all configurable). Distances in world px, times in seconds.",
+	"_comment": "Zombie, noise and horde tuning (prototype values, all configurable). Distances in world px, times in seconds. Red Thaw: these drive the Burnt Ones (the sim still calls them zombies). hunt_*: developer-started hunts (EXPLORING).",
 	"health": 100,
 	"speed_wander": 32,
 	"speed_investigate": 62,
@@ -81,5 +81,9 @@
 			"radius": 500,
 			"attention": 1.5
 		}
-	}
+	},
+	"hunt_seconds": 240,
+	"hunt_scent_seconds": 12,
+	"hunt_spawn_distance": 760,
+	"hunt_min_distance": 480
 }

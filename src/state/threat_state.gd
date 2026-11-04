@@ -17,6 +17,11 @@ var last_spawn := {}         # zone key -> world tick of the last reinforcement 
 var recent: Array = []       # last few processed events (diagnostics only)
 ## Developer switch (host, transient): false = peaceful, no zombies at all.
 var enabled := true
+## Red Thaw: automatic threats (base populations, noise reinforcements, roaming
+## extras at night/heat, automatic cabin attacks) are off until the creator decides
+## what starts a Burnt One hunt. Developer: "dev ambient 1" restores the old loop.
+## Hunts (ZombieSim.start_hunt) and developer spawns work either way. Transient.
+var ambient := false
 
 
 func add_noise(region_id: String, pos: Vector2, radius: float, attention: float, category: String) -> void:

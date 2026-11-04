@@ -212,8 +212,8 @@ static func gear_text(gear: Array) -> String:
 func _resource_line(me: PlayerState) -> String:
 	var parts: Array[String] = []
 	parts.append(UITheme.fmt("HUD_CARRYING", [Inv.slots_used(me), Items.carry_slots()]) + "  " + bag_text(me.carried))
-	if me.carrying("water_clean") > 0:
-		parts.append(UITheme.fmt("HUD_DRINK_HINT", [me.carrying("water_clean")]))
+	if me.carrying("water_clean") + me.carrying("water_bottle") > 0:
+		parts.append(UITheme.fmt("HUD_DRINK_HINT", [me.carrying("water_clean") + me.carrying("water_bottle")]))
 	if InfraSim.is_thirsty(me):
 		parts.append(tr("HUD_THIRSTY"))
 	var food := Inv.best_food(me)

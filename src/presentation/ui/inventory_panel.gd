@@ -83,6 +83,16 @@ func _rebuild(me: PlayerState) -> void:
 		_button(row3, tr("INV_DROP"), "drop", item)
 
 
+## True when arg (item id or gear uid) is a map: reading it opens the map locally.
+func _is_map(arg: String) -> bool:
+	var me := Session.local_player()
+	if me == null:
+		return false
+	var gi := me.find_gear(arg)
+	var item := str(me.gear[gi]["item"]) if gi >= 0 else arg
+	return str(Items.info(item).get("use", "")) == "map"
+
+
 func _gear_label(g: Dictionary) -> String:
 	var info := Items.info(str(g.get("item", "")))
 	var name := tr(Items.name_key(str(g.get("item", ""))))
@@ -125,5 +135,9 @@ func _button(row: HBoxContainer, text: String, action: String, arg: String) -> v
 	b.text = text
 	b.pressed.connect(func() -> void:
 		Audio.play("ui.click")
+		if action == "use" and _is_map(arg) and MapPanel.instance != null:
+			hide()
+			MapPanel.instance.show()
+			return
 		Session.request_inventory(action, arg))
 	row.add_child(b)

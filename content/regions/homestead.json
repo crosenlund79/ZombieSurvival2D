@@ -10,23 +10,41 @@
 	],
 	"spawn_points": [
 		[
-			1110,
-			1060
+			400,
+			1132
 		],
 		[
-			1190,
-			1060
+			446,
+			1118
 		],
 		[
-			1060,
-			1110
+			360,
+			1150
 		],
 		[
-			1240,
-			1110
+			482,
+			1146
 		]
 	],
 	"entities": [
+		{
+			"id": "homestead.starter_bag",
+			"type": "starter_bag",
+			"position": [
+				420,
+				1098
+			],
+			"interact_range": 80,
+			"prompt_key": "PROMPT_STARTER_BAG",
+			"kit": {
+				"water_bottle": 1,
+				"crackers": 1,
+				"field_map": 1
+			},
+			"initial": {
+				"taken_by": []
+			}
+		},
 		{
 			"id": "homestead.yard_gate",
 			"type": "door",
@@ -465,7 +483,7 @@
 					150,
 					70
 				],
-				"label_key": "MAP_SHED"
+				"label_key": "MAP_WOODSHED"
 			},
 			{
 				"kind": "point",
@@ -490,6 +508,18 @@
 					1120
 				],
 				"label_key": "MAP_TRACTOR"
+			},
+			{
+				"kind": "burned",
+				"position": [
+					290,
+					1030
+				],
+				"size": [
+					110,
+					40
+				],
+				"label_key": "MAP_BURNED_SHED"
 			}
 		],
 		"offset": [
@@ -579,5 +609,51 @@
 			1140,
 			660
 		]
-	]
+	],
+	"omens": {
+		"laugh_spots": [],
+		"laugh_radius": 0,
+		"shadow_paths": [
+			[
+				[
+					1880,
+					520
+				],
+				[
+					2040,
+					470
+				]
+			],
+			[
+				[
+					620,
+					1260
+				],
+				[
+					780,
+					1300
+				]
+			],
+			[
+				[
+					160,
+					760
+				],
+				[
+					60,
+					700
+				]
+			],
+			[
+				[
+					1950,
+					1240
+				],
+				[
+					2140,
+					1250
+				]
+			]
+		]
+	}
 }

@@ -304,6 +304,11 @@ func _state() -> Dictionary:
 	var w := Session.world
 	if w != null:
 		s["world_id"] = w.world_id
+		s["omens"] = OmenView.recent.duplicate()
+		s["hunts"] = ZombieSim.hunt_lines(w)
+		s["ambient"] = w.threat.ambient
+		s["zombie_rows"] = w.zombies.values().map(func(z): return {"id": z.zombie_id, "ai": z.state_name(), "hunter": z.hunter,
+			"x": z.position.x, "y": z.position.y, "region": z.region_id, "hp": z.health, "target": z.target_player})
 		s["seed"] = w.world_seed
 		s["tick"] = w.tick
 		var players := []

@@ -73,7 +73,9 @@ static func write_report(world: WorldState, player_id: String) -> String:
 					near.append("%s %s hp %s %s" % [oid, o.get("def"), o.get("hp", "-"), o.get("stage", "")])
 			lines.append("nearby structures: " + (", ".join(near) if not near.is_empty() else "none"))
 	lines.append("defence event: %s · heat %s · home heat %.1f" % [JSON.stringify(EventSim.siege(world)), JSON.stringify(world.meta.get("heat", {})), EventSim.home_heat(world)])
-	lines.append("zombies: %d · survivors: %s" % [world.zombies.size(), JSON.stringify(NpcState.encode_all(world))])
+	lines.append("burnt ones: %d (ambient threats %s) · survivors: %s" % [world.zombies.size(), str(world.threat.ambient), JSON.stringify(NpcState.encode_all(world))])
+	for hl in ZombieSim.hunt_lines(world):
+		lines.append(hl)
 	lines.append("")
 	lines.append("recent log:")
 	for e in SessionLog.recent(60):

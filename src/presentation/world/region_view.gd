@@ -51,6 +51,8 @@ func _ready() -> void:
 	Session.object_changed.connect(_on_object_changed)
 	_sync_avatars()
 	_sync_objects()
+	if Content.region_def(def_id).has("omens"):
+		add_child(OmenView.create(region_id, _actors))
 	if ambience_id != "":
 		Audio.play_loop("ambience", ambience_id)
 	SessionLog.info("view", "region_view_built", {"region": region_id, "def": def_id})

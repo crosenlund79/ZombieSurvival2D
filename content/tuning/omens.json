@@ -1,0 +1,11 @@
+{
+	"_comment": "Red Thaw atmospheric omens (presentation only, EXPLORING). Each region with an 'omens' block rolls once per slot of game time, seeded from the world seed, so every player experiences the same event at the same place. Laughter: daytime only (daylight >= laugh_min_daylight), heard only by players within the region's laugh_radius of the chosen spot, never shown. Shadows: night only (daylight <= shadow_max_daylight), a brief silhouette along one authored path.",
+	"laugh_slot_seconds": 35,
+	"laugh_chance": 0.3,
+	"laugh_min_daylight": 0.55,
+	"laugh_sounds": ["sfx.laugh_suppressed", "sfx.giggle", "sfx.laugh_distant", "sfx.giggle_close"],
+	"shadow_slot_seconds": 45,
+	"shadow_chance": 0.32,
+	"shadow_max_daylight": 0.25,
+	"shadow_seconds": [3.5, 6.0]
+}

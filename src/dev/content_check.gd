@@ -7,7 +7,7 @@ extends RefCounted
 
 var lines: Array[Dictionary] = []
 ## Entity types whose state is stored (they need an "initial" block).
-const STATEFUL: Array[String] = ["door", "shelter_site", "tree", "support_site", "generator", "purifier", "loot"]
+const STATEFUL: Array[String] = ["door", "shelter_site", "tree", "support_site", "generator", "purifier", "loot", "starter_bag"]
 
 
 func run() -> Array[Dictionary]:
@@ -246,7 +246,7 @@ func _check_data() -> void:
 	for def_id in Content.region_ids() + Content.level_template_ids().map(func(t): return Content.level_def_id(t)):
 		for eid in Content.entity_ids(def_id):
 			var e := Content.entity_def(def_id, eid)
-			for item in e.get("loot", {}):
+			for item in (e.get("loot", {}) as Dictionary).keys() + (e.get("kit", {}) as Dictionary).keys():
 				if not Items.exists(item):
 					problems += 1
 					_add("FAIL", "%s loot has unknown item %s" % [eid, item])

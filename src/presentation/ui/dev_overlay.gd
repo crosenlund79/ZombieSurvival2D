@@ -64,6 +64,9 @@ func _ready() -> void:
 	_btn(g, "DEV_JOB_FARM", func() -> void: Session.request_dev_command("npc_job", "farm"))
 	_btn(g, "DEV_REPORT", func() -> void: Session.request_dev_command("report"))
 	_btn(g, "DEV_AI_LABELS", func() -> void: ZombieView.show_debug = not ZombieView.show_debug)
+	_btn(g, "DEV_HUNT", func() -> void: Session.request_dev_command("hunt"))
+	_btn(g, "DEV_AMBIENT", func() -> void:
+		Session.request_dev_command("ambient", 0.0 if Session.world != null and Session.world.threat.ambient else 1.0))
 
 
 func _btn(parent: Control, key: String, cb: Callable) -> void:
@@ -108,8 +111,9 @@ func _process(_delta: float) -> void:
 			var counts := {}
 			for z in w.zombies.values():
 				counts[z.state_name()] = int(counts.get(z.state_name(), 0)) + 1
-			lines.append("zombies %d %s · attention here %.2f" % [w.zombies.size(), JSON.stringify(counts),
-				w.threat.local_attention(me.region_id, me.position)])
+			lines.append("burnt ones %d %s · ambient %s · attention here %.2f" % [w.zombies.size(), JSON.stringify(counts),
+				str(w.threat.ambient), w.threat.local_attention(me.region_id, me.position)])
+			lines.append_array(ZombieSim.hunt_lines(w))
 			var hot := []
 			for key in w.threat.zones:
 				hot.append("%s=%.1f" % [key.substr(key.find("|") + 1), w.threat.zones[key]])

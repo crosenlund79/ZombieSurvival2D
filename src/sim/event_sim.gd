@@ -124,7 +124,7 @@ static func step(world: WorldState, ticks: int) -> Array:
 	world.meta["home_heat"] = home_heat(world) * pow(0.5, seconds / (float(c("home_heat_half_life_minutes", 8)) * 60.0))
 	if not world.threat.enabled:
 		return results
-	if world.tick % (5 * Simulation.TICK_RATE) < ticks:
+	if world.threat.ambient and world.tick % (5 * Simulation.TICK_RATE) < ticks:
 		_wanderers(world)
 	_siege(world, results)
 	return results
@@ -178,6 +178,8 @@ static func _siege(world: WorldState, results: Array) -> void:
 	var ph := str(s.get("phase", "idle"))
 	match ph:
 		"idle":
+			if not world.threat.ambient:
+				return  # Red Thaw: no automatic attacks on the cabin (developer: "dev siege")
 			if world.tick < int(float(c("first_siege_after_minutes", 15)) * 60.0 * Simulation.TICK_RATE):
 				return
 			if world.tick < int(s.get("cooldown_until", 0)) or home_heat(world) < float(c("siege_threshold", 55)):

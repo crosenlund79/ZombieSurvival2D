@@ -492,8 +492,8 @@
 		"en": "Hunter's cabin"
 	},
 	"MAP_LEGEND": {
-		"da": "● dig   ● andre overlevende   ▲ tilflugtsrum   ○ træer (små = fældede)   [M] luk",
-		"en": "● you   ● other survivors   ▲ shelter   ○ trees (small = felled)   [M] close"
+		"da": "Ring = dig · blå ring = andre · firkant med stige = tilflugtsrum · træsymboler = skov · stiplet = skovspor · kryds = ruin · sort stjerne = brandtomt",
+		"en": "Red ring = you · blue ring = others · square with ladder = shelter · tree symbols = forest · dashed = woodland track · cross = ruin · black star = burned"
 	},
 	"MAP_SHED": {
 		"da": "Skur",
@@ -1696,8 +1696,8 @@
 		"en": "Mara. Found huddled in a collapsed house in the settlement. Shaking, whispering to herself. Practical once she trusts you."
 	},
 	"PROMPT_NPC_HAIL": {
-		"da": "Råb an %s",
-		"en": "Call out to %s"
+		"en": "Speak softly to %s",
+		"da": "Tal stille til %s"
 	},
 	"PROMPT_NPC_HELP": {
 		"da": "Hjælp %s",
@@ -1708,8 +1708,8 @@
 		"en": "Talk to %s"
 	},
 	"NPC_MET": {
-		"da": "%s: \"Vær sød — jeg har ikke spist i dagevis. Kom med %s, så går jeg med dig.\"",
-		"en": "%s: \"Please — I haven't eaten in days. Bring me %s and I'll come with you.\""
+		"en": "%s flinches, then whispers. She has had nothing for days — %s would be enough to make her trust you.",
+		"da": "%s farer sammen og hvisker. Hun har intet haft i dagevis — %s ville være nok til, at hun stoler på dig."
 	},
 	"NPC_STILL_NEEDS": {
 		"da": "%s mangler stadig: %s",
@@ -2094,5 +2094,129 @@
 	"HUD_DEV_WORLD": {
 		"da": "UDVIKLERENS TESTVERDEN",
 		"en": "DEVELOPER TEST WORLD"
+	},
+	"PROMPT_STARTER_BAG": {
+		"da": "Kig i tasken",
+		"en": "Look in the bag"
+	},
+	"ACTION_BAG_EMPTY": {
+		"da": "Du har allerede taget det, der var i tasken.",
+		"en": "You already took what was in the bag."
+	},
+	"STARTER_BAG_TAKEN": {
+		"da": "I tasken: %s.",
+		"en": "In the bag: %s."
+	},
+	"ITEM_WATER_BOTTLE": {
+		"da": "Stor flaske vand",
+		"en": "Large bottle of water"
+	},
+	"ITEM_WATER_BOTTLE_DESC": {
+		"da": "Rent vand, halvt frosset i halsen. En lang slurk.",
+		"en": "Clean water, half frozen at the neck. One long drink."
+	},
+	"ITEM_CRACKERS": {
+		"da": "Pakke kiks",
+		"en": "Pack of crackers"
+	},
+	"ITEM_CRACKERS_DESC": {
+		"da": "Tørre, salte, lidt bløde. Bedre end ingenting.",
+		"en": "Dry, salty, a little stale. Better than nothing."
+	},
+	"ITEM_FIELD_MAP": {
+		"da": "Kort over området",
+		"en": "Map of the area"
+	},
+	"ITEM_FIELD_MAP_DESC": {
+		"da": "Et foldet papirkort, blødt i folderne. Nogen har markeret en hytte i skoven.",
+		"en": "A folded paper map, soft at the creases. Someone marked a cabin in the woods."
+	},
+	"INV_USE_MAP": {
+		"da": "Læs",
+		"en": "Read"
+	},
+	"MAP_BURNED_SHED": {
+		"da": "Nedbrændt skur",
+		"en": "Burned shed"
+	},
+	"MAP_WOODSHED": {
+		"da": "Brændeskur",
+		"en": "Woodshed"
+	},
+	"MAP_SCALE": {
+		"da": "500 skridt",
+		"en": "500 paces"
+	},
+	"MAP_HOUSES": {
+		"da": "Huse",
+		"en": "Houses"
+	},
+	"MAP_COLLAPSED": {
+		"da": "Sammenstyrtet hus",
+		"en": "Collapsed house"
+	},
+	"PROMPT_SEARCH_HOUSE": {
+		"da": "Gennemsøg det, der blev efterladt",
+		"en": "Search through what was left behind"
+	},
+	"MAP_SETTLEMENT_SHOP": {
+		"da": "Gammel tankbutik",
+		"en": "Old fuel shop"
+	},
+	"NPC_UNKNOWN": {
+		"da": "Nogen…",
+		"en": "Someone…"
+	},
+	"NPC_LINE_1": {
+		"da": "“De lo igen…”",
+		"en": "“They were laughing again…”"
+	},
+	"NPC_LINE_2": {
+		"da": "“Gå ikke ud, når det bliver mørkt.”",
+		"en": "“Don't go out when it gets dark.”"
+	},
+	"NPC_LINE_3": {
+		"da": "“Jeg hørte dem udenfor. Hele natten.”",
+		"en": "“I heard them outside. All night.”"
+	},
+	"NPC_LINE_4": {
+		"da": "“Ingen lytter længere…”",
+		"en": "“Nobody listens anymore…”"
+	},
+	"NPC_LINE_5": {
+		"da": "“Her er så stille. Hvorfor er her så stille.”",
+		"en": "“It's so quiet. Why is it so quiet.”"
+	},
+	"NPC_LINE_6": {
+		"da": "“Lad dem ikke se lyset…”",
+		"en": "“Don't let them see the light…”"
+	},
+	"NPC_UNKNOWN_PROMPT": {
+		"en": "the figure in the corner",
+		"da": "skikkelsen i hjørnet"
+	},
+	"DEV_HUNT_STARTED": {
+		"da": "Udvikler: en Brændt er på jagt (%s).",
+		"en": "Developer: a Burnt One is hunting (%s)."
+	},
+	"HUNT_NO_TARGET": {
+		"da": "Ingen at jage.",
+		"en": "Nobody to hunt."
+	},
+	"HUNT_TARGET_SHELTERED": {
+		"da": "De kan ikke jage nogen inde i hytten eller bunkeren.",
+		"en": "They cannot hunt anyone inside the cabin or the bunker."
+	},
+	"HUNT_NO_SPOT": {
+		"da": "Intet skjult sted at starte jagten fra.",
+		"en": "No hidden spot to start a hunt from."
+	},
+	"DEV_HUNT": {
+		"da": "Start en jagt (på mig)",
+		"en": "Start a Burnt One hunt (on me)"
+	},
+	"DEV_AMBIENT": {
+		"da": "Automatiske trusler til/fra (gammel løkke)",
+		"en": "Automatic threats on/off (old loop)"
 	}
 }
