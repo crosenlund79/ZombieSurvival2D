@@ -30,6 +30,10 @@ const OCCLUDED_ALPHA := 0.42
 		footprint_offset = v
 		_rebuild_body()
 @export var occlude := false
+## false = the footprint blocks players but not the Burnt Ones' navigation grid
+## (decorative dressing such as the seeded forest pines, so it never walls off
+## authored entry points or routes).
+@export var nav_block := true
 @export var sway := false:
 	set(v):
 		sway = v

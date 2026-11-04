@@ -164,8 +164,9 @@ Screenshots: `docs/screenshots/iteration_010/`.
   fragments). Laughter and silhouettes are shared.
 - The settlement reuses the station region (`service_station` id) so saves stay compatible. Houses cannot be
   entered.
-- Decorative pines have small trunk collisions. Burnt One navigation uses the region's own grid, which
-  does not include them.
+- Decorative pines have small trunk collisions for players. The Burnt Ones' navigation ignores them
+  (`Prop.nav_block = false`) so they never wall off entry points or routes, which means a Burnt One can
+  brush through a pine trunk.
 - Snowfall is the old rain spell with new presentation (it masks noise and fills meltwater collectors).
 - Old zombie, farmhouse and oak templates remain in the manifests (unused) so any art already drawn for
   them still loads.

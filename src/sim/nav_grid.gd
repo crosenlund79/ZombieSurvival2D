@@ -52,7 +52,7 @@ func _collect(node: Node, offset: Vector2) -> void:
 		pos = offset + (node as Node2D).position
 	if node is Prop:
 		var p := node as Prop
-		if p.footprint.x > 0 and p.footprint.y > 0:
+		if p.footprint.x > 0 and p.footprint.y > 0 and p.nav_block:
 			block_rect(Rect2(pos + p.footprint_offset + Vector2(-p.footprint.x * 0.5, -p.footprint.y), p.footprint))
 	elif node is FenceLine:
 		var f := node as FenceLine
