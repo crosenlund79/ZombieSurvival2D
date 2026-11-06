@@ -55,6 +55,8 @@ func _ready() -> void:
 	Session.object_changed.connect(_on_object_changed)
 	_sync_avatars()
 	_sync_objects()
+	if Content.region_def(def_id).has("zombies"):
+		add_child(BloodView.create(region_id))  # iteration 012: thawed-blood marks on the snow
 	if Content.region_def(def_id).has("omens"):
 		add_child(OmenView.create(region_id, _actors))
 	if ambience_id != "":
@@ -244,7 +246,8 @@ func _on_combat_event(ev: Dictionary) -> void:
 				return
 			var sv2: ZombieView = _zombies.get(ev["zombie_id"])
 			var at2 := Vector2(float(ev.get("x", 0)), float(ev.get("y", 0)))
-			Audio.play(["sfx.burnt_screech", "sfx.burnt_screech_b", "sfx.burnt_screech_c"][randi() % 3], sv2.global_position if sv2 != null else at2)
+			Audio.play(["sfx.burnt_screech", "sfx.burnt_screech_b", "sfx.burnt_screech_c"][randi() % 3], sv2.global_position if sv2 != null else at2,
+				EnvSim.sound_mask_db(Session.world))
 			if sv2 != null:
 				sv2.screech()
 		"npc_met":

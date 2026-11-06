@@ -97,6 +97,14 @@ static func sight_scale(world: WorldState, region_id: String = "") -> float:
 	return s * wsight
 
 
+## Iteration 012: how much the weather masks distant sounds for players (dB, <= 0):
+## wind, rain and blowing snow make Burnt One sounds useful but imperfect clues.
+static func sound_mask_db(world: WorldState) -> float:
+	if world == null:
+		return 0.0
+	return float(wcfg(weather(world)).get("sound_mask_db", 0.0))
+
+
 static func hearing_scale(world: WorldState) -> float:
 	return float(wcfg(weather(world)).get("hearing_scale", 1.0))
 

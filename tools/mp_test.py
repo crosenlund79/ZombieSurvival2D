@@ -1830,6 +1830,35 @@ def scenario_custom_graphics():
             os.remove(img_dst)
 
 
+def scenario_blood_multi():
+    """Iteration 012 B: thawed-blood marks are host-made, replicated, saved, and erased by weather for everyone."""
+    host = Instance("t_bhost"); c = Instance("t_bclient")
+    for i in (host, c):
+        i.wipe()
+    try:
+        host.start(); c.start()
+        host.cmd(f"host {PORT} new 170 Hosty"); host.cmd("tips off"); host.cmd("dev peaceful 1"); host.cmd("dev weather clear")
+        r = c.cmd(f"join 127.0.0.1 {PORT} Cleo"); c.cmd("tips off")
+        check("blood: client joins", r["ok"], r["error"])
+        check("blood: a new world has no marks", host.state()["blood_count"] == 0, host.state()["blood_count"])
+        for _ in range(3):
+            host.cmd("dev blood")
+        time.sleep(0.4)
+        check("blood: marks reach the client", c.state()["blood_count"] == 3, c.state()["blood_count"])
+        c.cmd("leave"); host.cmd("leave")
+        host.cmd(f"host {PORT} continue Hosty"); host.cmd("dev peaceful 1")
+        check("blood: marks come back after a restart (saved)", host.state()["blood_count"] == 3, host.state()["blood_count"])
+        r = c.cmd(f"join 127.0.0.1 {PORT} Cleo")
+        check("blood: a rejoining client receives them", c.state()["blood_count"] == 3, c.state()["blood_count"])
+        host.cmd("dev weather heavy_rain"); host.cmd("dev advance_clock 200")
+        time.sleep(0.6)
+        check("blood: rain washes them away on the host", host.state()["blood_count"] == 0, host.state()["blood_count"])
+        check("blood: and for the client", c.state()["blood_count"] == 0, c.state()["blood_count"])
+    finally:
+        for i in (host, c):
+            i.kill()
+
+
 def scenario_perf_multi():
     """Two connected players, a horde plus extra groups active around them: measure host simulation cost."""
     host = Instance("t_phost"); c = Instance("t_pclient")
@@ -1857,7 +1886,7 @@ def scenario_perf_multi():
             i.kill()
 
 
-SCENARIOS = {"custom_graphics": scenario_custom_graphics, "wild_multi": scenario_wild_multi, "vehicle_multi": scenario_vehicle_multi, "winter_multi": scenario_winter_multi, "red_thaw_multi": scenario_red_thaw_multi, "perf_multi": scenario_perf_multi, "slice": scenario_slice, "settlement_multi": scenario_settlement_multi, "world_multi": scenario_world_multi, "craft_multi": scenario_craft_multi, "build_multi": scenario_build_multi, "accept": scenario_accept, "infra_multi": scenario_infra_multi, "dig_multi": scenario_dig_multi, "danger_single": scenario_danger_single, "danger_multi": scenario_danger_multi, "settings": scenario_settings, "bunker_single": scenario_bunker_single, "bunker_multi": scenario_bunker_multi, "single": scenario_single, "multiplayer": scenario_multiplayer,
+SCENARIOS = {"blood_multi": scenario_blood_multi, "custom_graphics": scenario_custom_graphics, "wild_multi": scenario_wild_multi, "vehicle_multi": scenario_vehicle_multi, "winter_multi": scenario_winter_multi, "red_thaw_multi": scenario_red_thaw_multi, "perf_multi": scenario_perf_multi, "slice": scenario_slice, "settlement_multi": scenario_settlement_multi, "world_multi": scenario_world_multi, "craft_multi": scenario_craft_multi, "build_multi": scenario_build_multi, "accept": scenario_accept, "infra_multi": scenario_infra_multi, "dig_multi": scenario_dig_multi, "danger_single": scenario_danger_single, "danger_multi": scenario_danger_multi, "settings": scenario_settings, "bunker_single": scenario_bunker_single, "bunker_multi": scenario_bunker_multi, "single": scenario_single, "multiplayer": scenario_multiplayer,
              "netfail": scenario_connection_failure, "assets": scenario_assets}
 
 if __name__ == "__main__":

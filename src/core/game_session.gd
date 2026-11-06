@@ -38,6 +38,8 @@ signal npcs_updated
 signal vehicle_changed(vehicle_id: String)
 ## The host rejected the local driver's pose; the vehicle view snaps back.
 signal vehicle_corrected(vehicle_id: String)
+## Iteration 012: thawed-blood marks were added, changed or erased.
+signal blood_changed
 
 enum Mode { NONE, SINGLE, HOST, CLIENT }
 
@@ -737,6 +739,10 @@ func _publish_result(res: Dictionary) -> void:
 		world_meta_changed.emit()
 		if mode == Mode.HOST and not multiplayer.get_peers().is_empty():
 			_rpc_world_meta.rpc(world.env, world.meta)
+	if res.get("blood", false):
+		blood_changed.emit()
+		if mode == Mode.HOST and not multiplayer.get_peers().is_empty():
+			_rpc_blood.rpc(world.blood)
 	for vid in res.get("vehicles", []):
 		var vs: VehicleState = world.vehicles.get(vid)
 		if vs == null:
@@ -1053,6 +1059,21 @@ func _host_dev_command(peer_id: int, cmd: String, arg: Variant) -> void:
 				_move_track[pid] = Time.get_ticks_msec()
 				_send_correction(peer_id, pg.position, pg.region_id)
 				_broadcast_roster()
+		"heat":
+			# Developer: a temporary heat source at the caller (thaws nearby Burnt Ones); "heat off" clears.
+			var ph: PlayerState = world.players.get(pid)
+			if str(arg) == "off":
+				world.dev_heat.clear()
+			elif ph != null:
+				world.dev_heat.append([ph.region_id, ph.position, 300.0])
+		"blood":
+			# Developer: one thawed-blood mark at the caller (presentation and weather tests).
+			var pb: PlayerState = world.players.get(pid)
+			if pb != null:
+				BloodSim.drip(world, pb.region_id, pb.position + Vector2(60, 0))
+				var rb := WorldActions._ok()
+				rb["blood"] = true
+				_publish_result(rb)
 		"vehicle_here":
 			# Developer: park the first vehicle beside the player (same region).
 			var pv: PlayerState = world.players.get(pid)
@@ -1505,6 +1526,14 @@ func _rpc_vehicle(vehicle_id: String, data: Dictionary) -> void:
 		elif p.vehicle_id == vehicle_id:
 			p.vehicle_id = ""
 	vehicle_changed.emit(vehicle_id)
+
+
+@rpc("authority", "call_remote", "reliable")
+func _rpc_blood(marks: Array) -> void:
+	if mode != Mode.CLIENT or world == null:
+		return
+	world.blood = marks.duplicate(true)
+	blood_changed.emit()
 
 
 @rpc("authority", "call_remote", "unreliable_ordered")

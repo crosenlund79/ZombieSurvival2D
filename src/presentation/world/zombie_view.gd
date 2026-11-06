@@ -157,7 +157,7 @@ func _process(delta: float) -> void:
 	_groan_timer -= delta
 	if _groan_timer <= 0.0 and not z.is_dead():
 		_groan_timer = randf_range(6.0, 14.0)
-		Audio.play("sfx.burnt_breath", global_position)
+		Audio.play("sfx.burnt_breath", global_position, EnvSim.sound_mask_db(Session.world))
 
 
 func _art(z: ZombieState) -> void:
@@ -208,9 +208,9 @@ func _signs(z: ZombieState, _delta: float) -> void:
 	var host := get_parent().get_parent() as Node2D if get_parent() != null else null
 	if host == null:
 		return
+	# Blood marks are no longer random flecks on tracks: they come only from blood
+	# thawed by warmth (BloodSim, iteration 012).
 	var kind := "fx.track_hand" if z.posture == ZombieState.Posture.CRAWL else "fx.track_boot"
-	if randf() < 0.05:
-		kind = "fx.track_blood"
 	var d := Sprite2D.new()
 	Assets.apply_to_sprite(d, kind)
 	var holder := Node2D.new()
@@ -261,10 +261,10 @@ func _on_ai_changed(z: ZombieState) -> void:
 	match z.ai:
 		ZombieState.AI.CHASE:
 			if _last_ai in [ZombieState.AI.WANDER, ZombieState.AI.INVESTIGATE, -1]:
-				Audio.play("sfx.burnt_notice", global_position)
+				Audio.play("sfx.burnt_notice", global_position, EnvSim.sound_mask_db(Session.world))
 		ZombieState.AI.INVESTIGATE:
 			if _last_ai == ZombieState.AI.WANDER and randf() < 0.5:
-				Audio.play("sfx.burnt_breath", global_position)
+				Audio.play("sfx.burnt_breath", global_position, EnvSim.sound_mask_db(Session.world))
 		ZombieState.AI.LISTEN:
 			_twitch = 0.12  # a sharp turn of the head toward the sound
 		ZombieState.AI.WINDUP:

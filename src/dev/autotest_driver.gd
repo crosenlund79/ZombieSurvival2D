@@ -349,6 +349,7 @@ func _state() -> Dictionary:
 		var sensor := get_tree().get_first_node_in_group("local_sensor") as InteractionSensor
 		if sensor != null and sensor.focused != null:
 			s["focused"] = {"id": sensor.focused.entity_id, "lit": sensor.focused._lit.size()}
+		s["blood_count"] = w.blood.size()
 		s["animals"] = w.animals.values().map(func(an): return {"id": an.animal_id, "species": an.species, "region": an.region_id,
 			"x": an.position.x, "y": an.position.y, "activity": an.activity})
 		s["vehicles"] = w.vehicles.values().map(func(v): return {"id": v.vehicle_id, "region": v.region_id,

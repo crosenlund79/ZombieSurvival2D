@@ -39,6 +39,7 @@ static func advance(world: WorldState, ticks: int) -> Array:
 	results.append_array(SleepSim.step(world, ticks))
 	results.append_array(VehicleSim.step(world, ticks))
 	results.append_array(WildlifeSim.step(world, ticks))
+	results.append_array(BloodSim.step(world, ticks))
 	return results
 
 

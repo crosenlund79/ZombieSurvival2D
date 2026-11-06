@@ -1,0 +1,72 @@
+{
+	"kind": "visual",
+	"category": "depth",
+	"assets": [
+		{
+			"id": "fx.blood_drop_a",
+			"name": "Thawed-blood mark a (small, refrozen)",
+			"template": "res://assets/templates/fx/template_blood_drop_a.png",
+			"display_size": [
+				16,
+				12
+			],
+			"source_size": [
+				40,
+				30
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated (tools/art/gen_shadows_depth.py). Keep it small and irregular: a drop, never a pool."
+		},
+		{
+			"id": "fx.blood_drop_b",
+			"name": "Thawed-blood mark b (small, refrozen)",
+			"template": "res://assets/templates/fx/template_blood_drop_b.png",
+			"display_size": [
+				16,
+				12
+			],
+			"source_size": [
+				40,
+				30
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated (tools/art/gen_shadows_depth.py). Keep it small and irregular: a drop, never a pool."
+		},
+		{
+			"id": "fx.blood_drop_c",
+			"name": "Thawed-blood mark c (small, refrozen)",
+			"template": "res://assets/templates/fx/template_blood_drop_c.png",
+			"display_size": [
+				16,
+				12
+			],
+			"source_size": [
+				40,
+				30
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated (tools/art/gen_shadows_depth.py). Keep it small and irregular: a drop, never a pool."
+		}
+	]
+}

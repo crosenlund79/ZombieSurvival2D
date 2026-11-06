@@ -23,6 +23,10 @@ var meta := {}
 var npcs := {}                # npc_id -> NpcState (survivors; host simulates, saved)
 var vehicles := {}            # vehicle_id -> VehicleState (iteration 011; host-authoritative, saved)
 var animals := {}             # animal_id -> AnimalState (iteration 011 wildlife; host simulates, transient)
+## Iteration 012: thawed-blood marks [id, region, x, y, birth_tick, size, cover, wash] (BloodSim; saved).
+var blood: Array = []
+## Developer-only temporary heat sources [region, position, radius] (runtime, never saved).
+var dev_heat: Array = []
 var env := {}                 # weather: {"weather", "until", "seq"} (EnvSim; saved)
 var next_uid := 1             # id counter for built objects, piles and gear (saved, never reused)
 var threat := ThreatState.new()   # noise + attention (transient, never saved)

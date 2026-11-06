@@ -34,7 +34,8 @@
 			"sight_scale": 0.85,
 			"hearing_scale": 0.85,
 			"cold": 0.15,
-			"fog": 0.08
+			"fog": 0.08,
+			"sound_mask_db": -2.0
 		},
 		"fog": {
 			"weight": 0.24,
@@ -45,7 +46,8 @@
 			"sight_scale": 0.55,
 			"hearing_scale": 1.0,
 			"cold": 0.05,
-			"fog": 0.5
+			"fog": 0.5,
+			"sound_mask_db": -1.0
 		},
 		"heavy_rain": {
 			"weight": 0.14,
@@ -56,7 +58,8 @@
 			"sight_scale": 0.8,
 			"hearing_scale": 0.7,
 			"cold": 0.3,
-			"fog": 0.12
+			"fog": 0.12,
+			"sound_mask_db": -6.0
 		},
 		"blizzard": {
 			"weight": 0.13,
@@ -67,7 +70,8 @@
 			"sight_scale": 0.5,
 			"hearing_scale": 0.6,
 			"cold": 0.85,
-			"fog": 0.45
+			"fog": 0.45,
+			"sound_mask_db": -9.0
 		},
 		"thunderstorm": {
 			"weight": 0.15,
@@ -78,7 +82,8 @@
 			"sight_scale": 0.75,
 			"hearing_scale": 0.65,
 			"cold": 0.3,
-			"fog": 0.15
+			"fog": 0.15,
+			"sound_mask_db": -7.0
 		}
 	},
 	"cold": {

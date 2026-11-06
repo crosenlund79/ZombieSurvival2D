@@ -677,5 +677,17 @@
 				"rotation": 0
 			}
 		}
+	],
+	"heat_sources": [
+		{
+			"id": "cabin_stove",
+			"position": [
+				1160,
+				600
+			],
+			"radius": 330,
+			"strength": 1.0,
+			"_comment": "The cabin's lit stove warms its walls, chimney and doorway; Burnt Ones lingering by the cabin thaw."
+		}
 	]
 }

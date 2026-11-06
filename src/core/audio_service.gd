@@ -66,7 +66,8 @@ func _stream(id: String) -> AudioStream:
 
 
 ## One-shot. Pass a world position for positional (2D) playback.
-func play(id: String, world_position: Variant = null) -> void:
+## extra_db: a per-call volume change (iteration 012: weather masking Burnt One sounds).
+func play(id: String, world_position: Variant = null, extra_db: float = 0.0) -> void:
 	var stream := _stream(id)
 	if stream == null:
 		return
@@ -77,7 +78,7 @@ func play(id: String, world_position: Variant = null) -> void:
 		var p2 := _free_player(_positional) as AudioStreamPlayer2D
 		p2.stream = stream
 		p2.bus = bus
-		p2.volume_db = vol
+		p2.volume_db = vol + extra_db
 		p2.global_position = world_position
 		p2.play()
 	else:

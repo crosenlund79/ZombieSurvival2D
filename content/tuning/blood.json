@@ -1,0 +1,19 @@
+{
+	"_comment": "Thawed blood (iteration 012). Every Burnt One carries frozen blood in its clothing. Near real warmth it thaws; while thawed it now and then drips, and the drop refreezes into a small crimson mark on snow. Marks fade, wash away in rain and are buried by falling snow. Units: seconds of game time, px. EXPLORING prototype values.",
+	"thaw_seconds": 20.0,
+	"refreeze_seconds": 55.0,
+	"drip_threshold": 0.3,
+	"drip_chance_per_second": 0.35,
+	"drip_min_interval": 5.0,
+	"max_traces": 120,
+	"vehicle_engine_heat": {"radius": 170, "strength": 1.2},
+	"weather": {
+		"_comment": "erase: how fast marks disappear (per minute, 1 = gone in a minute); kind: fade (old blood darkens into the snow), wash (rain), cover (falling snow). visibility: how readable marks are; range: px within which a mark can be made out at all.",
+		"clear": {"erase": 0.07, "kind": "fade", "visibility": 1.0, "range": 1400},
+		"fog": {"erase": 0.07, "kind": "fade", "visibility": 0.55, "range": 380},
+		"snow": {"erase": 0.28, "kind": "cover", "visibility": 0.85, "range": 900},
+		"blizzard": {"erase": 0.6, "kind": "cover", "visibility": 0.35, "range": 300},
+		"heavy_rain": {"erase": 0.8, "kind": "wash", "visibility": 0.8, "range": 800},
+		"thunderstorm": {"erase": 0.8, "kind": "wash", "visibility": 0.7, "range": 700}
+	}
+}

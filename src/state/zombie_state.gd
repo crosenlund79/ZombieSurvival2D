@@ -50,6 +50,8 @@ var listen_level := 0.0             # attention of the sound it is listening to
 var heard_screech := false          # current investigation was triggered by a screech
 var search_left := 0                # extra search points after losing a target
 var last_dir := Vector2.ZERO        # last seen direction of travel of its target
+var thaw := 0.0                     # iteration 012: frozen blood in its clothes thawed by warmth (0..1)
+var drip_cd := 0.0                  # seconds before it can drip again
 
 
 ## Stable per-individual temperament from the id (same on every peer): speed
