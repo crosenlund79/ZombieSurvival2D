@@ -1,42 +1,171 @@
 {
 	"region_id": "town.house_west",
 	"display_key": "REGION_TOWN_HOUSE_WEST",
-	"scene": "res://scenes/regions/town/house_west_interior.tscn",
+	"view": "side",
+	"style": "building",
 	"bounds": [
 		0,
 		0,
-		1200,
-		760
+		1664,
+		1088
 	],
-	"surface": {
-		"region": "town",
-		"position": [
-			561,
-			1456
+	"excavation": {
+		"cell": 64,
+		"origin": [
+			0,
+			0
+		],
+		"cols": 26,
+		"rows": 17,
+		"fixed": true,
+		"initial_open": [
+			[
+				5,
+				9,
+				16,
+				4
+			],
+			[
+				5,
+				4,
+				16,
+				4
+			],
+			[
+				19,
+				8,
+				1,
+				1
+			]
+		],
+		"platforms": [
+			[
+				19,
+				7,
+				1,
+				1
+			]
+		],
+		"_comment": "Authored building cross-section (tools/build_side_interiors.py); fixed, never dug."
+	},
+	"section": {
+		"ground_row": 13,
+		"envelope": [
+			4,
+			3,
+			18,
+			11
+		],
+		"exterior": "side.ext_siding",
+		"basement": "",
+		"rooms": [
+			{
+				"rect": [
+					5,
+					9,
+					9,
+					4
+				],
+				"wall": "side.wall_house",
+				"floor": "side.floor_linoleum"
+			},
+			{
+				"rect": [
+					14,
+					9,
+					7,
+					4
+				],
+				"wall": "side.wall_house_b",
+				"floor": "side.floorboards"
+			},
+			{
+				"rect": [
+					5,
+					4,
+					16,
+					4
+				],
+				"wall": "side.wall_house",
+				"floor": "side.floorboards"
+			}
+		],
+		"windows": [
+			[
+				640.0,
+				683.5
+			],
+			[
+				1120.0,
+				683.5,
+				"boarded"
+			],
+			[
+				832.0,
+				363.5
+			],
+			[
+				1152.0,
+				363.5
+			]
+		],
+		"dividers": [
+			[
+				896,
+				576,
+				665.6,
+				832
+			]
+		],
+		"labels": [
+			[
+				345.6,
+				284,
+				"SIDE_UPSTAIRS"
+			]
 		]
 	},
+	"side_props": [
+		{
+			"asset": "int.meal_table",
+			"x": 819.2,
+			"y": 829
+		},
+		{
+			"asset": "int.armchair",
+			"x": 1024.0,
+			"y": 829
+		},
+		{
+			"asset": "int.barricade",
+			"x": 1120.0,
+			"y": 829
+		},
+		{
+			"asset": "world.furniture_bed",
+			"x": 768.0,
+			"y": 509,
+			"back": true
+		},
+		{
+			"asset": "int.boxes",
+			"x": 1088.0,
+			"y": 509
+		}
+	],
 	"spawn_points": [
 		[
-			380,
-			610
+			422.4,
+			829
 		]
 	],
-	"climate": {
-		"exposure": 1.0,
-		"fog": 0.0,
-		"shelter": 0.35
-	},
-	"interior": true,
 	"entities": [
 		{
 			"id": "town.house_west.exit",
 			"type": "portal",
-			"position": [
-				380,
-				672
-			],
-			"interact_range": 60,
+			"interact_range": 70,
 			"priority": 2,
+			"side_art": "side.door_ext",
 			"target": {
 				"region": "town",
 				"position": [
@@ -44,16 +173,16 @@
 					1510
 				]
 			},
-			"prompt_key": "PROMPT_EXIT_HOUSE"
+			"prompt_key": "PROMPT_EXIT_HOUSE",
+			"position": [
+				364.8,
+				829
+			]
 		},
 		{
 			"id": "town.house_west.kitchen_cupboards",
 			"type": "container",
 			"kind": "cupboard",
-			"position": [
-				260,
-				290
-			],
 			"interact_range": 72,
 			"prompt_key": "PROMPT_SEARCH_CUPBOARD",
 			"art": "int.kitchen_counter",
@@ -64,16 +193,16 @@
 			},
 			"initial": {
 				"searched": false
-			}
+			},
+			"position": [
+				512.0,
+				829
+			]
 		},
 		{
 			"id": "town.house_west.fridge",
 			"type": "container",
 			"kind": "fridge",
-			"position": [
-				470,
-				290
-			],
 			"interact_range": 72,
 			"prompt_key": "PROMPT_SEARCH_FRIDGE",
 			"art": "int.home_fridge",
@@ -83,16 +212,26 @@
 			},
 			"initial": {
 				"searched": false
-			}
+			},
+			"position": [
+				704.0,
+				829
+			]
+		},
+		{
+			"id": "town.house_west.stairs_0",
+			"type": "stairs",
+			"position": [
+				1248.0,
+				829
+			],
+			"top": 509,
+			"flip": false
 		},
 		{
 			"id": "town.house_west.dresser",
 			"type": "container",
 			"kind": "drawer",
-			"position": [
-				770,
-				300
-			],
 			"interact_range": 72,
 			"prompt_key": "PROMPT_SEARCH_DRAWER",
 			"art": "int.dresser",
@@ -102,16 +241,16 @@
 			},
 			"initial": {
 				"searched": false
-			}
+			},
+			"position": [
+				576.0,
+				509
+			]
 		},
 		{
 			"id": "town.house_west.closet",
 			"type": "container",
 			"kind": "locker",
-			"position": [
-				1050,
-				300
-			],
 			"interact_range": 72,
 			"prompt_key": "PROMPT_SEARCH_LOCKER",
 			"art": "int.locker",
@@ -119,7 +258,30 @@
 			"loot": {},
 			"initial": {
 				"searched": true
-			}
+			},
+			"position": [
+				992.0,
+				509
+			]
 		}
-	]
+	],
+	"surface": {
+		"region": "town",
+		"position": [
+			561,
+			1456
+		]
+	},
+	"tint": [
+		0.6,
+		0.58,
+		0.58
+	],
+	"climate": {
+		"exposure": 1.0,
+		"fog": 0.0,
+		"shelter": 0.35
+	},
+	"interior": true,
+	"ambience": "amb.wind_muffled"
 }

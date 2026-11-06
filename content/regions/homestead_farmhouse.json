@@ -1,36 +1,110 @@
 {
 	"region_id": "homestead.farmhouse",
 	"display_key": "REGION_FARMHOUSE",
-	"scene": "res://scenes/regions/homestead/farmhouse_interior.tscn",
+	"view": "side",
+	"style": "building",
 	"bounds": [
 		0,
 		0,
-		960,
-		680
+		1664,
+		768
 	],
-	"surface": {
-		"region": "homestead",
-		"position": [
-			1160,
-			641
-		]
+	"excavation": {
+		"cell": 64,
+		"origin": [
+			0,
+			0
+		],
+		"cols": 26,
+		"rows": 12,
+		"fixed": true,
+		"initial_open": [
+			[
+				5,
+				4,
+				16,
+				4
+			]
+		],
+		"platforms": [],
+		"_comment": "Authored building cross-section (tools/build_side_interiors.py); fixed, never dug."
 	},
+	"section": {
+		"ground_row": 8,
+		"envelope": [
+			4,
+			3,
+			18,
+			6
+		],
+		"exterior": "side.ext_logs",
+		"basement": "",
+		"rooms": [
+			{
+				"rect": [
+					5,
+					4,
+					15,
+					4
+				],
+				"wall": "side.wall_cabin",
+				"floor": "side.floorboards"
+			}
+		],
+		"windows": [
+			[
+				608.0,
+				363.5
+			],
+			[
+				1056.0,
+				363.5
+			]
+		],
+		"dividers": [],
+		"labels": []
+	},
+	"side_props": [
+		{
+			"asset": "world.furniture_stove",
+			"x": 486.4,
+			"y": 509
+		},
+		{
+			"asset": "world.furniture_cupboard",
+			"x": 704.0,
+			"y": 509
+		},
+		{
+			"asset": "world.furniture_table",
+			"x": 1017.6,
+			"y": 509
+		},
+		{
+			"asset": "int.dresser",
+			"x": 1235.2,
+			"y": 509
+		},
+		{
+			"asset": "world.furniture_bed",
+			"x": 1126.4,
+			"y": 509,
+			"back": true
+		}
+	],
 	"spawn_points": [
 		[
-			480,
-			560
+			422.4,
+			509
 		]
 	],
 	"entities": [
 		{
 			"id": "homestead.farmhouse.exit",
 			"type": "portal",
-			"position": [
-				480,
-				622
-			],
-			"interact_range": 56,
+			"interact_range": 70,
 			"priority": 2,
+			"side_art": "side.door_ext",
 			"target": {
 				"region": "homestead",
 				"position": [
@@ -38,15 +112,43 @@
 					700
 				]
 			},
-			"prompt_key": "PROMPT_EXIT_HOUSE"
+			"prompt_key": "PROMPT_EXIT_HOUSE",
+			"position": [
+				364.8,
+				509
+			]
+		},
+		{
+			"id": "homestead.farmhouse.pantry",
+			"type": "loot",
+			"interact_range": 75,
+			"prompt_key": "PROMPT_SEARCH_PANTRY",
+			"loot": {
+				"canned_food": 2
+			},
+			"restock_minutes": 25,
+			"initial": {
+				"looted_at": -1
+			},
+			"position": [
+				704.0,
+				509
+			]
+		},
+		{
+			"id": "homestead.farmhouse.club_rack",
+			"type": "weapon_rack",
+			"interact_range": 70,
+			"weapon": "club",
+			"prompt_key": "PROMPT_TAKE_CLUB",
+			"position": [
+				588.8,
+				509
+			]
 		},
 		{
 			"id": "homestead.farmhouse.shelter",
 			"type": "shelter_site",
-			"position": [
-				300,
-				440
-			],
 			"interact_range": 84,
 			"build_seconds": 8,
 			"level_template": "bunker_earth",
@@ -63,97 +165,42 @@
 						"cement": 1
 					}
 				}
-			}
+			},
+			"position": [
+				832.0,
+				509
+			]
 		},
 		{
 			"id": "homestead.farmhouse.hatch_ladder",
 			"type": "portal",
-			"position": [
-				300,
-				440
-			],
-			"interact_range": 34,
+			"interact_range": 40,
 			"priority": 2,
 			"requires_open": "homestead.farmhouse.shelter",
 			"target": {
 				"bunker_of": "homestead.farmhouse.shelter",
 				"depth": -1
 			},
-			"prompt_key": "PROMPT_CLIMB_DOWN"
+			"prompt_key": "PROMPT_CLIMB_DOWN",
+			"position": [
+				832.0,
+				509
+			]
 		},
 		{
 			"id": "homestead.farmhouse.timber",
 			"type": "stockpile",
-			"position": [
-				470,
-				330
-			],
 			"interact_range": 80,
 			"bunker_of": "homestead.farmhouse.shelter",
-			"prompt_key": "PROMPT_DEPOSIT_WOOD"
-		},
-		{
-			"id": "homestead.farmhouse.club_rack",
-			"type": "weapon_rack",
+			"prompt_key": "PROMPT_DEPOSIT_WOOD",
 			"position": [
-				150,
-				410
-			],
-			"interact_range": 70,
-			"weapon": "club",
-			"prompt_key": "PROMPT_TAKE_CLUB"
-		},
-		{
-			"id": "homestead.farmhouse.pantry",
-			"type": "loot",
-			"position": [
-				186,
-				300
-			],
-			"interact_range": 75,
-			"prompt_key": "PROMPT_SEARCH_PANTRY",
-			"loot": {
-				"canned_food": 2
-			},
-			"restock_minutes": 25,
-			"initial": {
-				"looted_at": -1
-			}
-		},
-		{
-			"id": "homestead.farmhouse.linen",
-			"type": "loot",
-			"position": [
-				728,
-				350
-			],
-			"interact_range": 75,
-			"prompt_key": "PROMPT_SEARCH_LINEN",
-			"loot": {
-				"cloth": 2
-			},
-			"restock_minutes": 30,
-			"initial": {
-				"looted_at": -1
-			}
-		},
-		{
-			"id": "homestead.farmhouse.bed",
-			"type": "bed",
-			"position": [
-				640,
-				352
-			],
-			"interact_range": 75,
-			"prompt_key": "PROMPT_SLEEP"
+				947.2,
+				509
+			]
 		},
 		{
 			"id": "homestead.farmhouse.flashlight",
 			"type": "starter_bag",
-			"position": [
-				630,
-				520
-			],
 			"interact_range": 80,
 			"prompt_key": "PROMPT_TAKE_FLASHLIGHT",
 			"kit": {
@@ -163,15 +210,61 @@
 			"art_empty": "",
 			"art_offset": [
 				0,
-				-62
+				-70
 			],
 			"initial": {
 				"taken_by": []
 			},
 			"taken_key": "FLASHLIGHT_TAKEN",
-			"empty_key": "FLASHLIGHT_ALREADY"
+			"empty_key": "FLASHLIGHT_ALREADY",
+			"position": [
+				1017.6,
+				509
+			]
+		},
+		{
+			"id": "homestead.farmhouse.linen",
+			"type": "loot",
+			"interact_range": 75,
+			"prompt_key": "PROMPT_SEARCH_LINEN",
+			"loot": {
+				"cloth": 2
+			},
+			"restock_minutes": 30,
+			"initial": {
+				"looted_at": -1
+			},
+			"position": [
+				1235.2,
+				509
+			]
+		},
+		{
+			"id": "homestead.farmhouse.bed",
+			"type": "bed",
+			"interact_range": 75,
+			"prompt_key": "PROMPT_SLEEP",
+			"position": [
+				1126.4,
+				509
+			]
 		}
 	],
+	"surface": {
+		"region": "homestead",
+		"position": [
+			1160,
+			641
+		]
+	},
 	"warmth": 1.2,
-	"shelter_group": "home"
+	"shelter_group": "home",
+	"ambience": "amb.wind_muffled",
+	"ambience2": "amb.stove_fire",
+	"tint": [
+		0.74,
+		0.66,
+		0.56
+	],
+	"warm": true
 }

@@ -93,8 +93,8 @@
 			"target": {
 				"region": "homestead.farmhouse",
 				"position": [
-					480,
-					560
+					422.4,
+					509
 				]
 			},
 			"prompt_key": "PROMPT_ENTER_HOUSE"

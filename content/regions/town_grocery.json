@@ -1,42 +1,112 @@
 {
 	"region_id": "town.grocery",
 	"display_key": "REGION_TOWN_GROCERY",
-	"scene": "res://scenes/regions/town/grocery_interior.tscn",
+	"view": "side",
+	"style": "building",
 	"bounds": [
 		0,
 		0,
-		1200,
-		760
+		2560,
+		768
 	],
-	"surface": {
-		"region": "town",
-		"position": [
-			632,
-			880
+	"excavation": {
+		"cell": 64,
+		"origin": [
+			0,
+			0
+		],
+		"cols": 40,
+		"rows": 12,
+		"fixed": true,
+		"initial_open": [
+			[
+				5,
+				4,
+				30,
+				4
+			]
+		],
+		"platforms": [],
+		"_comment": "Authored building cross-section (tools/build_side_interiors.py); fixed, never dug."
+	},
+	"section": {
+		"ground_row": 8,
+		"envelope": [
+			4,
+			3,
+			32,
+			6
+		],
+		"exterior": "side.ext_brick",
+		"basement": "",
+		"rooms": [
+			{
+				"rect": [
+					5,
+					4,
+					22,
+					4
+				],
+				"wall": "side.wall_shop",
+				"floor": "side.floor_linoleum"
+			},
+			{
+				"rect": [
+					27,
+					4,
+					8,
+					4
+				],
+				"wall": "side.wall_brick_in",
+				"floor": "side.floor_concrete"
+			}
+		],
+		"windows": [
+			[
+				512.0,
+				363.5
+			],
+			[
+				768.0,
+				363.5
+			]
+		],
+		"dividers": [
+			[
+				1728,
+				256,
+				345.6,
+				512
+			]
+		],
+		"labels": [
+			[
+				1753.6,
+				284,
+				"SIDE_STOREROOM"
+			]
 		]
 	},
+	"side_props": [
+		{
+			"asset": "int.boxes",
+			"x": 1785.6,
+			"y": 509
+		}
+	],
 	"spawn_points": [
 		[
-			760,
-			610
+			422.4,
+			509
 		]
 	],
-	"climate": {
-		"exposure": 1.0,
-		"fog": 0.0,
-		"shelter": 0.35
-	},
-	"interior": true,
 	"entities": [
 		{
 			"id": "town.grocery.exit",
 			"type": "portal",
-			"position": [
-				760,
-				672
-			],
-			"interact_range": 60,
+			"interact_range": 70,
 			"priority": 2,
+			"side_art": "side.door_ext",
 			"target": {
 				"region": "town",
 				"position": [
@@ -44,53 +114,35 @@
 					926
 				]
 			},
-			"prompt_key": "PROMPT_EXIT_HOUSE"
+			"prompt_key": "PROMPT_EXIT_HOUSE",
+			"position": [
+				364.8,
+				509
+			]
 		},
 		{
-			"id": "town.grocery.freezer_a",
+			"id": "town.grocery.checkout",
 			"type": "container",
-			"kind": "fridge",
-			"position": [
-				230,
-				300
-			],
+			"kind": "drawer",
 			"interact_range": 72,
-			"prompt_key": "PROMPT_SEARCH_FRIDGE",
-			"art": "int.freezer",
-			"art_searched": "int.freezer_open",
+			"prompt_key": "PROMPT_SEARCH_DRAWER",
+			"art": "int.checkout",
+			"art_searched": "int.checkout",
 			"loot": {
-				"canned_food": 1,
-				"water_bottle": 1
+				"crackers": 1
 			},
 			"initial": {
 				"searched": false
-			}
-		},
-		{
-			"id": "town.grocery.freezer_b",
-			"type": "container",
-			"kind": "fridge",
+			},
 			"position": [
-				430,
-				300
-			],
-			"interact_range": 72,
-			"prompt_key": "PROMPT_SEARCH_FRIDGE",
-			"art": "int.freezer",
-			"art_searched": "int.freezer_open",
-			"loot": {},
-			"initial": {
-				"searched": true
-			}
+				537.6,
+				509
+			]
 		},
 		{
 			"id": "town.grocery.aisle_a",
 			"type": "container",
 			"kind": "shelf",
-			"position": [
-				240,
-				440
-			],
 			"interact_range": 72,
 			"prompt_key": "PROMPT_SEARCH_SHELF",
 			"art": "int.gondola_full",
@@ -101,16 +153,16 @@
 			},
 			"initial": {
 				"searched": false
-			}
+			},
+			"position": [
+				768.0,
+				509
+			]
 		},
 		{
 			"id": "town.grocery.aisle_b",
 			"type": "container",
 			"kind": "shelf",
-			"position": [
-				510,
-				440
-			],
 			"interact_range": 72,
 			"prompt_key": "PROMPT_SEARCH_SHELF",
 			"art": "int.gondola_sparse",
@@ -121,16 +173,16 @@
 			},
 			"initial": {
 				"searched": false
-			}
+			},
+			"position": [
+				1011.2,
+				509
+			]
 		},
 		{
 			"id": "town.grocery.aisle_c",
 			"type": "container",
 			"kind": "shelf",
-			"position": [
-				240,
-				580
-			],
 			"interact_range": 72,
 			"prompt_key": "PROMPT_SEARCH_SHELF",
 			"art": "int.gondola_empty",
@@ -138,16 +190,16 @@
 			"loot": {},
 			"initial": {
 				"searched": true
-			}
+			},
+			"position": [
+				1254.4,
+				509
+			]
 		},
 		{
 			"id": "town.grocery.aisle_d",
 			"type": "container",
 			"kind": "shelf",
-			"position": [
-				510,
-				580
-			],
 			"interact_range": 72,
 			"prompt_key": "PROMPT_SEARCH_SHELF",
 			"art": "int.gondola_sparse",
@@ -158,35 +210,53 @@
 			},
 			"initial": {
 				"searched": false
-			}
+			},
+			"position": [
+				1497.6,
+				509
+			]
 		},
 		{
-			"id": "town.grocery.checkout",
+			"id": "town.grocery.freezer_a",
 			"type": "container",
-			"kind": "drawer",
-			"position": [
-				720,
-				520
-			],
+			"kind": "fridge",
 			"interact_range": 72,
-			"prompt_key": "PROMPT_SEARCH_DRAWER",
-			"art": "int.checkout",
-			"art_searched": "int.checkout",
+			"prompt_key": "PROMPT_SEARCH_FRIDGE",
+			"art": "int.freezer",
+			"art_searched": "int.freezer_open",
 			"loot": {
-				"crackers": 1
+				"canned_food": 1,
+				"water_bottle": 1
 			},
 			"initial": {
 				"searched": false
-			}
+			},
+			"position": [
+				1638.4,
+				509
+			]
+		},
+		{
+			"id": "town.grocery.freezer_b",
+			"type": "container",
+			"kind": "fridge",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_FRIDGE",
+			"art": "int.freezer_open",
+			"art_searched": "int.freezer_open",
+			"loot": {},
+			"initial": {
+				"searched": true
+			},
+			"position": [
+				1856.0,
+				509
+			]
 		},
 		{
 			"id": "town.grocery.storeroom_shelf",
 			"type": "container",
 			"kind": "shelf",
-			"position": [
-				985,
-				310
-			],
 			"interact_range": 72,
 			"prompt_key": "PROMPT_SEARCH_SHELF",
 			"art": "int.metal_shelf_full",
@@ -197,16 +267,16 @@
 			},
 			"initial": {
 				"searched": false
-			}
+			},
+			"position": [
+				2009.6,
+				509
+			]
 		},
 		{
 			"id": "town.grocery.storeroom_crate",
 			"type": "container",
 			"kind": "crate",
-			"position": [
-				960,
-				600
-			],
 			"interact_range": 72,
 			"prompt_key": "PROMPT_SEARCH_CRATE",
 			"art": "int.crate",
@@ -216,7 +286,30 @@
 			},
 			"initial": {
 				"searched": false
-			}
+			},
+			"position": [
+				2150.4,
+				509
+			]
 		}
-	]
+	],
+	"surface": {
+		"region": "town",
+		"position": [
+			632,
+			880
+		]
+	},
+	"tint": [
+		0.5,
+		0.52,
+		0.55
+	],
+	"climate": {
+		"exposure": 1.0,
+		"fog": 0.0,
+		"shelter": 0.35
+	},
+	"interior": true,
+	"ambience": "amb.wind_muffled"
 }

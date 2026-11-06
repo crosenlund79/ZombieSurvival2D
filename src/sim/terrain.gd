@@ -79,6 +79,8 @@ static func is_open(region: RegionState, c: Vector2i) -> bool:
 
 
 static func is_permanent(region: RegionState, c: Vector2i) -> bool:
+	if bool(cfg(region).get("fixed", false)):
+		return true  # iteration 014: building interiors and the mine are authored, not dug
 	var g := grid_size(region)
 	if c.x <= 0 or c.y <= 0 or c.x >= g.x - 1 or c.y >= g.y - 1:
 		return true  # region boundary
@@ -135,7 +137,7 @@ static func dig_problem(region: RegionState, c: Vector2i) -> String:
 
 ## Why a support cannot go on this (open) cell ("" = it can, wood permitting).
 static func support_problem(region: RegionState, c: Vector2i) -> String:
-	if not is_open(region, c):
+	if bool(cfg(region).get("fixed", false)) or not is_open(region, c):
 		return "ACTION_SUPPORT_NOT_HERE"
 	var sup: Dictionary = region.terrain.get("supports", {})
 	var min_gap := int(cfg(region).get("support_min_gap_cells", 2))
@@ -144,6 +146,12 @@ static func support_problem(region: RegionState, c: Vector2i) -> String:
 		if maxi(absi(o.x - c.x), absi(o.y - c.y)) < min_gap:
 			return "ACTION_SUPPORT_TOO_CLOSE"
 	return ""
+
+
+## Iteration 014: a stair landing — open (you can climb through it), but it carries
+## a floor at its bottom edge for anyone walking.
+static func is_platform(region: RegionState, c: Vector2i) -> bool:
+	return _in_rects(cfg(region).get("platforms", []), c)
 
 
 static func open_cells(region: RegionState) -> Array:

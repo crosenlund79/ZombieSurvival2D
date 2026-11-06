@@ -25,6 +25,27 @@ static func is_level(region_id: String) -> bool:
 	return not BunkerState.parse_region_id(region_id).is_empty()
 
 
+## Iteration 014: building interiors, the mine and other authored cross-sections
+## are always shown from the side (region "view": "side").
+static func always_side(region: RegionState) -> bool:
+	return region != null and str(region.definition().get("view", "")) == "side"
+
+
+## Can this region be read as a cross-section at all (bunker level or side region)?
+static func is_section(region: RegionState) -> bool:
+	return region != null and (always_side(region) or is_level(region.region_id))
+
+
+## Is `p` seeing (and moving through) this region from the side right now?
+static func side_for(world: WorldState, p: PlayerState) -> bool:
+	if world == null or p == null:
+		return false
+	var r := world.region(p.region_id)
+	if always_side(r):
+		return true
+	return p.bunker_view == "side" and is_level(p.region_id)
+
+
 static func has_grid(region: RegionState) -> bool:
 	return Terrain.has_terrain(region)
 
@@ -64,7 +85,9 @@ static func open_at(region: RegionState, pos: Vector2) -> bool:
 
 ## The open run (top row, bottom row) of a column that contains `row`, or the
 ## nearest one in that column (Vector2i(-1, -1) if the column is solid).
-static func run_of(region: RegionState, col: int, row: int) -> Vector2i:
+## Walking: a stair landing ends the run (there is a floor there). Climbing
+## (climb = true) passes through landings.
+static func run_of(region: RegionState, col: int, row: int, climb := false) -> Vector2i:
 	var g := Terrain.grid_size(region)
 	var r := clampi(row, 0, g.y - 1)
 	if not open_cell(region, Vector2i(col, r)):
@@ -83,17 +106,17 @@ static func run_of(region: RegionState, col: int, row: int) -> Vector2i:
 	while open_cell(region, Vector2i(col, top - 1)):
 		top -= 1
 	var bottom := r
-	while open_cell(region, Vector2i(col, bottom + 1)):
+	while open_cell(region, Vector2i(col, bottom + 1)) and (climb or not Terrain.is_platform(region, Vector2i(col, bottom))):
 		bottom += 1
 	return Vector2i(top, bottom)
 
 
 ## Plan y of the floor under a point (where feet rest).
-static func floor_y(region: RegionState, x: float, near_y: float) -> float:
+static func floor_y(region: RegionState, x: float, near_y: float, climb := false) -> float:
 	if not has_grid(region):
 		return room_rect(region).end.y - FEET
 	var c := Terrain.cell_of(region, Vector2(x, near_y))
-	var run := run_of(region, c.x, c.y)
+	var run := run_of(region, c.x, c.y, climb)
 	if run.x < 0:
 		return near_y
 	return Terrain.cell_rect(region, Vector2i(c.x, run.y)).end.y - FEET
@@ -122,12 +145,24 @@ static func hang(region: RegionState, pos: Vector2) -> Vector2:
 	return Vector2(pos.x, ceiling_y(region, pos.x, pos.y))
 
 
+## Iteration 014: puts a player arriving in (or loaded into) a side region on a
+## floor — a position saved in an older top-down interior may not be inside a
+## room any more; then they stand at the region's spawn point.
+static func settle(world: WorldState, p: PlayerState) -> void:
+	var r := world.region(p.region_id) if world != null and p != null else null
+	if not always_side(r):
+		return
+	if not open_at(r, p.position + Vector2(0, -6)):
+		p.position = Content.spawn_point(r.def_id, 0)
+	p.position = rest(r, p.position)
+
+
 ## Host reach for bunker levels: either plan distance (the top-down reading) or
 ## a side-view reach — horizontally within `reach` and a few rows up or down.
 static func in_reach(region: RegionState, from: Vector2, to: Vector2, reach: float) -> bool:
 	if from.distance_to(to) <= reach:
 		return true
-	if region == null or not is_level(region.region_id):
+	if not is_section(region):
 		return false
 	if absf(from.x - to.x) > reach:
 		return false
@@ -174,6 +209,8 @@ static func climbable(world: WorldState, region: RegionState, pos: Vector2) -> b
 		if t == "portal" and (eid.ends_with("ladder_up") or eid.ends_with("ladder_down")):
 			return true
 		if t == "support_site" and str(region.entity_state(eid).get("stage", "")) == "reinforced":
+			return true
+		if t == "stairs" and pos.y <= p.y + 8.0 and pos.y >= float(d.get("top", p.y - 400.0)) - 8.0:
 			return true
 	if has_grid(region):
 		var c := Terrain.cell_of(region, pos)

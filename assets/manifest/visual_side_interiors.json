@@ -1,0 +1,666 @@
+{
+	"kind": "visual",
+	"category": "side_interiors",
+	"assets": [
+		{
+			"id": "side.wall_cabin",
+			"name": "Side view: log wall inside the hunter's cabin (tile)",
+			"template": "res://assets/templates/side/template_wall_cabin.png",
+			"display_size": [
+				256,
+				256
+			],
+			"source_size": [
+				256,
+				256
+			],
+			"pivot": [
+				0,
+				0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated seamless tile (tools/art/gen_side_interiors.py)."
+		},
+		{
+			"id": "side.wall_house",
+			"name": "Side view: faded wallpaper (tile)",
+			"template": "res://assets/templates/side/template_wall_house.png",
+			"display_size": [
+				256,
+				256
+			],
+			"source_size": [
+				256,
+				256
+			],
+			"pivot": [
+				0,
+				0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated seamless tile (tools/art/gen_side_interiors.py)."
+		},
+		{
+			"id": "side.wall_house_b",
+			"name": "Side view: faded green wallpaper (tile)",
+			"template": "res://assets/templates/side/template_wall_house_b.png",
+			"display_size": [
+				256,
+				256
+			],
+			"source_size": [
+				256,
+				256
+			],
+			"pivot": [
+				0,
+				0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated seamless tile (tools/art/gen_side_interiors.py)."
+		},
+		{
+			"id": "side.wall_shop",
+			"name": "Side view: shop wall, paint over tiles (tile)",
+			"template": "res://assets/templates/side/template_wall_shop.png",
+			"display_size": [
+				256,
+				256
+			],
+			"source_size": [
+				256,
+				256
+			],
+			"pivot": [
+				0,
+				0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated seamless tile (tools/art/gen_side_interiors.py)."
+		},
+		{
+			"id": "side.wall_brick_in",
+			"name": "Side view: bare brick inside a workshop (tile)",
+			"template": "res://assets/templates/side/template_wall_brick_in.png",
+			"display_size": [
+				256,
+				256
+			],
+			"source_size": [
+				256,
+				256
+			],
+			"pivot": [
+				0,
+				0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated seamless tile (tools/art/gen_side_interiors.py)."
+		},
+		{
+			"id": "side.wall_office",
+			"name": "Side view: office plaster (tile)",
+			"template": "res://assets/templates/side/template_wall_office.png",
+			"display_size": [
+				256,
+				256
+			],
+			"source_size": [
+				256,
+				256
+			],
+			"pivot": [
+				0,
+				0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated seamless tile (tools/art/gen_side_interiors.py)."
+		},
+		{
+			"id": "side.wall_mine",
+			"name": "Side view: mine rock face (tile)",
+			"template": "res://assets/templates/side/template_wall_mine.png",
+			"display_size": [
+				256,
+				256
+			],
+			"source_size": [
+				256,
+				256
+			],
+			"pivot": [
+				0,
+				0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated seamless tile (tools/art/gen_side_interiors.py)."
+		},
+		{
+			"id": "side.ext_logs",
+			"name": "Side view: cabin log wall in section (tile)",
+			"template": "res://assets/templates/side/template_ext_logs.png",
+			"display_size": [
+				256,
+				256
+			],
+			"source_size": [
+				256,
+				256
+			],
+			"pivot": [
+				0,
+				0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated seamless tile (tools/art/gen_side_interiors.py)."
+		},
+		{
+			"id": "side.ext_siding",
+			"name": "Side view: house siding in section (tile)",
+			"template": "res://assets/templates/side/template_ext_siding.png",
+			"display_size": [
+				256,
+				256
+			],
+			"source_size": [
+				256,
+				256
+			],
+			"pivot": [
+				0,
+				0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated seamless tile (tools/art/gen_side_interiors.py)."
+		},
+		{
+			"id": "side.ext_brick",
+			"name": "Side view: brick wall in section (tile)",
+			"template": "res://assets/templates/side/template_ext_brick.png",
+			"display_size": [
+				256,
+				256
+			],
+			"source_size": [
+				256,
+				256
+			],
+			"pivot": [
+				0,
+				0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated seamless tile (tools/art/gen_side_interiors.py)."
+		},
+		{
+			"id": "side.ext_concrete",
+			"name": "Side view: concrete wall in section (tile)",
+			"template": "res://assets/templates/side/template_ext_concrete.png",
+			"display_size": [
+				256,
+				256
+			],
+			"source_size": [
+				256,
+				256
+			],
+			"pivot": [
+				0,
+				0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated seamless tile (tools/art/gen_side_interiors.py)."
+		},
+		{
+			"id": "side.floor_linoleum",
+			"name": "Side view: linoleum floor (strip)",
+			"template": "res://assets/templates/side/template_floor_linoleum.png",
+			"display_size": [
+				256,
+				24
+			],
+			"source_size": [
+				256,
+				24
+			],
+			"pivot": [
+				0,
+				0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated tileable strip (tools/art/gen_side_interiors.py)."
+		},
+		{
+			"id": "side.floor_concrete",
+			"name": "Side view: concrete floor (strip)",
+			"template": "res://assets/templates/side/template_floor_concrete.png",
+			"display_size": [
+				256,
+				24
+			],
+			"source_size": [
+				256,
+				24
+			],
+			"pivot": [
+				0,
+				0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated tileable strip (tools/art/gen_side_interiors.py)."
+		},
+		{
+			"id": "side.ceiling",
+			"name": "Side view: plaster ceiling (strip)",
+			"template": "res://assets/templates/side/template_ceiling.png",
+			"display_size": [
+				256,
+				16
+			],
+			"source_size": [
+				256,
+				16
+			],
+			"pivot": [
+				0,
+				0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated tileable strip (tools/art/gen_side_interiors.py)."
+		},
+		{
+			"id": "side.rail",
+			"name": "Side view: mine-cart rails (strip)",
+			"template": "res://assets/templates/side/template_rail.png",
+			"display_size": [
+				256,
+				24
+			],
+			"source_size": [
+				256,
+				24
+			],
+			"pivot": [
+				0,
+				0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated tileable strip (tools/art/gen_side_interiors.py)."
+		},
+		{
+			"id": "side.window",
+			"name": "Side view: window (daylight)",
+			"template": "res://assets/templates/side/template_window.png",
+			"display_size": [
+				80,
+				90
+			],
+			"source_size": [
+				160,
+				180
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_side_interiors.py) - replace with tablet art."
+		},
+		{
+			"id": "side.window_boarded",
+			"name": "Side view: boarded-up window",
+			"template": "res://assets/templates/side/template_window_boarded.png",
+			"display_size": [
+				80,
+				90
+			],
+			"source_size": [
+				160,
+				180
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_side_interiors.py) - replace with tablet art."
+		},
+		{
+			"id": "side.door_ext",
+			"name": "Side view: front door",
+			"template": "res://assets/templates/side/template_door_ext.png",
+			"display_size": [
+				60,
+				150
+			],
+			"source_size": [
+				120,
+				300
+			],
+			"pivot": [
+				0.5,
+				1.0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_side_interiors.py) - replace with tablet art."
+		},
+		{
+			"id": "side.stairs",
+			"name": "Side view: staircase, one storey",
+			"template": "res://assets/templates/side/template_stairs.png",
+			"display_size": [
+				130,
+				200
+			],
+			"source_size": [
+				260,
+				400
+			],
+			"pivot": [
+				0.5,
+				1.0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_side_interiors.py) - replace with tablet art."
+		},
+		{
+			"id": "side.trapdoor_marked",
+			"name": "Side view: floor trapdoor (marked)",
+			"template": "res://assets/templates/side/template_trapdoor_marked.png",
+			"display_size": [
+				120,
+				80
+			],
+			"source_size": [
+				240,
+				160
+			],
+			"pivot": [
+				0.5,
+				0.89
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_side_interiors.py) - replace with tablet art."
+		},
+		{
+			"id": "side.trapdoor_digging",
+			"name": "Side view: floor trapdoor (digging)",
+			"template": "res://assets/templates/side/template_trapdoor_digging.png",
+			"display_size": [
+				120,
+				80
+			],
+			"source_size": [
+				240,
+				160
+			],
+			"pivot": [
+				0.5,
+				0.89
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_side_interiors.py) - replace with tablet art."
+		},
+		{
+			"id": "side.trapdoor_closed",
+			"name": "Side view: floor trapdoor (closed)",
+			"template": "res://assets/templates/side/template_trapdoor_closed.png",
+			"display_size": [
+				120,
+				80
+			],
+			"source_size": [
+				240,
+				160
+			],
+			"pivot": [
+				0.5,
+				0.89
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_side_interiors.py) - replace with tablet art."
+		},
+		{
+			"id": "side.trapdoor_open",
+			"name": "Side view: floor trapdoor (open)",
+			"template": "res://assets/templates/side/template_trapdoor_open.png",
+			"display_size": [
+				120,
+				80
+			],
+			"source_size": [
+				240,
+				160
+			],
+			"pivot": [
+				0.5,
+				0.89
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_side_interiors.py) - replace with tablet art."
+		},
+		{
+			"id": "side.trapdoor_steel_closed",
+			"name": "Side view: floor trapdoor (steel closed)",
+			"template": "res://assets/templates/side/template_trapdoor_steel_closed.png",
+			"display_size": [
+				120,
+				80
+			],
+			"source_size": [
+				240,
+				160
+			],
+			"pivot": [
+				0.5,
+				0.89
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_side_interiors.py) - replace with tablet art."
+		},
+		{
+			"id": "side.trapdoor_steel_open",
+			"name": "Side view: floor trapdoor (steel open)",
+			"template": "res://assets/templates/side/template_trapdoor_steel_open.png",
+			"display_size": [
+				120,
+				80
+			],
+			"source_size": [
+				240,
+				160
+			],
+			"pivot": [
+				0.5,
+				0.89
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_side_interiors.py) - replace with tablet art."
+		},
+		{
+			"id": "side.mine_cart",
+			"name": "Side view: mine cart",
+			"template": "res://assets/templates/side/template_mine_cart.png",
+			"display_size": [
+				110,
+				80
+			],
+			"source_size": [
+				220,
+				160
+			],
+			"pivot": [
+				0.5,
+				0.96
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_side_interiors.py) - replace with tablet art."
+		},
+		{
+			"id": "side.mine_beam",
+			"name": "Side view: mine timber set",
+			"template": "res://assets/templates/side/template_mine_beam.png",
+			"display_size": [
+				80,
+				160
+			],
+			"source_size": [
+				160,
+				320
+			],
+			"pivot": [
+				0.5,
+				1.0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_side_interiors.py) - replace with tablet art."
+		},
+		{
+			"id": "side.rubble",
+			"name": "Side view: collapsed passage (rubble)",
+			"template": "res://assets/templates/side/template_rubble.png",
+			"display_size": [
+				130,
+				160
+			],
+			"source_size": [
+				260,
+				320
+			],
+			"pivot": [
+				0.5,
+				1.0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_side_interiors.py) - replace with tablet art."
+		},
+		{
+			"id": "side.ore",
+			"name": "Side view: mineral vein",
+			"template": "res://assets/templates/side/template_ore.png",
+			"display_size": [
+				90,
+				70
+			],
+			"source_size": [
+				180,
+				140
+			],
+			"pivot": [
+				0.5,
+				1.0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_side_interiors.py) - replace with tablet art."
+		},
+		{
+			"id": "side.mine_lamp",
+			"name": "Side view: miner's wall lamp",
+			"template": "res://assets/templates/side/template_mine_lamp.png",
+			"display_size": [
+				30,
+				60
+			],
+			"source_size": [
+				60,
+				120
+			],
+			"pivot": [
+				0.5,
+				1.0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_side_interiors.py) - replace with tablet art."
+		}
+	]
+}

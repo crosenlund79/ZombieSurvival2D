@@ -262,10 +262,10 @@ func test_planter_needs_water_and_power_and_never_makes_free_food() -> void:
 
 func test_new_scavenging_supplies() -> void:
 	var w := _world()
-	var a := _player(w, PID, INTERIOR, Vector2(186, 310))
+	var a := _player(w, PID, INTERIOR, Content.entity_position(Content.entity_def("homestead.farmhouse", "homestead.farmhouse.pantry")))
 	var r := WorldActions.request_interact(w, PID, "homestead.farmhouse.pantry", 0)
 	check(r["ok"], "pantry searched: " + str(r["reason"]))
 	check(a.carrying("canned_food") >= 1, "found food")
-	a.position = Vector2(728, 360)
+	a.position = Content.entity_position(Content.entity_def("homestead.farmhouse", "homestead.farmhouse.linen"))
 	check(WorldActions.request_interact(w, PID, "homestead.farmhouse.linen", 0)["ok"], "linen chest searched")
 	check(a.carrying("cloth") >= 2, "found cloth")

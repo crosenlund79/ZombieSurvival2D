@@ -51,7 +51,9 @@ func _check_regions() -> void:
 	for rid in Content.region_ids():
 		var def := Content.region_def(rid)
 		var scene := str(def.get("scene", ""))
-		if not ResourceLoader.exists(scene):
+		if str(def.get("view", "")) == "side":
+			_check_side_region(rid, def)  # iteration 014: drawn in code from the region data
+		elif not ResourceLoader.exists(scene):
 			_add("FAIL", "region %s: scene missing (%s)" % [rid, scene])
 		else:
 			_add("PASS", "region %s: scene exists" % rid)
@@ -304,3 +306,36 @@ func _files(dir: String, exts: Array) -> Array[String]:
 	for d in DirAccess.get_directories_at(dir):
 		out.append_array(_files(dir.path_join(d), exts))
 	return out
+
+
+
+## Iteration 014: a side-view region (building interior, mine) has no scene: its
+## grid, spawn, props and pictures must be valid instead.
+func _check_side_region(rid: String, def: Dictionary) -> void:
+	var ex: Dictionary = def.get("excavation", {})
+	if ex.is_empty():
+		_add("FAIL", "side region %s: no excavation grid" % rid)
+		return
+	var props := 0
+	for pr in def.get("side_props", []):
+		if not AssetCatalog.has(str(pr.get("asset", ""))):
+			_add("FAIL", "side region %s: prop asset %s not in any manifest" % [rid, pr.get("asset", "")])
+		props += 1
+	var sec: Dictionary = def.get("section", {})
+	for room in sec.get("rooms", []):
+		for k in ["wall", "floor"]:
+			if room.has(k) and not AssetCatalog.has(str(room[k])):
+				_add("FAIL", "side region %s: room %s %s not in any manifest" % [rid, k, room[k]])
+	var region := RegionState.new()
+	region.region_id = rid
+	region.def_id = rid
+	for sp in def.get("spawn_points", []):
+		var c := Terrain.cell_of(region, Vector2(float(sp[0]), float(sp[1]) - 6.0))
+		if not Terrain.is_open(region, c):
+			_add("FAIL", "side region %s: spawn point %s is not in an open room" % [rid, str(sp)])
+	for eid in Content.entity_ids(rid):
+		var e := Content.entity_def(rid, eid)
+		var p := Content.entity_position(e)
+		if not Terrain.is_open(region, Terrain.cell_of(region, p + Vector2(0, -6))):
+			_add("FAIL", "side region %s: %s stands outside the rooms" % [rid, eid])
+	_add("PASS", "side region %s: %d props, grid %dx%d" % [rid, props, int(ex.get("cols", 0)), int(ex.get("rows", 0))])

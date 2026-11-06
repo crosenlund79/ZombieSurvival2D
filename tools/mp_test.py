@@ -318,7 +318,7 @@ def scenario_bunker_single():
         check("loop: 1 rural world starts", r["ok"] and r["state"]["region"] == "homestead", r["state"].get("region"))
         r = go_inside(s)
         check("loop: 2 enter the farmhouse", r["state"]["region"] == "homestead.farmhouse", r["state"].get("region"))
-        r = s.cmd("walk_to 300 492")
+        r = s.cmd("walk_to 832 0 6")
         check("loop: shelter site focused inside the house", r["state"]["view"]["focused"] == SITE, r["state"]["view"]["focused"])
         r = s.cmd("press_interact")
         st = r["state"]["entities"][SITE]["state"]
@@ -329,9 +329,9 @@ def scenario_bunker_single():
         check("loop: 4 construction completes on the shared clock", r["state"]["entities"][SITE]["state"]["stage"] == "built"
               and SITE in r["state"]["bunkers"], [r["state"]["entities"][SITE], r["state"]["bunkers"]])
         check("loop: completion feedback shown", any("SHELTER_COMPLETE" in n for n in r["state"]["notices"]), r["state"]["notices"])
-        s.cmd("walk_to 300 492"); r = s.cmd("press_interact")
+        s.cmd("walk_to 832 0 6"); r = s.cmd("press_interact")
         check("loop: 5 hatch opens", r["state"]["entities"][SITE]["state"]["open"] is True, r["state"]["entities"][SITE])
-        s.cmd("walk_to 300 452 4"); r = s.cmd("press_interact")
+        s.cmd("walk_to 832 0 6"); r = s.cmd("press_interact")
         check("loop: 5 descend the ladder to level -1", r["state"]["region"] == L1 and r["state"]["view"]["region"] == L1, r["state"].get("region"))
         r = s.cmd("walk_to 800 450")
         check("loop: 6 explore the chamber", r["ok"], r["state"]["view"])
@@ -339,7 +339,7 @@ def scenario_bunker_single():
         check("loop: 4 unreinforced earth locations shown", len(exposed) == 4, exposed)
         s.cmd("walk_to 540 300"); r = s.cmd("press_interact")
         check("loop: 7 climb back to the farmhouse", r["state"]["region"] == "homestead.farmhouse", r["state"].get("region"))
-        s.cmd("walk_to 480 600"); r = s.cmd("press_interact")
+        s.cmd("walk_to 365 0 6"); r = s.cmd("press_interact")
         check("loop: 7 back outside", r["state"]["region"] == "homestead", r["state"].get("region"))
         s.cmd("walk_to 860 585"); r = chop(s)
         check("loop: 8 tree felled by repeated chopping", r["state"]["entities"]["homestead.tree_01"]["state"]["felled"] is True,
@@ -350,10 +350,10 @@ def scenario_bunker_single():
         s.cmd("dev teleport 640 368"); r = chop(s)
         check("loop: second tree felled", r["state"]["carried"].get("wood", 0) == 8, r["state"]["carried"])
         r = go_inside(s)
-        s.cmd("walk_to 470 400"); r = s.cmd("press_interact")
+        s.cmd("walk_to 947 0 6"); r = s.cmd("press_interact")
         check("loop: 9 deposit wood at the shelter", r["state"]["bunkers"][SITE]["wood"] == 8 and r["state"]["carried"].get("wood", 0) == 0,
               [r["state"]["bunkers"], r["state"]["carried"]])
-        s.cmd("walk_to 300 452 4"); r = s.cmd("press_interact")
+        s.cmd("walk_to 832 0 6"); r = s.cmd("press_interact")
         check("loop: 10 descend again", r["state"]["region"] == L1, r["state"].get("region"))
         s.cmd("walk_to 220 350"); s.cmd("press_interact")
         s.cmd("walk_to 760 350"); r = s.cmd("press_interact")
@@ -403,7 +403,7 @@ def scenario_bunker_multi():
         host.cmd(f"host {PORT} new 99 Hosty")
         host.cmd("dev peaceful 1")
         go_inside(host)
-        host.cmd("walk_to 300 492"); host.cmd("press_interact"); host.cmd("wait 8.5")
+        host.cmd("walk_to 832 0 6"); host.cmd("press_interact"); host.cmd("wait 8.5")
         r = host.cmd("press_interact")
         check("mpb: host built and opened the hatch", r["state"]["entities"][SITE]["state"]["open"] is True, r["state"]["entities"][SITE])
         r = host.cmd("dev create_level")
@@ -413,23 +413,23 @@ def scenario_bunker_multi():
         check("mpb: late joiner sees the open hatch", r["state"]["entities"][SITE]["state"]["open"] is True, "")
         r = go_inside(a)
         check("mpb: client enters the farmhouse", r["state"]["region"] == "homestead.farmhouse", r["state"].get("region"))
-        a.cmd("walk_to 300 452 4"); r = a.cmd("press_interact")
+        a.cmd("walk_to 832 0 6"); r = a.cmd("press_interact")
         check("mpb: client descends to level -1", r["state"]["region"] == L1, r["state"].get("region"))
         st = host.state()
         check("mpb: host sees client in level -1", [p for p in st["players"] if p["name"] == "Alice"][0]["region"] == L1, st["players"])
         check("mpb: host view does not show the underground player", st["view"]["avatars"] == 1, st["view"])
         # Host goes outside and chops; client waits underground.
-        host.cmd("walk_to 480 600"); host.cmd("press_interact")
+        host.cmd("walk_to 365 0 6"); host.cmd("press_interact")
         host.cmd("walk_to 860 585"); r = chop(host)
         check("mpb: host chops a tree on the surface", r["state"]["carried"].get("wood", 0) == 4, r["state"]["carried"])
         host.cmd("dev teleport 640 368"); r = chop(host)
-        go_inside(host); host.cmd("walk_to 470 400"); r = host.cmd("press_interact")
+        go_inside(host); host.cmd("walk_to 947 0 6"); r = host.cmd("press_interact")
         check("mpb: host deposits 8 wood", r["state"]["bunkers"][SITE]["wood"] == 8, r["state"]["bunkers"])
         time.sleep(0.5)
         sa = a.state()
         check("mpb: client underground sees the stockpile grow", sa["bunkers"][SITE]["wood"] == 8, sa["bunkers"])
         # Client builds while the host goes back out and chops another tree.
-        host.cmd("walk_to 480 600"); host.cmd("press_interact")
+        host.cmd("walk_to 365 0 6"); host.cmd("press_interact")
         a.cmd("walk_to 220 350")
         with open(a.inbox, "a") as f: f.write("press_interact\n")
         a.seq += 1
@@ -493,8 +493,8 @@ def engaged(state):
 
 def take_club(i):
     go_inside(i)
-    i.cmd("walk_to 150 470"); r = i.cmd("press_interact")
-    i.cmd("walk_to 480 600"); i.cmd("press_interact")
+    i.cmd("walk_to 589 0 6"); r = i.cmd("press_interact")
+    i.cmd("walk_to 365 0 6"); i.cmd("press_interact")
     return r
 
 
@@ -635,8 +635,8 @@ def cell_xy(c, r):
 
 def build_and_descend(i):
     go_inside(i)
-    i.cmd("walk_to 300 492"); i.cmd("press_interact"); i.cmd("wait 8.5"); i.cmd("press_interact")
-    i.cmd("walk_to 300 452 4"); return i.cmd("press_interact")
+    i.cmd("walk_to 832 0 6"); i.cmd("press_interact"); i.cmd("wait 8.5"); i.cmd("press_interact")
+    i.cmd("walk_to 832 0 6"); return i.cmd("press_interact")
 
 
 def scenario_dig_multi():
@@ -652,7 +652,7 @@ def scenario_dig_multi():
         check("dig: host in level -1", r["state"]["region"] == L1, r["state"].get("region"))
         host.cmd("dev grant_stock 12")
         r = c.cmd(f"join 127.0.0.1 {PORT} Cleo")
-        go_inside(c); c.cmd("walk_to 300 452 4"); r = c.cmd("press_interact")
+        go_inside(c); c.cmd("walk_to 832 0 6"); r = c.cmd("press_interact")
         check("dig: client in level -1", r["state"]["region"] == L1, r["state"].get("region"))
         x, y = cell_xy(13, 12)
         host.cmd(f"walk_to {x} {y} 6"); c.cmd(f"walk_to {x} {y + 30} 6")
@@ -691,7 +691,7 @@ def scenario_dig_multi():
         check("dig: digging continues into the supported area", "11,12" in sc["terrain"]["dug"] and "10,12" in sc["terrain"]["dug"], sc["terrain"]["dug"])
         # Host leaves for the surface while the client keeps digging below.
         host.cmd("walk_to 540 296 4"); host.cmd("press_interact")
-        host.cmd("walk_to 480 600"); r = host.cmd("press_interact")
+        host.cmd("walk_to 365 0 6"); r = host.cmd("press_interact")
         check("dig: host on the surface, client underground", r["state"]["region"] == "homestead" and c.state()["region"] == L1, "")
         r = c.cmd("terrain dig 11 13")
         time.sleep(2.4)
@@ -746,11 +746,11 @@ def scenario_accept():
         check("accept 01: new world starts on the surface", r["ok"] and r["state"]["region"] == "homestead", r["state"].get("region"))
         r = go_inside(s)
         check("accept 02: reach the farmhouse", r["state"]["region"] == "homestead.farmhouse", r["state"].get("region"))
-        s.cmd("walk_to 300 492"); r = s.cmd("press_interact")
+        s.cmd("walk_to 832 0 6"); r = s.cmd("press_interact")
         check("accept 03: shelter construction started", r["state"]["entities"][SITE]["state"]["stage"] == "building", r["state"]["entities"][SITE]["state"])
-        s.cmd("walk_to 150 470"); r = s.cmd("press_interact")
+        s.cmd("walk_to 589 0 6"); r = s.cmd("press_interact")
         check("accept 03b: club taken", r["state"]["weapon"] == "club", r["state"].get("weapon"))
-        s.cmd("walk_to 480 600"); s.cmd("press_interact")
+        s.cmd("walk_to 365 0 6"); s.cmd("press_interact")
         to_west_trees(s); s.cmd("walk_to 200 685")
         r = chop(s)
         check("accept 04: chop timber", r["state"]["carried"].get("wood", 0) >= 3, r["state"]["carried"])
@@ -771,9 +771,9 @@ def scenario_accept():
         r = to_door(s)
         check("accept 09: retreat into the farmhouse", r["state"]["region"] == "homestead.farmhouse", r["state"].get("region"))
         s.cmd("dev heal")
-        s.cmd("walk_to 300 492")
+        s.cmd("walk_to 832 0 6")
         wait_for(s, lambda st: st["entities"][SITE]["state"]["stage"] == "built", timeout=10)
-        s.cmd("press_interact"); s.cmd("walk_to 300 452 4"); r = s.cmd("press_interact")
+        s.cmd("press_interact"); s.cmd("walk_to 832 0 6"); r = s.cmd("press_interact")
         check("accept 10: descend into the shelter", r["state"]["region"] == L1, r["state"].get("region"))
         s.cmd("walk_to 650 345 6"); r = s.cmd("press_interact")
         check("accept 11a: storage panel opens", r["state"]["view"]["panel"] == "storage", r["state"]["view"].get("panel"))
@@ -879,7 +879,7 @@ def scenario_infra_multi():
         sh = host.state()
         check("imp: client's loot state mirrored to host", not sh["entities"]["homestead.rain_barrel"]["state"].get("looted_at", -1) < 0, sh["entities"]["homestead.rain_barrel"])
         r = to_door(c)
-        c.cmd("walk_to 300 452 4"); r = c.cmd("press_interact")
+        c.cmd("walk_to 832 0 6"); r = c.cmd("press_interact")
         check("imp: client descends", r["state"]["region"] == L1, r["state"].get("region"))
         r = c.cmd("wait 0.5")
         check("imp: client sees the lamps lit", r["state"]["view"]["lamps"] and all(r["state"]["view"]["lamps"].values()), r["state"]["view"]["lamps"])
@@ -904,7 +904,7 @@ def scenario_infra_multi():
         r = c.cmd("entity_action purifier fill")
         check("imp: client fills the purifier from storage", lvl(r["state"], L1, "purifier").get("input", 0) >= 3, lvl(r["state"], L1, "purifier"))
         # Host leaves for the surface; the bunker keeps running for the client below.
-        host.cmd("walk_to 540 296 4"); host.cmd("press_interact"); host.cmd("walk_to 480 600"); r = host.cmd("press_interact")
+        host.cmd("walk_to 540 296 4"); host.cmd("press_interact"); host.cmd("walk_to 365 0 6"); r = host.cmd("press_interact")
         check("imp: host on the surface, client underground", r["state"]["region"] == "homestead" and c.state()["region"] == L1, "")
         fuel0 = lvl(c.state(), L1, "generator")["fuel"]
         host.cmd("dev advance_clock 45")
@@ -1034,10 +1034,10 @@ def scenario_build_multi():
         if not host.state()["entities"]["homestead.farmhouse_door"]["state"]["open"]:
             host.cmd("press_interact")
         host.cmd("walk_to 1160 664 4"); host.cmd("press_interact")
-        host.cmd("walk_to 300 492"); host.cmd("press_interact"); host.cmd("wait 8.5"); host.cmd("press_interact")
-        host.cmd("walk_to 300 452 4"); r = host.cmd("press_interact")
+        host.cmd("walk_to 832 0 6"); host.cmd("press_interact"); host.cmd("wait 8.5"); host.cmd("press_interact")
+        host.cmd("walk_to 832 0 6"); r = host.cmd("press_interact")
         check("build: host underground", r["state"]["region"] == L1, r["state"].get("region"))
-        go_inside(c); c.cmd("walk_to 300 452 4"); r = c.cmd("press_interact")
+        go_inside(c); c.cmd("walk_to 832 0 6"); r = c.cmd("press_interact")
         check("build: client underground too", r["state"]["region"] == L1, r["state"].get("region"))
         host.cmd("walk_to 650 345 6")
         host.cmd("dev grant wood:12")
@@ -1084,10 +1084,10 @@ def scenario_craft_multi():
         check("craft: client joins", r["ok"], r["error"])
         # Client scavenges food and cloth in the farmhouse.
         go_inside(c)
-        c.cmd("walk_to 186 340"); c.cmd("interact homestead.farmhouse.pantry")
-        c.cmd("walk_to 728 380"); r = c.cmd("interact homestead.farmhouse.linen")
+        c.cmd("walk_to 704 0 6"); c.cmd("interact homestead.farmhouse.pantry")
+        c.cmd("walk_to 1235 0 6"); r = c.cmd("interact homestead.farmhouse.linen")
         check("craft: client finds food and cloth indoors", r["state"]["carried"].get("canned_food", 0) >= 2 and r["state"]["carried"].get("cloth", 0) >= 2, r["state"]["carried"])
-        c.cmd("walk_to 480 600"); c.cmd("press_interact")
+        c.cmd("walk_to 365 0 6"); c.cmd("press_interact")
         host.cmd("dev grant wood:14"); host.cmd("dev grant scrap_metal:6")
         host.cmd("walk_to 1150 960")
         if not host.state()["entities"]["homestead.yard_gate"]["state"]["open"]:
@@ -1242,7 +1242,7 @@ def scenario_settlement_multi():
         host.cmd("walk_to 650 345 6"); host.cmd("entity_action storage store water_dirty")
         host.cmd("walk_to 930 610 6"); host.cmd("entity_action generator fuel"); host.cmd("entity_action generator fuel"); host.cmd("entity_action generator toggle")
         # Host travels to the service station to find the survivor.
-        host.cmd("walk_to 540 296 4"); host.cmd("press_interact"); host.cmd("walk_to 480 600"); host.cmd("press_interact")
+        host.cmd("walk_to 540 296 4"); host.cmd("press_interact"); host.cmd("walk_to 365 0 6"); host.cmd("press_interact")
         host.cmd("dev teleport 2340 1400"); r = host.cmd("interact homestead.road_east")
         check("settle: host reaches the station", r["state"]["region"] == "service_station", r["state"].get("region"))
         host.cmd("walk_to 372 664 10")   # Red Thaw: she hides in the collapsed house
@@ -1256,7 +1256,7 @@ def scenario_settlement_multi():
         time.sleep(0.4)
         check("settle: client sees her leave the station", c.state()["npcs"]["mara"]["recruit"] == "travelling", c.state()["npcs"]["mara"])
         # Client goes down into the shelter and waits for her.
-        go_inside(c); c.cmd("walk_to 300 452 4"); r = c.cmd("press_interact")
+        go_inside(c); c.cmd("walk_to 832 0 6"); r = c.cmd("press_interact")
         check("settle: client underground", r["state"]["region"] == L1, r["state"].get("region"))
         host.cmd("dev advance_clock 65")
         time.sleep(1.0)
@@ -1315,10 +1315,10 @@ def enter_bunker(i):
                 i.cmd("interact homestead.farmhouse_door")
             i.cmd("walk_to 1160 664 4"); i.cmd("interact homestead.farmhouse_entry")
         elif st["region"] == "homestead.farmhouse":
-            i.cmd("walk_to 300 470 6")
+            i.cmd("walk_to 832 0 6")
             if not i.state()["entities"][SITE]["state"].get("open", False):
                 i.cmd("interact " + SITE)
-            i.cmd("walk_to 300 452 4"); i.cmd("interact homestead.farmhouse.hatch_ladder")
+            i.cmd("walk_to 832 0 6"); i.cmd("interact homestead.farmhouse.hatch_ladder")
     return i.state()
 
 
@@ -1327,7 +1327,7 @@ def leave_bunker(i):
     if BunkerStateLike(i.state()["region"]):
         i.cmd("walk_to 540 296 4"); i.cmd("interact ladder_up")
     if i.state()["region"] == "homestead.farmhouse":
-        i.cmd("walk_to 480 600 6"); i.cmd("interact homestead.farmhouse.exit")
+        i.cmd("walk_to 365 0 6"); i.cmd("interact homestead.farmhouse.exit")
     return i.state()
 
 
@@ -1344,12 +1344,12 @@ def scenario_slice():
         r = s.cmd("single new 101 Pioneer"); s.cmd("tips off"); s.cmd("dev ambient 1")  # legacy automatic loop under test
         check("slice 00: new survival world, nothing prepared", r["ok"] and not [b for b in r["state"]["bunkers"] if b != "town.house.cellar"] and not r["state"]["gear"], "")
         # 1. Establish the bunker.
-        go_inside(s); s.cmd("walk_to 300 492"); s.cmd("press_interact")
-        s.cmd("walk_to 150 470"); r = s.cmd("press_interact")
+        go_inside(s); s.cmd("walk_to 832 0 6"); s.cmd("press_interact")
+        s.cmd("walk_to 589 0 6"); r = s.cmd("press_interact")
         check("slice 01: shelter dig started, club taken", r["state"]["entities"][SITE]["state"]["stage"] in ("building", "built") and r["state"]["weapon"] == "club", "")
-        s.cmd("walk_to 186 340"); s.cmd("interact homestead.farmhouse.pantry")
-        s.cmd("walk_to 728 380"); s.cmd("interact homestead.farmhouse.linen")
-        s.cmd("walk_to 480 600"); s.cmd("press_interact")
+        s.cmd("walk_to 704 0 6"); s.cmd("interact homestead.farmhouse.pantry")
+        s.cmd("walk_to 1235 0 6"); s.cmd("interact homestead.farmhouse.linen")
+        s.cmd("walk_to 365 0 6"); s.cmd("press_interact")
         # 2-4. Gather on the surface; fight; noise draws more.
         to_west_trees(s); s.cmd("walk_to 200 685"); chop(s); heal_if_low(s)
         r = s.cmd("wait 1.5")
@@ -1369,7 +1369,7 @@ def scenario_slice():
         r = s.cmd("eat")
         check("slice 05b: eat to recover", r["state"]["carried"].get("canned_food", 0) == 1, r["state"]["carried"])
         # Scavenge scrap, fuel and water around the farm (zombies may be about: heal as a safety net only).
-        s.cmd("walk_to 480 600"); s.cmd("press_interact"); s.cmd("dev heal")
+        s.cmd("walk_to 365 0 6"); s.cmd("press_interact"); s.cmd("dev heal")
         s.cmd("walk_to 1150 960"); s.cmd("walk_to 1150 1100"); s.cmd("walk_to 650 1100"); s.cmd("walk_to 650 1445 6"); s.cmd("press_interact")
         s.cmd("walk_to 650 1100"); s.cmd("walk_to 1600 1100"); s.cmd("walk_to 1600 1185 8"); s.cmd("interact homestead.tractor")
         heal_if_low(s)
@@ -1382,9 +1382,9 @@ def scenario_slice():
         check("slice 09: scavenged fuel, water, metal and parts; more timber", cr.get("wood", 0) >= 12 and cr.get("fuel", 0) >= 2 and cr.get("scrap_metal", 0) >= 4 and cr.get("water_dirty", 0) >= 2 and cr.get("electrical_parts", 0) >= 1, cr)
         # Into the shelter: storage, expansion, construction, crafting, power and water.
         r = to_door(s)
-        s.cmd("walk_to 300 492")
+        s.cmd("walk_to 832 0 6")
         wait_for(s, lambda st: st["entities"][SITE]["state"]["stage"] == "built", timeout=10)
-        s.cmd("press_interact"); s.cmd("walk_to 300 452 4"); r = s.cmd("press_interact")
+        s.cmd("press_interact"); s.cmd("walk_to 832 0 6"); r = s.cmd("press_interact")
         check("slice 01b: in the bunker", r["state"]["region"] == L1, r["state"].get("region"))
         s.cmd("walk_to 650 345 6")
         for item in list(r["state"]["carried"].keys()):
@@ -1627,7 +1627,7 @@ def scenario_winter_multi():
               (player(sh, "Cleo")["warmth"], player(sc, "Cleo")["warmth"]))
         r = _into_cabin(host)
         check("ww: host gets into the cabin", r["state"]["region"] == "homestead.farmhouse", r["state"].get("region"))
-        host.cmd("walk_to 640 380 6")
+        host.cmd("walk_to 1126 0 6")
         r = host.cmd("interact homestead.farmhouse.bed")
         notes = r["state"]["notices"][-3:]
         check("ww: sleeping while Cleo is outside gives an inner monologue", any("SLEEP_OUT_" in str(n) and "Cleo" in str(n) for n in notes), notes)
@@ -1771,7 +1771,7 @@ def scenario_wild_multi():
         check("wild: and never attacks", player(host.state(), "Cleo")["health"] >= hp - 0.01, (hp, player(host.state(), "Cleo")["health"]))
         r = _into_cabin(c)
         check("wild: client gets into the cabin", r["state"]["region"] == "homestead.farmhouse", r["state"].get("region"))
-        c.cmd("walk_to 630 540 8")
+        c.cmd("walk_to 1018 0 6")
         r = c.cmd("interact homestead.farmhouse.flashlight")
         time.sleep(0.3)
         check("wild: the client takes a flashlight", "flashlight" in player(host.state(), "Cleo")["gear"], player(host.state(), "Cleo")["gear"])
@@ -1864,13 +1864,13 @@ def scenario_blood_multi():
 def _build_shelter_and_descend(i):
     """Surface -> cabin -> build the hatch (if needed) -> open it -> climb down."""
     r = _into_cabin(i)
-    i.cmd("walk_to 300 470 6")
+    i.cmd("walk_to 832 0 6")
     st = i.state()["entities"][SITE]["state"]
     if st.get("stage", "none") == "none":
         i.cmd("interact " + SITE); i.cmd("wait 9")
     if not i.state()["entities"][SITE]["state"].get("open", False):
         i.cmd("interact " + SITE)
-    i.cmd("walk_to 300 452 4"); i.cmd("interact homestead.farmhouse.hatch_ladder"); i.cmd("wait 1.2")
+    i.cmd("walk_to 832 0 6"); i.cmd("interact homestead.farmhouse.hatch_ladder"); i.cmd("wait 1.2")
     return i.state()
 
 
@@ -1980,7 +1980,7 @@ def _search(i, rid, key, wait=0.0):
     st = i.state()
     eid = f"{rid}.{key}"
     # straight-line walking snags on aisle shelving; the rendered run covers walking indoors
-    i.cmd(f"dev teleport {CIRCUIT_POS[eid][0]} {CIRCUIT_POS[eid][1] + 40}"); i.cmd("wait 0.3")
+    i.cmd(f"dev teleport {CIRCUIT_POS[eid][0]} {CIRCUIT_POS[eid][1]}"); i.cmd("wait 0.3")  # side view: stand at it
     i.cmd(f"interact {eid}")
     if wait:
         i.cmd(f"wait {wait}")

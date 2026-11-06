@@ -141,7 +141,7 @@ func test_cancel_and_interrupt_give_nothing() -> void:
 	eq(SkillSim.xp(p, "scavenging"), 0, "a cancelled search gives no XP")
 	_start(w, p, eid)
 	_run(w, 1.0)
-	p.position += Vector2(0, 300)  # walk away
+	p.position += Vector2(600, 0)  # walk away (side view: along the floor)
 	_run(w, 0.3)
 	eq(ScavengeSim.searching(region.entity_state(eid)), "", "walking away interrupts")
 	_start(w, p, eid)

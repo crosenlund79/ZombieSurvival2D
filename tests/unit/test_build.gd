@@ -85,9 +85,9 @@ func test_placement_rules() -> void:
 	eq(r["reason"], "ACTION_NEED_MATERIALS", "materials checked")
 	eq(a.carrying("wood"), 1, "nothing spent")
 	a.region_id = INTERIOR
-	a.position = Vector2(300, 500)
+	a.position = Content.entity_position(Content.entity_def("homestead.farmhouse", "homestead.farmhouse.shelter")) + Vector2(60, 0)
 	a.carried = {"wood": 30}
-	eq(_place(w, PID, "crate", Vector2(300, 560))["reason"], "ACTION_BUILD_NOT_HERE", "no building inside the farmhouse")
+	eq(_place(w, PID, "crate", Content.entity_position(Content.entity_def("homestead.farmhouse", "homestead.farmhouse.shelter")))["reason"], "ACTION_BUILD_NOT_HERE", "no building inside the farmhouse")
 
 
 func test_concurrent_placement_one_wins() -> void:

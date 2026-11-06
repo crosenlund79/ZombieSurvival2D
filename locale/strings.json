@@ -2898,5 +2898,25 @@
 	"TIER_IRON": {
 		"en": "Cast iron",
 		"da": "Støbejern"
+	},
+	"SIDE_UPSTAIRS": {
+		"en": "Upstairs",
+		"da": "Ovenpå"
+	},
+	"SIDE_STOREROOM": {
+		"en": "Storeroom",
+		"da": "Lager"
+	},
+	"SIDE_DISPENSARY": {
+		"en": "Dispensary",
+		"da": "Udlevering"
+	},
+	"SIDE_STOCKROOM": {
+		"en": "Stockroom",
+		"da": "Baglager"
+	},
+	"SIDE_OFFICE": {
+		"en": "Office",
+		"da": "Kontor"
 	}
 }

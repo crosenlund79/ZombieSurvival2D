@@ -191,7 +191,7 @@ static func _portal(world: WorldState, p: PlayerState, region: RegionState, eid:
 		return _fail("ACTION_NOT_AVAILABLE")
 	p.region_id = t["region_id"]
 	p.position = t["position"]
-	if p.bunker_view == "side" and SideSection.is_level(p.region_id):
+	if SideSection.side_for(world, p):
 		p.position = SideSection.rest(world.region(p.region_id), p.position)  # feet on the floor
 	var res := _ok()
 	res["transition"] = {"player_id": p.player_id, "region_id": p.region_id, "position": p.position}

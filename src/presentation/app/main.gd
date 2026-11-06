@@ -160,8 +160,9 @@ func build_region_view() -> void:
 	if region == null:
 		SessionLog.error("view", "region_missing", {"region": me.region_id})
 		return
-	if SideSection.is_level(region.region_id) and Settings.bunker_view() == "side":
-		# Iteration 012 (experiment): bunker levels as a side view, built from the same data.
+	if SideSection.always_side(region) or (SideSection.is_level(region.region_id) and Settings.bunker_view() == "side"):
+		# Iteration 012: bunker levels as a side view, built from the same data.
+		# Iteration 014: building interiors and the mine are always side views.
 		region_view = SideBunkerView.new()
 		region_view.region_id = region.region_id
 		region_view.def_id = region.def_id

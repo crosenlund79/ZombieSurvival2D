@@ -227,10 +227,12 @@ func _local_move_side(delta: float) -> void:
 		_climbing = false
 	var moved := false
 	if _climbing:
+		# Climbing passes through stair landings (iteration 014); walking stops on them.
+		var climb_floor := SideSection.floor_y(r, plan.x, plan.y - 4.0, true)
 		var top := SideSection.ceiling_y(r, plan.x, plan.y - 4.0) + SideSection.row_h(r) * 0.9
-		plan.y = clampf(plan.y + input.y * CLIMB_SPEED * delta, top, floor_now)
+		plan.y = clampf(plan.y + input.y * CLIMB_SPEED * delta, top, climb_floor)
 		moved = absf(input.y) > 0.1
-		if plan.y >= floor_now - 0.5 and input.y >= 0.0:
+		if plan.y >= climb_floor - 0.5 and input.y >= 0.0:
 			_climbing = false
 	if absf(input.x) > 0.1:
 		var dx := input.x * (SPRINT_SPEED if running else SPEED) * delta

@@ -1,42 +1,118 @@
 {
 	"region_id": "town.hardware",
 	"display_key": "REGION_TOWN_HARDWARE",
-	"scene": "res://scenes/regions/town/hardware_interior.tscn",
+	"view": "side",
+	"style": "building",
 	"bounds": [
 		0,
 		0,
-		1200,
-		760
+		2304,
+		768
 	],
-	"surface": {
-		"region": "town",
-		"position": [
-			1592,
-			880
+	"excavation": {
+		"cell": 64,
+		"origin": [
+			0,
+			0
+		],
+		"cols": 36,
+		"rows": 12,
+		"fixed": true,
+		"initial_open": [
+			[
+				5,
+				4,
+				26,
+				4
+			]
+		],
+		"platforms": [],
+		"_comment": "Authored building cross-section (tools/build_side_interiors.py); fixed, never dug."
+	},
+	"section": {
+		"ground_row": 8,
+		"envelope": [
+			4,
+			3,
+			28,
+			6
+		],
+		"exterior": "side.ext_brick",
+		"basement": "",
+		"rooms": [
+			{
+				"rect": [
+					5,
+					4,
+					19,
+					4
+				],
+				"wall": "side.wall_brick_in",
+				"floor": "side.floor_concrete"
+			},
+			{
+				"rect": [
+					24,
+					4,
+					7,
+					4
+				],
+				"wall": "side.wall_brick_in",
+				"floor": "side.floor_concrete"
+			}
+		],
+		"windows": [
+			[
+				512.0,
+				363.5
+			],
+			[
+				832.0,
+				363.5
+			]
+		],
+		"dividers": [
+			[
+				1536,
+				256,
+				345.6,
+				512
+			]
+		],
+		"labels": [
+			[
+				1561.6,
+				284,
+				"SIDE_STOCKROOM"
+			]
 		]
 	},
+	"side_props": [
+		{
+			"asset": "int.pegboard",
+			"x": 550.4,
+			"y": 449,
+			"back": true
+		},
+		{
+			"asset": "int.boxes",
+			"x": 1932.8,
+			"y": 509
+		}
+	],
 	"spawn_points": [
 		[
-			740,
-			610
+			422.4,
+			509
 		]
 	],
-	"climate": {
-		"exposure": 1.0,
-		"fog": 0.0,
-		"shelter": 0.35
-	},
-	"interior": true,
 	"entities": [
 		{
 			"id": "town.hardware.exit",
 			"type": "portal",
-			"position": [
-				740,
-				672
-			],
-			"interact_range": 60,
+			"interact_range": 70,
 			"priority": 2,
+			"side_art": "side.door_ext",
 			"target": {
 				"region": "town",
 				"position": [
@@ -44,16 +120,16 @@
 					926
 				]
 			},
-			"prompt_key": "PROMPT_EXIT_HOUSE"
+			"prompt_key": "PROMPT_EXIT_HOUSE",
+			"position": [
+				364.8,
+				509
+			]
 		},
 		{
 			"id": "town.hardware.aisle_fasteners",
 			"type": "container",
 			"kind": "shelf",
-			"position": [
-				220,
-				310
-			],
 			"interact_range": 72,
 			"prompt_key": "PROMPT_SEARCH_SHELF",
 			"art": "int.metal_shelf_full",
@@ -64,16 +140,16 @@
 			},
 			"initial": {
 				"searched": false
-			}
+			},
+			"position": [
+				640.0,
+				509
+			]
 		},
 		{
 			"id": "town.hardware.aisle_lumber",
 			"type": "container",
 			"kind": "shelf",
-			"position": [
-				240,
-				450
-			],
 			"interact_range": 72,
 			"prompt_key": "PROMPT_SEARCH_SHELF",
 			"art": "int.gondola_full",
@@ -83,16 +159,16 @@
 			},
 			"initial": {
 				"searched": false
-			}
+			},
+			"position": [
+				870.4,
+				509
+			]
 		},
 		{
 			"id": "town.hardware.aisle_tools",
 			"type": "container",
 			"kind": "shelf",
-			"position": [
-				510,
-				450
-			],
 			"interact_range": 72,
 			"prompt_key": "PROMPT_SEARCH_SHELF",
 			"art": "int.gondola_sparse",
@@ -104,16 +180,16 @@
 			},
 			"initial": {
 				"searched": false
-			}
+			},
+			"position": [
+				1113.6,
+				509
+			]
 		},
 		{
 			"id": "town.hardware.aisle_bare",
 			"type": "container",
 			"kind": "shelf",
-			"position": [
-				240,
-				590
-			],
 			"interact_range": 72,
 			"prompt_key": "PROMPT_SEARCH_SHELF",
 			"art": "int.metal_shelf_empty",
@@ -121,16 +197,16 @@
 			"loot": {},
 			"initial": {
 				"searched": true
-			}
+			},
+			"position": [
+				1331.2,
+				509
+			]
 		},
 		{
 			"id": "town.hardware.stock_crate",
 			"type": "container",
 			"kind": "crate",
-			"position": [
-				960,
-				330
-			],
 			"interact_range": 72,
 			"prompt_key": "PROMPT_SEARCH_CRATE",
 			"art": "int.crate",
@@ -142,16 +218,16 @@
 			},
 			"initial": {
 				"searched": false
-			}
+			},
+			"position": [
+				1664.0,
+				509
+			]
 		},
 		{
 			"id": "town.hardware.locked_case",
 			"type": "container",
 			"kind": "toolbox",
-			"position": [
-				1040,
-				610
-			],
 			"interact_range": 72,
 			"prompt_key": "PROMPT_SEARCH_TOOLBOX",
 			"art": "int.tool_chest",
@@ -164,7 +240,30 @@
 			"discovery": "hardware_case",
 			"initial": {
 				"searched": false
-			}
+			},
+			"position": [
+				1830.4,
+				509
+			]
 		}
-	]
+	],
+	"surface": {
+		"region": "town",
+		"position": [
+			1592,
+			880
+		]
+	},
+	"tint": [
+		0.5,
+		0.5,
+		0.52
+	],
+	"climate": {
+		"exposure": 1.0,
+		"fog": 0.0,
+		"shelter": 0.35
+	},
+	"interior": true,
+	"ambience": "amb.wind_muffled"
 }

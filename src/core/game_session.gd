@@ -233,6 +233,7 @@ func _admit_player(peer_id: int, token: String, name: String) -> PlayerState:
 		world.players[token] = p
 	p.display_name = name
 	p.online = true
+	SideSection.settle(world, p)  # iteration 014: interiors became cross-sections
 	p.last_seen_unix = int(Time.get_unix_time_from_system())
 	_peer_to_player[peer_id] = token
 	_move_track[token] = Time.get_ticks_msec()
@@ -662,7 +663,7 @@ func _host_handle_move(peer_id: int, pos: Vector2, facing: int, region_id: Strin
 	_move_track[pid] = now
 	if p.dead or p.vehicle_id != "":
 		return  # a seated player moves with the vehicle (VehicleSim.submit_pose)
-	var side := p.bunker_view == "side" and SideSection.is_level(p.region_id)
+	var side := SideSection.side_for(world, p)
 	if side and _side_move_ok(p, pos, dt):
 		p.position = pos
 		p.facing = clampi(facing, 0, 3)

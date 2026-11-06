@@ -224,16 +224,24 @@ func _process(delta: float) -> void:
 		position = base + Vector2(sin(_flash * 40.0) * 3.0 * _flash, 0) if not o.is_empty() else position
 
 
+## The visible picture in local coordinates (falls back to a small box).
+func _art_rect() -> Rect2:
+	if _sprite != null and _sprite.texture != null:
+		var sz := _sprite.texture.get_size() * _sprite.scale
+		var tl := _sprite.position - (sz * 0.5 if _sprite.centered else Vector2.ZERO)
+		return Rect2(tl, sz)
+	return Rect2(-30, -50, 60, 50)
+
+
 func _draw() -> void:
 	var o := data()
 	if o.is_empty() or Build.is_pile(o):
 		return
-	var local := Rect2(_rect.position - position, _rect.size)
-	var top := local.position.y - 18.0
-	if Build.cell_mode(Session.world.region(region_id)):
-		top = local.position.y - 26.0
-	var w := clampf(local.size.x, 40.0, 70.0)
-	var at := Vector2(local.get_center().x - w * 0.5, top)
+	# Iteration 014: anchored to the drawn picture (the footprint is in plan
+	# coordinates, which differ from the screen in the side view).
+	var art: Rect2 = _art_rect()
+	var w := clampf(art.size.x, 40.0, 70.0)
+	var at := Vector2(art.get_center().x - w * 0.5, art.position.y - 14.0)
 	var frac := -1.0
 	var col := Color("#7FA55A")
 	if not Build.is_built(o):

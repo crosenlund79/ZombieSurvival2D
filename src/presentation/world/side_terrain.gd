@@ -44,8 +44,7 @@ func _region() -> RegionState:
 
 
 func _rebuild() -> void:
-	for id in ["side.earth", "side.rock", "side.backwall", "side.concrete_wall", "side.floorboards", "side.beam", "side.concrete_slab"]:
-		_tex[id] = Assets.texture(id)
+	_tex.clear()
 	_sync_posts()
 	queue_redraw()
 
@@ -58,15 +57,21 @@ func _srect(r: Rect2) -> Rect2:
 	return SideSection.screen_rect(_region(), r)
 
 
+func _tex_of(id: String) -> Texture2D:
+	if not _tex.has(id):
+		_tex[id] = Assets.texture(id) if AssetCatalog.has(id) else null
+	return _tex[id]
+
+
 func _tile(id: String, rect: Rect2) -> void:
-	var tex: Texture2D = _tex.get(id)
+	var tex: Texture2D = _tex_of(id)
 	if tex == null or rect.size.x <= 0.0 or rect.size.y <= 0.0:
 		return
 	draw_texture_rect_region(tex, rect, Rect2(rect.position, rect.size))
 
 
 func _strip(id: String, x0: float, x1: float, y: float, h: float) -> void:
-	var tex: Texture2D = _tex.get(id)
+	var tex: Texture2D = _tex_of(id)
 	if tex == null:
 		return
 	draw_texture_rect_region(tex, Rect2(x0, y, x1 - x0, h), Rect2(x0, 0, x1 - x0, tex.get_size().y))
@@ -76,9 +81,13 @@ func _draw() -> void:
 	var r := _region()
 	if r == null:
 		return
+	if str(r.definition().get("style", "")) == "building":
+		_draw_building(r)
+		return
 	var b := _srect(SideSection.bounds(r)).grow(400.0)
 	_tile("side.earth", b)
 	var ink := Color(0.1, 0.07, 0.05, 0.92)
+	var mine := str(r.definition().get("style", "")) == "mine"
 	if not SideSection.has_grid(r):
 		_draw_room(r, ink)
 		_draw_shaft(r)
@@ -90,7 +99,7 @@ func _draw() -> void:
 			var c := Vector2i(x, y)
 			var rect := _srect(Terrain.cell_rect(r, c))
 			if Terrain.is_open(r, c):
-				_tile("side.backwall", rect)
+				_tile("side.wall_mine" if mine else "side.backwall", rect)
 			elif Terrain.is_permanent(r, c) and x > 0 and y > 0 and x < g.x - 1 and y < g.y - 1:
 				_tile("side.rock", rect)
 	_draw_shaft(r)
@@ -98,7 +107,7 @@ func _draw() -> void:
 	for c in Terrain.open_cells(r):
 		var rect := _srect(Terrain.cell_rect(r, c))
 		if not Terrain.is_open(r, c + Vector2i(0, 1)):
-			_strip("side.floorboards", rect.position.x, rect.end.x, rect.end.y - 4.0, 16.0)
+			_strip("side.rail" if mine else "side.floorboards", rect.position.x, rect.end.x, rect.end.y - (14.0 if mine else 4.0), 16.0)
 		if not Terrain.is_open(r, c + Vector2i(0, -1)):
 			_strip("side.beam", rect.position.x, rect.end.x, rect.position.y, 12.0)
 			draw_line(rect.position, Vector2(rect.end.x, rect.position.y), ink, 2.5)
@@ -223,7 +232,7 @@ func _update_target(r: RegionState) -> void:
 	_mode = ""
 	_target = Vector2i(-1, -1)
 	_interact.enabled = false
-	if a == null or PlayerAvatar.input_blocked or not SideSection.has_grid(r):
+	if a == null or PlayerAvatar.input_blocked or not SideSection.has_grid(r) or bool(Terrain.cfg(r).get("fixed", false)):
 		return
 	var plan := SideSection.to_plan(r, a.global_position)
 	var feet := Terrain.cell_of(r, plan + Vector2(0, -4))
@@ -299,3 +308,71 @@ func _draw_marker() -> void:
 	var rect := _srect(Terrain.cell_rect(r, _target)).grow(-3)
 	_marker.draw_rect(rect, Color(_marker_color, 0.2))
 	_marker.draw_rect(rect, _marker_color, false, 3.0)
+
+
+
+# ------------------------------------------------------------------ iteration 014: buildings in section
+
+## A building interior (region "style": "building"): sky and snow outside, the
+## earth below the ground line, the walls and slabs of the building in section,
+## each room's wall covering, floors and ceilings, windows and room dividers.
+func _draw_building(r: RegionState) -> void:
+	var sec: Dictionary = r.definition().get("section", {})
+	var ink := Color(0.1, 0.07, 0.05, 0.92)
+	var b := _srect(SideSection.bounds(r)).grow(500.0)
+	var ground_y := _s(Terrain.cell_rect(r, Vector2i(0, int(sec.get("ground_row", 0)))).position).y
+	var dl := EnvSim.daylight(Session.world) if Session.world != null else 1.0
+	var sky := Color(0.07, 0.08, 0.11).lerp(Color(0.42, 0.46, 0.52), dl)
+	draw_rect(Rect2(b.position, Vector2(b.size.x, ground_y - b.position.y)), sky)
+	_tile("side.earth", Rect2(b.position.x, ground_y, b.size.x, b.end.y - ground_y))
+	draw_rect(Rect2(b.position.x, ground_y - 10.0, b.size.x, 14.0), Color(0.86, 0.88, 0.9))  # snow on the ground
+	var env: Array = sec.get("envelope", [])
+	var ext := str(sec.get("exterior", "side.ext_siding"))
+	var g := Terrain.grid_size(r)
+	for y in g.y:
+		for x in g.x:
+			var c := Vector2i(x, y)
+			var rect := _srect(Terrain.cell_rect(r, c))
+			if Terrain.is_open(r, c):
+				_tile(_room_of(sec, c, "wall", "side.wall_house"), rect)
+			elif env.size() == 4 and x >= int(env[0]) and y >= int(env[1]) and x < int(env[0]) + int(env[2]) and y < int(env[1]) + int(env[3]):
+				_tile(ext if y < int(sec.get("ground_row", 0)) or str(sec.get("basement", "")) == "" else str(sec.get("basement")), rect)
+	for c in Terrain.open_cells(r):
+		var rect := _srect(Terrain.cell_rect(r, c))
+		var below: Vector2i = c + Vector2i(0, 1)
+		if not Terrain.is_open(r, below) or Terrain.is_platform(r, c):
+			_strip(_room_of(sec, c, "floor", "side.floorboards"), rect.position.x, rect.end.x, rect.end.y - 4.0, 16.0)
+		if not Terrain.is_open(r, c + Vector2i(0, -1)):
+			_strip("side.ceiling", rect.position.x, rect.end.x, rect.position.y, 10.0)
+			draw_line(rect.position, Vector2(rect.end.x, rect.position.y), ink, 2.5)
+		for side in [-1, 1]:
+			if not Terrain.is_open(r, c + Vector2i(side, 0)):
+				var x := rect.position.x if side < 0 else rect.end.x
+				draw_rect(Rect2(x - (10.0 if side > 0 else 0.0), rect.position.y, 10.0, rect.size.y), Color(0, 0, 0, 0.3))
+				draw_line(Vector2(x, rect.position.y), Vector2(x, rect.end.y), ink, 3.0)
+	# interior dividers: a wall from the ceiling down to the top of a doorway
+	for dv in sec.get("dividers", []):
+		var top := _s(Vector2(float(dv[0]), float(dv[1])))
+		var door_top := _s(Vector2(float(dv[0]), float(dv[2]))).y
+		var wall := Rect2(top.x - 7.0, top.y, 14.0, door_top - top.y)
+		draw_rect(wall, Color(0.32, 0.27, 0.22))
+		draw_rect(wall, ink, false, 2.0)
+		var floor_y := _s(Vector2(float(dv[0]), float(dv[3]))).y if dv.size() > 3 else door_top + 100.0
+		for xo in [-7.0, 7.0]:
+			draw_line(Vector2(top.x + xo, door_top), Vector2(top.x + xo, floor_y), Color(0.25, 0.2, 0.15, 0.9), 3.0)
+	# signs for the storeys
+	var font := ThemeDB.fallback_font
+	for lb in sec.get("labels", []):
+		var at := _s(Vector2(float(lb[0]), float(lb[1])))
+		var text := TranslationServer.translate(str(lb[2]))
+		draw_string_outline(font, at, text, HORIZONTAL_ALIGNMENT_LEFT, -1, 15, 4, Color(0.08, 0.06, 0.04, 0.85))
+		draw_string(font, at, text, HORIZONTAL_ALIGNMENT_LEFT, -1, 15, Color(0.86, 0.8, 0.66, 0.85))
+
+
+## The room covering a cell: its wall or floor picture (`key`), else `fallback`.
+func _room_of(sec: Dictionary, c: Vector2i, key: String, fallback: String) -> String:
+	for room in sec.get("rooms", []):
+		var rr: Array = room.get("rect", [])
+		if rr.size() == 4 and c.x >= int(rr[0]) and c.y >= int(rr[1]) and c.x < int(rr[0]) + int(rr[2]) and c.y < int(rr[1]) + int(rr[3]):
+			return str(room.get(key, fallback))
+	return fallback

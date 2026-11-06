@@ -38,6 +38,14 @@ const MAP := {
 	"build.planter_empty": "side.planter_empty",
 	"build.planter_growing": "side.planter_growing",
 	"build.planter_ripe": "side.planter_ripe",
+	# iteration 014: the cabin / town-house floor hatch seen edge-on
+	"world.shelter_site_marked": "side.trapdoor_marked",
+	"world.shelter_site_digging": "side.trapdoor_digging",
+	"world.hatch_closed": "side.trapdoor_closed",
+	"world.hatch_open": "side.trapdoor_open",
+	"world.hatch_steel_closed": "side.trapdoor_steel_closed",
+	"world.hatch_steel_open": "side.trapdoor_steel_open",
+	"world.exit_mat": "side.door_ext",
 }
 ## Pictures that stretch from the floor to the ceiling of their open space.
 const FULL_HEIGHT := ["side.scaffold_exposed", "side.scaffold_building", "side.scaffold_done"]

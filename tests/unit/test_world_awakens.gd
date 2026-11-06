@@ -112,7 +112,7 @@ func test_postures_and_individual_temperament() -> void:
 
 func test_lost_target_searches_ahead_then_around() -> void:
 	var w := WorldState.create_new("w_search", 45)
-	_player(w, PID, "homestead.farmhouse", Vector2(300, 480))
+	_player(w, PID, "homestead.farmhouse", Content.entity_position(Content.entity_def("homestead.farmhouse", "homestead.farmhouse.shelter")))
 	var z := _z(w, Vector2(1000, 1100))
 	z.ai = ZombieState.AI.CHASE
 	z.target_player = PID
@@ -222,7 +222,7 @@ func _bed(w: WorldState, pid: String) -> Dictionary:
 
 func test_sleep_alone_needs_evening_and_advances_the_world() -> void:
 	var w := WorldState.create_new("w_sleep", 82)
-	var p := _player(w, PID, "homestead.farmhouse", Vector2(640, 380))
+	var p := _player(w, PID, "homestead.farmhouse", Content.entity_position(Content.entity_def("homestead.farmhouse", "homestead.farmhouse.bed")))
 	_hour(w, 12.0)
 	var r := _bed(w, PID)
 	eq(str(r["notice"].get("key", "")), "SLEEP_NOT_TIRED", "not in the middle of the day")
@@ -246,7 +246,7 @@ func test_sleep_alone_needs_evening_and_advances_the_world() -> void:
 
 func test_sleep_refused_with_monologue_when_someone_is_outside() -> void:
 	var w := WorldState.create_new("w_sleep2", 83)
-	_player(w, PID, "homestead.farmhouse", Vector2(640, 380))
+	_player(w, PID, "homestead.farmhouse", Content.entity_position(Content.entity_def("homestead.farmhouse", "homestead.farmhouse.bed")))
 	var out := _player(w, PID2, "homestead", Vector2(400, 1130))
 	out.display_name = "Cleo"
 	_hour(w, 22.0)
@@ -261,8 +261,8 @@ func test_sleep_refused_with_monologue_when_someone_is_outside() -> void:
 
 func test_sleep_vote_unanimous_decline_and_leaving() -> void:
 	var w := WorldState.create_new("w_vote", 84)
-	_player(w, PID, "homestead.farmhouse", Vector2(640, 380))
-	var b := _player(w, PID2, "homestead.farmhouse", Vector2(600, 400))
+	_player(w, PID, "homestead.farmhouse", Content.entity_position(Content.entity_def("homestead.farmhouse", "homestead.farmhouse.bed")))
+	var b := _player(w, PID2, "homestead.farmhouse", Content.entity_position(Content.entity_def("homestead.farmhouse", "homestead.farmhouse.bed")) + Vector2(-40, 0))
 	_hour(w, 22.0)
 	var r := _bed(w, PID)
 	check(not SleepSim.vote(w).is_empty(), "two players: a vote starts")
@@ -441,7 +441,7 @@ func test_town_cellar_is_a_prebuilt_separate_base() -> void:
 	check(w.region(b.level_region(-1)) != null, "its level region exists")
 	check(w.bunker("homestead.farmhouse.shelter") == null, "the cabin's shelter is unaffected")
 	eq(SleepSim.shelter_group(w, b.level_region(-1)), "town_house", "the cellar shares the house's shelter group")
-	var p := _player(w, PID, "town.house", Vector2(300, 480))
+	var p := _player(w, PID, "town.house", Content.entity_position(Content.entity_def("town.house", "town.house.cellar")))
 	var hatch := w.region("town.house")
 	check(WorldActions.request_interact(w, PID, "town.house.cellar", hatch.rev("town.house.cellar"))["ok"], "the hatch opens")
 	var down := WorldActions.request_interact(w, PID, "town.house.cellar_ladder", -1)
@@ -515,7 +515,7 @@ func test_wildlife_roams_notices_and_backs_off_never_attacks() -> void:
 
 func test_flashlight_toggle_needs_one_and_goes_with_it() -> void:
 	var w := WorldState.create_new("w_torch", 72)
-	var p := _player(w, PID, "homestead.farmhouse", Vector2(630, 520))
+	var p := _player(w, PID, "homestead.farmhouse", Content.entity_position(Content.entity_def("homestead.farmhouse", "homestead.farmhouse.flashlight")))
 	eq(Inv.request(w, PID, "flashlight", "")["reason"], "FLASHLIGHT_NONE", "no flashlight, no light")
 	var house := w.region("homestead.farmhouse")
 	check(WorldActions.request_interact(w, PID, "homestead.farmhouse.flashlight", -1)["ok"], "the cabin has a flashlight for each player")

@@ -109,7 +109,7 @@ func test_developer_hunt_pursues_and_attacks() -> void:
 
 func test_hunt_is_refused_indoors_and_ends() -> void:
 	var w := WorldState.create_new("w_hunt2", 9)
-	_player(w, PID, "homestead.farmhouse", Vector2(300, 480))
+	_player(w, PID, "homestead.farmhouse", Content.entity_position(Content.entity_def("homestead.farmhouse", "homestead.farmhouse.shelter")))
 	var r := ZombieSim.start_hunt(w, PID)
 	check(not r["ok"], "no hunt inside the cabin (protected shelter boundary)")
 	eq(str(r["reason"]), "HUNT_TARGET_SHELTERED", "clear reason")

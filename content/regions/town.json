@@ -236,8 +236,8 @@
 			"target": {
 				"region": "town.house",
 				"position": [
-					480,
-					560
+					422.4,
+					509
 				]
 			},
 			"prompt_key": "PROMPT_ENTER_HOME"
@@ -254,8 +254,8 @@
 			"target": {
 				"region": "town.grocery",
 				"position": [
-					760,
-					610
+					422.4,
+					509
 				]
 			},
 			"prompt_key": "PROMPT_ENTER_GROCERY"
@@ -272,8 +272,8 @@
 			"target": {
 				"region": "town.pharmacy",
 				"position": [
-					760,
-					610
+					422.4,
+					509
 				]
 			},
 			"prompt_key": "PROMPT_ENTER_PHARMACY"
@@ -290,8 +290,8 @@
 			"target": {
 				"region": "town.hardware",
 				"position": [
-					740,
-					610
+					422.4,
+					509
 				]
 			},
 			"prompt_key": "PROMPT_ENTER_HARDWARE"
@@ -308,8 +308,8 @@
 			"target": {
 				"region": "town.clothing",
 				"position": [
-					760,
-					610
+					422.4,
+					509
 				]
 			},
 			"prompt_key": "PROMPT_ENTER_CLOTHING"
@@ -326,8 +326,8 @@
 			"target": {
 				"region": "town.garage",
 				"position": [
-					600,
-					610
+					422.4,
+					509
 				]
 			},
 			"prompt_key": "PROMPT_ENTER_GARAGE"
@@ -357,8 +357,8 @@
 			"target": {
 				"region": "town.house_west",
 				"position": [
-					380,
-					610
+					422.4,
+					829
 				]
 			},
 			"prompt_key": "PROMPT_ENTER_HOME"
@@ -388,8 +388,8 @@
 			"target": {
 				"region": "town.house_east",
 				"position": [
-					760,
-					610
+					422.4,
+					829
 				]
 			},
 			"prompt_key": "PROMPT_ENTER_HOME"

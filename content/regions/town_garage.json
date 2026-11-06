@@ -1,42 +1,108 @@
 {
 	"region_id": "town.garage",
 	"display_key": "REGION_TOWN_GARAGE",
-	"scene": "res://scenes/regions/town/garage_interior.tscn",
+	"view": "side",
+	"style": "building",
 	"bounds": [
 		0,
 		0,
-		1200,
-		760
+		2304,
+		768
 	],
-	"surface": {
-		"region": "town",
-		"position": [
-			2594,
-			900
+	"excavation": {
+		"cell": 64,
+		"origin": [
+			0,
+			0
+		],
+		"cols": 36,
+		"rows": 12,
+		"fixed": true,
+		"initial_open": [
+			[
+				5,
+				4,
+				26,
+				4
+			]
+		],
+		"platforms": [],
+		"_comment": "Authored building cross-section (tools/build_side_interiors.py); fixed, never dug."
+	},
+	"section": {
+		"ground_row": 8,
+		"envelope": [
+			4,
+			3,
+			28,
+			6
+		],
+		"exterior": "side.ext_brick",
+		"basement": "",
+		"rooms": [
+			{
+				"rect": [
+					5,
+					4,
+					19,
+					4
+				],
+				"wall": "side.wall_brick_in",
+				"floor": "side.floor_concrete"
+			},
+			{
+				"rect": [
+					24,
+					4,
+					7,
+					4
+				],
+				"wall": "side.wall_office",
+				"floor": "side.floor_linoleum"
+			}
+		],
+		"windows": [
+			[
+				960.0,
+				363.5
+			]
+		],
+		"dividers": [
+			[
+				1536,
+				256,
+				345.6,
+				512
+			]
+		],
+		"labels": [
+			[
+				1561.6,
+				284,
+				"SIDE_OFFICE"
+			]
 		]
 	},
+	"side_props": [
+		{
+			"asset": "int.car_lift",
+			"x": 985.6,
+			"y": 509
+		}
+	],
 	"spawn_points": [
 		[
-			600,
-			610
+			422.4,
+			509
 		]
 	],
-	"climate": {
-		"exposure": 1.0,
-		"fog": 0.0,
-		"shelter": 0.35
-	},
-	"interior": true,
 	"entities": [
 		{
 			"id": "town.garage.exit",
 			"type": "portal",
-			"position": [
-				600,
-				672
-			],
-			"interact_range": 60,
+			"interact_range": 70,
 			"priority": 2,
+			"side_art": "side.door_ext",
 			"target": {
 				"region": "town",
 				"position": [
@@ -44,16 +110,16 @@
 					946
 				]
 			},
-			"prompt_key": "PROMPT_EXIT_HOUSE"
+			"prompt_key": "PROMPT_EXIT_HOUSE",
+			"position": [
+				364.8,
+				509
+			]
 		},
 		{
 			"id": "town.garage.tool_chest",
 			"type": "container",
 			"kind": "toolbox",
-			"position": [
-				210,
-				300
-			],
 			"interact_range": 72,
 			"prompt_key": "PROMPT_SEARCH_TOOLBOX",
 			"art": "int.tool_chest",
@@ -64,16 +130,16 @@
 			},
 			"initial": {
 				"searched": false
-			}
+			},
+			"position": [
+				537.6,
+				509
+			]
 		},
 		{
 			"id": "town.garage.parts_shelf",
 			"type": "container",
 			"kind": "garage",
-			"position": [
-				470,
-				310
-			],
 			"interact_range": 72,
 			"prompt_key": "PROMPT_SEARCH_GARAGE",
 			"art": "int.metal_shelf_full",
@@ -85,52 +151,16 @@
 			},
 			"initial": {
 				"searched": false
-			}
-		},
-		{
-			"id": "town.garage.locker_a",
-			"type": "container",
-			"kind": "locker",
-			"position": [
-				720,
-				290
-			],
-			"interact_range": 72,
-			"prompt_key": "PROMPT_SEARCH_LOCKER",
-			"art": "int.locker",
-			"art_searched": "int.locker_open",
-			"loot": {
-				"fuel": 1
 			},
-			"initial": {
-				"searched": false
-			}
-		},
-		{
-			"id": "town.garage.locker_b",
-			"type": "container",
-			"kind": "locker",
 			"position": [
-				800,
-				290
-			],
-			"interact_range": 72,
-			"prompt_key": "PROMPT_SEARCH_LOCKER",
-			"art": "int.locker_open",
-			"art_searched": "int.locker_open",
-			"loot": {},
-			"initial": {
-				"searched": true
-			}
+				716.8,
+				509
+			]
 		},
 		{
 			"id": "town.garage.scrap_crate",
 			"type": "container",
 			"kind": "garage",
-			"position": [
-				220,
-				620
-			],
 			"interact_range": 72,
 			"prompt_key": "PROMPT_SEARCH_GARAGE",
 			"art": "int.crate",
@@ -141,16 +171,52 @@
 			},
 			"initial": {
 				"searched": false
-			}
+			},
+			"position": [
+				1228.8,
+				509
+			]
+		},
+		{
+			"id": "town.garage.locker_a",
+			"type": "container",
+			"kind": "locker",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_LOCKER",
+			"art": "int.locker",
+			"art_searched": "int.locker_open",
+			"loot": {
+				"fuel": 1
+			},
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				1369.6,
+				509
+			]
+		},
+		{
+			"id": "town.garage.locker_b",
+			"type": "container",
+			"kind": "locker",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_LOCKER",
+			"art": "int.locker_open",
+			"art_searched": "int.locker_open",
+			"loot": {},
+			"initial": {
+				"searched": true
+			},
+			"position": [
+				1446.4,
+				509
+			]
 		},
 		{
 			"id": "town.garage.office_desk",
 			"type": "container",
 			"kind": "drawer",
-			"position": [
-				1000,
-				470
-			],
 			"interact_range": 72,
 			"prompt_key": "PROMPT_SEARCH_DRAWER",
 			"art": "int.dresser",
@@ -160,16 +226,16 @@
 			},
 			"initial": {
 				"searched": false
-			}
+			},
+			"position": [
+				1689.6,
+				509
+			]
 		},
 		{
 			"id": "town.garage.office_locker",
 			"type": "container",
 			"kind": "locker",
-			"position": [
-				1050,
-				290
-			],
 			"interact_range": 72,
 			"prompt_key": "PROMPT_SEARCH_LOCKER",
 			"art": "int.locker",
@@ -177,7 +243,30 @@
 			"loot": {},
 			"initial": {
 				"searched": true
-			}
+			},
+			"position": [
+				1881.6,
+				509
+			]
 		}
-	]
+	],
+	"surface": {
+		"region": "town",
+		"position": [
+			2594,
+			900
+		]
+	},
+	"tint": [
+		0.48,
+		0.48,
+		0.5
+	],
+	"climate": {
+		"exposure": 1.0,
+		"fog": 0.0,
+		"shelter": 0.35
+	},
+	"interior": true,
+	"ambience": "amb.wind_muffled"
 }

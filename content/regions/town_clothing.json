@@ -1,42 +1,106 @@
 {
 	"region_id": "town.clothing",
 	"display_key": "REGION_TOWN_CLOTHING",
-	"scene": "res://scenes/regions/town/clothing_interior.tscn",
+	"view": "side",
+	"style": "building",
 	"bounds": [
 		0,
 		0,
-		1200,
-		760
+		2176,
+		768
 	],
-	"surface": {
-		"region": "town",
-		"position": [
-			2072,
-			880
+	"excavation": {
+		"cell": 64,
+		"origin": [
+			0,
+			0
+		],
+		"cols": 34,
+		"rows": 12,
+		"fixed": true,
+		"initial_open": [
+			[
+				5,
+				4,
+				24,
+				4
+			]
+		],
+		"platforms": [],
+		"_comment": "Authored building cross-section (tools/build_side_interiors.py); fixed, never dug."
+	},
+	"section": {
+		"ground_row": 8,
+		"envelope": [
+			4,
+			3,
+			26,
+			6
+		],
+		"exterior": "side.ext_siding",
+		"basement": "",
+		"rooms": [
+			{
+				"rect": [
+					5,
+					4,
+					17,
+					4
+				],
+				"wall": "side.wall_house_b",
+				"floor": "side.floorboards"
+			},
+			{
+				"rect": [
+					22,
+					4,
+					7,
+					4
+				],
+				"wall": "side.wall_brick_in",
+				"floor": "side.floor_concrete"
+			}
+		],
+		"windows": [
+			[
+				512.0,
+				363.5
+			],
+			[
+				768.0,
+				363.5
+			]
+		],
+		"dividers": [
+			[
+				1408,
+				256,
+				345.6,
+				512
+			]
+		],
+		"labels": [
+			[
+				1433.6,
+				284,
+				"SIDE_STOCKROOM"
+			]
 		]
 	},
+	"side_props": [],
 	"spawn_points": [
 		[
-			760,
-			610
+			422.4,
+			509
 		]
 	],
-	"climate": {
-		"exposure": 1.0,
-		"fog": 0.0,
-		"shelter": 0.35
-	},
-	"interior": true,
 	"entities": [
 		{
 			"id": "town.clothing.exit",
 			"type": "portal",
-			"position": [
-				760,
-				672
-			],
-			"interact_range": 60,
+			"interact_range": 70,
 			"priority": 2,
+			"side_art": "side.door_ext",
 			"target": {
 				"region": "town",
 				"position": [
@@ -44,16 +108,16 @@
 					926
 				]
 			},
-			"prompt_key": "PROMPT_EXIT_HOUSE"
+			"prompt_key": "PROMPT_EXIT_HOUSE",
+			"position": [
+				364.8,
+				509
+			]
 		},
 		{
 			"id": "town.clothing.rack_coats",
 			"type": "container",
 			"kind": "rack",
-			"position": [
-				230,
-				420
-			],
 			"interact_range": 72,
 			"prompt_key": "PROMPT_SEARCH_RACK",
 			"art": "int.clothes_rack_full",
@@ -63,16 +127,16 @@
 			},
 			"initial": {
 				"searched": false
-			}
+			},
+			"position": [
+				563.2,
+				509
+			]
 		},
 		{
 			"id": "town.clothing.rack_bare",
 			"type": "container",
 			"kind": "rack",
-			"position": [
-				470,
-				420
-			],
 			"interact_range": 72,
 			"prompt_key": "PROMPT_SEARCH_RACK",
 			"art": "int.clothes_rack_empty",
@@ -80,16 +144,16 @@
 			"loot": {},
 			"initial": {
 				"searched": true
-			}
+			},
+			"position": [
+				755.2,
+				509
+			]
 		},
 		{
 			"id": "town.clothing.rack_mixed",
 			"type": "container",
 			"kind": "rack",
-			"position": [
-				230,
-				570
-			],
 			"interact_range": 72,
 			"prompt_key": "PROMPT_SEARCH_RACK",
 			"art": "int.clothes_rack_full",
@@ -99,16 +163,16 @@
 			},
 			"initial": {
 				"searched": false
-			}
+			},
+			"position": [
+				947.2,
+				509
+			]
 		},
 		{
 			"id": "town.clothing.display_table",
 			"type": "container",
 			"kind": "shelf",
-			"position": [
-				480,
-				580
-			],
 			"interact_range": 72,
 			"prompt_key": "PROMPT_SEARCH_SHELF",
 			"art": "int.display_table",
@@ -118,16 +182,16 @@
 			},
 			"initial": {
 				"searched": false
-			}
+			},
+			"position": [
+				1126.4,
+				509
+			]
 		},
 		{
 			"id": "town.clothing.fitting_dresser",
 			"type": "container",
 			"kind": "drawer",
-			"position": [
-				300,
-				290
-			],
 			"interact_range": 72,
 			"prompt_key": "PROMPT_SEARCH_DRAWER",
 			"art": "int.dresser",
@@ -135,16 +199,16 @@
 			"loot": {},
 			"initial": {
 				"searched": true
-			}
+			},
+			"position": [
+				1305.6,
+				509
+			]
 		},
 		{
 			"id": "town.clothing.stockroom_crate",
 			"type": "container",
 			"kind": "crate",
-			"position": [
-				980,
-				330
-			],
 			"interact_range": 72,
 			"prompt_key": "PROMPT_SEARCH_CRATE",
 			"art": "int.crate",
@@ -156,16 +220,16 @@
 			"discovery": "clothing_stockroom",
 			"initial": {
 				"searched": false
-			}
+			},
+			"position": [
+				1536.0,
+				509
+			]
 		},
 		{
 			"id": "town.clothing.stock_boxes",
 			"type": "container",
 			"kind": "crate",
-			"position": [
-				1000,
-				600
-			],
 			"interact_range": 72,
 			"prompt_key": "PROMPT_SEARCH_CRATE",
 			"art": "int.crate",
@@ -175,7 +239,30 @@
 			},
 			"initial": {
 				"searched": false
-			}
+			},
+			"position": [
+				1702.4,
+				509
+			]
 		}
-	]
+	],
+	"surface": {
+		"region": "town",
+		"position": [
+			2072,
+			880
+		]
+	},
+	"tint": [
+		0.52,
+		0.5,
+		0.52
+	],
+	"climate": {
+		"exposure": 1.0,
+		"fog": 0.0,
+		"shelter": 0.35
+	},
+	"interior": true,
+	"ambience": "amb.wind_muffled"
 }
