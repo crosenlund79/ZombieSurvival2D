@@ -152,6 +152,42 @@
 			"initial": {
 				"searched": false
 			}
+		},
+		{
+			"id": "greyhollow.hunting_camp",
+			"type": "container",
+			"kind": "crate",
+			"position": [
+				560,
+				436
+			],
+			"interact_range": 80,
+			"prompt_key": "PROMPT_SEARCH_HUNTING_CAMP",
+			"art": "",
+			"art_searched": "",
+			"loot": {},
+			"pool": "hunter_cabin",
+			"initial": {
+				"searched": false
+			}
+		},
+		{
+			"id": "greyhollow.sled",
+			"type": "container",
+			"kind": "crate",
+			"position": [
+				2820,
+				1656
+			],
+			"interact_range": 80,
+			"prompt_key": "PROMPT_SEARCH_SLED",
+			"art": "",
+			"art_searched": "",
+			"loot": {},
+			"pool": "wilderness_frozen",
+			"initial": {
+				"searched": false
+			}
 		}
 	],
 	"vehicle_exits": [

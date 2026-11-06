@@ -492,3 +492,120 @@ func test_tooltips_describe_items() -> void:
 	check(InventoryPanel.describe("ammo_pistol").find(TranslationServer.translate("ITEM_HANDGUN")) >= 0, "ammunition names its gun")
 	check("BUILD_BARRICADE" in InventoryPanel.crafting_uses("wood"), "materials know what they build")
 	check(InventoryPanel.describe("wood").find(TranslationServer.translate("INV_TIP_USED_FOR").split("%")[0]) >= 0, "and the tooltip says so")
+
+
+# ---------------------------------------------------------------- F: contextual loot
+
+## Every item a player can come by: pools, authored containers and finds, recipes,
+## and what the world makes (trees, rain collector, purifier, planter).
+func _acquirable(w: WorldState) -> Dictionary:
+	var out := LootPools.all_items()
+	for k in ["wood", "water_dirty", "water_clean", "potato"]:
+		out[k] = true
+	var recipes := Craft.recipes()
+	for rid in recipes:
+		for k2 in (recipes[rid] as Dictionary).get("out", {}):
+			out[str(k2)] = true
+	for rid2 in w.regions:
+		var r: RegionState = w.regions[rid2]
+		for eid in Content.entity_ids(r.def_id):
+			var d := r.entity_def(eid)
+			for key in ["loot", "items"]:
+				if d.get(key) is Dictionary:
+					for k3 in d[key]:
+						out[str(k3)] = true
+			if d.get("gear") is Array:
+				for k4 in d["gear"]:
+					out[str(k4)] = true
+	return out
+
+
+func test_every_item_can_be_found_or_made() -> void:
+	var w := WorldState.create_new("w_f1", 601)
+	var got := _acquirable(w)
+	var missing: Array = []
+	for id in Items.ids():
+		if not got.has(id):
+			missing.append(id)
+	eq(missing, [], "every catalogue item has an acquisition route")
+
+
+func test_every_container_pool_exists() -> void:
+	var w := WorldState.create_new("w_f2", 602)
+	var bad: Array = []
+	var n := 0
+	for rid in w.regions:
+		var r: RegionState = w.regions[rid]
+		for eid in Content.entity_ids(r.def_id):
+			var d := r.entity_def(eid)
+			if d.has("pool"):
+				n += 1
+				if not LootPools.has_pool(str(d["pool"])):
+					bad.append(eid)
+	check(n > 150, "many pooled containers (%d)" % n)
+	eq(bad, [], "every pool name resolves")
+
+
+func test_pool_rolls_are_seeded_contextual_and_balanced() -> void:
+	var w := WorldState.create_new("w_f3", 603)
+	var a := LootPools.roll(w, "grocery_shelf", "x.shelf_1")
+	var w2 := WorldState.create_new("w_f3b", 603)
+	var b := LootPools.roll(w2, "grocery_shelf", "x.shelf_1")
+	eq(a["items"], b["items"], "same world seed + container -> same contents")
+	var empty := 0
+	var junk_only := 0
+	var guns := 0
+	var food_in_grocery := 0
+	var junk: Array = LootPools.data()["junk"]
+	for i in 400:
+		var r := LootPools.roll(w, "home_bedroom", "t.bed_%d" % i)
+		var items: Dictionary = r["items"]
+		if items.is_empty() and (r["gear"] as Array).is_empty():
+			empty += 1
+		elif (r["gear"] as Array).is_empty() and items.keys().all(func(k): return k in junk):
+			junk_only += 1
+		for g in r["gear"]:
+			if Firearms.is_firearm(str(g["item"])):
+				guns += 1
+		var gr := LootPools.roll(w, "grocery_shelf", "t.shelf_%d" % i)
+		for k in gr["items"]:
+			if Items.category(str(k)) in ["food", "drink"]:
+				food_in_grocery += 1
+	check(empty > 20, "some containers are empty (%d/400)" % empty)
+	check(junk_only > 20, "some hold only junk (%d/400)" % junk_only)
+	check(guns >= 1 and guns < 40, "firearms are rare (%d in 400 bedrooms)" % guns)
+	check(food_in_grocery > 200, "grocery shelves hold food (%d)" % food_in_grocery)
+	var tools_found := 0
+	for i2 in 200:
+		for g2 in LootPools.roll(w, "workshop_tools", "t.box_%d" % i2)["gear"]:
+			if Items.category(str(g2["item"])) == "tool":
+				tools_found += 1
+	check(tools_found > 30, "workshops hold tools (%d)" % tools_found)
+
+
+func test_searching_a_pooled_container_rolls_once_and_never_again() -> void:
+	var w := WorldState.create_new("w_f4", 604)
+	var p := _player(w, PID, "harbor.cannery", Vector2.ZERO)
+	var r := w.region("harbor.cannery")
+	var eid := ""
+	for e in Content.entity_ids(r.def_id):
+		var d := r.entity_def(e)
+		if d.has("pool") and not bool(r.entity_state(e).get("searched", false)):
+			eid = e
+			break
+	check(eid != "", "an unsearched pooled container")
+	p.position = Content.entity_position(r.entity_def(eid))
+	check(WorldActions.request_interact(w, PID, eid, -1)["ok"], "search starts")
+	w.tick += 2000
+	ScavengeSim.step(w, 1)
+	var st := r.entity_state(eid)
+	check(bool(st.get("searched", false)), "searched")
+	var first := JSON.stringify([st.get("items", {}), (st.get("gear", []) as Array).map(func(g): return g["item"])])
+	var expect := LootPools.roll(WorldState.create_new("w_f4", 604), str(r.entity_def(eid)["pool"]), eid)
+	eq(JSON.stringify([expect["items"], (expect["gear"] as Array).map(func(g): return g["item"])]), first, "the contents are the seeded roll")
+	var xp_before := SkillSim.xp(p, "scavenging")
+	WorldActions.request_interact(w, PID, eid, -1)
+	w.tick += 2000
+	ScavengeSim.step(w, 1)
+	eq(SkillSim.xp(p, "scavenging"), xp_before, "no XP for searching it again")
+	eq(r.entity_state(eid).get("items", {}), st.get("items", {}), "contents unchanged")

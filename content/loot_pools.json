@@ -1,0 +1,4977 @@
+{
+	"_comment": "Contextual weighted loot pools (iteration 014 F, tools/build_loot_pools.py). A pooled container rolls once, on its first search, from the world seed + its id. EXPLORING prototype values.",
+	"junk": [
+		"books",
+		"photographs",
+		"old_newspapers",
+		"cigarettes",
+		"playing_cards",
+		"watch",
+		"jewellery",
+		"toys",
+		"toothbrush",
+		"soap",
+		"wallet",
+		"coins",
+		"pens",
+		"notebook",
+		"candles",
+		"broken_electronics"
+	],
+	"pools": {
+		"home_kitchen": {
+			"empty": 0.15,
+			"junk": 0.15,
+			"rolls": [
+				1,
+				3
+			],
+			"items": {
+				"canned_food": [
+					8,
+					1,
+					2
+				],
+				"canned_soup": [
+					7,
+					1,
+					2
+				],
+				"canned_meat": [
+					5,
+					1,
+					1
+				],
+				"vegetables": [
+					5,
+					1,
+					2
+				],
+				"crackers": [
+					6,
+					1,
+					1
+				],
+				"coffee": [
+					4,
+					1,
+					1
+				],
+				"water_bottle": [
+					5,
+					1,
+					1
+				],
+				"can_opener": [
+					3,
+					1,
+					1
+				],
+				"matches": [
+					4,
+					2,
+					6
+				],
+				"candles": [
+					3,
+					1,
+					3
+				],
+				"spoiled_food": [
+					5,
+					1,
+					1
+				],
+				"glass_bottles": [
+					2,
+					1,
+					2
+				],
+				"empty_bottle": [
+					3,
+					1,
+					2
+				],
+				"kitchen_knife": [
+					2,
+					1,
+					1
+				],
+				"chocolate": [
+					2,
+					1,
+					2
+				],
+				"alcohol": [
+					2,
+					1,
+					1
+				]
+			},
+			"loaded": 0.0
+		},
+		"home_fridge": {
+			"empty": 0.25,
+			"junk": 0.05,
+			"rolls": [
+				1,
+				2
+			],
+			"items": {
+				"frozen_food": [
+					8,
+					1,
+					2
+				],
+				"spoiled_food": [
+					9,
+					1,
+					2
+				],
+				"fresh_meat": [
+					3,
+					1,
+					1
+				],
+				"soda": [
+					5,
+					1,
+					2
+				],
+				"water_bottle": [
+					3,
+					1,
+					1
+				],
+				"energy_drink": [
+					2,
+					1,
+					1
+				],
+				"snow_container": [
+					1,
+					1,
+					1
+				]
+			},
+			"loaded": 0.0
+		},
+		"home_closet": {
+			"empty": 0.15,
+			"junk": 0.1,
+			"rolls": [
+				1,
+				3
+			],
+			"items": {
+				"padded_jacket": [
+					3,
+					1,
+					1
+				],
+				"winter_coat": [
+					1,
+					1,
+					1
+				],
+				"hat": [
+					5,
+					1,
+					1
+				],
+				"scarf": [
+					5,
+					1,
+					1
+				],
+				"gloves": [
+					5,
+					1,
+					1
+				],
+				"socks": [
+					7,
+					1,
+					1
+				],
+				"wool_socks": [
+					4,
+					1,
+					1
+				],
+				"trousers": [
+					5,
+					1,
+					1
+				],
+				"thermal_underwear": [
+					2,
+					1,
+					1
+				],
+				"boots": [
+					2,
+					1,
+					1
+				],
+				"cloth": [
+					6,
+					1,
+					2
+				],
+				"backpack": [
+					1,
+					1,
+					1
+				],
+				"sewing_kit": [
+					2,
+					1,
+					1
+				],
+				"thermal_blanket": [
+					1,
+					1,
+					1
+				]
+			},
+			"loaded": 0.0
+		},
+		"home_bedroom": {
+			"empty": 0.15,
+			"junk": 0.25,
+			"rolls": [
+				1,
+				3
+			],
+			"items": {
+				"painkillers": [
+					4,
+					1,
+					3
+				],
+				"bandage": [
+					4,
+					1,
+					2
+				],
+				"vitamins": [
+					3,
+					1,
+					3
+				],
+				"flashlight": [
+					2,
+					1,
+					1
+				],
+				"batteries": [
+					4,
+					1,
+					4
+				],
+				"watch": [
+					3,
+					1,
+					1
+				],
+				"jewellery": [
+					3,
+					1,
+					2
+				],
+				"wallet": [
+					3,
+					1,
+					1
+				],
+				"books": [
+					3,
+					1,
+					1
+				],
+				"candles": [
+					2,
+					1,
+					2
+				],
+				"photographs": [
+					3,
+					1,
+					3
+				],
+				"hand_warmer": [
+					3,
+					1,
+					2
+				],
+				"cigarettes": [
+					3,
+					1,
+					2
+				],
+				"keys": [
+					2,
+					1,
+					1
+				],
+				"handgun": [
+					0.35,
+					1,
+					1
+				],
+				"ammo_pistol": [
+					0.8,
+					3,
+					9
+				],
+				"revolver": [
+					0.2,
+					1,
+					1
+				],
+				"ammo_revolver": [
+					0.5,
+					2,
+					6
+				],
+				"small_pouch": [
+					1,
+					1,
+					1
+				]
+			},
+			"loaded": 0.4
+		},
+		"household": {
+			"empty": 0.2,
+			"junk": 0.45,
+			"rolls": [
+				1,
+				2
+			],
+			"items": {
+				"candles": [
+					4,
+					1,
+					3
+				],
+				"matches": [
+					4,
+					2,
+					6
+				],
+				"batteries": [
+					4,
+					1,
+					4
+				],
+				"books": [
+					5,
+					1,
+					2
+				],
+				"soap": [
+					4,
+					1,
+					2
+				],
+				"toothbrush": [
+					3,
+					1,
+					2
+				],
+				"duct_tape": [
+					2,
+					1,
+					1
+				],
+				"glue": [
+					2,
+					1,
+					1
+				],
+				"needle": [
+					2,
+					1,
+					4
+				],
+				"thread": [
+					2,
+					1,
+					3
+				],
+				"flashlight": [
+					1,
+					1,
+					1
+				],
+				"lantern": [
+					1,
+					1,
+					1
+				]
+			},
+			"loaded": 0.0
+		},
+		"attic": {
+			"empty": 0.2,
+			"junk": 0.4,
+			"rolls": [
+				1,
+				3
+			],
+			"items": {
+				"padded_jacket": [
+					3,
+					1,
+					1
+				],
+				"winter_coat": [
+					1,
+					1,
+					1
+				],
+				"hat": [
+					5,
+					1,
+					1
+				],
+				"scarf": [
+					5,
+					1,
+					1
+				],
+				"gloves": [
+					5,
+					1,
+					1
+				],
+				"socks": [
+					7,
+					1,
+					1
+				],
+				"wool_socks": [
+					4,
+					1,
+					1
+				],
+				"trousers": [
+					5,
+					1,
+					1
+				],
+				"thermal_underwear": [
+					2,
+					1,
+					1
+				],
+				"boots": [
+					2,
+					1,
+					1
+				],
+				"cloth": [
+					6,
+					1,
+					2
+				],
+				"backpack": [
+					1,
+					1,
+					1
+				],
+				"sewing_kit": [
+					2,
+					1,
+					1
+				],
+				"thermal_blanket": [
+					2,
+					1,
+					1
+				],
+				"books": [
+					4,
+					1,
+					2
+				],
+				"toys": [
+					4,
+					1,
+					2
+				],
+				"photographs": [
+					4,
+					1,
+					4
+				],
+				"lantern": [
+					2,
+					1,
+					1
+				],
+				"kerosene": [
+					2,
+					1,
+					1
+				],
+				"hunting_knife": [
+					1,
+					1,
+					1
+				],
+				"binoculars": [
+					1,
+					1,
+					1
+				]
+			},
+			"loaded": 0.0
+		},
+		"miner_home_kitchen": {
+			"empty": 0.15,
+			"junk": 0.15,
+			"rolls": [
+				1,
+				3
+			],
+			"items": {
+				"canned_food": [
+					8,
+					1,
+					2
+				],
+				"canned_soup": [
+					7,
+					1,
+					2
+				],
+				"canned_meat": [
+					5,
+					1,
+					1
+				],
+				"vegetables": [
+					5,
+					1,
+					2
+				],
+				"crackers": [
+					6,
+					1,
+					1
+				],
+				"coffee": [
+					6,
+					1,
+					1
+				],
+				"water_bottle": [
+					5,
+					1,
+					1
+				],
+				"can_opener": [
+					3,
+					1,
+					1
+				],
+				"matches": [
+					4,
+					2,
+					6
+				],
+				"candles": [
+					3,
+					1,
+					3
+				],
+				"spoiled_food": [
+					5,
+					1,
+					1
+				],
+				"glass_bottles": [
+					2,
+					1,
+					2
+				],
+				"empty_bottle": [
+					3,
+					1,
+					2
+				],
+				"kitchen_knife": [
+					2,
+					1,
+					1
+				],
+				"chocolate": [
+					2,
+					1,
+					2
+				],
+				"alcohol": [
+					2,
+					1,
+					1
+				],
+				"jerky": [
+					4,
+					1,
+					2
+				],
+				"thermos": [
+					2,
+					1,
+					1
+				]
+			},
+			"loaded": 0.0
+		},
+		"miner_home_fridge": {
+			"empty": 0.3,
+			"junk": 0.05,
+			"rolls": [
+				1,
+				2
+			],
+			"items": {
+				"frozen_food": [
+					8,
+					1,
+					2
+				],
+				"spoiled_food": [
+					9,
+					1,
+					2
+				],
+				"fresh_meat": [
+					3,
+					1,
+					1
+				],
+				"soda": [
+					5,
+					1,
+					2
+				],
+				"water_bottle": [
+					3,
+					1,
+					1
+				],
+				"energy_drink": [
+					2,
+					1,
+					1
+				],
+				"snow_container": [
+					1,
+					1,
+					1
+				]
+			},
+			"loaded": 0.0
+		},
+		"miner_home_closet": {
+			"empty": 0.15,
+			"junk": 0.1,
+			"rolls": [
+				1,
+				3
+			],
+			"items": {
+				"padded_jacket": [
+					3,
+					1,
+					1
+				],
+				"winter_coat": [
+					1,
+					1,
+					1
+				],
+				"hat": [
+					5,
+					1,
+					1
+				],
+				"scarf": [
+					5,
+					1,
+					1
+				],
+				"gloves": [
+					5,
+					1,
+					1
+				],
+				"socks": [
+					7,
+					1,
+					1
+				],
+				"wool_socks": [
+					4,
+					1,
+					1
+				],
+				"trousers": [
+					5,
+					1,
+					1
+				],
+				"thermal_underwear": [
+					2,
+					1,
+					1
+				],
+				"boots": [
+					4,
+					1,
+					1
+				],
+				"cloth": [
+					6,
+					1,
+					2
+				],
+				"backpack": [
+					1,
+					1,
+					1
+				],
+				"sewing_kit": [
+					2,
+					1,
+					1
+				],
+				"thermal_blanket": [
+					1,
+					1,
+					1
+				],
+				"insulated_gloves": [
+					3,
+					1,
+					1
+				],
+				"headlamp": [
+					1,
+					1,
+					1
+				]
+			},
+			"loaded": 0.0
+		},
+		"miner_home_bedroom": {
+			"empty": 0.15,
+			"junk": 0.25,
+			"rolls": [
+				1,
+				3
+			],
+			"items": {
+				"painkillers": [
+					4,
+					1,
+					3
+				],
+				"bandage": [
+					4,
+					1,
+					2
+				],
+				"vitamins": [
+					3,
+					1,
+					3
+				],
+				"flashlight": [
+					2,
+					1,
+					1
+				],
+				"batteries": [
+					4,
+					1,
+					4
+				],
+				"watch": [
+					3,
+					1,
+					1
+				],
+				"jewellery": [
+					3,
+					1,
+					2
+				],
+				"wallet": [
+					3,
+					1,
+					1
+				],
+				"books": [
+					3,
+					1,
+					1
+				],
+				"candles": [
+					2,
+					1,
+					2
+				],
+				"photographs": [
+					3,
+					1,
+					3
+				],
+				"hand_warmer": [
+					3,
+					1,
+					2
+				],
+				"cigarettes": [
+					3,
+					1,
+					2
+				],
+				"keys": [
+					2,
+					1,
+					1
+				],
+				"handgun": [
+					0.35,
+					1,
+					1
+				],
+				"ammo_pistol": [
+					0.8,
+					3,
+					9
+				],
+				"revolver": [
+					0.2,
+					1,
+					1
+				],
+				"ammo_revolver": [
+					0.5,
+					2,
+					6
+				],
+				"small_pouch": [
+					1,
+					1,
+					1
+				],
+				"hunting_rifle": [
+					0.25,
+					1,
+					1
+				],
+				"rifle_rounds": [
+					0.6,
+					2,
+					6
+				]
+			},
+			"loaded": 0.3
+		},
+		"harbor_home_kitchen": {
+			"empty": 0.15,
+			"junk": 0.15,
+			"rolls": [
+				1,
+				3
+			],
+			"items": {
+				"canned_food": [
+					8,
+					1,
+					2
+				],
+				"canned_soup": [
+					7,
+					1,
+					2
+				],
+				"canned_meat": [
+					6,
+					1,
+					2
+				],
+				"vegetables": [
+					5,
+					1,
+					2
+				],
+				"crackers": [
+					6,
+					1,
+					1
+				],
+				"coffee": [
+					4,
+					1,
+					1
+				],
+				"water_bottle": [
+					5,
+					1,
+					1
+				],
+				"can_opener": [
+					3,
+					1,
+					1
+				],
+				"matches": [
+					4,
+					2,
+					6
+				],
+				"candles": [
+					3,
+					1,
+					3
+				],
+				"spoiled_food": [
+					5,
+					1,
+					1
+				],
+				"glass_bottles": [
+					2,
+					1,
+					2
+				],
+				"empty_bottle": [
+					3,
+					1,
+					2
+				],
+				"kitchen_knife": [
+					2,
+					1,
+					1
+				],
+				"chocolate": [
+					2,
+					1,
+					2
+				],
+				"alcohol": [
+					2,
+					1,
+					1
+				],
+				"fishing_line": [
+					2,
+					1,
+					2
+				]
+			},
+			"loaded": 0.0
+		},
+		"harbor_home_fridge": {
+			"empty": 0.3,
+			"junk": 0.05,
+			"rolls": [
+				1,
+				2
+			],
+			"items": {
+				"frozen_food": [
+					8,
+					1,
+					2
+				],
+				"spoiled_food": [
+					9,
+					1,
+					2
+				],
+				"fresh_meat": [
+					5,
+					1,
+					1
+				],
+				"soda": [
+					5,
+					1,
+					2
+				],
+				"water_bottle": [
+					3,
+					1,
+					1
+				],
+				"energy_drink": [
+					2,
+					1,
+					1
+				],
+				"snow_container": [
+					1,
+					1,
+					1
+				]
+			},
+			"loaded": 0.0
+		},
+		"harbor_home_closet": {
+			"empty": 0.15,
+			"junk": 0.1,
+			"rolls": [
+				1,
+				3
+			],
+			"items": {
+				"padded_jacket": [
+					3,
+					1,
+					1
+				],
+				"winter_coat": [
+					2,
+					1,
+					1
+				],
+				"hat": [
+					5,
+					1,
+					1
+				],
+				"scarf": [
+					5,
+					1,
+					1
+				],
+				"gloves": [
+					5,
+					1,
+					1
+				],
+				"socks": [
+					7,
+					1,
+					1
+				],
+				"wool_socks": [
+					6,
+					1,
+					2
+				],
+				"trousers": [
+					5,
+					1,
+					1
+				],
+				"thermal_underwear": [
+					2,
+					1,
+					1
+				],
+				"boots": [
+					2,
+					1,
+					1
+				],
+				"cloth": [
+					6,
+					1,
+					2
+				],
+				"backpack": [
+					1,
+					1,
+					1
+				],
+				"sewing_kit": [
+					2,
+					1,
+					1
+				],
+				"thermal_blanket": [
+					1,
+					1,
+					1
+				]
+			},
+			"loaded": 0.0
+		},
+		"harbor_home_bedroom": {
+			"empty": 0.15,
+			"junk": 0.25,
+			"rolls": [
+				1,
+				3
+			],
+			"items": {
+				"painkillers": [
+					4,
+					1,
+					3
+				],
+				"bandage": [
+					4,
+					1,
+					2
+				],
+				"vitamins": [
+					3,
+					1,
+					3
+				],
+				"flashlight": [
+					2,
+					1,
+					1
+				],
+				"batteries": [
+					4,
+					1,
+					4
+				],
+				"watch": [
+					3,
+					1,
+					1
+				],
+				"jewellery": [
+					3,
+					1,
+					2
+				],
+				"wallet": [
+					3,
+					1,
+					1
+				],
+				"books": [
+					3,
+					1,
+					1
+				],
+				"candles": [
+					2,
+					1,
+					2
+				],
+				"photographs": [
+					3,
+					1,
+					3
+				],
+				"hand_warmer": [
+					3,
+					1,
+					2
+				],
+				"cigarettes": [
+					3,
+					1,
+					2
+				],
+				"keys": [
+					2,
+					1,
+					1
+				],
+				"handgun": [
+					0.35,
+					1,
+					1
+				],
+				"ammo_pistol": [
+					0.8,
+					3,
+					9
+				],
+				"revolver": [
+					0.2,
+					1,
+					1
+				],
+				"ammo_revolver": [
+					0.5,
+					2,
+					6
+				],
+				"small_pouch": [
+					1,
+					1,
+					1
+				],
+				"shotgun": [
+					0.2,
+					1,
+					1
+				],
+				"shotgun_shells": [
+					0.6,
+					2,
+					6
+				]
+			},
+			"loaded": 0.3
+		},
+		"hunter_cabin": {
+			"empty": 0.1,
+			"junk": 0.05,
+			"rolls": [
+				2,
+				3
+			],
+			"items": {
+				"hunting_knife": [
+					3,
+					1,
+					1
+				],
+				"rope": [
+					4,
+					1,
+					2
+				],
+				"jerky": [
+					5,
+					1,
+					3
+				],
+				"fresh_meat": [
+					3,
+					1,
+					1
+				],
+				"matches": [
+					4,
+					2,
+					6
+				],
+				"firestarter": [
+					3,
+					1,
+					2
+				],
+				"charcoal": [
+					2,
+					1,
+					3
+				],
+				"hand_warmer": [
+					3,
+					1,
+					2
+				],
+				"thermos": [
+					2,
+					1,
+					1
+				],
+				"binoculars": [
+					2,
+					1,
+					1
+				],
+				"compass": [
+					2,
+					1,
+					1
+				],
+				"field_map": [
+					1,
+					1,
+					1
+				],
+				"rifle_rounds": [
+					2,
+					3,
+					8
+				],
+				"hunting_rifle": [
+					0.5,
+					1,
+					1
+				],
+				"gun_oil": [
+					2,
+					1,
+					1
+				],
+				"gun_cleaning_kit": [
+					1,
+					1,
+					1
+				],
+				"leather": [
+					3,
+					1,
+					2
+				],
+				"thermal_blanket": [
+					1,
+					1,
+					1
+				],
+				"fishing_hook": [
+					2,
+					2,
+					6
+				],
+				"wool_socks": [
+					2,
+					1,
+					1
+				]
+			},
+			"loaded": 0.5
+		},
+		"wilderness_frozen": {
+			"empty": 0.15,
+			"junk": 0.1,
+			"rolls": [
+				1,
+				3
+			],
+			"items": {
+				"wood": [
+					6,
+					1,
+					3
+				],
+				"tinder": [
+					5,
+					2,
+					6
+				],
+				"rope": [
+					3,
+					1,
+					1
+				],
+				"fresh_meat": [
+					3,
+					1,
+					1
+				],
+				"jerky": [
+					3,
+					1,
+					2
+				],
+				"thermos": [
+					1,
+					1,
+					1
+				],
+				"ice_cleats": [
+					1,
+					1,
+					1
+				],
+				"snow_goggles": [
+					2,
+					1,
+					1
+				],
+				"hand_warmer": [
+					3,
+					1,
+					3
+				],
+				"stove_fuel": [
+					2,
+					1,
+					2
+				],
+				"fishing_hook": [
+					2,
+					2,
+					6
+				],
+				"fishing_line": [
+					2,
+					1,
+					3
+				],
+				"frozen_food": [
+					3,
+					1,
+					1
+				],
+				"snow_container": [
+					3,
+					1,
+					1
+				],
+				"glow_sticks": [
+					2,
+					1,
+					3
+				],
+				"whistle": [
+					1,
+					1,
+					1
+				],
+				"compass": [
+					1,
+					1,
+					1
+				],
+				"canteen": [
+					1,
+					1,
+					1
+				],
+				"sharpened_stick": [
+					2,
+					1,
+					1
+				]
+			},
+			"loaded": 0.0
+		},
+		"store_counter": {
+			"empty": 0.25,
+			"junk": 0.3,
+			"rolls": [
+				1,
+				2
+			],
+			"items": {
+				"coins": [
+					6,
+					3,
+					15
+				],
+				"cigarettes": [
+					5,
+					1,
+					3
+				],
+				"chocolate": [
+					4,
+					1,
+					2
+				],
+				"batteries": [
+					4,
+					1,
+					4
+				],
+				"lighter": [
+					4,
+					1,
+					2
+				],
+				"matches": [
+					3,
+					2,
+					6
+				],
+				"pens": [
+					3,
+					1,
+					3
+				],
+				"keys": [
+					2,
+					1,
+					1
+				],
+				"energy_bar": [
+					3,
+					1,
+					2
+				],
+				"handgun": [
+					0.2,
+					1,
+					1
+				]
+			},
+			"loaded": 0.6
+		},
+		"grocery_shelf": {
+			"empty": 0.3,
+			"junk": 0.05,
+			"rolls": [
+				1,
+				3
+			],
+			"items": {
+				"canned_food": [
+					8,
+					1,
+					3
+				],
+				"canned_soup": [
+					7,
+					1,
+					3
+				],
+				"canned_meat": [
+					5,
+					1,
+					2
+				],
+				"vegetables": [
+					5,
+					1,
+					2
+				],
+				"crackers": [
+					6,
+					1,
+					2
+				],
+				"chocolate": [
+					4,
+					1,
+					3
+				],
+				"energy_bar": [
+					4,
+					1,
+					3
+				],
+				"coffee": [
+					4,
+					1,
+					2
+				],
+				"jerky": [
+					3,
+					1,
+					2
+				],
+				"soda": [
+					3,
+					1,
+					3
+				],
+				"spoiled_food": [
+					3,
+					1,
+					1
+				]
+			},
+			"loaded": 0.0
+		},
+		"grocery_stock": {
+			"empty": 0.25,
+			"junk": 0.05,
+			"rolls": [
+				2,
+				3
+			],
+			"items": {
+				"canned_food": [
+					8,
+					2,
+					4
+				],
+				"canned_soup": [
+					6,
+					2,
+					4
+				],
+				"vegetables": [
+					5,
+					1,
+					3
+				],
+				"water_bottle": [
+					6,
+					1,
+					2
+				],
+				"soda": [
+					4,
+					2,
+					4
+				],
+				"energy_drink": [
+					3,
+					1,
+					2
+				],
+				"crackers": [
+					4,
+					1,
+					3
+				],
+				"candles": [
+					2,
+					2,
+					4
+				],
+				"matches": [
+					2,
+					2,
+					6
+				],
+				"can_opener": [
+					2,
+					1,
+					1
+				]
+			},
+			"loaded": 0.0
+		},
+		"grocery_cooler": {
+			"empty": 0.35,
+			"junk": 0.0,
+			"rolls": [
+				1,
+				2
+			],
+			"items": {
+				"frozen_food": [
+					8,
+					1,
+					3
+				],
+				"spoiled_food": [
+					8,
+					1,
+					2
+				],
+				"soda": [
+					5,
+					1,
+					3
+				],
+				"fresh_meat": [
+					3,
+					1,
+					1
+				],
+				"water_bottle": [
+					4,
+					1,
+					2
+				],
+				"energy_drink": [
+					3,
+					1,
+					2
+				]
+			},
+			"loaded": 0.0
+		},
+		"general_goods": {
+			"empty": 0.2,
+			"junk": 0.2,
+			"rolls": [
+				1,
+				3
+			],
+			"items": {
+				"canned_food": [
+					8,
+					1,
+					2
+				],
+				"canned_soup": [
+					7,
+					1,
+					2
+				],
+				"canned_meat": [
+					5,
+					1,
+					1
+				],
+				"vegetables": [
+					5,
+					1,
+					2
+				],
+				"crackers": [
+					6,
+					1,
+					1
+				],
+				"coffee": [
+					4,
+					1,
+					1
+				],
+				"water_bottle": [
+					5,
+					1,
+					1
+				],
+				"can_opener": [
+					3,
+					1,
+					1
+				],
+				"matches": [
+					4,
+					2,
+					6
+				],
+				"candles": [
+					3,
+					1,
+					3
+				],
+				"spoiled_food": [
+					5,
+					1,
+					1
+				],
+				"glass_bottles": [
+					2,
+					1,
+					2
+				],
+				"empty_bottle": [
+					3,
+					1,
+					2
+				],
+				"kitchen_knife": [
+					2,
+					1,
+					1
+				],
+				"chocolate": [
+					2,
+					1,
+					2
+				],
+				"alcohol": [
+					2,
+					1,
+					1
+				],
+				"batteries": [
+					4,
+					1,
+					4
+				],
+				"flashlight": [
+					2,
+					1,
+					1
+				],
+				"duct_tape": [
+					3,
+					1,
+					2
+				],
+				"hand_warmer": [
+					3,
+					1,
+					3
+				],
+				"rope": [
+					2,
+					1,
+					1
+				],
+				"lighter": [
+					2,
+					1,
+					1
+				]
+			},
+			"loaded": 0.0
+		},
+		"clothing_rack": {
+			"empty": 0.2,
+			"junk": 0.05,
+			"rolls": [
+				1,
+				3
+			],
+			"items": {
+				"padded_jacket": [
+					4,
+					1,
+					1
+				],
+				"winter_coat": [
+					2,
+					1,
+					1
+				],
+				"trousers": [
+					6,
+					1,
+					1
+				],
+				"thermal_underwear": [
+					3,
+					1,
+					1
+				],
+				"scarf": [
+					5,
+					1,
+					1
+				],
+				"hat": [
+					5,
+					1,
+					1
+				],
+				"gloves": [
+					5,
+					1,
+					1
+				],
+				"cloth": [
+					3,
+					1,
+					2
+				]
+			},
+			"loaded": 0.0
+		},
+		"clothing_stock": {
+			"empty": 0.2,
+			"junk": 0.05,
+			"rolls": [
+				2,
+				3
+			],
+			"items": {
+				"socks": [
+					7,
+					1,
+					2
+				],
+				"wool_socks": [
+					5,
+					1,
+					2
+				],
+				"thermal_underwear": [
+					4,
+					1,
+					1
+				],
+				"insulated_gloves": [
+					3,
+					1,
+					1
+				],
+				"hat": [
+					4,
+					1,
+					1
+				],
+				"scarf": [
+					4,
+					1,
+					1
+				],
+				"cloth": [
+					5,
+					1,
+					3
+				],
+				"thread": [
+					3,
+					1,
+					3
+				],
+				"needle": [
+					3,
+					1,
+					4
+				]
+			},
+			"loaded": 0.0
+		},
+		"clothing_shoes": {
+			"empty": 0.2,
+			"junk": 0.05,
+			"rolls": [
+				1,
+				2
+			],
+			"items": {
+				"boots": [
+					6,
+					1,
+					1
+				],
+				"wool_socks": [
+					4,
+					1,
+					2
+				],
+				"socks": [
+					4,
+					1,
+					2
+				],
+				"ice_cleats": [
+					2,
+					1,
+					1
+				],
+				"leather": [
+					2,
+					1,
+					1
+				]
+			},
+			"loaded": 0.0
+		},
+		"clothing_gear": {
+			"empty": 0.2,
+			"junk": 0.05,
+			"rolls": [
+				1,
+				3
+			],
+			"items": {
+				"backpack": [
+					4,
+					1,
+					1
+				],
+				"snow_goggles": [
+					4,
+					1,
+					1
+				],
+				"thermal_blanket": [
+					3,
+					1,
+					1
+				],
+				"insulated_gloves": [
+					3,
+					1,
+					1
+				],
+				"headlamp": [
+					2,
+					1,
+					1
+				],
+				"canteen": [
+					3,
+					1,
+					1
+				],
+				"small_pouch": [
+					3,
+					1,
+					1
+				],
+				"whistle": [
+					2,
+					1,
+					1
+				],
+				"ice_cleats": [
+					2,
+					1,
+					1
+				],
+				"compass": [
+					2,
+					1,
+					1
+				],
+				"portable_stove": [
+					1,
+					1,
+					1
+				],
+				"stove_fuel": [
+					2,
+					1,
+					2
+				]
+			},
+			"loaded": 0.0
+		},
+		"clinic_medical": {
+			"empty": 0.25,
+			"junk": 0.05,
+			"rolls": [
+				1,
+				3
+			],
+			"items": {
+				"bandage": [
+					8,
+					1,
+					3
+				],
+				"disinfectant": [
+					5,
+					1,
+					1
+				],
+				"painkillers": [
+					6,
+					1,
+					4
+				],
+				"antibiotics": [
+					3,
+					1,
+					2
+				],
+				"splint": [
+					3,
+					1,
+					1
+				],
+				"first_aid_kit": [
+					2,
+					1,
+					1
+				],
+				"medical_syringe": [
+					2,
+					1,
+					2
+				],
+				"rags": [
+					3,
+					1,
+					3
+				]
+			},
+			"loaded": 0.0
+		},
+		"clinic_supply": {
+			"empty": 0.25,
+			"junk": 0.05,
+			"rolls": [
+				2,
+				3
+			],
+			"items": {
+				"bandage": [
+					6,
+					2,
+					5
+				],
+				"rags": [
+					5,
+					2,
+					5
+				],
+				"disinfectant": [
+					4,
+					1,
+					2
+				],
+				"vitamins": [
+					4,
+					1,
+					4
+				],
+				"dust_mask": [
+					4,
+					1,
+					2
+				],
+				"gas_mask_filter": [
+					1,
+					1,
+					1
+				],
+				"thermal_blanket": [
+					2,
+					1,
+					1
+				],
+				"water_bottle": [
+					2,
+					1,
+					1
+				]
+			},
+			"loaded": 0.0
+		},
+		"clinic_drugs": {
+			"empty": 0.4,
+			"junk": 0.0,
+			"rolls": [
+				1,
+				2
+			],
+			"items": {
+				"antibiotics": [
+					6,
+					1,
+					3
+				],
+				"painkillers": [
+					6,
+					1,
+					5
+				],
+				"medical_syringe": [
+					4,
+					1,
+					2
+				],
+				"vitamins": [
+					3,
+					1,
+					3
+				]
+			},
+			"loaded": 0.0
+		},
+		"clinic_desk": {
+			"empty": 0.2,
+			"junk": 0.3,
+			"rolls": [
+				1,
+				2
+			],
+			"items": {
+				"pens": [
+					8,
+					1,
+					4
+				],
+				"notebook": [
+					6,
+					1,
+					2
+				],
+				"old_newspapers": [
+					4,
+					1,
+					2
+				],
+				"batteries": [
+					3,
+					1,
+					3
+				],
+				"keys": [
+					4,
+					1,
+					1
+				],
+				"keycard": [
+					2,
+					1,
+					1
+				],
+				"combination_note": [
+					2,
+					1,
+					1
+				],
+				"coins": [
+					3,
+					2,
+					12
+				],
+				"painkillers": [
+					4,
+					1,
+					2
+				],
+				"coffee": [
+					2,
+					1,
+					1
+				],
+				"chocolate": [
+					2,
+					1,
+					1
+				],
+				"field_map": [
+					1,
+					1,
+					1
+				],
+				"compass": [
+					1,
+					1,
+					1
+				],
+				"handgun": [
+					0.15,
+					1,
+					1
+				],
+				"bandage": [
+					3,
+					1,
+					2
+				]
+			},
+			"loaded": 0.0
+		},
+		"office_desk": {
+			"empty": 0.2,
+			"junk": 0.35,
+			"rolls": [
+				1,
+				2
+			],
+			"items": {
+				"pens": [
+					8,
+					1,
+					4
+				],
+				"notebook": [
+					6,
+					1,
+					2
+				],
+				"old_newspapers": [
+					4,
+					1,
+					2
+				],
+				"batteries": [
+					3,
+					1,
+					3
+				],
+				"keys": [
+					4,
+					1,
+					1
+				],
+				"keycard": [
+					2,
+					1,
+					1
+				],
+				"combination_note": [
+					2,
+					1,
+					1
+				],
+				"coins": [
+					3,
+					2,
+					12
+				],
+				"painkillers": [
+					2,
+					1,
+					2
+				],
+				"coffee": [
+					2,
+					1,
+					1
+				],
+				"chocolate": [
+					2,
+					1,
+					1
+				],
+				"field_map": [
+					1,
+					1,
+					1
+				],
+				"compass": [
+					1,
+					1,
+					1
+				],
+				"handgun": [
+					0.15,
+					1,
+					1
+				]
+			},
+			"loaded": 0.0
+		},
+		"office_files": {
+			"empty": 0.35,
+			"junk": 0.4,
+			"rolls": [
+				1,
+				2
+			],
+			"items": {
+				"old_newspapers": [
+					8,
+					1,
+					3
+				],
+				"notebook": [
+					5,
+					1,
+					2
+				],
+				"books": [
+					4,
+					1,
+					2
+				],
+				"pens": [
+					4,
+					1,
+					3
+				],
+				"combination_note": [
+					3,
+					1,
+					1
+				],
+				"field_map": [
+					2,
+					1,
+					1
+				],
+				"workshop_manual": [
+					1,
+					1,
+					1
+				],
+				"keycard": [
+					1,
+					1,
+					1
+				]
+			},
+			"loaded": 0.0
+		},
+		"civic_emergency": {
+			"empty": 0.1,
+			"junk": 0.0,
+			"rolls": [
+				2,
+				4
+			],
+			"items": {
+				"water_bottle": [
+					6,
+					1,
+					2
+				],
+				"canned_food": [
+					6,
+					1,
+					3
+				],
+				"crackers": [
+					5,
+					1,
+					2
+				],
+				"first_aid_kit": [
+					2,
+					1,
+					1
+				],
+				"thermal_blanket": [
+					4,
+					1,
+					1
+				],
+				"flashlight": [
+					3,
+					1,
+					1
+				],
+				"hand_crank_flashlight": [
+					2,
+					1,
+					1
+				],
+				"batteries": [
+					4,
+					2,
+					6
+				],
+				"glow_sticks": [
+					4,
+					2,
+					5
+				],
+				"flare": [
+					3,
+					1,
+					3
+				],
+				"handheld_radio": [
+					1,
+					1,
+					1
+				],
+				"gas_mask": [
+					1,
+					1,
+					1
+				],
+				"gas_mask_filter": [
+					2,
+					1,
+					2
+				],
+				"propane": [
+					2,
+					1,
+					1
+				],
+				"portable_stove": [
+					1,
+					1,
+					1
+				],
+				"fire_axe": [
+					1,
+					1,
+					1
+				]
+			},
+			"loaded": 0.0
+		},
+		"civic_mayor": {
+			"empty": 0.05,
+			"junk": 0.1,
+			"rolls": [
+				2,
+				3
+			],
+			"items": {
+				"keycard": [
+					4,
+					1,
+					1
+				],
+				"combination_note": [
+					3,
+					1,
+					1
+				],
+				"alcohol": [
+					4,
+					1,
+					1
+				],
+				"cigarettes": [
+					3,
+					1,
+					2
+				],
+				"watch": [
+					3,
+					1,
+					1
+				],
+				"jewellery": [
+					2,
+					1,
+					3
+				],
+				"revolver": [
+					0.8,
+					1,
+					1
+				],
+				"ammo_revolver": [
+					2,
+					3,
+					8
+				],
+				"field_map": [
+					2,
+					1,
+					1
+				],
+				"binoculars": [
+					1,
+					1,
+					1
+				]
+			},
+			"loaded": 0.6
+		},
+		"police_desk": {
+			"empty": 0.2,
+			"junk": 0.25,
+			"rolls": [
+				1,
+				2
+			],
+			"items": {
+				"pens": [
+					8,
+					1,
+					4
+				],
+				"notebook": [
+					6,
+					1,
+					2
+				],
+				"old_newspapers": [
+					4,
+					1,
+					2
+				],
+				"batteries": [
+					3,
+					1,
+					3
+				],
+				"keys": [
+					4,
+					1,
+					1
+				],
+				"keycard": [
+					2,
+					1,
+					1
+				],
+				"combination_note": [
+					2,
+					1,
+					1
+				],
+				"coins": [
+					3,
+					2,
+					12
+				],
+				"painkillers": [
+					2,
+					1,
+					2
+				],
+				"coffee": [
+					2,
+					1,
+					1
+				],
+				"chocolate": [
+					2,
+					1,
+					1
+				],
+				"field_map": [
+					1,
+					1,
+					1
+				],
+				"compass": [
+					1,
+					1,
+					1
+				],
+				"handgun": [
+					0.6,
+					1,
+					1
+				],
+				"ammo_pistol": [
+					3,
+					3,
+					10
+				],
+				"walkie_talkie": [
+					2,
+					1,
+					1
+				],
+				"flashlight": [
+					3,
+					1,
+					1
+				],
+				"padlock": [
+					2,
+					1,
+					1
+				]
+			},
+			"loaded": 0.4
+		},
+		"police_files": {
+			"empty": 0.35,
+			"junk": 0.4,
+			"rolls": [
+				1,
+				2
+			],
+			"items": {
+				"old_newspapers": [
+					8,
+					1,
+					3
+				],
+				"notebook": [
+					5,
+					1,
+					2
+				],
+				"books": [
+					4,
+					1,
+					2
+				],
+				"pens": [
+					4,
+					1,
+					3
+				],
+				"combination_note": [
+					3,
+					1,
+					1
+				],
+				"field_map": [
+					2,
+					1,
+					1
+				],
+				"workshop_manual": [
+					1,
+					1,
+					1
+				],
+				"keycard": [
+					2,
+					1,
+					1
+				],
+				"keys": [
+					3,
+					1,
+					1
+				]
+			},
+			"loaded": 0.0
+		},
+		"police_storage": {
+			"empty": 0.2,
+			"junk": 0.05,
+			"rolls": [
+				1,
+				3
+			],
+			"items": {
+				"flare": [
+					4,
+					1,
+					3
+				],
+				"glow_sticks": [
+					3,
+					2,
+					5
+				],
+				"first_aid_kit": [
+					2,
+					1,
+					1
+				],
+				"handheld_radio": [
+					2,
+					1,
+					1
+				],
+				"walkie_talkie": [
+					3,
+					1,
+					1
+				],
+				"batteries": [
+					4,
+					2,
+					6
+				],
+				"padlock": [
+					3,
+					1,
+					2
+				],
+				"bolt_cutters": [
+					1,
+					1,
+					1
+				],
+				"gas_mask": [
+					1,
+					1,
+					1
+				],
+				"protective_goggles": [
+					2,
+					1,
+					1
+				],
+				"ammo_pistol": [
+					2,
+					4,
+					12
+				]
+			},
+			"loaded": 0.0
+		},
+		"police_evidence": {
+			"empty": 0.25,
+			"junk": 0.3,
+			"rolls": [
+				1,
+				2
+			],
+			"items": {
+				"lockpick": [
+					4,
+					1,
+					1
+				],
+				"jewellery": [
+					4,
+					1,
+					4
+				],
+				"wallet": [
+					3,
+					1,
+					2
+				],
+				"watch": [
+					3,
+					1,
+					2
+				],
+				"cigarettes": [
+					3,
+					1,
+					3
+				],
+				"machete": [
+					1,
+					1,
+					1
+				],
+				"kitchen_knife": [
+					2,
+					1,
+					1
+				],
+				"baseball_bat": [
+					1,
+					1,
+					1
+				],
+				"revolver": [
+					0.5,
+					1,
+					1
+				],
+				"ammo_revolver": [
+					1,
+					2,
+					6
+				]
+			},
+			"loaded": 0.3
+		},
+		"police_armory": {
+			"empty": 0.45,
+			"junk": 0.0,
+			"rolls": [
+				1,
+				2
+			],
+			"items": {
+				"handgun": [
+					3,
+					1,
+					1
+				],
+				"shotgun": [
+					2,
+					1,
+					1
+				],
+				"military_rifle": [
+					0.8,
+					1,
+					1
+				],
+				"ammo_pistol": [
+					5,
+					6,
+					16
+				],
+				"shotgun_shells": [
+					4,
+					4,
+					10
+				],
+				"rifle_rounds": [
+					2,
+					4,
+					10
+				],
+				"loaded_magazine": [
+					2,
+					1,
+					2
+				],
+				"gun_cleaning_kit": [
+					2,
+					1,
+					1
+				],
+				"gun_oil": [
+					2,
+					1,
+					2
+				],
+				"weapon_parts": [
+					2,
+					1,
+					2
+				]
+			},
+			"loaded": 0.5
+		},
+		"workshop_tools": {
+			"empty": 0.15,
+			"junk": 0.05,
+			"rolls": [
+				1,
+				3
+			],
+			"items": {
+				"hammer": [
+					3,
+					1,
+					1
+				],
+				"screwdriver": [
+					5,
+					1,
+					1
+				],
+				"wrench": [
+					5,
+					1,
+					1
+				],
+				"pliers": [
+					4,
+					1,
+					1
+				],
+				"handsaw": [
+					3,
+					1,
+					1
+				],
+				"hacksaw": [
+					2,
+					1,
+					1
+				],
+				"wire_cutters": [
+					2,
+					1,
+					1
+				],
+				"crowbar": [
+					2,
+					1,
+					1
+				],
+				"nails": [
+					7,
+					5,
+					20
+				],
+				"screws": [
+					6,
+					5,
+					20
+				],
+				"duct_tape": [
+					5,
+					1,
+					2
+				],
+				"glue": [
+					3,
+					1,
+					2
+				],
+				"wire": [
+					4,
+					1,
+					3
+				],
+				"bolts": [
+					4,
+					2,
+					8
+				],
+				"multitool": [
+					1,
+					1,
+					1
+				],
+				"bolt_cutters": [
+					1,
+					1,
+					1
+				],
+				"scrap_metal": [
+					5,
+					1,
+					2
+				],
+				"sharpening_stone": [
+					2,
+					1,
+					1
+				],
+				"fire_axe": [
+					0.6,
+					1,
+					1
+				],
+				"motor_oil": [
+					2,
+					1,
+					1
+				],
+				"gloves": [
+					2,
+					1,
+					1
+				],
+				"protective_goggles": [
+					2,
+					1,
+					1
+				],
+				"dust_mask": [
+					2,
+					1,
+					1
+				]
+			},
+			"loaded": 0.0
+		},
+		"workshop_parts": {
+			"empty": 0.15,
+			"junk": 0.05,
+			"rolls": [
+				1,
+				3
+			],
+			"items": {
+				"gears": [
+					5,
+					1,
+					2
+				],
+				"springs": [
+					5,
+					2,
+					6
+				],
+				"bolts": [
+					6,
+					2,
+					8
+				],
+				"bearings": [
+					4,
+					2,
+					6
+				],
+				"pipes": [
+					3,
+					1,
+					2
+				],
+				"engine_parts": [
+					2,
+					1,
+					1
+				],
+				"scrap_metal": [
+					6,
+					1,
+					3
+				],
+				"sheet_metal": [
+					3,
+					1,
+					1
+				],
+				"rubber": [
+					3,
+					1,
+					4
+				],
+				"cables": [
+					3,
+					1,
+					2
+				],
+				"carburetor": [
+					0.6,
+					1,
+					1
+				],
+				"stovepipe": [
+					0.6,
+					1,
+					1
+				],
+				"electrical_parts": [
+					2,
+					1,
+					1
+				],
+				"wrench": [
+					1,
+					1,
+					1
+				]
+			},
+			"loaded": 0.0
+		},
+		"industrial_parts": {
+			"empty": 0.2,
+			"junk": 0.05,
+			"rolls": [
+				1,
+				3
+			],
+			"items": {
+				"gears": [
+					5,
+					1,
+					2
+				],
+				"springs": [
+					5,
+					2,
+					6
+				],
+				"bolts": [
+					6,
+					2,
+					8
+				],
+				"bearings": [
+					4,
+					2,
+					6
+				],
+				"pipes": [
+					3,
+					1,
+					2
+				],
+				"engine_parts": [
+					2,
+					1,
+					1
+				],
+				"scrap_metal": [
+					6,
+					1,
+					3
+				],
+				"sheet_metal": [
+					3,
+					1,
+					1
+				],
+				"rubber": [
+					3,
+					1,
+					4
+				],
+				"cables": [
+					3,
+					1,
+					2
+				],
+				"carburetor": [
+					0.6,
+					1,
+					1
+				],
+				"stovepipe": [
+					0.6,
+					1,
+					1
+				],
+				"electrical_parts": [
+					2,
+					1,
+					1
+				],
+				"wrench": [
+					1,
+					1,
+					1
+				]
+			},
+			"loaded": 0.0
+		},
+		"industrial_materials": {
+			"empty": 0.2,
+			"junk": 0.05,
+			"rolls": [
+				1,
+				3
+			],
+			"items": {
+				"planks": [
+					6,
+					1,
+					3
+				],
+				"wood": [
+					5,
+					1,
+					3
+				],
+				"scrap_metal": [
+					5,
+					1,
+					3
+				],
+				"sheet_metal": [
+					3,
+					1,
+					2
+				],
+				"cement": [
+					2,
+					1,
+					1
+				],
+				"nails": [
+					5,
+					5,
+					15
+				],
+				"rope": [
+					3,
+					1,
+					2
+				],
+				"plastic": [
+					4,
+					2,
+					6
+				],
+				"rubber": [
+					3,
+					1,
+					4
+				],
+				"pipes": [
+					3,
+					1,
+					2
+				],
+				"wire": [
+					3,
+					1,
+					3
+				],
+				"tinder": [
+					2,
+					2,
+					6
+				]
+			},
+			"loaded": 0.0
+		},
+		"industrial_scrap": {
+			"empty": 0.15,
+			"junk": 0.2,
+			"rolls": [
+				1,
+				3
+			],
+			"items": {
+				"scrap_metal": [
+					8,
+					1,
+					3
+				],
+				"sheet_metal": [
+					3,
+					1,
+					1
+				],
+				"pipes": [
+					4,
+					1,
+					2
+				],
+				"metal_pipe": [
+					2,
+					1,
+					1
+				],
+				"broken_electronics": [
+					4,
+					1,
+					2
+				],
+				"rubber": [
+					3,
+					1,
+					3
+				],
+				"bolts": [
+					3,
+					2,
+					6
+				],
+				"cables": [
+					2,
+					1,
+					2
+				]
+			},
+			"loaded": 0.0
+		},
+		"worker_locker": {
+			"empty": 0.25,
+			"junk": 0.3,
+			"rolls": [
+				1,
+				2
+			],
+			"items": {
+				"gloves": [
+					5,
+					1,
+					1
+				],
+				"insulated_gloves": [
+					2,
+					1,
+					1
+				],
+				"boots": [
+					3,
+					1,
+					1
+				],
+				"hat": [
+					3,
+					1,
+					1
+				],
+				"thermos": [
+					3,
+					1,
+					1
+				],
+				"cigarettes": [
+					4,
+					1,
+					2
+				],
+				"energy_bar": [
+					3,
+					1,
+					2
+				],
+				"headlamp": [
+					1,
+					1,
+					1
+				],
+				"dust_mask": [
+					3,
+					1,
+					1
+				],
+				"protective_goggles": [
+					3,
+					1,
+					1
+				],
+				"padlock": [
+					2,
+					1,
+					1
+				],
+				"keys": [
+					2,
+					1,
+					1
+				],
+				"multitool": [
+					1,
+					1,
+					1
+				],
+				"playing_cards": [
+					3,
+					1,
+					1
+				]
+			},
+			"loaded": 0.0
+		},
+		"warehouse_freight": {
+			"empty": 0.3,
+			"junk": 0.1,
+			"rolls": [
+				1,
+				3
+			],
+			"items": {
+				"planks": [
+					5,
+					1,
+					3
+				],
+				"plastic": [
+					4,
+					2,
+					6
+				],
+				"rope": [
+					3,
+					1,
+					2
+				],
+				"canned_food": [
+					3,
+					2,
+					4
+				],
+				"water_bottle": [
+					3,
+					1,
+					2
+				],
+				"cement": [
+					2,
+					1,
+					1
+				],
+				"nails": [
+					3,
+					10,
+					25
+				],
+				"batteries": [
+					2,
+					2,
+					6
+				],
+				"timber_frame": [
+					0.5,
+					1,
+					1
+				],
+				"fuel_can": [
+					1,
+					1,
+					1
+				],
+				"glass_bottles": [
+					2,
+					2,
+					4
+				]
+			},
+			"loaded": 0.0
+		},
+		"utility_desk": {
+			"empty": 0.25,
+			"junk": 0.3,
+			"rolls": [
+				1,
+				2
+			],
+			"items": {
+				"pens": [
+					8,
+					1,
+					4
+				],
+				"notebook": [
+					6,
+					1,
+					2
+				],
+				"old_newspapers": [
+					4,
+					1,
+					2
+				],
+				"batteries": [
+					3,
+					1,
+					3
+				],
+				"keys": [
+					4,
+					1,
+					1
+				],
+				"keycard": [
+					2,
+					1,
+					1
+				],
+				"combination_note": [
+					2,
+					1,
+					1
+				],
+				"coins": [
+					3,
+					2,
+					12
+				],
+				"painkillers": [
+					2,
+					1,
+					2
+				],
+				"coffee": [
+					2,
+					1,
+					1
+				],
+				"chocolate": [
+					2,
+					1,
+					1
+				],
+				"field_map": [
+					1,
+					1,
+					1
+				],
+				"compass": [
+					1,
+					1,
+					1
+				],
+				"handgun": [
+					0.15,
+					1,
+					1
+				],
+				"fuses": [
+					4,
+					2,
+					6
+				],
+				"cables": [
+					3,
+					1,
+					2
+				]
+			},
+			"loaded": 0.0
+		},
+		"utility_files": {
+			"empty": 0.35,
+			"junk": 0.35,
+			"rolls": [
+				1,
+				2
+			],
+			"items": {
+				"old_newspapers": [
+					8,
+					1,
+					3
+				],
+				"notebook": [
+					5,
+					1,
+					2
+				],
+				"books": [
+					4,
+					1,
+					2
+				],
+				"pens": [
+					4,
+					1,
+					3
+				],
+				"combination_note": [
+					3,
+					1,
+					1
+				],
+				"field_map": [
+					2,
+					1,
+					1
+				],
+				"workshop_manual": [
+					3,
+					1,
+					1
+				],
+				"keycard": [
+					1,
+					1,
+					1
+				]
+			},
+			"loaded": 0.0
+		},
+		"utility_storage": {
+			"empty": 0.15,
+			"junk": 0.05,
+			"rolls": [
+				2,
+				3
+			],
+			"items": {
+				"electrical_parts": [
+					5,
+					1,
+					2
+				],
+				"cables": [
+					6,
+					1,
+					3
+				],
+				"fuses": [
+					6,
+					2,
+					8
+				],
+				"circuit_boards": [
+					4,
+					1,
+					2
+				],
+				"batteries": [
+					4,
+					2,
+					6
+				],
+				"wire": [
+					4,
+					1,
+					3
+				],
+				"wire_cutters": [
+					2,
+					1,
+					1
+				],
+				"grow_light": [
+					0.8,
+					1,
+					1
+				],
+				"insulated_gloves": [
+					2,
+					1,
+					1
+				],
+				"hand_crank_flashlight": [
+					1,
+					1,
+					1
+				]
+			},
+			"loaded": 0.0
+		},
+		"electronics": {
+			"empty": 0.25,
+			"junk": 0.2,
+			"rolls": [
+				1,
+				3
+			],
+			"items": {
+				"batteries": [
+					6,
+					2,
+					8
+				],
+				"circuit_boards": [
+					4,
+					1,
+					2
+				],
+				"cables": [
+					4,
+					1,
+					2
+				],
+				"fuses": [
+					3,
+					2,
+					6
+				],
+				"handheld_radio": [
+					2,
+					1,
+					1
+				],
+				"walkie_talkie": [
+					2,
+					1,
+					1
+				],
+				"broken_electronics": [
+					5,
+					1,
+					2
+				],
+				"electrical_parts": [
+					3,
+					1,
+					1
+				],
+				"flashlight": [
+					2,
+					1,
+					1
+				]
+			},
+			"loaded": 0.0
+		},
+		"fuel_depot": {
+			"empty": 0.25,
+			"junk": 0.0,
+			"rolls": [
+				1,
+				2
+			],
+			"items": {
+				"fuel": [
+					6,
+					1,
+					2
+				],
+				"diesel": [
+					5,
+					1,
+					2
+				],
+				"kerosene": [
+					3,
+					1,
+					1
+				],
+				"propane": [
+					3,
+					1,
+					1
+				],
+				"motor_oil": [
+					4,
+					1,
+					1
+				],
+				"fuel_can": [
+					2,
+					1,
+					1
+				],
+				"stove_fuel": [
+					2,
+					1,
+					2
+				],
+				"charcoal": [
+					3,
+					1,
+					4
+				]
+			},
+			"loaded": 0.0
+		},
+		"mine_office_desk": {
+			"empty": 0.2,
+			"junk": 0.3,
+			"rolls": [
+				1,
+				2
+			],
+			"items": {
+				"pens": [
+					8,
+					1,
+					4
+				],
+				"notebook": [
+					6,
+					1,
+					2
+				],
+				"old_newspapers": [
+					4,
+					1,
+					2
+				],
+				"batteries": [
+					3,
+					1,
+					3
+				],
+				"keys": [
+					4,
+					1,
+					1
+				],
+				"keycard": [
+					2,
+					1,
+					1
+				],
+				"combination_note": [
+					2,
+					1,
+					1
+				],
+				"coins": [
+					3,
+					2,
+					12
+				],
+				"painkillers": [
+					2,
+					1,
+					2
+				],
+				"coffee": [
+					3,
+					1,
+					1
+				],
+				"chocolate": [
+					2,
+					1,
+					1
+				],
+				"field_map": [
+					3,
+					1,
+					1
+				],
+				"compass": [
+					2,
+					1,
+					1
+				],
+				"handgun": [
+					0.15,
+					1,
+					1
+				]
+			},
+			"loaded": 0.0
+		},
+		"mine_office_files": {
+			"empty": 0.35,
+			"junk": 0.4,
+			"rolls": [
+				1,
+				2
+			],
+			"items": {
+				"old_newspapers": [
+					8,
+					1,
+					3
+				],
+				"notebook": [
+					5,
+					1,
+					2
+				],
+				"books": [
+					4,
+					1,
+					2
+				],
+				"pens": [
+					4,
+					1,
+					3
+				],
+				"combination_note": [
+					3,
+					1,
+					1
+				],
+				"field_map": [
+					3,
+					1,
+					1
+				],
+				"workshop_manual": [
+					1,
+					1,
+					1
+				],
+				"keycard": [
+					1,
+					1,
+					1
+				]
+			},
+			"loaded": 0.0
+		},
+		"mine_office_storage": {
+			"empty": 0.2,
+			"junk": 0.05,
+			"rolls": [
+				1,
+				3
+			],
+			"items": {
+				"headlamp": [
+					3,
+					1,
+					1
+				],
+				"batteries": [
+					5,
+					2,
+					6
+				],
+				"rope": [
+					4,
+					1,
+					2
+				],
+				"first_aid_kit": [
+					1,
+					1,
+					1
+				],
+				"dust_mask": [
+					4,
+					1,
+					2
+				],
+				"gas_mask": [
+					1,
+					1,
+					1
+				],
+				"gas_mask_filter": [
+					2,
+					1,
+					2
+				],
+				"pickaxe": [
+					1,
+					1,
+					1
+				],
+				"insulated_gloves": [
+					2,
+					1,
+					1
+				],
+				"thermos": [
+					2,
+					1,
+					1
+				]
+			},
+			"loaded": 0.0
+		},
+		"mine_lamps": {
+			"empty": 0.2,
+			"junk": 0.0,
+			"rolls": [
+				1,
+				2
+			],
+			"items": {
+				"headlamp": [
+					5,
+					1,
+					1
+				],
+				"lantern": [
+					4,
+					1,
+					1
+				],
+				"batteries": [
+					6,
+					2,
+					6
+				],
+				"kerosene": [
+					3,
+					1,
+					1
+				],
+				"glow_sticks": [
+					3,
+					2,
+					4
+				],
+				"hand_crank_flashlight": [
+					1,
+					1,
+					1
+				],
+				"candles": [
+					2,
+					2,
+					4
+				]
+			},
+			"loaded": 0.0
+		},
+		"mine_tools": {
+			"empty": 0.15,
+			"junk": 0.05,
+			"rolls": [
+				1,
+				3
+			],
+			"items": {
+				"pickaxe": [
+					4,
+					1,
+					1
+				],
+				"shovel": [
+					4,
+					1,
+					1
+				],
+				"crowbar": [
+					2,
+					1,
+					1
+				],
+				"hammer": [
+					3,
+					1,
+					1
+				],
+				"rope": [
+					4,
+					1,
+					2
+				],
+				"wrench": [
+					2,
+					1,
+					1
+				],
+				"bolts": [
+					3,
+					2,
+					6
+				],
+				"scrap_metal": [
+					3,
+					1,
+					2
+				],
+				"ice_pick": [
+					1,
+					1,
+					1
+				]
+			},
+			"loaded": 0.0
+		},
+		"mine_store": {
+			"empty": 0.25,
+			"junk": 0.05,
+			"rolls": [
+				1,
+				3
+			],
+			"items": {
+				"planks": [
+					5,
+					1,
+					3
+				],
+				"wood": [
+					4,
+					1,
+					3
+				],
+				"rope": [
+					4,
+					1,
+					2
+				],
+				"nails": [
+					4,
+					5,
+					15
+				],
+				"cement": [
+					2,
+					1,
+					1
+				],
+				"water_bottle": [
+					2,
+					1,
+					1
+				],
+				"canned_food": [
+					3,
+					1,
+					2
+				],
+				"jerky": [
+					2,
+					1,
+					2
+				],
+				"diesel": [
+					2,
+					1,
+					1
+				],
+				"pipes": [
+					2,
+					1,
+					2
+				],
+				"timber_frame": [
+					0.4,
+					1,
+					1
+				]
+			},
+			"loaded": 0.0
+		},
+		"mine_deep": {
+			"empty": 0.25,
+			"junk": 0.1,
+			"rolls": [
+				1,
+				3
+			],
+			"items": {
+				"pickaxe": [
+					2,
+					1,
+					1
+				],
+				"headlamp": [
+					2,
+					1,
+					1
+				],
+				"thermos": [
+					2,
+					1,
+					1
+				],
+				"canned_meat": [
+					3,
+					1,
+					1
+				],
+				"batteries": [
+					3,
+					2,
+					4
+				],
+				"rope": [
+					2,
+					1,
+					1
+				],
+				"engine_parts": [
+					1,
+					1,
+					1
+				],
+				"gears": [
+					3,
+					1,
+					2
+				],
+				"bearings": [
+					3,
+					2,
+					5
+				],
+				"jewellery": [
+					2,
+					1,
+					2
+				],
+				"photographs": [
+					2,
+					1,
+					2
+				],
+				"hunting_knife": [
+					1,
+					1,
+					1
+				],
+				"handgun": [
+					0.3,
+					1,
+					1
+				]
+			},
+			"loaded": 0.6
+		},
+		"marine": {
+			"empty": 0.2,
+			"junk": 0.1,
+			"rolls": [
+				1,
+				3
+			],
+			"items": {
+				"rope": [
+					8,
+					1,
+					3
+				],
+				"fishing_hook": [
+					4,
+					2,
+					8
+				],
+				"fishing_line": [
+					4,
+					1,
+					3
+				],
+				"flare": [
+					4,
+					1,
+					2
+				],
+				"motor_oil": [
+					3,
+					1,
+					1
+				],
+				"diesel": [
+					3,
+					1,
+					1
+				],
+				"canned_meat": [
+					3,
+					1,
+					2
+				],
+				"rubber": [
+					3,
+					1,
+					3
+				],
+				"whistle": [
+					2,
+					1,
+					1
+				],
+				"wire": [
+					2,
+					1,
+					2
+				],
+				"sheet_metal": [
+					1,
+					1,
+					1
+				],
+				"binoculars": [
+					1,
+					1,
+					1
+				],
+				"compass": [
+					2,
+					1,
+					1
+				]
+			},
+			"loaded": 0.0
+		},
+		"marine_safety": {
+			"empty": 0.15,
+			"junk": 0.0,
+			"rolls": [
+				1,
+				3
+			],
+			"items": {
+				"flare": [
+					6,
+					1,
+					3
+				],
+				"thermal_blanket": [
+					5,
+					1,
+					1
+				],
+				"first_aid_kit": [
+					2,
+					1,
+					1
+				],
+				"whistle": [
+					4,
+					1,
+					1
+				],
+				"water_bottle": [
+					3,
+					1,
+					2
+				],
+				"glow_sticks": [
+					3,
+					2,
+					4
+				],
+				"hand_warmer": [
+					3,
+					1,
+					3
+				],
+				"rope": [
+					2,
+					1,
+					1
+				]
+			},
+			"loaded": 0.0
+		},
+		"harbor_office_desk": {
+			"empty": 0.2,
+			"junk": 0.3,
+			"rolls": [
+				1,
+				2
+			],
+			"items": {
+				"pens": [
+					8,
+					1,
+					4
+				],
+				"notebook": [
+					6,
+					1,
+					2
+				],
+				"old_newspapers": [
+					4,
+					1,
+					2
+				],
+				"batteries": [
+					3,
+					1,
+					3
+				],
+				"keys": [
+					4,
+					1,
+					1
+				],
+				"keycard": [
+					2,
+					1,
+					1
+				],
+				"combination_note": [
+					2,
+					1,
+					1
+				],
+				"coins": [
+					3,
+					2,
+					12
+				],
+				"painkillers": [
+					2,
+					1,
+					2
+				],
+				"coffee": [
+					2,
+					1,
+					1
+				],
+				"chocolate": [
+					2,
+					1,
+					1
+				],
+				"field_map": [
+					1,
+					1,
+					1
+				],
+				"compass": [
+					3,
+					1,
+					1
+				],
+				"handgun": [
+					0.15,
+					1,
+					1
+				],
+				"binoculars": [
+					2,
+					1,
+					1
+				],
+				"alcohol": [
+					2,
+					1,
+					1
+				]
+			},
+			"loaded": 0.0
+		},
+		"harbor_office_files": {
+			"empty": 0.35,
+			"junk": 0.4,
+			"rolls": [
+				1,
+				2
+			],
+			"items": {
+				"old_newspapers": [
+					8,
+					1,
+					3
+				],
+				"notebook": [
+					5,
+					1,
+					2
+				],
+				"books": [
+					4,
+					1,
+					2
+				],
+				"pens": [
+					4,
+					1,
+					3
+				],
+				"combination_note": [
+					3,
+					1,
+					1
+				],
+				"field_map": [
+					3,
+					1,
+					1
+				],
+				"workshop_manual": [
+					1,
+					1,
+					1
+				],
+				"keycard": [
+					1,
+					1,
+					1
+				]
+			},
+			"loaded": 0.0
+		},
+		"harbor_office_storage": {
+			"empty": 0.2,
+			"junk": 0.05,
+			"rolls": [
+				1,
+				3
+			],
+			"items": {
+				"flare": [
+					3,
+					1,
+					2
+				],
+				"rope": [
+					4,
+					1,
+					2
+				],
+				"batteries": [
+					3,
+					2,
+					4
+				],
+				"lantern": [
+					2,
+					1,
+					1
+				],
+				"kerosene": [
+					2,
+					1,
+					1
+				],
+				"handheld_radio": [
+					1,
+					1,
+					1
+				],
+				"padlock": [
+					2,
+					1,
+					1
+				],
+				"fuel_can": [
+					1,
+					1,
+					1
+				]
+			},
+			"loaded": 0.0
+		},
+		"harbor_radio": {
+			"empty": 0.15,
+			"junk": 0.1,
+			"rolls": [
+				1,
+				2
+			],
+			"items": {
+				"handheld_radio": [
+					4,
+					1,
+					1
+				],
+				"walkie_talkie": [
+					3,
+					1,
+					1
+				],
+				"batteries": [
+					5,
+					2,
+					6
+				],
+				"cables": [
+					3,
+					1,
+					2
+				],
+				"circuit_boards": [
+					3,
+					1,
+					2
+				],
+				"fuses": [
+					2,
+					2,
+					4
+				],
+				"flashlight": [
+					2,
+					1,
+					1
+				]
+			},
+			"loaded": 0.0
+		},
+		"harbor_cargo": {
+			"empty": 0.3,
+			"junk": 0.1,
+			"rolls": [
+				1,
+				3
+			],
+			"items": {
+				"canned_food": [
+					4,
+					2,
+					4
+				],
+				"canned_meat": [
+					4,
+					1,
+					3
+				],
+				"plastic": [
+					4,
+					2,
+					6
+				],
+				"rubber": [
+					3,
+					2,
+					5
+				],
+				"sheet_metal": [
+					2,
+					1,
+					2
+				],
+				"engine_parts": [
+					2,
+					1,
+					1
+				],
+				"rope": [
+					3,
+					1,
+					2
+				],
+				"batteries": [
+					2,
+					2,
+					6
+				],
+				"alcohol": [
+					2,
+					1,
+					2
+				],
+				"cigarettes": [
+					2,
+					2,
+					4
+				],
+				"circuit_boards": [
+					1,
+					1,
+					2
+				]
+			},
+			"loaded": 0.0
+		},
+		"cannery_cold": {
+			"empty": 0.35,
+			"junk": 0.0,
+			"rolls": [
+				1,
+				2
+			],
+			"items": {
+				"frozen_food": [
+					8,
+					1,
+					3
+				],
+				"fresh_meat": [
+					5,
+					1,
+					2
+				],
+				"spoiled_food": [
+					6,
+					1,
+					2
+				],
+				"snow_container": [
+					2,
+					1,
+					1
+				]
+			},
+			"loaded": 0.0
+		},
+		"cannery_tins": {
+			"empty": 0.25,
+			"junk": 0.0,
+			"rolls": [
+				1,
+				3
+			],
+			"items": {
+				"canned_meat": [
+					8,
+					1,
+					3
+				],
+				"canned_food": [
+					5,
+					1,
+					3
+				],
+				"canned_soup": [
+					4,
+					1,
+					2
+				],
+				"can_opener": [
+					2,
+					1,
+					1
+				],
+				"spoiled_food": [
+					2,
+					1,
+					1
+				]
+			},
+			"loaded": 0.0
+		},
+		"vehicle_car": {
+			"empty": 0.25,
+			"junk": 0.25,
+			"rolls": [
+				1,
+				2
+			],
+			"items": {
+				"fuel": [
+					5,
+					1,
+					1
+				],
+				"motor_oil": [
+					4,
+					1,
+					1
+				],
+				"field_map": [
+					3,
+					1,
+					1
+				],
+				"flashlight": [
+					2,
+					1,
+					1
+				],
+				"first_aid_kit": [
+					1,
+					1,
+					1
+				],
+				"bandage": [
+					2,
+					1,
+					2
+				],
+				"water_bottle": [
+					3,
+					1,
+					1
+				],
+				"crackers": [
+					2,
+					1,
+					1
+				],
+				"energy_bar": [
+					3,
+					1,
+					2
+				],
+				"jerky": [
+					2,
+					1,
+					2
+				],
+				"cigarettes": [
+					3,
+					1,
+					2
+				],
+				"coins": [
+					3,
+					2,
+					10
+				],
+				"flare": [
+					3,
+					1,
+					2
+				],
+				"wrench": [
+					2,
+					1,
+					1
+				],
+				"duct_tape": [
+					2,
+					1,
+					1
+				],
+				"glow_sticks": [
+					1,
+					1,
+					3
+				]
+			},
+			"loaded": 0.0
+		},
+		"vehicle_truck": {
+			"empty": 0.2,
+			"junk": 0.15,
+			"rolls": [
+				1,
+				3
+			],
+			"items": {
+				"fuel": [
+					6,
+					1,
+					2
+				],
+				"motor_oil": [
+					4,
+					1,
+					1
+				],
+				"field_map": [
+					3,
+					1,
+					1
+				],
+				"flashlight": [
+					2,
+					1,
+					1
+				],
+				"first_aid_kit": [
+					1,
+					1,
+					1
+				],
+				"bandage": [
+					2,
+					1,
+					2
+				],
+				"water_bottle": [
+					3,
+					1,
+					1
+				],
+				"crackers": [
+					2,
+					1,
+					1
+				],
+				"energy_bar": [
+					3,
+					1,
+					2
+				],
+				"jerky": [
+					2,
+					1,
+					2
+				],
+				"cigarettes": [
+					3,
+					1,
+					2
+				],
+				"coins": [
+					3,
+					2,
+					10
+				],
+				"flare": [
+					3,
+					1,
+					2
+				],
+				"wrench": [
+					2,
+					1,
+					1
+				],
+				"duct_tape": [
+					2,
+					1,
+					1
+				],
+				"glow_sticks": [
+					1,
+					1,
+					3
+				],
+				"diesel": [
+					4,
+					1,
+					1
+				],
+				"fuel_can": [
+					2,
+					1,
+					1
+				],
+				"crowbar": [
+					1,
+					1,
+					1
+				],
+				"rope": [
+					2,
+					1,
+					1
+				],
+				"engine_parts": [
+					1,
+					1,
+					1
+				]
+			},
+			"loaded": 0.0
+		},
+		"vehicle_police": {
+			"empty": 0.2,
+			"junk": 0.05,
+			"rolls": [
+				1,
+				3
+			],
+			"items": {
+				"fuel": [
+					5,
+					1,
+					1
+				],
+				"motor_oil": [
+					4,
+					1,
+					1
+				],
+				"field_map": [
+					3,
+					1,
+					1
+				],
+				"flashlight": [
+					2,
+					1,
+					1
+				],
+				"first_aid_kit": [
+					2,
+					1,
+					1
+				],
+				"bandage": [
+					2,
+					1,
+					2
+				],
+				"water_bottle": [
+					3,
+					1,
+					1
+				],
+				"crackers": [
+					2,
+					1,
+					1
+				],
+				"energy_bar": [
+					3,
+					1,
+					2
+				],
+				"jerky": [
+					2,
+					1,
+					2
+				],
+				"cigarettes": [
+					3,
+					1,
+					2
+				],
+				"coins": [
+					3,
+					2,
+					10
+				],
+				"flare": [
+					5,
+					1,
+					3
+				],
+				"wrench": [
+					2,
+					1,
+					1
+				],
+				"duct_tape": [
+					2,
+					1,
+					1
+				],
+				"glow_sticks": [
+					1,
+					1,
+					3
+				],
+				"walkie_talkie": [
+					3,
+					1,
+					1
+				],
+				"shotgun": [
+					0.6,
+					1,
+					1
+				],
+				"shotgun_shells": [
+					2,
+					2,
+					6
+				],
+				"ammo_pistol": [
+					2,
+					3,
+					8
+				]
+			},
+			"loaded": 0.4
+		}
+	}
+}

@@ -206,6 +206,42 @@
 			"initial": {
 				"searched": false
 			}
+		},
+		{
+			"id": "junction.sled",
+			"type": "container",
+			"kind": "crate",
+			"position": [
+				1460,
+				446
+			],
+			"interact_range": 80,
+			"prompt_key": "PROMPT_SEARCH_SLED",
+			"art": "",
+			"art_searched": "",
+			"loot": {},
+			"pool": "wilderness_frozen",
+			"initial": {
+				"searched": false
+			}
+		},
+		{
+			"id": "junction.hunting_camp",
+			"type": "container",
+			"kind": "crate",
+			"position": [
+				3010,
+				1626
+			],
+			"interact_range": 80,
+			"prompt_key": "PROMPT_SEARCH_HUNTING_CAMP",
+			"art": "",
+			"art_searched": "",
+			"loot": {},
+			"pool": "hunter_cabin",
+			"initial": {
+				"searched": false
+			}
 		}
 	],
 	"vehicle_exits": [

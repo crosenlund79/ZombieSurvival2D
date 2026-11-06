@@ -4642,5 +4642,13 @@
 	"INV_TIP_USED_FOR": {
 		"en": "Used for: %s",
 		"da": "Bruges til: %s"
+	},
+	"PROMPT_SEARCH_SLED": {
+		"en": "Search the snowed-in sled",
+		"da": "Gennemsøg den indsneede slæde"
+	},
+	"PROMPT_SEARCH_HUNTING_CAMP": {
+		"en": "Search the hunting camp",
+		"da": "Gennemsøg jagtlejren"
 	}
 }

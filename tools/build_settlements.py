@@ -99,6 +99,13 @@ class Outdoor:
                               "interact_range": 90, "prompt_key": "PROMPT_SEARCH_VEHICLE", "art": "", "art_searched": "", "loot": {},
                               "pool": pool, "initial": {"searched": False}})
 
+    def cache(self, key, pos, asset, pool, prompt, foot=(120, 24), kind="crate"):
+        """Iteration 014 F: an outdoor cache (a snowed-in sled, a hunting camp crate) searched like any container."""
+        self.prop(pos, asset, foot, name=f"C_{key}")
+        self.entities.append({"id": f"{self.rid}.{key}", "type": "container", "kind": kind, "position": [pos[0], pos[1] + 16],
+                              "interact_range": 80, "prompt_key": prompt, "art": "", "art_searched": "", "loot": {},
+                              "pool": pool, "initial": {"searched": False}})
+
     def pines(self, bands, seed=7):
         R = random.Random(seed)
         for (x0, x1, y0, y1) in bands:
@@ -353,6 +360,8 @@ def junction(interiors):
     o.map_landmarks.append({"kind": "building", "position": [2860, SB - 60], "size": [140, 90], "label_key": "MAP_WATER_TOWER"})
     o.vehicle_container("truck", (1300, RY + 120), "prop.truck_wreck", "vehicle_truck", flip=True)
     o.vehicle_container("sedan", (2400, RY - 120), "prop.car_sedan", "vehicle_car")
+    o.cache("sled", (1460, 430), "prop.sled", "wilderness_frozen", "PROMPT_SEARCH_SLED")
+    o.cache("hunting_camp", (3010, 1610), "build.crate", "hunter_cabin", "PROMPT_SEARCH_HUNTING_CAMP", foot=(80, 20))
     for xl in (300, 1000, 1900, 2700):
         o.prop((xl, NB + 58), "world.town_streetlamp", (10, 8))
     o.pines([(40, 3160, 60, 380), (40, 3160, 1780, 2160)], seed=72)
@@ -422,6 +431,8 @@ def greyhollow(interiors):
     sp = interiors("greyhollow.store_shed", "REGION_GREYHOLLOW_STORE_SHED", 2350, NB, "greyhollow")
     o.building("store_shed", 2350, NB + 20, "MAP_STORAGE", enter=("greyhollow.store_shed", sp, "PROMPT_ENTER_BUILDING"))
     o.vehicle_container("ore_truck", (1100, RY + 150), "prop.truck_wreck", "vehicle_truck")
+    o.cache("hunting_camp", (560, 420), "build.crate", "hunter_cabin", "PROMPT_SEARCH_HUNTING_CAMP", foot=(80, 20))
+    o.cache("sled", (2820, 1640), "prop.sled", "wilderness_frozen", "PROMPT_SEARCH_SLED")
     for xl in (400, 900, 1900, 2600):
         o.prop((xl, NB + 58), "world.town_streetlamp", (10, 8))
     o.pines([(40, 1250, 60, 380), (40, 2960, 1900, 2160), (2950, 2990, 60, 2100)], seed=82)

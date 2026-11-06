@@ -10,7 +10,8 @@ extends RefCounted
 ##   * start   — request_interact on an unsearched container: state {by, from, until}
 ##   * cancel  — the same request again, or the searcher walks away, leaves the
 ##               region, gets into a vehicle, dies or disconnects (no reward, no XP)
-##   * finish  — step(): state {searched: true, items, gear} = the authored contents;
+##   * finish  — step(): state {searched: true, items, gear} = the authored contents,
+##               or (iteration 014) a seeded roll from the container's "pool" (LootPools);
 ##               the searcher gets Scavenging XP once (an empty container still
 ##               teaches a little, once); noise by container kind
 ## Afterwards the container is a small shared box: anyone can take what is left
@@ -120,6 +121,12 @@ static func _finish(world: WorldState, p: PlayerState, region: RegionState, eid:
 		if Items.exists(str(g)):
 			gear.append(Inv.new_gear(world, str(g)))
 			finds += 1
+	if def.has("pool") and items.is_empty() and gear.is_empty():
+		# Iteration 014 F: a contextual, seeded roll from the container's loot pool (once).
+		var rolled := LootPools.roll(world, str(def["pool"]), eid)
+		items = rolled["items"]
+		gear = rolled["gear"]
+		finds += Items.total(items) + gear.size()
 	region.set_fields(eid, {"searched": true, "items": items, "gear": gear, "by": "", "from": 0, "until": 0})
 	var loud := str(def.get("kind", "")) in (SkillSim.cfg("scavenging").get("loud_kinds", []) as Array)
 	ZombieSim.make_noise(world, region.region_id, Content.entity_position(def), "search_loud" if loud else "search")

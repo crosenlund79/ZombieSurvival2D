@@ -140,6 +140,20 @@ asset_id = "prop.car_sedan"
 footprint = Vector2(190, 30)
 occlude = true
 
+[node name="C_sled" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(1460, 430)
+asset_id = "prop.sled"
+footprint = Vector2(120, 24)
+occlude = true
+
+[node name="C_hunting_camp" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(3010, 1610)
+asset_id = "build.crate"
+footprint = Vector2(80, 20)
+occlude = true
+
 [node name="P4" type="Node2D" parent="YSort"]
 script = ExtResource("prop")
 position = Vector2(300, 1018)
@@ -684,6 +698,14 @@ entity_id = "junction.truck"
 [node name="E_sedan" type="Node2D" parent="YSort"]
 script = ExtResource("containerv")
 entity_id = "junction.sedan"
+
+[node name="E_sled" type="Node2D" parent="YSort"]
+script = ExtResource("containerv")
+entity_id = "junction.sled"
+
+[node name="E_hunting_camp" type="Node2D" parent="YSort"]
+script = ExtResource("containerv")
+entity_id = "junction.hunting_camp"
 
 [node name="Grass" type="Node2D" parent="YSort"]
 script = ExtResource("scatter")
