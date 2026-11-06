@@ -2079,7 +2079,71 @@ def scenario_circuit_multi():
             i.kill()
 
 
-SCENARIOS = {"circuit_multi": scenario_circuit_multi, "side_multi": scenario_side_multi, "blood_multi": scenario_blood_multi, "custom_graphics": scenario_custom_graphics, "wild_multi": scenario_wild_multi, "vehicle_multi": scenario_vehicle_multi, "winter_multi": scenario_winter_multi, "red_thaw_multi": scenario_red_thaw_multi, "perf_multi": scenario_perf_multi, "slice": scenario_slice, "settlement_multi": scenario_settlement_multi, "world_multi": scenario_world_multi, "craft_multi": scenario_craft_multi, "build_multi": scenario_build_multi, "accept": scenario_accept, "infra_multi": scenario_infra_multi, "dig_multi": scenario_dig_multi, "danger_single": scenario_danger_single, "danger_multi": scenario_danger_multi, "settings": scenario_settings, "bunker_single": scenario_bunker_single, "bunker_multi": scenario_bunker_multi, "single": scenario_single, "multiplayer": scenario_multiplayer,
+def scenario_progression_multi():
+    """Iteration 013 C: Scavenging progression and the developer Progression tools with two
+    real instances — clients can never grant XP or change the multiplier (even with client
+    dev commands allowed), multipliers 0/1/5/10/25 scale newly earned XP only, grant / set
+    level / reset, faster searches at higher levels, and the multiplier is not saved."""
+    CIRCUIT_POS.update(_load_circuit_positions())
+    host = Instance("t_phost"); c = Instance("t_pclient")
+    for i in (host, c):
+        i.wipe()
+    try:
+        host.start(); c.start()
+        host.cmd("set dev allow_client_dev_commands 1")
+        host.cmd(f"host {PORT} new 214 Hosty"); host.cmd("tips off"); host.cmd("dev peaceful 1"); host.cmd("dev time 12")
+        r = c.cmd(f"join 127.0.0.1 {PORT} Cleo"); c.cmd("tips off")
+        check("prog: client joins", r["ok"], r["error"])
+        c.cmd("dev xp_multiplier 25"); c.cmd("dev grant_xp 500"); c.cmd("dev set_skill_level 10"); time.sleep(0.4)
+        hs = host.state()
+        check("prog: a client cannot change the XP multiplier", hs["xp_multiplier"] == 1.0, hs["xp_multiplier"])
+        check("prog: a client cannot grant itself XP or levels", player(hs, "Cleo")["scav_xp"] == 0, player(hs, "Cleo")["scav_xp"])
+        # earned XP at different multipliers (base: grocery aisle_a = 12 + 2*3 = 18)
+        _enter_shop(c, "grocery", (632, 880)); _enter_shop(host, "grocery", (632, 880))
+        host.cmd("dev xp_multiplier 5"); time.sleep(0.3)
+        check("prog: the client sees the active multiplier", c.state()["xp_multiplier"] == 5.0, c.state()["xp_multiplier"])
+        _search(c, "town.grocery", "aisle_a", 6.0)
+        x5 = player(host.state(), "Cleo")["scav_xp"]
+        check("prog: 5x multiplies newly earned XP", x5 == 90, x5)
+        host.cmd("dev xp_multiplier 0"); time.sleep(0.2)
+        _search(c, "town.grocery", "aisle_b", 6.0)
+        check("prog: 0x gives no XP", player(host.state(), "Cleo")["scav_xp"] == x5, player(host.state(), "Cleo")["scav_xp"])
+        check("prog: earlier XP is not changed by a new multiplier", player(host.state(), "Cleo")["scav_xp"] == 90, "")
+        host.cmd("dev xp_multiplier 10"); time.sleep(0.2)
+        _search(host, "town.grocery", "aisle_d", 6.0)
+        hx = player(host.state(), "Hosty")["scav_xp"]
+        check("prog: 10x on the host's own search", hx == 160, hx)   # 12 + 2*2 = 16 -> 160
+        host.cmd("dev xp_multiplier 25"); time.sleep(0.2)
+        _search(host, "town.grocery", "freezer_a", 5.0)
+        check("prog: 25x", player(host.state(), "Hosty")["scav_xp"] == hx + 400, player(host.state(), "Hosty")["scav_xp"])
+        host.cmd("dev xp_multiplier 1"); time.sleep(0.2)
+        check("prog: back to 1x", host.state()["xp_multiplier"] == 1.0, host.state()["xp_multiplier"])
+        host.cmd("dev reset_skill 0|all"); time.sleep(0.3)
+        hs = host.state()
+        check("prog: reset Scavenging (everyone)", player(hs, "Hosty")["scav_xp"] == 0 and player(hs, "Cleo")["scav_xp"] == 0, "")
+        host.cmd("dev grant_xp 100|all"); time.sleep(0.3)
+        hs = host.state()
+        check("prog: grant XP to everyone (raw, no multiplier)", player(hs, "Hosty")["scav_xp"] == 100 and player(hs, "Cleo")["scav_xp"] == 100, "")
+        check("prog: the client sees its granted XP", player(c.state(), "Cleo")["scav_xp"] == 100, player(c.state(), "Cleo")["scav_xp"])
+        host.cmd("dev set_skill_level 5"); time.sleep(0.3)
+        check("prog: set level 5 (host)", player(host.state(), "Hosty")["scav_level"] == 5, player(host.state(), "Hosty")["scav_level"])
+        check("prog: the client's level is untouched (100 XP = level 3)", player(host.state(), "Cleo")["scav_level"] == 3, player(host.state(), "Cleo")["scav_level"])
+        _search(host, "town.grocery", "storeroom_shelf", 3.0)
+        check("prog: at level 5 a shelf takes under 3 s", host.state()["entities"]["town.grocery.storeroom_shelf"]["state"].get("searched"), "")
+        _search(c, "town.grocery", "storeroom_crate", 3.0)
+        check("prog: at level 3 a crate is not done in 3 s", not host.state()["entities"]["town.grocery.storeroom_crate"]["state"].get("searched"), "")
+        c.cmd("wait 1.6")
+        check("prog: ... but is done soon after (4.1 s)", host.state()["entities"]["town.grocery.storeroom_crate"]["state"].get("searched"), "")
+        host.cmd("dev xp_multiplier 10"); c.cmd("leave"); host.cmd("save"); host.cmd("leave")
+        host.cmd(f"host {PORT} continue Hosty")
+        check("prog: after a restart the multiplier is 1x again", host.state()["xp_multiplier"] == 1.0, host.state()["xp_multiplier"])
+        check("prog: levels survive the restart", player(host.state(), "Hosty")["scav_level"] == 5, player(host.state(), "Hosty")["scav_level"])
+    finally:
+        for i in (host, c):
+            i.kill()
+
+
+SCENARIOS = {"progression_multi": scenario_progression_multi, "circuit_multi": scenario_circuit_multi, "side_multi": scenario_side_multi, "blood_multi": scenario_blood_multi, "custom_graphics": scenario_custom_graphics, "wild_multi": scenario_wild_multi, "vehicle_multi": scenario_vehicle_multi, "winter_multi": scenario_winter_multi, "red_thaw_multi": scenario_red_thaw_multi, "perf_multi": scenario_perf_multi, "slice": scenario_slice, "settlement_multi": scenario_settlement_multi, "world_multi": scenario_world_multi, "craft_multi": scenario_craft_multi, "build_multi": scenario_build_multi, "accept": scenario_accept, "infra_multi": scenario_infra_multi, "dig_multi": scenario_dig_multi, "danger_single": scenario_danger_single, "danger_multi": scenario_danger_multi, "settings": scenario_settings, "bunker_single": scenario_bunker_single, "bunker_multi": scenario_bunker_multi, "single": scenario_single, "multiplayer": scenario_multiplayer,
              "netfail": scenario_connection_failure, "assets": scenario_assets}
 
 if __name__ == "__main__":

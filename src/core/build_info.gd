@@ -7,14 +7,21 @@ extends RefCounted
 ## "Aftergrowth" (project.godot, SaveCodec.GAME_ID) so saves and the user folder
 ## keep working.
 const GAME_TITLE := "Red Thaw"
-const VERSION := "0.4.0"
-const ITERATION := "012"
-const STAGE := "shadows-and-depth"
+const VERSION := "0.5.0"
+const ITERATION := "013"
+const STAGE := "scavengers-circuit"
 const STATUS := "DEV"
 ## Bumped whenever the network protocol changes incompatibly.
-const PROTOCOL_VERSION := 8
+const PROTOCOL_VERSION := 9
 
 static var _commit := ""
+
+
+## Developer tools (F3 menu, dev commands, cheats) exist only in debug runs — the
+## editor and debug exports. A release export has none, so a normal release
+## build never offers them. "--dev-tools" re-enables them for a release test build.
+static func dev_tools_enabled() -> bool:
+	return OS.is_debug_build() or Paths.has_arg("dev-tools")
 
 
 ## Short commit id, read from .git when running from a git checkout.

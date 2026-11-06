@@ -94,7 +94,7 @@ func _process(_delta: float) -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("dev_overlay"):
-		dev_overlay.visible = not dev_overlay.visible
+		dev_overlay.visible = not dev_overlay.visible and BuildInfo.dev_tools_enabled()
 	elif event.is_action_pressed("screenshot"):
 		take_screenshot("")
 	elif not Session.in_world():

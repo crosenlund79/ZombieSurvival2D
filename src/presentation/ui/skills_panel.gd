@@ -6,6 +6,7 @@ extends PanelContainer
 ## The world keeps running while it is open.
 
 var _body: VBoxContainer
+var _mult: Label
 var _sig := ""
 
 
@@ -22,6 +23,9 @@ func _ready() -> void:
 	_body = VBoxContainer.new()
 	_body.add_theme_constant_override("separation", 6)
 	v.add_child(_body)
+	_mult = UITheme.small("", 12)
+	_mult.modulate = Color(1.0, 0.8, 0.5)
+	v.add_child(_mult)
 	var hint := UITheme.small(tr("SKILLS_HINT"), 12)
 	hint.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	hint.modulate = Color(1, 1, 1, 0.6)
@@ -38,6 +42,9 @@ func _process(_delta: float) -> void:
 	var me := Session.local_player()
 	if me == null:
 		return
+	var m := SkillSim.multiplier(Session.world)
+	_mult.visible = not is_equal_approx(m, 1.0)
+	_mult.text = UITheme.fmt("SKILLS_DEV_MULT", ["%.1f" % m])
 	var rows := rows_for(me)
 	var sig := JSON.stringify(rows)
 	if sig == _sig:

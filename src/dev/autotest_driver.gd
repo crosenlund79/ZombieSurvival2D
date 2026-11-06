@@ -271,6 +271,10 @@ func _run(line: String) -> void:
 			match a[0]:
 				"dev":
 					main.dev_overlay.visible = on
+				"dev_tab":
+					# "ui dev_tab <n>": show the developer menu on tab n (iteration 013 screenshots)
+					main.dev_overlay.visible = true
+					main.dev_overlay.select_tab(int(a[1]))
 				"pause":
 					main.pause_menu.visible = on
 				"map":
@@ -352,6 +356,7 @@ func _state() -> Dictionary:
 		if sensor != null and sensor.focused != null:
 			s["focused"] = {"id": sensor.focused.entity_id, "lit": sensor.focused._lit.size()}
 		s["blood_count"] = w.blood.size()
+		s["xp_multiplier"] = SkillSim.multiplier(w)
 		var meb := Session.local_player()
 		if meb != null and w.region(meb.region_id) != null:
 			s["terrain_dug"] = (w.region(meb.region_id).terrain.get("dug", {}) as Dictionary).size()

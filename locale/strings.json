@@ -2814,5 +2814,53 @@
 	"SKILL_LEVEL_UP": {
 		"en": "%s reached level %s — an ordinary search now takes %s s",
 		"da": "%s nåede niveau %s — en almindelig søgning tager nu %s s"
+	},
+	"DEV_TAB_WORLD": {
+		"en": "World",
+		"da": "Verden"
+	},
+	"DEV_TAB_PLAYER": {
+		"en": "Player",
+		"da": "Spiller"
+	},
+	"DEV_TAB_PROGRESSION": {
+		"en": "Progression",
+		"da": "Udvikling"
+	},
+	"DEV_XP_MULT": {
+		"en": "Skill XP multiplier: ×%s (all skills, new XP only)",
+		"da": "Færdigheds-XP-multiplikator: ×%s (alle færdigheder, kun ny XP)"
+	},
+	"DEV_XP_RESET_MULT": {
+		"en": "Reset 1×",
+		"da": "Nulstil 1×"
+	},
+	"DEV_XP_ALL_PLAYERS": {
+		"en": "Apply XP / level / reset to every player",
+		"da": "Giv XP / niveau / nulstil til alle spillere"
+	},
+	"DEV_SET_LEVEL": {
+		"en": "Level %d",
+		"da": "Niveau %d"
+	},
+	"DEV_RESET_SCAV": {
+		"en": "Reset Scavenging",
+		"da": "Nulstil Plyndring"
+	},
+	"DEV_SCAV_LINE": {
+		"en": "Scavenging level %s · %s XP · ordinary search %s s",
+		"da": "Plyndring niveau %s · %s XP · almindelig søgning %s s"
+	},
+	"DEV_PROGRESSION_HOST_ONLY": {
+		"en": "Progression cheats are host only.",
+		"da": "Udviklingssnyd er kun for værten."
+	},
+	"DEV_DISABLED": {
+		"en": "Developer tools are not available in this build.",
+		"da": "Udviklerværktøjer findes ikke i denne version."
+	},
+	"SKILLS_DEV_MULT": {
+		"en": "Developer XP multiplier ×%s active",
+		"da": "Udviklerens XP-multiplikator ×%s er slået til"
 	}
 }

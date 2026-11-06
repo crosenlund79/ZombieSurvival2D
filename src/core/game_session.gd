@@ -906,7 +906,20 @@ func _peer_of(player_id: String) -> int:
 	return 0
 
 
+## Progression cheats (iteration 013): host only, even when the host lets clients
+## use other developer commands — a client can never grant XP or change the multiplier.
+const HOST_ONLY_DEV: Array[String] = ["xp_multiplier", "grant_xp", "set_skill_level", "reset_skill"]
+
+
 func _host_dev_command(peer_id: int, cmd: String, arg: Variant) -> void:
+	if not BuildInfo.dev_tools_enabled():
+		SessionLog.warn("dev", "command_disabled_in_release", {"peer": peer_id, "cmd": cmd})
+		_send_action_result(peer_id, 0, false, "DEV_DISABLED")
+		return
+	if peer_id != 1 and cmd in HOST_ONLY_DEV:
+		SessionLog.warn("dev", "progression_command_refused", {"peer": peer_id, "cmd": cmd})
+		_send_action_result(peer_id, 0, false, "DEV_HOST_ONLY")
+		return
 	if peer_id != 1 and not bool(Settings.get_value("dev", "allow_client_dev_commands", false)):
 		SessionLog.warn("dev", "client_command_refused", {"peer": peer_id, "cmd": cmd})
 		_send_action_result(peer_id, 0, false, "DEV_HOST_ONLY")
@@ -995,6 +1008,31 @@ func _host_dev_command(peer_id: int, cmd: String, arg: Variant) -> void:
 						var de := Build.damage_entity(world, reg9, eid, float(arg) if arg != null else 40.0)
 						out["changes"].append_array(de["changes"])
 				_publish_result(out)
+		"xp_multiplier":
+			world.meta["xp_multiplier"] = SkillSim.clamp_multiplier(str(arg).to_float() if arg != null else 1.0)
+			SessionLog.info("dev", "xp_multiplier", {"value": world.meta["xp_multiplier"]})
+			_publish_result({"ok": true, "reason": "", "reason_args": [], "changes": [], "players": [], "bunkers": [],
+				"transition": {}, "notice": {}, "meta": true})
+		"grant_xp", "set_skill_level", "reset_skill":
+			# arg "<amount|level>" for the host's own character, "<amount|level>|all" for every player.
+			var parts9 := str(arg if arg != null else "").split("|")
+			var targets: Array = world.players.values() if parts9.size() > 1 and parts9[1] == "all" else [world.players.get(pid)]
+			var touched: Array = []
+			for tp in targets:
+				if tp == null:
+					continue
+				match cmd:
+					"grant_xp":
+						SkillSim.award(world, tp, "scavenging", roundi(parts9[0].to_float()), true)  # raw: the multiplier is for earned XP
+					"set_skill_level":
+						SkillSim.set_level(tp, "scavenging", roundi(parts9[0].to_float()))
+					"reset_skill":
+						SkillSim.reset(tp, "scavenging")
+				touched.append(tp.player_id)
+				SessionLog.info("dev", cmd, {"player": tp.player_id.substr(0, 6), "xp": SkillSim.xp(tp, "scavenging")})
+			var sk := WorldActions._ok()
+			sk["players"] = touched
+			_publish_result(sk)
 		"report":
 			var path := DevPreset.write_report(world, pid)
 			_send_notice(peer_id, "DEV_REPORT_WRITTEN", [path])

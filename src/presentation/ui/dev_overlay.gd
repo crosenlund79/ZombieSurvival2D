@@ -8,86 +8,206 @@ signal rebuild_view_requested
 signal screenshot_requested
 
 var _text: Label
+var _tabs: TabContainer
+
+
+func select_tab(i: int) -> void:
+	if _tabs != null:
+		_tabs.current_tab = clampi(i, 0, _tabs.get_tab_count() - 1)
 
 
 func _ready() -> void:
 	set_anchors_preset(Control.PRESET_TOP_RIGHT)
-	offset_left = -380
+	offset_left = -400
 	offset_right = -10
 	offset_top = 40
 	var panel := PanelContainer.new()
-	panel.custom_minimum_size = Vector2(370, 0)
+	panel.custom_minimum_size = Vector2(390, 0)
 	add_child(panel)
 	var v := VBoxContainer.new()
 	panel.add_child(v)
 	v.add_child(UITheme.heading("DEV_TITLE", 16))
 	_text = UITheme.small("", 12)
 	_text.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_text.custom_minimum_size = Vector2(340, 0)
-	v.add_child(_text)
-	var g := GridContainer.new()
-	g.columns = 2
-	v.add_child(g)
-	_btn(g, "DEV_SAVE", func() -> void: Session.request_dev_command("save"))
-	_btn(g, "DEV_CLOCK", func() -> void: Session.request_dev_command("advance_clock", 3600.0))
-	_btn(g, "DEV_SPAWN", func() -> void: Session.request_dev_command("spawn"))
-	_btn(g, "DEV_RELOAD_ASSETS", func() -> void: Assets.reload())
-	_btn(g, "DEV_REBUILD_VIEW", func() -> void: rebuild_view_requested.emit())
-	_btn(g, "DEV_SCREENSHOT", func() -> void: screenshot_requested.emit())
-	_btn(g, "DEV_CREATE_LEVEL", func() -> void: Session.request_dev_command("create_level"))
-	_btn(g, "DEV_BUNKER_VIEW", func() -> void:
-		var m := get_tree().root.get_node_or_null("Main")
-		if m != null:
-			m.toggle_bunker_view())
-	_btn(g, "DEV_SPAWN_ZOMBIE", func() -> void: Session.request_dev_command("spawn_zombie"))
-	_btn(g, "DEV_SPAWN_GROUP", func() -> void: Session.request_dev_command("spawn_group"))
-	_btn(g, "DEV_NOISE", func() -> void: Session.request_dev_command("noise", 1.0))
-	_btn(g, "DEV_HURT", func() -> void: Session.request_dev_command("hurt", 25.0))
-	_btn(g, "DEV_HEAL", func() -> void: Session.request_dev_command("heal"))
-	_btn(g, "DEV_PEACEFUL", func() -> void:
-		Session.request_dev_command("peaceful", 1.0 if Session.world != null and Session.world.threat.enabled else 0.0))
-	_btn(g, "DEV_GRANT_TIMBER", func() -> void: Session.request_dev_command("grant_stock", 12.0))
-	_btn(g, "DEV_GRANT_SUPPLIES", func() -> void:
-		Session.request_dev_command("grant", "fuel:2")
-		Session.request_dev_command("grant", "water_dirty:3"))
-	_btn(g, "DEV_THIRST", func() -> void: Session.request_dev_command("thirst", 20.0))
-	_btn(g, "DEV_NIGHT", func() -> void: Session.request_dev_command("time", 22.0))
-	_btn(g, "DEV_DAY", func() -> void: Session.request_dev_command("time", 9.0))
-	_btn(g, "DEV_RAIN", func() -> void:
+	_text.custom_minimum_size = Vector2(360, 0)
+	var info := ScrollContainer.new()
+	info.custom_minimum_size = Vector2(0, 230)
+	info.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	info.add_child(_text)
+	v.add_child(info)
+	# Iteration 013: commands grouped in categories. Every command that changes the
+	# shared world is a host request (Session.request_dev_command).
+	var tabs := TabContainer.new()
+	_tabs = tabs
+	tabs.custom_minimum_size = Vector2(0, 300)
+	v.add_child(tabs)
+	var world_tab := _tab(tabs, "DEV_TAB_WORLD")
+	var player_tab := _tab(tabs, "DEV_TAB_PLAYER")
+	var prog := VBoxContainer.new()
+	prog.name = "DEV_TAB_PROGRESSION"
+	tabs.add_child(prog)
+	tabs.set_tab_title(2, tr("DEV_TAB_PROGRESSION"))
+	# --- World
+	_btn(world_tab, "DEV_SAVE", func() -> void: Session.request_dev_command("save"))
+	_btn(world_tab, "DEV_CLOCK", func() -> void: Session.request_dev_command("advance_clock", 3600.0))
+	_btn(world_tab, "DEV_NIGHT", func() -> void: Session.request_dev_command("time", 22.0))
+	_btn(world_tab, "DEV_DAY", func() -> void: Session.request_dev_command("time", 9.0))
+	_btn(world_tab, "DEV_RAIN", func() -> void:
 		# cycle through every weather kind
 		var ks := EnvSim.KINDS
 		var cur := ks.find(EnvSim.weather(Session.world)) if Session.world != null else 0
 		Session.request_dev_command("weather", ks[(cur + 1) % ks.size()]))
-	_btn(g, "DEV_COLD", func() -> void: Session.request_dev_command("warmth", 25.0))
-	_btn(g, "DEV_HEAT", func() -> void: Session.request_dev_command("heat", 60.0))
-	_btn(g, "DEV_SIEGE", func() -> void: Session.request_dev_command("siege", 15.0))
-	_btn(g, "DEV_HUNGER", func() -> void: Session.request_dev_command("hunger", 20.0))
-	_btn(g, "DEV_GRANT_KIT", func() -> void:
+	_btn(world_tab, "DEV_PEACEFUL", func() -> void:
+		Session.request_dev_command("peaceful", 1.0 if Session.world != null and Session.world.threat.enabled else 0.0))
+	_btn(world_tab, "DEV_SPAWN_ZOMBIE", func() -> void: Session.request_dev_command("spawn_zombie"))
+	_btn(world_tab, "DEV_SPAWN_GROUP", func() -> void: Session.request_dev_command("spawn_group"))
+	_btn(world_tab, "DEV_NOISE", func() -> void: Session.request_dev_command("noise", 1.0))
+	_btn(world_tab, "DEV_HUNT", func() -> void: Session.request_dev_command("hunt"))
+	_btn(world_tab, "DEV_AMBIENT", func() -> void:
+		Session.request_dev_command("ambient", 0.0 if Session.world != null and Session.world.threat.ambient else 1.0))
+	_btn(world_tab, "DEV_SIEGE", func() -> void: Session.request_dev_command("siege", 15.0))
+	_btn(world_tab, "DEV_HEAT", func() -> void: Session.request_dev_command("heat", 60.0))
+	_btn(world_tab, "DEV_CREATE_LEVEL", func() -> void: Session.request_dev_command("create_level"))
+	_btn(world_tab, "DEV_BUNKER_VIEW", func() -> void:
+		var m := get_tree().root.get_node_or_null("Main")
+		if m != null:
+			m.toggle_bunker_view())
+	_btn(world_tab, "DEV_DAMAGE", func() -> void: Session.request_dev_command("damage_structures", 60.0))
+	_btn(world_tab, "DEV_REPAIR_ALL", func() -> void: Session.request_dev_command("repair_structures"))
+	_btn(world_tab, "DEV_RECRUIT", func() -> void: Session.request_dev_command("recruit", "mara"))
+	_btn(world_tab, "DEV_JOB_WATER", func() -> void: Session.request_dev_command("npc_job", "water"))
+	_btn(world_tab, "DEV_JOB_FARM", func() -> void: Session.request_dev_command("npc_job", "farm"))
+	_btn(world_tab, "DEV_AI_LABELS", func() -> void: ZombieView.show_debug = not ZombieView.show_debug)
+	_btn(world_tab, "DEV_RELOAD_ASSETS", func() -> void: Assets.reload())
+	_btn(world_tab, "DEV_REBUILD_VIEW", func() -> void: rebuild_view_requested.emit())
+	_btn(world_tab, "DEV_SCREENSHOT", func() -> void: screenshot_requested.emit())
+	_btn(world_tab, "DEV_REPORT", func() -> void: Session.request_dev_command("report"))
+	# --- Player
+	_btn(player_tab, "DEV_SPAWN", func() -> void: Session.request_dev_command("spawn"))
+	_btn(player_tab, "DEV_HURT", func() -> void: Session.request_dev_command("hurt", 25.0))
+	_btn(player_tab, "DEV_HEAL", func() -> void: Session.request_dev_command("heal"))
+	_btn(player_tab, "DEV_THIRST", func() -> void: Session.request_dev_command("thirst", 20.0))
+	_btn(player_tab, "DEV_HUNGER", func() -> void: Session.request_dev_command("hunger", 20.0))
+	_btn(player_tab, "DEV_COLD", func() -> void: Session.request_dev_command("warmth", 25.0))
+	_btn(player_tab, "DEV_GRANT_TIMBER", func() -> void: Session.request_dev_command("grant_stock", 12.0))
+	_btn(player_tab, "DEV_GRANT_SUPPLIES", func() -> void:
+		Session.request_dev_command("grant", "fuel:2")
+		Session.request_dev_command("grant", "water_dirty:3"))
+	_btn(player_tab, "DEV_GRANT_KIT", func() -> void:
 		for it in ["scrap_metal:8", "cement:4", "spike_kit:2", "timber_frame:1", "grow_light:1", "cloth:4", "electrical_parts:2"]:
 			Session.request_dev_command("grant", it))
-	_btn(g, "DEV_DAMAGE", func() -> void: Session.request_dev_command("damage_structures", 60.0))
-	_btn(g, "DEV_REPAIR_ALL", func() -> void: Session.request_dev_command("repair_structures"))
-	_btn(g, "DEV_RECRUIT", func() -> void: Session.request_dev_command("recruit", "mara"))
-	_btn(g, "DEV_JOB_WATER", func() -> void: Session.request_dev_command("npc_job", "water"))
-	_btn(g, "DEV_JOB_FARM", func() -> void: Session.request_dev_command("npc_job", "farm"))
-	_btn(g, "DEV_REPORT", func() -> void: Session.request_dev_command("report"))
-	_btn(g, "DEV_AI_LABELS", func() -> void: ZombieView.show_debug = not ZombieView.show_debug)
-	_btn(g, "DEV_HUNT", func() -> void: Session.request_dev_command("hunt"))
-	_btn(g, "DEV_AMBIENT", func() -> void:
-		Session.request_dev_command("ambient", 0.0 if Session.world != null and Session.world.threat.ambient else 1.0))
+	# --- Progression (host only)
+	_build_progression(prog)
 
 
-func _btn(parent: Control, key: String, cb: Callable) -> void:
+## Progression tab: the XP multiplier (shared by every present and future skill,
+## applies to XP earned from now on, never retroactive) and Scavenging cheats.
+## Host only — on a client the controls are shown disabled.
+var _mult_label: Label
+var _mult_slider: HSlider
+var _prog_label: Label
+var _prog_controls: Array[Control] = []
+var _target_all: CheckBox
+var _syncing := false
+
+
+func _build_progression(v: VBoxContainer) -> void:
+	_prog_label = UITheme.small("", 12)
+	_prog_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	v.add_child(_prog_label)
+	_mult_label = UITheme.small("", 13)
+	v.add_child(_mult_label)
+	var m: Dictionary = SkillSim.data().get("xp_multiplier", {})
+	_mult_slider = HSlider.new()
+	_mult_slider.min_value = float(m.get("min", 0.0))
+	_mult_slider.max_value = float(m.get("max", 25.0))
+	_mult_slider.step = 0.5
+	_mult_slider.value = 1.0
+	_mult_slider.custom_minimum_size = Vector2(340, 20)
+	_mult_slider.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_mult_slider.value_changed.connect(func(val: float) -> void:
+		if not _syncing:
+			Session.request_dev_command("xp_multiplier", val))
+	v.add_child(_mult_slider)
+	_prog_controls.append(_mult_slider)
+	var quick := HBoxContainer.new()
+	v.add_child(quick)
+	for q in m.get("quick", [1, 5, 10, 25]):
+		var qv := float(q)
+		_prog_controls.append(_btn(quick, "%d×" % int(qv), func() -> void: Session.request_dev_command("xp_multiplier", qv)))
+	_prog_controls.append(_btn(quick, "DEV_XP_RESET_MULT", func() -> void: Session.request_dev_command("xp_multiplier", 1.0)))
+	_target_all = CheckBox.new()
+	_target_all.text = "DEV_XP_ALL_PLAYERS"
+	_target_all.add_theme_font_size_override("font_size", 12)
+	v.add_child(_target_all)
+	_prog_controls.append(_target_all)
+	var g := GridContainer.new()
+	g.columns = 3
+	v.add_child(g)
+	for amount in [25, 100, 500]:
+		var a: int = amount
+		_prog_controls.append(_btn(g, "+%d XP" % a, func() -> void: Session.request_dev_command("grant_xp", _target_arg(str(a)))))
+	for lvl in [1, 5, 10]:
+		var l: int = lvl
+		_prog_controls.append(_btn(g, tr("DEV_SET_LEVEL") % l, func() -> void: Session.request_dev_command("set_skill_level", _target_arg(str(l)))))
+	_prog_controls.append(_btn(g, "DEV_RESET_SCAV", func() -> void: Session.request_dev_command("reset_skill", _target_arg("0"))))
+
+
+func _target_arg(base: String) -> String:
+	return base + ("|all" if _target_all != null and _target_all.button_pressed else "")
+
+
+func _tab(tabs: TabContainer, key: String) -> GridContainer:
+	var scroll := ScrollContainer.new()
+	scroll.name = key
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	tabs.add_child(scroll)
+	tabs.set_tab_title(tabs.get_tab_count() - 1, tr(key))
+	var g := GridContainer.new()
+	g.columns = 2
+	g.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	scroll.add_child(g)
+	return g
+
+
+func _btn(parent: Control, key: String, cb: Callable) -> Button:
 	var b := Button.new()
 	b.text = key
 	b.add_theme_font_size_override("font_size", 12)
 	b.pressed.connect(cb)
 	parent.add_child(b)
+	return b
+
+
+func _refresh_progression() -> void:
+	if _mult_label == null:
+		return
+	var w := Session.world
+	var mult := SkillSim.multiplier(w)
+	_mult_label.text = UITheme.fmt("DEV_XP_MULT", ["%.1f" % mult])
+	_syncing = true
+	_mult_slider.set_value_no_signal(mult)
+	_syncing = false
+	var host := Session.is_authority()
+	for c in _prog_controls:
+		if c is BaseButton:
+			(c as BaseButton).disabled = not host
+		elif c is Range:
+			(c as Range).editable = host
+	var me := Session.local_player()
+	var line := ""
+	if me != null:
+		var pr := SkillSim.progress(me, "scavenging")
+		line = UITheme.fmt("DEV_SCAV_LINE", [pr["level"], pr["xp"], "%.1f" % SkillSim.search_seconds_at("shelf", int(pr["level"]))])
+	if not host:
+		line += "\n" + tr("DEV_PROGRESSION_HOST_ONLY")
+	_prog_label.text = line
 
 
 func _process(_delta: float) -> void:
 	if not visible:
 		return
+	_refresh_progression()
 	var lines: Array[String] = []
 	lines.append(BuildInfo.label())
 	lines.append("engine %s · renderer %s · instance '%s' · %d fps · %d nodes" % [Engine.get_version_info().get("string", "?"),
