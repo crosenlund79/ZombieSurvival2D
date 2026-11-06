@@ -411,7 +411,56 @@ Nothing broadcasts the whole world per frame. Protocol 5.
 - **Not saved:** horde and extra wanderer zombies. An active defence event respawns its remaining
   horde once after loading.
 
-## 18. Dependency direction
+## 18. The World Awakens (iteration 011)
+
+The same pattern again: plain data, host-only rules in `src/sim/*`, results published by
+`GameSession._publish_result`, views that read and request. `Simulation.advance` now runs: job
+completion → `ZombieSim` → `SurvivalSim` → `InfraSim` → `FarmSim` → `EnvSim` → `EventSim` → `NpcSim` →
+`SleepSim` → `VehicleSim` → `WildlifeSim`.
+
+**State added (save schema 4, all optional):**
+
+| Where | What | Saved |
+|---|---|---|
+| `WorldState.vehicles` | `VehicleState`: def, region, position, rotation, engine, seats (0 = driver), trunk `{items, gear}`, key/locked (reserved) | yes |
+| `WorldState.animals` | `AnimalState` wolves and bears | no (rebuilt from content) |
+| `PlayerState` | `warmth`, `vehicle_id` (saved); `flashlight` (runtime, replicated in the vitals row) | partly |
+| `WorldState.meta` | `sleep_vote`, `last_screech` | yes (meta) |
+| `ZombieState` | posture, burst, listen, screech cooldown, search (transient) | no |
+
+**Modules:** `SleepSim` (shelter groups, vote, chunked sleep), `VehicleSim` (seats, engine, trunk,
+validated driver poses, road exits, ejecting downed or disconnected occupants, engine noise),
+`WildlifeSim` (roam / watch / flee / call), `WorldActions.ensure_prebuilt_shelters` (bunkers for shelter
+sites authored as already built, e.g. the Ashgrove cellar), `Inv.toggle_flashlight`.
+
+**Network.**
+
+| Message | Direction | Reliability |
+|---|---|---|
+| `_rpc_request_vehicle(id, action, arg)` | client → host | reliable |
+| `_rpc_submit_vehicle_pose(id, pos, rot, speed, steer)` | driver → host, 20 Hz | unreliable ordered |
+| `_rpc_vehicles(rows)` | host → all, at the snapshot rate | unreliable ordered |
+| `_rpc_vehicle(id, full state)` | host → all, on seat/engine/trunk/region change | reliable |
+| `_rpc_vehicle_correct(id, pos, rot)` | host → driver, when a pose is rejected | reliable |
+| `_rpc_animals(rows)` | host → all, at the snapshot rate | unreliable ordered |
+| `_rpc_request_sleep_vote(yes)` | client → host | reliable |
+
+A result can now carry `transitions` (several players changing region together, e.g. a car and its
+occupants), `roster`, `vehicles`, `broadcast_notice`, `private_notice` and `sleep_ticks`. The local
+driver predicts the car (`VehicleView`, CharacterBody2D with an oblique footprint); the seated avatar
+hides, stops sending moves and follows the car's view; the host keeps occupant positions on the car.
+
+**Regions and roads.** A region can list `vehicles` (authored placements, created once by
+`VehicleSim.ensure`) and `vehicle_exits` (`{rect, target: {region, position, rotation}}`); the front
+bumper entering an exit transfers the car. The map draws every discovered region at its `map.offset`
+and marks exits whose target is undiscovered (`MapPanel.unexplored_exits`).
+
+**Assets.** `AssetResolver.custom_graphics` (setting `assets/use_custom_graphics`) skips image
+overrides when OFF; `set_custom_graphics()` saves the choice and reloads, so every view re-resolves
+through `Assets.reloaded`. The focus highlight is a shared ShaderMaterial put on the focused target's
+own sprites by `Interactable._highlight`.
+
+## 19. Dependency direction
 
 ```
 presentation (main, ui, world views) ──reads/requests──▶ Session ──▶ WorldActions / Simulation ──▶ state

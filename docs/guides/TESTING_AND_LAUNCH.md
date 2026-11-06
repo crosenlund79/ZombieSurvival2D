@@ -119,6 +119,14 @@ The human-facing walkthrough of everything new is in [`../PLAYTEST_GUIDE.md`](..
 **Single Player → Developer Test World** starts a prepared world for quick checks. It marks itself
 "DEVELOPER TEST WORLD" on screen. **New World** is the normal game.
 
+## 3e. The World Awakens (iteration 011)
+
+What is new and how to reach it quickly is in [`../iterations/011_world_awakens.md`](../iterations/011_world_awakens.md)
+and the playtest guide. Developer shortcuts (F3 console commands, host or single player):
+`dev goto service_station` / `dev goto town`, `dev vehicle_here`, `dev weather blizzard`, `dev time 23`,
+`dev warmth 20`, `dev hunt`. Two players on one computer can share the car: the second player presses
+**E** at the car after the first one got in.
+
 ## 4. Saves
 
 Only the host (or single player) saves. Locations (Windows):
@@ -155,6 +163,8 @@ xvfb-run -a -s "-screen 0 1700x1000x24" python3 tools/shots_006.py   # 006-009 s
 xvfb-run -a -s "-screen 0 1700x1000x24" python3 tools/shots_red_thaw.py   # 010 Red Thaw screenshots + runtime checks (CHECK lines)
 python3 tools/mp_test.py accept                           # the 25-step survival-slice acceptance run
 python3 tools/mp_test.py infra_multi dig_multi danger_multi   # iteration 003 two-process scenarios
+python3 tools/mp_test.py winter_multi vehicle_multi wild_multi custom_graphics   # iteration 011 two-process scenarios
+xvfb-run -a -s "-screen 0 1700x1000x24" python3 tools/shots_world_awakens.py   # iteration 011 screenshots + CHECK lines
 xvfb-run -a -s "-screen 0 1700x1000x24" python3 tools/shots_003.py   # iteration 003 screenshots
 ```
 Results are written to `tests/_out/` (ignored by git).

@@ -1,4 +1,4 @@
-# Red Thaw — Playtest Guide (iteration 010; earlier systems from 001–009)
+# Red Thaw — Playtest Guide (iteration 011; earlier systems from 001–010)
 
 This guide is for playing the game and reporting problems. Technical details are in
 [`guides/TESTING_AND_LAUNCH.md`](guides/TESTING_AND_LAUNCH.md). Every number in the game is a prototype
@@ -38,6 +38,9 @@ Two pieces of on-screen help:
 | F5 | Save (host) |
 | F3 | Developer overlay |
 | F12 | Screenshot |
+| G | Engine on / off (in the driver's seat) |
+| E (in a car) | Get out (stop first) · **R** beside the car opens the trunk |
+| L | Flashlight on / off (when you carry one) |
 
 ## 3. What to try (Red Thaw)
 
@@ -68,6 +71,39 @@ yet. F3 → **Start a Burnt One hunt (on me)** sends one after you. Check that:
 
 **Multiplayer.** A second player who joins wakes by the same bag and gets their own kit. Players can be
 in different places: one in the bunker, one in the settlement.
+
+## 3b. What to try (The World Awakens, iteration 011)
+
+**Listen.** Make noise near a Burnt One (F3 → hunt, or chop a tree): it stops, turns and listens, and a
+loud enough noise makes it screech. A few others nearby come to look. Watch them crouch, drop to all
+fours and crawl, with sudden bursts. Look for tracks and blood in the snow behind them.
+
+**Cold and weather.** The Warmth bar falls outside, faster at night and in a blizzard; a coat helps, the
+cabin and bunker warm you up. Weather changes on its own (F3 or `dev weather <kind>` to force one):
+fog, snow, heavy rain, blizzards, thunderstorms with lightning.
+
+**Sleep.** Use the bed in the cabin (or a bedroll) in the evening. Alone you sleep at once. With a second
+player outside, you only get a thought; with both inside, a "Ready to sleep?" vote decides.
+
+**The station wagon.** It is parked at the abandoned settlement, key in the ignition. **E** to get in,
+**G** to start, **W/S/A/D** to drive, **E** to get out (stop first). **R** beside it opens the trunk. Drive
+off the east end of the road to reach **Ashgrove**; the west end leads back home. A second player can ride
+along. At night, turn on the headlights by starting the engine.
+
+**Ashgrove.** Search the grocery, pharmacy, hardware store, clothing store and garage (some spots were
+emptied long ago). Force the hardware case for a flashlight. Enter the house on Main Street: its cellar
+is a second base with storage and a bedroll, upgradeable like the cabin's.
+
+**The map (M).** Your region is outlined in red; roads to places you have not found are marked; the car is
+shown. At night the map darkens.
+
+**Wildlife.** Wolves roam the snow east of the cabin, a bear south of the settlement. They watch you and
+back away; they never attack.
+
+**Flashlight.** Take one from the cabin table and press **L** at night.
+
+**Custom graphics.** Settings → Assets → **Use custom graphics** switches your replacement pictures off
+and on instantly, without touching your files.
 
 ## 4. Two players
 

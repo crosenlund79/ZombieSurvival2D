@@ -3,9 +3,11 @@
 Single source of permanent project rules. Full design context: `docs/HANDOVER.md`.
 
 ## Status
-Visible working title **Red Thaw** (iteration 010: nuclear winter, human madness, Burnt Ones) on
-`iteration/010-red-thaw`; internal project name and save id remain `Aftergrowth`. Systems from
-iterations 001–009 are preserved. Windows acceptance pending for 001–010.
+Visible working title **Red Thaw**; latest work is iteration 011 "The World Awakens" (living Burnt Ones,
+cold and weather, communal sleep, a drivable station wagon, the town of Ashgrove with a cellar base,
+regional map, wildlife, flashlight, audio inbox, custom-graphics switch) on `iteration/011-world-awakens`;
+internal project name and save id remain `Aftergrowth`. Systems from iterations 001–010 are preserved.
+Windows acceptance pending for 001–011.
 Gameplay decision register: `docs/DESIGN_DECISIONS.md` (keep it updated each iteration).
 Do not implement anything that has not been explicitly approved as an assignment by the
 creator. Brainstorms are not feature requests.

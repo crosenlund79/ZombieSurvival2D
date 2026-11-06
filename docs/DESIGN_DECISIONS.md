@@ -71,7 +71,37 @@ Update this file whenever an iteration adds or settles a decision.
 | RD-10 | The existing bunker, survival, construction, crafting, infrastructure, multiplayer, persistence and map systems are preserved | Red Thaw commission |
 | RD-11 | One Burnt One can detect, pursue, navigate, attack, lose and reacquire a target, consistently in multiplayer under host authority. What starts a hunt is undecided: there is only a developer trigger plus diagnostics | Red Thaw commission |
 
+### The World Awakens (iteration 011)
+
+| ID | Decision | Source |
+|---|---|---|
+| WD-01 | Burnt Ones walk upright, crouch and crawl (with bursts), differ individually, listen and screech; a screech alerts a few others, with cooldowns, a responder limit and no chains; restrained signs (tracks, blood, snow), no blood-tracking simulation | World Awakens commission (A) |
+| WD-02 | Simple, persistent, host-authoritative cold exposure with clothing, shelters and heat sources, warnings and mild penalties | World Awakens commission (B) |
+| WD-03 | Dynamic shared weather: fog, heavy rain, blizzards, thunderstorms with lightning (no lightning damage) and calm periods; regional variation | World Awakens commission (B) |
+| WD-04 | Communal sleeping: immediate alone; in multiplayer everyone in the same shelter and a unanimous vote; an inner monologue from real events when someone is outside; sleep advances the real simulation | World Awakens commission (B) |
+| WD-05 | One drivable station wagon, key in the ignition (no repair or fuel quest); driver and passengers in multiplayer; persistent; extensible for keys and locks | World Awakens commission (C) |
+| WD-06 | Hybrid regional world: road exits with defined connections and entry points; the vehicle, its occupants and cargo transfer together; prepared for 4–5 settlements; no fast travel | World Awakens commission (C) |
+| WD-07 | One new major settlement (Ashgrove) with grocery, clothing, hardware, pharmacy, garage and houses, type-matched loot and scavenged-empty spots; one house with an upgradeable basement base | World Awakens commission (C) |
+| WD-08 | Non-aggressive wolves and bears; interactable highlighting; corrected held-weapon alignment; a toggleable flashlight without batteries | World Awakens commission (D) |
+| WD-09 | Selected clips from the creator's audio inbox are used through the replacement system; a client-local "Use custom graphics" switch | World Awakens commission (E) |
+
 ## EXPLORING (prototype choices awaiting a creator decision)
+
+### The World Awakens (iteration 011) — numbers and open choices
+
+| ID | Topic | Current prototype | Where to tune |
+|---|---|---|---|
+| WX-01 | Hearing and screech numbers | Listen at attention ≥ 0.4 for 0.9–1.6 s; screech at ≥ 0.9; 50 s per creature, 14 s per region; at most 3 responders; screech noise radius 680 | `content/tuning/zombies.json` |
+| WX-02 | Posture numbers | Crouch 70 %, crawl 80 % speed, bursts ×1.55 for 1.4 s (6 s cooldown, 35 % chance); temperament pace 0.85–1.15 | `content/tuning/zombies.json` |
+| WX-03 | Cold numbers | Loss 6/min outside at full exposure; chilled < 40, freezing < 18; 2 health/min down to 25; shelter +10/min, bunker +7, power +18, heater +10; jacket 35 %, winter coat 60 % insulation | `content/tuning/environment.json` (`exposure`), `content/items.json` |
+| WX-04 | Weather table | Weights snow .34, fog .24, thunderstorm .15, heavy rain .14, blizzard .13; spells alternate with clear; lightning slot 9 s, chance 40 % in storms | `content/tuning/environment.json` |
+| WX-05 | Sleep rules | Sleep from 17:00 to 06:00, wake at 07:00, +35 health; vote lasts 45 s | `content/tuning/environment.json`, `SleepSim` |
+| WX-06 | Car handling | 430 px/s top speed, 150 reverse, accel 300, brake 560, coast 240, turn 2.1 rad/s; 4 seats, 12-slot trunk; get out below 45 px/s; engine noise every 3 s (radius 520), start noise 600 | `content/vehicles.json`, `zombies.json` noise |
+| WX-07 | Cars and Burnt Ones | Occupants of a closed car are not seen; Burnt Ones do not attack cars (undecided) | `ZombieSim._look` |
+| WX-08 | Wildlife | 3 wolves at the homestead, 1 bear at the settlement, 2 wolves + 1 bear around Ashgrove; notice 460–520 px, flee 260–300 px; transient (not saved); no hunting | `content/tuning/wildlife.json` |
+| WX-09 | Flashlight availability | One per player from the cabin table; one in the Ashgrove hardware case; no batteries | `homestead_farmhouse.json`, `town.json` |
+| WX-10 | Ashgrove loot | Restock 30–50 min for ordinary spots; unique cases (flashlight + hatchet, winter coat); 4 picked-clean spots | `content/regions/town.json` |
+
 
 | ID | Topic | Current prototype (Red Thaw) | Where to tune |
 |---|---|---|---|
@@ -121,7 +151,7 @@ Update this file whenever an iteration adds or settles a decision.
 |---|---|---|
 | RF-01 | Elaborate catastrophe lore; where the Burnt Ones come from | The mystery is intentional |
 | RF-02 | Full blood-tracking gameplay (temperature-driven thawing, trails, tracking) | The motif exists only as art (RX-05) |
-| RF-03 | Large settlements and factions | One small settlement |
+| RF-03 | Large settlements and factions | The settlement and Ashgrove (iteration 011); the road east is blocked, prepared for 4–5 settlements |
 | RF-04 | Narrative campaign | Sandbox only |
 | RF-05 | New major biome systems | Pine woods and the settlement only |
 | RF-06 | Fast travel, route planning and ambush travel | The map shows and never moves you |
@@ -131,9 +161,12 @@ Update this file whenever an iteration adds or settles a decision.
 | GF-04 | Cooking, nutrition, sickness, food spoilage | Only simple hunger exists |
 | GF-05 | Ranged weapons, item rarities, skill trees | Small fixed equipment set |
 | GF-06 | Power wiring, capacity, multiple machine loads | The power model is logical (GX-11) |
-| GF-07 | Seasons, temperature, further weather kinds | One weather condition (rain) |
+| GF-07 | Seasons | Weather kinds and cold exposure exist since iteration 011; no seasons |
 | GF-08 | Item icons, drag-and-drop inventory | Text-based inventory panel |
 | GF-09 | More regions, biomes, fast travel (incl. ambushes) | Homestead + service station only |
 | GF-11 | Lower-level construction gameplay, load-bearing floors | Developer levels only |
 | GF-12 | Survivor relationships, morale, schedules, more survivors and jobs | One survivor, two jobs |
 | GF-10 | Dedicated server, relay/matchmaking | LAN/IP only |
+| WF-01 | Vehicle fuel, damage, repair, keys and locks; more vehicles | One wagon with the key in the ignition (fields reserved) |
+| WF-02 | Store interiors in Ashgrove | Stores are searched from the street |
+| WF-03 | Hunting, dangerous or persistent wildlife | Wildlife is atmospheric and transient |
