@@ -2774,5 +2774,45 @@
 	"SKILL_SCAVENGING": {
 		"en": "Scavenging",
 		"da": "Plyndring"
+	},
+	"ACTION_SKILLS": {
+		"en": "Skills",
+		"da": "Færdigheder"
+	},
+	"SKILLS_TITLE": {
+		"en": "Skills",
+		"da": "Færdigheder"
+	},
+	"SKILLS_HINT": {
+		"en": "Skills grow by doing. Scavenging improves with every container you search for the first time.",
+		"da": "Færdigheder vokser ved at bruge dem. Plyndring bliver bedre for hver beholder du gennemsøger første gang."
+	},
+	"SKILLS_LEVEL": {
+		"en": "%s — level %s / %s",
+		"da": "%s — niveau %s / %s"
+	},
+	"SKILLS_XP": {
+		"en": "XP %s / %s (%s to the next level)",
+		"da": "XP %s / %s (%s til næste niveau)"
+	},
+	"SKILLS_XP_MAX": {
+		"en": "XP %s — highest level",
+		"da": "XP %s — højeste niveau"
+	},
+	"SKILLS_SCAV_EFFECT": {
+		"en": "An ordinary search takes %s s (%s%% faster than at level 1)",
+		"da": "En almindelig søgning tager %s s (%s%% hurtigere end på niveau 1)"
+	},
+	"SKILLS_SCAV_NEXT": {
+		"en": "Next level: %s s",
+		"da": "Næste niveau: %s s"
+	},
+	"XP_GAINED": {
+		"en": "+%s %s XP",
+		"da": "+%s %s-XP"
+	},
+	"SKILL_LEVEL_UP": {
+		"en": "%s reached level %s — an ordinary search now takes %s s",
+		"da": "%s nåede niveau %s — en almindelig søgning tager nu %s s"
 	}
 }

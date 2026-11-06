@@ -80,6 +80,7 @@ Plain-language description of every GDScript file. Identifiers and paths are exa
 | `src/presentation/ui/inventory_panel.gd` | Session, Items, Inv | Inventory panel (I/Tab): equipped hand and body slots, gear with condition and stats, stacks with descriptions; Use, Equip, Put away and Drop buttons send requests to the host. |
 | `src/presentation/ui/guide.gd` | Session, Settings, EventSim | Player guidance: one-time contextual tips (shown once per installation, can be switched off) and the survival guide (H) with every topic and a progress overview read from the shared world. |
 | `src/presentation/ui/settlement_panel.gd` | Session, NpcSim, InfraSim | Settlement overview (N): inhabitants, jobs and what blocks them, supplies in shared storage, power and needs; job assignment buttons send requests. Also builds the survivor's own panel. |
+| `src/presentation/ui/skills_panel.gd` | SkillSim, UITheme | Iteration 013: the Skills screen (K) — level, XP, XP to the next level, a progress bar and the Scavenging effect (how long an ordinary search takes now and at the next level). Read-only. |
 | `src/presentation/ui/pause_menu.gd` | Session | Esc menu: resume, save (host), settings, leave. The shared world keeps running. |
 | `src/presentation/ui/dev_overlay.gd` | Session, Net, Assets, Audio, SessionLog | F3 developer panel: build, network and world state, players, entity states, save status, overrides, log path, and a few host-checked commands. |
 

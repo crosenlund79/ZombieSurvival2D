@@ -170,6 +170,16 @@ func _on_world_event(ev: Dictionary) -> void:
 			show_notice("SIEGE_DISPERSED", [])
 		"npc_arrived":
 			show_notice("NPC_ARRIVED", [str(ev.get("name", ""))])
+		"search_done":
+			# Iteration 013: restrained XP feedback, only for the searcher.
+			if str(ev.get("player_id", "")) != Session.local_player_id:
+				return
+			if int(ev.get("xp", 0)) > 0:
+				show_xp(UITheme.fmt("XP_GAINED", [int(ev["xp"]), TranslationServer.translate("SKILL_SCAVENGING")]))
+			if bool(ev.get("level_up", false)):
+				var lvl := int(ev.get("level", 1))
+				show_notice("SKILL_LEVEL_UP", [TranslationServer.translate("SKILL_SCAVENGING"), lvl, "%.1f" % SkillSim.search_seconds_at("shelf", lvl)])
+				Audio.play("ui.click")
 
 
 ## "The Homestead", "The Farmhouse", "Shelter · Level -2" …
@@ -324,6 +334,26 @@ func _resource_line(me: PlayerState) -> String:
 		if total > 0 or done > 0:
 			parts.append(UITheme.fmt("HUD_REINFORCED", [done]))
 	return "\n".join(parts)
+
+
+## A small, quiet "+12 Scavenging XP" that drifts up and fades (iteration 013).
+func show_xp(text: String) -> void:
+	var l := UITheme.small(text, 14)
+	l.modulate = Color(0.92, 0.86, 0.66, 0.0)
+	l.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
+	l.offset_left = -160
+	l.offset_right = 160
+	l.offset_top = -190
+	l.offset_bottom = -170
+	l.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	l.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(l)
+	var tw := l.create_tween()
+	tw.tween_property(l, "modulate:a", 0.9, 0.25)
+	tw.parallel().tween_property(l, "offset_top", -220.0, 1.8)
+	tw.parallel().tween_property(l, "offset_bottom", -200.0, 1.8)
+	tw.tween_property(l, "modulate:a", 0.0, 0.6)
+	tw.tween_callback(l.queue_free)
 
 
 func show_notice(key: String, args: Array) -> void:

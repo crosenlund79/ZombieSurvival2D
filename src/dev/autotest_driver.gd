@@ -188,7 +188,7 @@ func _run(line: String) -> void:
 				main.guide.dismiss()
 		"panel":
 			# Open a UI panel: inventory / guide / settlement (screenshots).
-			var pnl: Control = {"inventory": main.inventory_panel, "guide": main.guide, "settlement": main.settlement_panel}.get(a[0])
+			var pnl: Control = {"inventory": main.inventory_panel, "guide": main.guide, "settlement": main.settlement_panel, "skills": main.skills_panel}.get(a[0])
 			if pnl != null:
 				pnl.visible = a.size() < 2 or a[1] == "on"
 			await get_tree().create_timer(0.4).timeout

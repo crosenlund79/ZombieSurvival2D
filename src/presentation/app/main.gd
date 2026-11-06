@@ -17,6 +17,7 @@ var build_mode: BuildMode
 var inventory_panel: InventoryPanel
 var guide: Guide
 var settlement_panel: SettlementPanel
+var skills_panel: SkillsPanel
 
 
 func _ready() -> void:
@@ -57,6 +58,9 @@ func _ready() -> void:
 	settlement_panel = SettlementPanel.new()
 	settlement_panel.hide()
 	ui.add_child(settlement_panel)
+	skills_panel = SkillsPanel.new()
+	skills_panel.hide()
+	ui.add_child(skills_panel)
 	guide = Guide.new()
 	ui.add_child(guide)
 	ui.add_child(guide.card())
@@ -84,7 +88,8 @@ func _process(_delta: float) -> void:
 	PlayerAvatar.input_blocked = pause_menu.visible or settings_panel != null or menu.visible or map_panel.visible \
 		or (MachinePanel.current != null and is_instance_valid(MachinePanel.current)) \
 		or (focus is LineEdit) or (build_mode != null and build_mode.menu_open()) \
-		or (guide != null and guide.visible) or (settlement_panel != null and settlement_panel.visible)
+		or (guide != null and guide.visible) or (settlement_panel != null and settlement_panel.visible) \
+		or (skills_panel != null and skills_panel.visible)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -100,10 +105,11 @@ func _unhandled_input(event: InputEvent) -> void:
 		map_panel.visible = not map_panel.visible
 	elif event.is_action_pressed("pause_menu") and map_panel.visible:
 		map_panel.hide()
-	elif event.is_action_pressed("pause_menu") and (inventory_panel.visible or guide.visible or settlement_panel.visible):
+	elif event.is_action_pressed("pause_menu") and (inventory_panel.visible or guide.visible or settlement_panel.visible or skills_panel.visible):
 		inventory_panel.hide()
 		guide.hide()
 		settlement_panel.hide()
+		skills_panel.hide()
 	elif event.is_action_pressed("pause_menu") and settings_panel == null:
 		pause_menu.visible = not pause_menu.visible
 	elif event.is_action_pressed("quick_save"):
@@ -119,6 +125,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		guide.visible = not guide.visible
 	elif event.is_action_pressed("settlement") and not pause_menu.visible:
 		settlement_panel.visible = not settlement_panel.visible
+	elif event.is_action_pressed("skills") and not pause_menu.visible:
+		skills_panel.visible = not skills_panel.visible
 
 
 func _on_world_started() -> void:
@@ -134,6 +142,7 @@ func _on_world_ended(reason_key: String) -> void:
 	inventory_panel.hide()
 	guide.hide()
 	settlement_panel.hide()
+	skills_panel.hide()
 	pause_menu.hide()
 	map_panel.hide()
 	Audio.stop_all_loops()

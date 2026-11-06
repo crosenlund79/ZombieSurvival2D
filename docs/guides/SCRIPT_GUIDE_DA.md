@@ -80,6 +80,7 @@ Beskrivelse i almindeligt sprog af hver GDScript-fil. Identifikatorer og stier e
 | `src/presentation/ui/inventory_panel.gd` | Session, Items, Inv | Oppakningspanel (I/Tab): udstyr i hånd og på krop, udstyr med tilstand og værdier, stabler med beskrivelser; knapperne Brug, Tag på, Læg væk og Smid sender anmodninger til værten. |
 | `src/presentation/ui/guide.gd` | Session, Settings, EventSim | Spillervejledning: kontekstuelle tips, der vises én gang pr. installation (kan slås fra), og overlevelsesguiden (H) med alle emner og en fremskridtsoversigt læst fra den fælles verden. |
 | `src/presentation/ui/settlement_panel.gd` | Session, NpcSim, InfraSim | Bosættelsesoversigt (N): beboere, job og hvad der blokerer dem, forsyninger på det fælles lager, strøm og behov; knapper til at tildele job sender anmodninger. Laver også den overlevendes eget panel. |
+| `src/presentation/ui/skills_panel.gd` | SkillSim, UITheme | Iteration 013: færdighedsskærmen (K) — niveau, XP, XP til næste niveau, en fremdriftsbjælke og Plyndringens effekt (hvor lang tid en almindelig søgning tager nu og på næste niveau). Kun visning. |
 | `src/presentation/ui/pause_menu.gd` | Session | Esc-menu: fortsæt, gem (vært), indstillinger, forlad. Den fælles verden kører videre. |
 | `src/presentation/ui/dev_overlay.gd` | Session, Net, Assets, Audio, SessionLog | F3-udviklerpanel: build, netværks- og verdenstilstand, spillere, entitetstilstande, gemmestatus, udskiftninger, logsti og nogle få værtskontrollerede kommandoer. |
 

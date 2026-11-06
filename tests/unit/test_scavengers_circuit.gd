@@ -268,3 +268,19 @@ func test_search_noise_reaches_the_street() -> void:
 				heard = heard or (str(n.get("region_id", "")) == "town" and str(n.get("category", "")).begins_with("search_loud"))
 			break
 	check(heard, "rummaging through a crate is heard on the street")
+
+
+func test_skills_screen_text() -> void:
+	var p := PlayerState.new()
+	var r: Dictionary = SkillsPanel.rows_for(p)[0]
+	eq(r["skill"], "scavenging", "Scavenging is listed")
+	eq(r["level"], 1, "level 1 to start")
+	check(str(r["lines"][0]).contains("30"), "XP to the next level is shown: " + str(r["lines"][0]))
+	check(str(r["lines"][1]).contains("5.0"), "the search time is shown: " + str(r["lines"][1]))
+	SkillSim.award(null, p, "scavenging", 40, true)
+	r = SkillsPanel.rows_for(p)[0]
+	eq(r["level"], 2, "level 2 after 40 XP")
+	check(float(r["fraction"]) > 0.0 and float(r["fraction"]) < 1.0, "partway to level 3")
+	SkillSim.set_level(p, "scavenging", 10)
+	r = SkillsPanel.rows_for(p)[0]
+	eq(r["fraction"], 1.0, "full bar at the top level")
