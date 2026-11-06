@@ -93,7 +93,27 @@ Update this file whenever an iteration adds or settles a decision.
 | SD-02 | Frozen blood in Burnt Ones' clothing thaws near real warmth and occasionally drips into small refreezing marks; weather fades, buries and washes them and limits how readable they are; no HUD warnings | Shadows & Depth commission (2) |
 | SD-03 | The surface stays top-down; bunker areas use a 2D side view / cross-section on this experimental branch, consuming the same authoritative state, with the original top-down bunker kept and comparable (reversible) | Shadows & Depth commission (3) |
 
+### The Scavenger's Circuit (iteration 013)
+
+| ID | Decision | Source |
+|---|---|---|
+| SC-01 | Ashgrove's grocery, clothing, hardware, pharmacy and garage plus 2–3 houses are enterable interiors (top-down 3/4; side view stays for bunkers and cellars); one house connects to the cellar | Scavenger's Circuit commission (A) |
+| SC-02 | Physical containers searched over time, host-authoritative, location-typed loot, some already empty, never regenerating (re-entry, region change, restart) | Scavenger's Circuit commission (B) |
+| SC-03 | Individual skill framework; only Scavenging is active; its only effect is search speed (5 s at level 1, 1.5–2 s at the top, never instant) with diminishing returns; XP only for legitimate first searches | Scavenger's Circuit commission (B) |
+| SC-04 | Developer menu in World / Player / Progression categories with a skill XP multiplier (default 1×, 0–25×, applies to new XP for all skills, host only, unavailable in release builds) and grant / set / reset | Scavenger's Circuit commission (C) |
+| SC-05 | The trunk is a usable cargo hold (12 slots); at least one shelter improvement needs scavenged materials (wood stove: improved heating) | Scavenger's Circuit commission (C/D) |
+
 ## EXPLORING (prototype choices awaiting a creator decision)
+
+### The Scavenger's Circuit (iteration 013)
+
+| ID | Topic | Current prototype | Where to tune |
+|---|---|---|---|
+| WX-16 | Search times | Base seconds: drawer/fridge 4, rack 4.5, shelf/cupboard/medical 5, locker 5.5, crate/garage 6, tool chest 6.5; minimum 1.2 s | `content/tuning/skills.json` (`base_seconds`, `min_seconds`) |
+| WX-17 | Scavenging curve | 10 levels; cumulative XP 0/30/75/135/210/300/405/525/660/810; search factor 1.0 → 0.36; XP 12 + 2 per item found (max 5), 6 for an empty container | `content/tuning/skills.json` |
+| WX-18 | Ashgrove supplies | 47 containers, 13 already empty; one player searching all of them earns 546 XP = level 8 of 10 (nothing regenerates; two players split it) | `tools/build_interiors.py` (layout specs), then re-run it |
+| WX-19 | Wood stove | Scrap metal 3, stovepipe 1, cement 1; +12 warmth per minute on its level; burns nothing | `content/buildables.json` (`stove`), `environment.json` (`stove_per_minute`) |
+| WX-20 | Interior mood | Daylight through the front windows follows the clock; backrooms unlit; unheated buildings keep out 65 % of the cold (`shelter` 0.35) | `tools/build_interiors.py` (tint, windows), region `climate.shelter` |
 
 ### Shadows & Depth (iteration 012)
 

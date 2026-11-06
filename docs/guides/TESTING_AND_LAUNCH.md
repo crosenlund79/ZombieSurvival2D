@@ -134,6 +134,14 @@ experimental **side view**; **F7** (or F3 → "Bunker view") switches you to the
 (saved per player, other players unaffected). Developer helpers: `dev heat` (a temporary heat source where you
 stand, `dev heat off` clears), `dev blood` (one mark beside you), `dev create_level` (more bunker levels).
 
+## 3g. The Scavenger's Circuit (iteration 013)
+
+Report: [`../iterations/013_scavengers_circuit.md`](../iterations/013_scavengers_circuit.md). Developer helpers:
+`dev xp_multiplier <0..25>`, `dev grant_xp <n>[|all]`, `dev set_skill_level <n>[|all]`, `dev reset_skill 0[|all]`
+(host only), `dev goto town.grocery` (or `town.pharmacy`, `town.hardware`, `town.clothing`, `town.garage`,
+`town.house_west`, `town.house_east`), `dev vehicle_here [heading]`. Interiors are regenerated with
+`python3 tools/build_interiors.py`; container contents and positions are in its layout specs.
+
 ## 4. Saves
 
 Only the host (or single player) saves. Locations (Windows):
@@ -172,6 +180,8 @@ python3 tools/mp_test.py accept                           # the 25-step survival
 python3 tools/mp_test.py infra_multi dig_multi danger_multi   # iteration 003 two-process scenarios
 python3 tools/mp_test.py winter_multi vehicle_multi wild_multi custom_graphics   # iteration 011 two-process scenarios
 python3 tools/mp_test.py side_multi blood_multi           # iteration 012: side-view bunker with two instances, thawed blood
+python3 tools/mp_test.py circuit_multi progression_multi expedition_multi   # iteration 013: interiors + containers, progression + dev tools, the full expedition loop
+xvfb-run -a -s "-screen 0 1600x900x24" python3 tools/shots_scavengers_circuit.py   # iteration 013 screenshots + CHECK lines
 xvfb-run -a -s "-screen 0 1700x1000x24" python3 tools/shots_shadows_depth.py   # iteration 012 screenshots + CHECK lines
 xvfb-run -a -s "-screen 0 1700x1000x24" python3 tools/shots_world_awakens.py   # iteration 011 screenshots + CHECK lines
 xvfb-run -a -s "-screen 0 1700x1000x24" python3 tools/shots_003.py   # iteration 003 screenshots

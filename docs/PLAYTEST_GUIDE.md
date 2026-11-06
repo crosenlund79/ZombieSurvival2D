@@ -1,4 +1,4 @@
-# Red Thaw — Playtest Guide (iteration 012; earlier systems from 001–011)
+# Red Thaw — Playtest Guide (iteration 013; earlier systems from 001–012)
 
 This guide is for playing the game and reporting problems. Technical details are in
 [`guides/TESTING_AND_LAUNCH.md`](guides/TESTING_AND_LAUNCH.md). Every number in the game is a prototype
@@ -7,7 +7,7 @@ value, and the [design decision register](DESIGN_DECISIONS.md) lists what is sti
 ## 1. Getting started (Windows)
 
 1. Install **Godot 4.7.2 (standard)**.
-2. On GitHub, pick the branch **`iteration/010-red-thaw`** and choose **Code → Download ZIP**.
+2. On GitHub, pick the branch **`iteration/013-scavengers-circuit`** and choose **Code → Download ZIP**.
 3. Extract the ZIP, open Godot, choose **Import**, select `project.godot`, then **Import & Edit**. Press **F5**.
 4. In the main menu:
    - **Single Player → New World** is the normal game. You wake by a burned shed with only a small bag.
@@ -33,6 +33,8 @@ Two pieces of on-screen help:
 | Q / X | Drink (clean water or the large bottle) / eat |
 | M | Map (or Read the field map in the inventory) |
 | N | Settlement overview |
+| K | Skills (Scavenging level, XP, search speed) |
+| R (at the car) | Open the trunk |
 | H | Survival guide |
 | Esc | Menu. The world keeps running |
 | F5 | Save (host) |
@@ -123,6 +125,39 @@ Face a wall (or hold W/S for ceiling/floor) and press E to dig; place a timber s
 unstable, then climb it to reach a ledge. Build with B — the object goes on the floor of the column you point at.
 Storage, generator, purifier, lamps, the workbench and the bedroll all work. Try the Ashgrove cellar too. Press
 **F7** to compare with the original top-down bunker.
+
+## 3d. What to try (The Scavenger's Circuit, iteration 013)
+
+**The circuit.** Prepare at the cabin, drive the station wagon east through the station to Ashgrove, explore,
+scavenge, carry the finds back in the trunk and improve the shelter. Then do it again.
+
+**Inside Ashgrove.** Every shop on Main Street can be entered at its door: the grocery, pharmacy, hardware
+store, clothing store and the garage — plus two houses (open the door first) and the house with the cellar.
+Shops have backrooms that daylight never reaches; take the flashlight (**L**). Inside it is sheltered but cold,
+and the wind is muffled.
+
+**Searching.** Walk up to shelves, cupboards, drawers, lockers, crates, tool chests, fridges and medicine
+cabinets and press **E**. A bar fills over a few seconds; press **E** again or walk away to stop. When it is done
+you see what was really inside and can take one thing or everything. Each place has its own kind of finds
+(food in the grocery, bandages in the pharmacy, wood, fasteners and parts in the hardware store, fabric in the
+clothing store, scrap, fuel and parts in the garage, a little of everything in the houses). Some containers were
+already emptied by someone else. Nothing refills — not when you leave, not after a restart. Searching makes
+noise, and rummaging through crates and lockers can be heard on the street.
+
+**Scavenging skill.** Every container you search for the first time teaches you a little (**K** shows your
+level). At level 1 an ordinary search takes 5 s; the first levels speed it up noticeably, later ones less; at
+the top level it takes under 2 s, never instantly. Re-opening an emptied container teaches nothing.
+
+**Trunk.** At the car press **R**: load everything (what you hold stays in your hands) or unload everything, or
+move single items. The trunk holds 12. In the shelter, the storage panel has **Store everything you carry**.
+
+**Wood stove.** Bring a stovepipe (the hardware store and the garage each have one), scrap metal and cement to the
+shelter (or the Ashgrove cellar) and build a **Wood stove** (B). Once lit it glows, and you warm up much
+faster on that level. It works in the side view and the top-down view.
+
+**Developer menu (F3).** Commands are grouped in World / Player / Progression. Progression has the skill XP
+multiplier (0–25×, quick 1/5/10/25×, reset to 1×), +XP, set level and reset Scavenging. Only the host can use
+it; it is not saved (back to 1× after loading) and is not available in release builds.
 
 ## 4. Two players
 

@@ -484,7 +484,30 @@ own sprites by `Interactable._highlight`.
     survivors.
   - No data is converted: both views read plan coordinates.
 
-## 20. Dependency direction
+## 20. The Scavenger's Circuit (iteration 013)
+
+- **Interiors are ordinary regions.** `tools/build_interiors.py` generates seven interior regions
+  (`content/regions/town_<name>.json`) and their scenes from layout specs, and patches the Ashgrove street
+  (entrance portals; house doors work like the town house). Interiors have no `zombies` block, so Burnt Ones
+  never enter and no precipitation is drawn; their `surface` makes noise leak to the street (`EventSim.leak_target`).
+  `climate.shelter` (new, `EnvSim.cold`) scales the cold of an unheated building. `Atmosphere.follow_daylight`
+  and `LightSpot.daylight` make window light follow the shared clock.
+- **Containers.** Entity type `container`; host rules in `ScavengeSim` (called from `request_interact`,
+  `request_entity_action` and `Simulation.advance`). The search in progress lives in the container's entity
+  state (`by`, `from`, `until`), so it replicates like any entity change; `SaveService` strips it before
+  writing (`ScavengeSim.strip_searches`). On completion the state gets `searched`, `items`, `gear` once;
+  taking uses `Inv.transfer`. `ContainerView` draws art by state and a progress bar for everyone.
+- **Skills.** `SkillSim` (data in `content/tuning/skills.json`) owns every skill calculation. XP lives in
+  `PlayerState.skills` (saved, and replicated in `inventory_dict` with the `players` result key); levels are
+  derived. The developer XP multiplier is `world.meta.xp_multiplier` (replicated with `meta`, removed by
+  `SaveService` before writing). Search results carry a `search_done` event for the HUD feedback.
+- **Developer tools.** `BuildInfo.dev_tools_enabled()` gates the F3 menu and every dev command (debug builds,
+  or `--dev-tools`). Progression commands (`xp_multiplier`, `grant_xp`, `set_skill_level`, `reset_skill`) are
+  refused for clients even when `allow_client_dev_commands` is on.
+- **Shelter improvement.** The `stove` buildable has `heater: true`; `Build.heated` feeds
+  `SurvivalSim.warmth_rate`. The trunk and shelter storage gained `store_all` / `take_all` actions.
+
+## 21. Dependency direction
 
 ```
 presentation (main, ui, world views) ──reads/requests──▶ Session ──▶ WorldActions / Simulation ──▶ state

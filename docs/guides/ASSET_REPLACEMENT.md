@@ -176,6 +176,23 @@ sounds (they do not fit an unarmed, quiet winter game). Tool limits: no listenin
 build environment — the selection was made from file names, durations and measured levels and
 spectra; volumes are first guesses (manifest `volume_db`).
 
+## 9. Interior, container and stove art (iteration 013)
+
+`tools/art/gen_scavengers_circuit.py` generates the placeholder art for the Ashgrove interiors (manifest
+`assets/manifest/visual_circuit.json`). Replace any of them with a file of the same name, without the
+`template_` prefix, under `overrides/`:
+
+| Folder | Pictures |
+|---|---|
+| `world/interior/` | walls (`wall_shop`, `wall_garage`, `wall_house`, `wall_planks`), floor tiles (`floor_linoleum`, `floor_concrete`, `floor_carpet`), store fixtures (`gondola_full/sparse/empty`, `checkout`, `freezer`/`freezer_open`, `clothes_rack_full/empty`, `display_table`, `pegboard`, `metal_shelf_full/empty`, `pharm_counter`, `med_cabinet`/`_open`, `tool_chest`/`_open`, `car_lift`), household furniture (`sofa`, `armchair`, `dresser`/`_open`, `home_fridge`/`_open`, `kitchen_counter`, `bookshelf`, `meal_table`), `locker`/`_open`, `crate`/`_open`, `boxes`, `barricade`, `partition` |
+| `build/` | `stove` (top-down) |
+| `side/` | `stove` (side view, the pipe rises through the ceiling) |
+| `items/` | `stovepipe` |
+
+A container shows its first picture until it has been searched, then its `_open` / emptier picture (the
+pairs are listed per container in the region files, `art` / `art_searched`). Collision comes from the region
+data, so a new picture never changes where you can walk.
+
 ## Verified status (iteration 011)
 
 | Check | Result |
