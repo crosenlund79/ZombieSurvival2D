@@ -1,0 +1,120 @@
+class_name ContainerView
+extends EntityView
+## A searchable container (iteration 013, ScavengeSim). Presentation only:
+##  * art by state — the authored "art" until searched, then "art_searched"
+##  * a progress bar over it while anyone searches it (from the shared clock,
+##    so every player sees the same search)
+##  * E: start / stop searching; once searched, E opens a small panel to take
+##    what is left. Every action is a host request.
+
+const BAR_W := 90.0
+var _bar: Node2D
+var _rummage := 0.0
+
+
+func _build() -> void:
+	_bar = Node2D.new()
+	_bar.name = "SearchBar"
+	_bar.z_index = 30
+	_bar.visible = false
+	_bar.draw.connect(_draw_bar)
+	add_child(_bar)
+	Session.player_resources_changed.connect(func(_p: String) -> void: _refresh("carried"))
+
+
+func _ready() -> void:
+	super._ready()
+	if interact != null:
+		interact.on_activate = _activate
+
+
+func _activate() -> void:
+	var st := state()
+	if bool(st.get("searched", false)):
+		MachinePanel.open(self, region_id, entity_id, panel_data)
+	else:
+		Session.request_interact(entity_id)
+
+
+func _refresh(cause: String) -> void:
+	var st := state()
+	var searched := bool(st.get("searched", false))
+	show_art("Main", str(def.get("art_searched" if searched else "art", "")))
+	if interact != null:
+		var by := ScavengeSim.searching(st)
+		var me := Session.local_player_id
+		interact.enabled = true
+		interact.prompt_args = []
+		if searched:
+			var n := Items.total(st.get("items", {})) + (st.get("gear", []) as Array).size()
+			interact.prompt_key = "PROMPT_CONTAINER_CONTENTS" if n > 0 else "PROMPT_CONTAINER_EMPTY"
+			interact.prompt_args = [n]
+		elif by == me:
+			interact.prompt_key = "PROMPT_STOP_SEARCH"
+		elif by != "":
+			interact.prompt_key = "PROMPT_BEING_SEARCHED"
+			interact.enabled = false
+		else:
+			interact.prompt_key = str(def.get("prompt_key", "PROMPT_SEARCH_SHELF"))
+	match cause:
+		"search_started":
+			Audio.play("sfx.rummage", global_position)
+		"searched":
+			Audio.play("sfx.rummage", global_position)
+	set_process(true)
+
+
+func _process(delta: float) -> void:
+	super._process(delta)
+	if _bar == null or Session.world == null:
+		return
+	var st := state()
+	var on := ScavengeSim.searching(st) != "" and not bool(st.get("searched", false))
+	_bar.visible = on
+	if on:
+		_bar.position = Vector2(0, _art_top() - 14.0)
+		_bar.queue_redraw()
+		# soft rummaging while the search lasts (the noise itself is the host's)
+		_rummage -= delta
+		if _rummage <= 0.0:
+			_rummage = 1.6
+			Audio.play("sfx.rummage", global_position, -8.0)
+
+
+func _art_top() -> float:
+	var main: Sprite2D = _art_root.get_node_or_null("Main") if _art_root != null else null
+	if main == null or main.texture == null:
+		return -60.0
+	return main.position.y
+
+
+func _draw_bar() -> void:
+	var p := ScavengeSim.progress(Session.world, state())
+	var r := Rect2(-BAR_W * 0.5, 0, BAR_W, 9)
+	_bar.draw_rect(r.grow(2.0), Color(0.05, 0.05, 0.06, 0.85))
+	_bar.draw_rect(Rect2(r.position, Vector2(r.size.x * p, r.size.y)), Color(0.86, 0.8, 0.62, 0.95))
+
+
+## Panel: what is left in a searched container; take one or everything.
+func panel_data() -> Dictionary:
+	var st := state()
+	var me := Session.local_player()
+	var lines: Array[String] = []
+	var buttons := []
+	var items: Dictionary = st.get("items", {})
+	var gear: Array = st.get("gear", [])
+	var free := Inv.free_slots(me) if me != null else 0
+	lines.append(UITheme.fmt("PANEL_CARRY", [Items.carry_slots() - free, Items.carry_slots()]))
+	for item in items:
+		var nm := TranslationServer.translate(Items.name_key(str(item)))
+		lines.append(UITheme.fmt("CONTAINER_ITEM_LINE", [nm, int(items[item])]))
+		buttons.append([UITheme.fmt("PANEL_TAKE", [nm]), "take", str(item), free > 0])
+	for g in gear:
+		var gn := TranslationServer.translate(Items.name_key(str(g.get("item", ""))))
+		lines.append(gn)
+		buttons.append([UITheme.fmt("PANEL_TAKE", [gn]), "take", str(g.get("uid", "")), free > 0])
+	if items.is_empty() and gear.is_empty():
+		lines.append(TranslationServer.translate("CONTAINER_NOTHING_LEFT"))
+	else:
+		buttons.push_front([TranslationServer.translate("CONTAINER_TAKE_ALL"), "take", "*", free > 0])
+	return {"title": TranslationServer.translate("CONTAINER_" + str(def.get("kind", "shelf")).to_upper()), "lines": lines, "buttons": buttons}

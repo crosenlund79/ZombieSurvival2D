@@ -758,54 +758,6 @@ nav_block = false
 occlude = true
 sway = true
 
-[node name="Loot_grocery_shelves" type="Node2D" parent="YSort"]
-script = ExtResource("machinev")
-entity_id = "town.grocery_shelves"
-
-[node name="Loot_grocery_storeroom" type="Node2D" parent="YSort"]
-script = ExtResource("machinev")
-entity_id = "town.grocery_storeroom"
-
-[node name="Loot_pharmacy_counter" type="Node2D" parent="YSort"]
-script = ExtResource("machinev")
-entity_id = "town.pharmacy_counter"
-
-[node name="Loot_pharmacy_dispensary" type="Node2D" parent="YSort"]
-script = ExtResource("machinev")
-entity_id = "town.pharmacy_dispensary"
-
-[node name="Loot_hardware_aisle" type="Node2D" parent="YSort"]
-script = ExtResource("machinev")
-entity_id = "town.hardware_aisle"
-
-[node name="Loot_hardware_case" type="Node2D" parent="YSort"]
-script = ExtResource("machinev")
-entity_id = "town.hardware_case"
-
-[node name="Loot_clothing_racks" type="Node2D" parent="YSort"]
-script = ExtResource("machinev")
-entity_id = "town.clothing_racks"
-
-[node name="Loot_clothing_stockroom" type="Node2D" parent="YSort"]
-script = ExtResource("machinev")
-entity_id = "town.clothing_stockroom"
-
-[node name="Loot_garage_bench" type="Node2D" parent="YSort"]
-script = ExtResource("machinev")
-entity_id = "town.garage_bench"
-
-[node name="Loot_garage_bay" type="Node2D" parent="YSort"]
-script = ExtResource("machinev")
-entity_id = "town.garage_bay"
-
-[node name="Loot_house_a_kitchen" type="Node2D" parent="YSort"]
-script = ExtResource("machinev")
-entity_id = "town.house_a_kitchen"
-
-[node name="Loot_house_c_bedroom" type="Node2D" parent="YSort"]
-script = ExtResource("machinev")
-entity_id = "town.house_c_bedroom"
-
 [node name="Loot_house_ruin" type="Node2D" parent="YSort"]
 script = ExtResource("machinev")
 entity_id = "town.house_ruin"
@@ -845,3 +797,53 @@ min_spacing = 60.0
 [node name="Atmosphere" type="Node2D" parent="."]
 script = ExtResource("atmo")
 area = Rect2(0, 0, 3200, 2000)
+
+[node name="GroceryEntry" type="Node2D" parent="YSort"]
+script = ExtResource("portalv")
+entity_id = "town.grocery_entrance"
+
+[node name="PharmacyEntry" type="Node2D" parent="YSort"]
+script = ExtResource("portalv")
+entity_id = "town.pharmacy_entrance"
+
+[node name="HardwareEntry" type="Node2D" parent="YSort"]
+script = ExtResource("portalv")
+entity_id = "town.hardware_entrance"
+
+[node name="ClothingEntry" type="Node2D" parent="YSort"]
+script = ExtResource("portalv")
+entity_id = "town.clothing_entrance"
+
+[node name="GarageEntry" type="Node2D" parent="YSort"]
+script = ExtResource("portalv")
+entity_id = "town.garage_entrance"
+
+[node name="HouseWestDoor" type="Node2D" parent="YSort"]
+script = ExtResource("door")
+position = Vector2(561, 1456)
+entity_id = "town.house_west_door"
+closed_asset = "world.house_door_closed"
+open_asset = "world.house_door_open"
+blocker_size = Vector2(0, 0)
+sprite_offset = Vector2(0, -18)
+prompt_open_key = "PROMPT_OPEN_DOOR"
+prompt_close_key = "PROMPT_CLOSE_DOOR"
+
+[node name="HouseWestEntry" type="Node2D" parent="YSort"]
+script = ExtResource("portalv")
+entity_id = "town.house_west_entrance"
+
+[node name="HouseEastDoor" type="Node2D" parent="YSort"]
+script = ExtResource("door")
+position = Vector2(1940, 1456)
+entity_id = "town.house_east_door"
+closed_asset = "world.house_door_closed"
+open_asset = "world.house_door_open"
+blocker_size = Vector2(0, 0)
+sprite_offset = Vector2(0, -18)
+prompt_open_key = "PROMPT_OPEN_DOOR"
+prompt_close_key = "PROMPT_CLOSE_DOOR"
+
+[node name="HouseEastEntry" type="Node2D" parent="YSort"]
+script = ExtResource("portalv")
+entity_id = "town.house_east_entrance"

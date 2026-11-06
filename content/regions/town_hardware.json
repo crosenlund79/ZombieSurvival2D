@@ -1,0 +1,169 @@
+{
+	"region_id": "town.hardware",
+	"display_key": "REGION_TOWN_HARDWARE",
+	"scene": "res://scenes/regions/town/hardware_interior.tscn",
+	"bounds": [
+		0,
+		0,
+		1200,
+		760
+	],
+	"surface": {
+		"region": "town",
+		"position": [
+			1592,
+			880
+		]
+	},
+	"spawn_points": [
+		[
+			740,
+			610
+		]
+	],
+	"climate": {
+		"exposure": 1.0,
+		"fog": 0.0,
+		"shelter": 0.35
+	},
+	"interior": true,
+	"entities": [
+		{
+			"id": "town.hardware.exit",
+			"type": "portal",
+			"position": [
+				740,
+				672
+			],
+			"interact_range": 60,
+			"priority": 2,
+			"target": {
+				"region": "town",
+				"position": [
+					1592,
+					926
+				]
+			},
+			"prompt_key": "PROMPT_EXIT_HOUSE"
+		},
+		{
+			"id": "town.hardware.aisle_fasteners",
+			"type": "container",
+			"kind": "shelf",
+			"position": [
+				220,
+				310
+			],
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_SHELF",
+			"art": "int.metal_shelf_full",
+			"art_searched": "int.metal_shelf_empty",
+			"loot": {
+				"scrap_metal": 2,
+				"electrical_parts": 1
+			},
+			"initial": {
+				"searched": false
+			}
+		},
+		{
+			"id": "town.hardware.aisle_lumber",
+			"type": "container",
+			"kind": "shelf",
+			"position": [
+				240,
+				450
+			],
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_SHELF",
+			"art": "int.gondola_full",
+			"art_searched": "int.gondola_empty",
+			"loot": {
+				"wood": 3
+			},
+			"initial": {
+				"searched": false
+			}
+		},
+		{
+			"id": "town.hardware.aisle_tools",
+			"type": "container",
+			"kind": "shelf",
+			"position": [
+				510,
+				450
+			],
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_SHELF",
+			"art": "int.gondola_sparse",
+			"art_searched": "int.gondola_empty",
+			"loot": {
+				"scrap_metal": 1,
+				"electrical_parts": 1,
+				"cement": 1
+			},
+			"initial": {
+				"searched": false
+			}
+		},
+		{
+			"id": "town.hardware.aisle_bare",
+			"type": "container",
+			"kind": "shelf",
+			"position": [
+				240,
+				590
+			],
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_SHELF",
+			"art": "int.metal_shelf_empty",
+			"art_searched": "int.metal_shelf_empty",
+			"loot": {},
+			"initial": {
+				"searched": true
+			}
+		},
+		{
+			"id": "town.hardware.stock_crate",
+			"type": "container",
+			"kind": "crate",
+			"position": [
+				960,
+				330
+			],
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_CRATE",
+			"art": "int.crate",
+			"art_searched": "int.crate_open",
+			"loot": {
+				"wood": 2,
+				"cement": 1
+			},
+			"initial": {
+				"searched": false
+			}
+		},
+		{
+			"id": "town.hardware.locked_case",
+			"type": "container",
+			"kind": "toolbox",
+			"position": [
+				1040,
+				610
+			],
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_TOOLBOX",
+			"art": "int.tool_chest",
+			"art_searched": "int.tool_chest_open",
+			"loot": {},
+			"gear": [
+				"flashlight",
+				"hatchet"
+			],
+			"discovery": "hardware_case",
+			"initial": {
+				"searched": false
+			}
+		}
+	]
+}

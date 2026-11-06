@@ -118,6 +118,8 @@ static func cold(world: WorldState, region_id: String) -> float:
 	var k := float(c("cold", {}).get("base", 0.8)) * float(cl.get("exposure", 1.0))
 	k += float(c("cold", {}).get("night", 0.35)) * (1.0 - daylight(world))
 	k += float(wcfg(weather(world)).get("cold", 0.0))
+	# Unheated buildings (iteration 013 interiors) keep out most of the wind and weather.
+	k *= float(cl.get("shelter", 1.0))
 	return maxf(0.0, k)
 
 

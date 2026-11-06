@@ -1,0 +1,182 @@
+{
+	"region_id": "town.garage",
+	"display_key": "REGION_TOWN_GARAGE",
+	"scene": "res://scenes/regions/town/garage_interior.tscn",
+	"bounds": [
+		0,
+		0,
+		1200,
+		760
+	],
+	"surface": {
+		"region": "town",
+		"position": [
+			2594,
+			900
+		]
+	},
+	"spawn_points": [
+		[
+			600,
+			610
+		]
+	],
+	"climate": {
+		"exposure": 1.0,
+		"fog": 0.0,
+		"shelter": 0.35
+	},
+	"interior": true,
+	"entities": [
+		{
+			"id": "town.garage.exit",
+			"type": "portal",
+			"position": [
+				600,
+				672
+			],
+			"interact_range": 60,
+			"priority": 2,
+			"target": {
+				"region": "town",
+				"position": [
+					2594,
+					946
+				]
+			},
+			"prompt_key": "PROMPT_EXIT_HOUSE"
+		},
+		{
+			"id": "town.garage.tool_chest",
+			"type": "container",
+			"kind": "toolbox",
+			"position": [
+				210,
+				300
+			],
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_TOOLBOX",
+			"art": "int.tool_chest",
+			"art_searched": "int.tool_chest_open",
+			"loot": {
+				"scrap_metal": 2,
+				"electrical_parts": 1
+			},
+			"initial": {
+				"searched": false
+			}
+		},
+		{
+			"id": "town.garage.parts_shelf",
+			"type": "container",
+			"kind": "garage",
+			"position": [
+				470,
+				310
+			],
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_GARAGE",
+			"art": "int.metal_shelf_full",
+			"art_searched": "int.metal_shelf_empty",
+			"loot": {
+				"scrap_metal": 2,
+				"fuel": 1
+			},
+			"initial": {
+				"searched": false
+			}
+		},
+		{
+			"id": "town.garage.locker_a",
+			"type": "container",
+			"kind": "locker",
+			"position": [
+				720,
+				290
+			],
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_LOCKER",
+			"art": "int.locker",
+			"art_searched": "int.locker_open",
+			"loot": {
+				"fuel": 1
+			},
+			"initial": {
+				"searched": false
+			}
+		},
+		{
+			"id": "town.garage.locker_b",
+			"type": "container",
+			"kind": "locker",
+			"position": [
+				800,
+				290
+			],
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_LOCKER",
+			"art": "int.locker_open",
+			"art_searched": "int.locker_open",
+			"loot": {},
+			"initial": {
+				"searched": true
+			}
+		},
+		{
+			"id": "town.garage.scrap_crate",
+			"type": "container",
+			"kind": "garage",
+			"position": [
+				220,
+				620
+			],
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_GARAGE",
+			"art": "int.crate",
+			"art_searched": "int.crate_open",
+			"loot": {
+				"scrap_metal": 2,
+				"electrical_parts": 1
+			},
+			"initial": {
+				"searched": false
+			}
+		},
+		{
+			"id": "town.garage.office_desk",
+			"type": "container",
+			"kind": "drawer",
+			"position": [
+				1000,
+				470
+			],
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_DRAWER",
+			"art": "int.dresser",
+			"art_searched": "int.dresser_open",
+			"loot": {
+				"crackers": 1
+			},
+			"initial": {
+				"searched": false
+			}
+		},
+		{
+			"id": "town.garage.office_locker",
+			"type": "container",
+			"kind": "locker",
+			"position": [
+				1050,
+				290
+			],
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_LOCKER",
+			"art": "int.locker",
+			"art_searched": "int.locker_open",
+			"loot": {},
+			"initial": {
+				"searched": true
+			}
+		}
+	]
+}

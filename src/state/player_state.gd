@@ -25,6 +25,9 @@ var flashlight := false
 ## "top". Runtime only; the client reports it, the host uses it to snap feet to
 ## the floor in the side view. Both read the same bunker data.
 var bunker_view := "side"
+## Iteration 013: skills, {"scavenging": {"xp": n}} (SkillSim). Saved, replicated
+## with the inventory; levels are derived from XP.
+var skills := {}
 var dead := false
 ## Item id of the usable tool/weapon in the hand ("" = bare hands). Derived from
 ## the equipped gear (a broken item counts as bare hands); read-only.
@@ -68,13 +71,16 @@ func equipped_gear(slot: String) -> Dictionary:
 
 ## Inventory snapshot replicated to clients: stacks, gear and equipped slots.
 func inventory_dict() -> Dictionary:
-	return {"carried": carried.duplicate(), "gear": gear.duplicate(true), "equipped": equipped.duplicate()}
+	return {"carried": carried.duplicate(), "gear": gear.duplicate(true), "equipped": equipped.duplicate(),
+		"skills": skills.duplicate(true)}
 
 
 func apply_inventory(d: Dictionary) -> void:
 	carried = (d.get("carried", {}) as Dictionary).duplicate()
 	gear = (d.get("gear", []) as Array).duplicate(true)
 	equipped = (d.get("equipped", {}) as Dictionary).duplicate()
+	if d.has("skills"):
+		skills = (d.get("skills", {}) as Dictionary).duplicate(true)
 
 
 func to_dict() -> Dictionary:
@@ -83,7 +89,7 @@ func to_dict() -> Dictionary:
 		"facing": facing, "last_seen_unix": last_seen_unix, "carried": carried.duplicate(),
 		"health": snappedf(health, 0.1), "hydration": snappedf(hydration, 0.1),
 		"hunger": snappedf(hunger, 0.1), "gear": gear.duplicate(true), "equipped": equipped.duplicate(),
-		"warmth": snappedf(warmth, 0.1), "vehicle_id": vehicle_id}
+		"warmth": snappedf(warmth, 0.1), "vehicle_id": vehicle_id, "skills": skills.duplicate(true)}
 
 
 static func from_dict(id: String, d: Dictionary) -> PlayerState:
@@ -101,6 +107,7 @@ static func from_dict(id: String, d: Dictionary) -> PlayerState:
 	p.hunger = clampf(float(d.get("hunger", 100.0)), 0.0, 100.0)
 	p.warmth = clampf(float(d.get("warmth", 100.0)), 0.0, 100.0)
 	p.vehicle_id = str(d.get("vehicle_id", ""))
+	p.skills = SkillSim.sanitize(d.get("skills", {}))
 	for g in d.get("gear", []):
 		if g is Dictionary and Items.exists(str(g.get("item", ""))) and str(g.get("uid", "")) != "":
 			p.gear.append({"uid": str(g["uid"]), "item": str(g["item"]), "cond": float(g.get("cond", 100.0))})

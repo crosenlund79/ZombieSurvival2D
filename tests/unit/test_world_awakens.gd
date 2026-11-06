@@ -449,24 +449,14 @@ func test_town_cellar_is_a_prebuilt_separate_base() -> void:
 	eq(p.region_id, b.level_region(-1), "into the cellar")
 
 
-func test_town_stores_have_typed_loot_and_some_are_empty() -> void:
+func test_town_ruin_was_picked_clean() -> void:
+	# Iteration 013: the stores' and houses' finds moved inside, into searchable
+	# containers (test_scavengers_circuit.gd); the ruin stays a bare street spot.
 	var w := WorldState.create_new("w_town", 68)
 	var p := _player(w, PID, "town", Vector2.ZERO)
 	var town := w.region("town")
-	p.position = Content.entity_position(town.entity_def("town.hardware_case"))
-	var r := WorldActions.request_interact(w, PID, "town.hardware_case", -1)
-	check(r["ok"], "the hardware case can be forced")
-	check(p.gear.any(func(g): return g["item"] == "flashlight"), "it holds a flashlight")
-	eq(WorldActions.request_interact(w, PID, "town.hardware_case", -1)["reason"], "ACTION_LOOT_GONE", "one-of-a-kind")
-	p.position = Content.entity_position(town.entity_def("town.clothing_stockroom"))
-	WorldActions.request_interact(w, PID, "town.clothing_stockroom", -1)
-	check(p.gear.any(func(g): return g["item"] == "winter_coat"), "the clothing stockroom has a winter coat")
-	p.position = Content.entity_position(town.entity_def("town.pharmacy_counter"))
-	WorldActions.request_interact(w, PID, "town.pharmacy_counter", -1)
-	check(p.carrying("bandage") > 0, "the pharmacy has bandages")
-	for eid in ["town.grocery_storeroom", "town.pharmacy_dispensary", "town.garage_bay", "town.house_ruin"]:
-		p.position = Content.entity_position(town.entity_def(eid))
-		eq(WorldActions.request_interact(w, PID, eid, -1)["reason"], "ACTION_LOOT_GONE", eid + " was picked clean")
+	p.position = Content.entity_position(town.entity_def("town.house_ruin"))
+	eq(WorldActions.request_interact(w, PID, "town.house_ruin", -1)["reason"], "ACTION_LOOT_GONE", "the ruin was picked clean")
 
 
 func test_map_marks_unexplored_road_exits() -> void:

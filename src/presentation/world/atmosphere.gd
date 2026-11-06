@@ -21,6 +21,10 @@ extends Node2D
 @export var drift_texture := "fx.snowflake"
 ## Night colour grade for outdoor regions (day/night follows the shared clock).
 @export var night_tint := Color(0.2, 0.24, 0.36)
+## Interiors with windows (iteration 013): the grade still follows day and night,
+## between `tint` (noon) and `indoor_night_tint`, without any outdoor weather effects.
+@export var follow_daylight := false
+@export var indoor_night_tint := Color(0.16, 0.17, 0.22)
 var _outdoor := false
 var _rain: Control
 var _rain_on := false
@@ -243,6 +247,9 @@ func _process(delta: float) -> void:
 		frost_target = clampf((float(SurvivalSim.ec("chilled_below", 40)) - me.warmth) / float(SurvivalSim.ec("chilled_below", 40)), 0.0, 1.0)
 	_frost_now = lerpf(_frost_now, frost_target, 1.0 - exp(-1.0 * delta))
 	mat.set_shader_parameter("frost", _frost_now)
+	if follow_daylight and not _outdoor and Session.world != null:
+		var ic := indoor_night_tint.lerp(tint, EnvSim.daylight(Session.world))
+		_cm.color = _cm.color.lerp(ic, 1.0 - exp(-1.5 * delta))
 	if _outdoor and Session.world != null:
 		_lightning(delta)
 		mat.set_shader_parameter("flash", _flash)

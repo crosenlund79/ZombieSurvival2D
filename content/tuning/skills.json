@@ -1,0 +1,66 @@
+{
+	"_comment": "Iteration 013 skills. Each skill: cumulative XP needed to reach each level (index 0 = level 1), and its effect table per level. Only scavenging is active. The XP multiplier is a developer tool (world meta, host only).",
+	"scavenging": {
+		"display_key": "SKILL_SCAVENGING",
+		"max_level": 10,
+		"level_xp": [
+			0,
+			30,
+			75,
+			135,
+			210,
+			300,
+			405,
+			525,
+			660,
+			810
+		],
+		"search_factor": [
+			1.0,
+			0.82,
+			0.69,
+			0.6,
+			0.53,
+			0.48,
+			0.44,
+			0.41,
+			0.38,
+			0.36
+		],
+		"min_seconds": 1.2,
+		"xp": {
+			"search": 12,
+			"per_find": 2,
+			"empty_search": 6
+		},
+		"base_seconds": {
+			"shelf": 5.0,
+			"rack": 4.5,
+			"drawer": 4.0,
+			"cupboard": 5.0,
+			"fridge": 4.0,
+			"medical": 5.0,
+			"crate": 6.0,
+			"locker": 5.5,
+			"toolbox": 6.5,
+			"garage": 6.0
+		},
+		"loud_kinds": [
+			"crate",
+			"locker",
+			"toolbox",
+			"garage"
+		]
+	},
+	"xp_multiplier": {
+		"default": 1.0,
+		"min": 0.0,
+		"max": 25.0,
+		"quick": [
+			1,
+			5,
+			10,
+			25
+		]
+	}
+}

@@ -96,34 +96,38 @@
 		},
 		{
 			"id": "town.house.pantry",
-			"type": "loot",
+			"type": "container",
+			"kind": "cupboard",
 			"position": [
 				186,
-				300
+				262
 			],
-			"interact_range": 75,
-			"prompt_key": "PROMPT_SEARCH_PANTRY",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_CUPBOARD",
+			"art": "world.furniture_cupboard",
+			"art_searched": "world.furniture_cupboard",
 			"loot": {},
-			"unique": true,
 			"initial": {
-				"looted_at": 0
+				"searched": true
 			}
 		},
 		{
 			"id": "town.house.linen",
-			"type": "loot",
+			"type": "container",
+			"kind": "drawer",
 			"position": [
-				728,
-				350
+				330,
+				282
 			],
-			"interact_range": 75,
-			"prompt_key": "PROMPT_SEARCH_LINEN",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_DRAWER",
+			"art": "int.dresser",
+			"art_searched": "int.dresser_open",
 			"loot": {
 				"cloth": 2
 			},
-			"restock_minutes": 60,
 			"initial": {
-				"looted_at": -1
+				"searched": false
 			}
 		},
 		{

@@ -2582,5 +2582,197 @@
 	"SIDE_LEVEL": {
 		"en": "Level %d",
 		"da": "Niveau %d"
+	},
+	"REGION_TOWN_GROCERY": {
+		"en": "Ashgrove Grocery",
+		"da": "Ashgrove Købmand"
+	},
+	"REGION_TOWN_PHARMACY": {
+		"en": "Ashgrove Pharmacy",
+		"da": "Ashgrove Apotek"
+	},
+	"REGION_TOWN_HARDWARE": {
+		"en": "Ashgrove Hardware",
+		"da": "Ashgrove Byggemarked"
+	},
+	"REGION_TOWN_CLOTHING": {
+		"en": "Ashgrove Clothing",
+		"da": "Ashgrove Tøjbutik"
+	},
+	"REGION_TOWN_GARAGE": {
+		"en": "Ashgrove Garage & Service",
+		"da": "Ashgrove Værksted"
+	},
+	"REGION_TOWN_HOUSE_WEST": {
+		"en": "The West House",
+		"da": "Vesthuset"
+	},
+	"REGION_TOWN_HOUSE_EAST": {
+		"en": "The East House",
+		"da": "Østhuset"
+	},
+	"PROMPT_ENTER_GROCERY": {
+		"en": "Enter the grocery",
+		"da": "Gå ind i købmanden"
+	},
+	"PROMPT_ENTER_PHARMACY": {
+		"en": "Enter the pharmacy",
+		"da": "Gå ind på apoteket"
+	},
+	"PROMPT_ENTER_HARDWARE": {
+		"en": "Enter the hardware store",
+		"da": "Gå ind i byggemarkedet"
+	},
+	"PROMPT_ENTER_CLOTHING": {
+		"en": "Enter the clothing store",
+		"da": "Gå ind i tøjbutikken"
+	},
+	"PROMPT_ENTER_GARAGE": {
+		"en": "Enter the garage",
+		"da": "Gå ind i værkstedet"
+	},
+	"PROMPT_ENTER_HOME": {
+		"en": "Enter the house",
+		"da": "Gå ind i huset"
+	},
+	"PROMPT_SEARCH_SHELF": {
+		"en": "Search the shelves",
+		"da": "Gennemsøg hylderne"
+	},
+	"PROMPT_SEARCH_RACK": {
+		"en": "Search the rack",
+		"da": "Gennemsøg stativet"
+	},
+	"PROMPT_SEARCH_DRAWER": {
+		"en": "Search the drawers",
+		"da": "Gennemsøg skufferne"
+	},
+	"PROMPT_SEARCH_CUPBOARD": {
+		"en": "Search the cupboards",
+		"da": "Gennemsøg skabene"
+	},
+	"PROMPT_SEARCH_FRIDGE": {
+		"en": "Search the cooler",
+		"da": "Gennemsøg køleskabet"
+	},
+	"PROMPT_SEARCH_MEDICAL": {
+		"en": "Search the medicine cabinet",
+		"da": "Gennemsøg medicinskabet"
+	},
+	"PROMPT_SEARCH_CRATE": {
+		"en": "Search the crate",
+		"da": "Gennemsøg kassen"
+	},
+	"PROMPT_SEARCH_LOCKER": {
+		"en": "Search the locker",
+		"da": "Gennemsøg skabet"
+	},
+	"PROMPT_SEARCH_TOOLBOX": {
+		"en": "Search the tool chest",
+		"da": "Gennemsøg værktøjskisten"
+	},
+	"PROMPT_SEARCH_GARAGE": {
+		"en": "Search the parts",
+		"da": "Gennemsøg reservedelene"
+	},
+	"PROMPT_STOP_SEARCH": {
+		"en": "Stop searching",
+		"da": "Stop søgningen"
+	},
+	"PROMPT_BEING_SEARCHED": {
+		"en": "Someone is searching this",
+		"da": "Nogen gennemsøger det her"
+	},
+	"PROMPT_CONTAINER_CONTENTS": {
+		"en": "Look inside (%s left)",
+		"da": "Kig i den (%s tilbage)"
+	},
+	"PROMPT_CONTAINER_EMPTY": {
+		"en": "Searched — empty",
+		"da": "Gennemsøgt — tom"
+	},
+	"ACTION_ALREADY_SEARCHED": {
+		"en": "Already searched",
+		"da": "Allerede gennemsøgt"
+	},
+	"ACTION_SOMEONE_SEARCHING": {
+		"en": "Someone else is searching that",
+		"da": "En anden gennemsøger det"
+	},
+	"ACTION_SEARCH_FIRST": {
+		"en": "Search it first",
+		"da": "Gennemsøg det først"
+	},
+	"SEARCH_CANCELLED": {
+		"en": "You stop searching.",
+		"da": "Du stopper søgningen."
+	},
+	"SEARCH_INTERRUPTED": {
+		"en": "Search interrupted.",
+		"da": "Søgningen blev afbrudt."
+	},
+	"SEARCH_FOUND": {
+		"en": "Found: %s",
+		"da": "Fundet: %s"
+	},
+	"SEARCH_EMPTY": {
+		"en": "Nothing useful left here.",
+		"da": "Intet brugbart tilbage her."
+	},
+	"CONTAINER_ITEM_LINE": {
+		"en": "%s × %s",
+		"da": "%s × %s"
+	},
+	"CONTAINER_NOTHING_LEFT": {
+		"en": "Nothing left.",
+		"da": "Intet tilbage."
+	},
+	"CONTAINER_TAKE_ALL": {
+		"en": "Take everything",
+		"da": "Tag det hele"
+	},
+	"CONTAINER_SHELF": {
+		"en": "Shelves",
+		"da": "Hylder"
+	},
+	"CONTAINER_RACK": {
+		"en": "Clothes rack",
+		"da": "Tøjstativ"
+	},
+	"CONTAINER_DRAWER": {
+		"en": "Drawers",
+		"da": "Skuffer"
+	},
+	"CONTAINER_CUPBOARD": {
+		"en": "Cupboards",
+		"da": "Skabe"
+	},
+	"CONTAINER_FRIDGE": {
+		"en": "Cooler",
+		"da": "Køleskab"
+	},
+	"CONTAINER_MEDICAL": {
+		"en": "Medicine cabinet",
+		"da": "Medicinskab"
+	},
+	"CONTAINER_CRATE": {
+		"en": "Crate",
+		"da": "Kasse"
+	},
+	"CONTAINER_LOCKER": {
+		"en": "Locker",
+		"da": "Skab"
+	},
+	"CONTAINER_TOOLBOX": {
+		"en": "Tool chest",
+		"da": "Værktøjskiste"
+	},
+	"CONTAINER_GARAGE": {
+		"en": "Garage storage",
+		"da": "Værkstedsreol"
+	},
+	"SKILL_SCAVENGING": {
+		"en": "Scavenging",
+		"da": "Plyndring"
 	}
 }

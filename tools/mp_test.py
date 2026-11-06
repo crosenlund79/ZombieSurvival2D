@@ -8,7 +8,7 @@ Requires the `godot` binary on PATH (or GODOT=/path/to/godot).
 """
 import json, os, shutil, sys, time
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from aftergrowth_driver import Instance, USER_DIR, LOG_DIR
+from aftergrowth_driver import Instance, USER_DIR, LOG_DIR, ROOT
 
 GATE = "homestead.yard_gate"
 GATE_STAND = os.environ.get("GATE_STAND", "1150 960")   # a point within reach of the gate
@@ -1966,7 +1966,120 @@ def scenario_perf_multi():
             i.kill()
 
 
-SCENARIOS = {"side_multi": scenario_side_multi, "blood_multi": scenario_blood_multi, "custom_graphics": scenario_custom_graphics, "wild_multi": scenario_wild_multi, "vehicle_multi": scenario_vehicle_multi, "winter_multi": scenario_winter_multi, "red_thaw_multi": scenario_red_thaw_multi, "perf_multi": scenario_perf_multi, "slice": scenario_slice, "settlement_multi": scenario_settlement_multi, "world_multi": scenario_world_multi, "craft_multi": scenario_craft_multi, "build_multi": scenario_build_multi, "accept": scenario_accept, "infra_multi": scenario_infra_multi, "dig_multi": scenario_dig_multi, "danger_single": scenario_danger_single, "danger_multi": scenario_danger_multi, "settings": scenario_settings, "bunker_single": scenario_bunker_single, "bunker_multi": scenario_bunker_multi, "single": scenario_single, "multiplayer": scenario_multiplayer,
+def _enter_shop(i, name, door):
+    """Street -> stand at the shop door -> enter."""
+    x, y = door
+    i.cmd("dev goto town"); i.cmd("wait 0.6")
+    i.cmd(f"dev teleport {x} {y + 40}"); i.cmd("wait 0.4"); i.cmd(f"walk_to {x} {y + 22} 4")
+    i.cmd(f"interact town.{name}_entrance"); i.cmd("wait 1.2")
+    return i.state()
+
+
+def _search(i, rid, key, wait=0.0):
+    """Walk to a container's front and start searching it (optionally wait)."""
+    st = i.state()
+    eid = f"{rid}.{key}"
+    # straight-line walking snags on aisle shelving; the rendered run covers walking indoors
+    i.cmd(f"dev teleport {CIRCUIT_POS[eid][0]} {CIRCUIT_POS[eid][1] + 40}"); i.cmd("wait 0.3")
+    i.cmd(f"interact {eid}")
+    if wait:
+        i.cmd(f"wait {wait}")
+    return eid
+
+
+def _load_circuit_positions():
+    import json as _json
+    pos = {}
+    for n in ("grocery", "pharmacy", "hardware", "clothing", "garage", "house_west", "house_east"):
+        d = _json.load(open(os.path.join(ROOT, "content", "regions", f"town_{n}.json")))
+        for e in d["entities"]:
+            pos[e["id"]] = e["position"]
+    return pos
+
+
+CIRCUIT_POS = {}
+
+
+def scenario_circuit_multi():
+    """Iteration 013: Ashgrove interiors and container searching with two real instances —
+    independent exploration, simultaneous searches, one searcher per container, no duplicated
+    loot or XP, individual skills, disconnect mid-search, reconnect and save/restart."""
+    CIRCUIT_POS.update(_load_circuit_positions())
+    host = Instance("t_chost"); c = Instance("t_cclient")
+    for i in (host, c):
+        i.wipe()
+    try:
+        host.start(); c.start()
+        host.cmd("set dev allow_client_dev_commands 1")  # the client uses dev goto/teleport to reach Ashgrove quickly
+        host.cmd(f"host {PORT} new 213 Hosty"); host.cmd("tips off"); host.cmd("dev peaceful 1"); host.cmd("dev time 12")
+        r = c.cmd(f"join 127.0.0.1 {PORT} Cleo"); c.cmd("tips off")
+        check("circuit: client joins", r["ok"], r["error"])
+        st = _enter_shop(c, "grocery", (632, 880))
+        check("circuit: the client walks into the grocery", st["region"] == "town.grocery", st["region"])
+        check("circuit: the host is elsewhere (independent)", player(host.state(), "Hosty")["region"] != "town.grocery", player(host.state(), "Hosty")["region"])
+        st = _enter_shop(host, "pharmacy", (1112, 880))
+        check("circuit: the host walks into the pharmacy", st["region"] == "town.pharmacy", st["region"])
+        _search(c, "town.grocery", "aisle_a")
+        _search(host, "town.pharmacy", "dispensary_a", 6.5)
+        c.cmd("wait 1")
+        hs = host.state()
+        g = hs["entities"]["town.grocery.aisle_a"]["state"]
+        ph = hs["entities"]["town.pharmacy.dispensary_a"]["state"]
+        check("circuit: two searches in two shops at once both finish", g.get("searched") and ph.get("searched"), (g, ph))
+        cx = player(hs, "Cleo")["scav_xp"]; hx = player(hs, "Hosty")["scav_xp"]
+        check("circuit: each player earns their own XP", cx > 0 and hx > 0, (cx, hx))
+        check("circuit: the client sees its own XP", player(c.state(), "Cleo")["scav_xp"] == cx, player(c.state(), "Cleo")["scav_xp"])
+        check("circuit: the client sees the revealed contents", c.state()["entities"]["town.grocery.aisle_a"]["state"].get("items") == {"canned_food": 2, "crackers": 1},
+              c.state()["entities"]["town.grocery.aisle_a"]["state"])
+        # both in the grocery: same container, one searcher
+        st = _enter_shop(host, "grocery", (632, 880))
+        _search(c, "town.grocery", "aisle_b")
+        c.cmd("wait 0.4")
+        _search(host, "town.grocery", "aisle_b")
+        time.sleep(0.3)
+        st = host.state()["entities"]["town.grocery.aisle_b"]["state"]
+        check("circuit: only the first player searches a container", st.get("by") and player(host.state(), "Cleo")["id"] == st.get("by"), st)
+        _search(host, "town.grocery", "aisle_d", 6.0)
+        hs = host.state()
+        check("circuit: meanwhile the host searched another shelf", hs["entities"]["town.grocery.aisle_d"]["state"].get("searched"), hs["entities"]["town.grocery.aisle_d"]["state"])
+        check("circuit: and the client finished its own", hs["entities"]["town.grocery.aisle_b"]["state"].get("searched"), hs["entities"]["town.grocery.aisle_b"]["state"])
+        cx2 = player(hs, "Cleo")["scav_xp"]; hx2 = player(hs, "Hosty")["scav_xp"]
+        # take everything from the same shelf from both sides: totals never exceed the contents
+        def held(state):
+            return sum(player(state, n)["carried"].get(k, 0) for n in ("Cleo", "Hosty") for k in ("crackers", "water_bottle"))
+        before = held(hs)
+        c.cmd("entity_action town.grocery.aisle_b take *"); host.cmd("entity_action town.grocery.aisle_b take *"); time.sleep(0.5)
+        hs = host.state()
+        left = sum(hs["entities"]["town.grocery.aisle_b"]["state"].get("items", {}).values())
+        check("circuit: taking from both sides never duplicates", held(hs) - before == 2 and left == 0, (before, held(hs), left))
+        check("circuit: taking gives no XP", player(hs, "Cleo")["scav_xp"] == cx2 and player(hs, "Hosty")["scav_xp"] == hx2, (cx2, hx2))
+        # disconnect mid-search: abandoned, no XP
+        _search(c, "town.grocery", "storeroom_shelf", 1.0)
+        busy = host.state()["entities"]["town.grocery.storeroom_shelf"]["state"].get("by", "")
+        c.cmd("leave"); time.sleep(1.0)
+        host.cmd("wait 6")
+        st = host.state()["entities"]["town.grocery.storeroom_shelf"]["state"]
+        check("circuit: a disconnect abandons the search", busy != "" and not st.get("searched") and st.get("by", "") == "", (busy, st))
+        check("circuit: and gives no XP", player(host.state(), "Cleo")["scav_xp"] == cx2, player(host.state(), "Cleo")["scav_xp"])
+        r = c.cmd(f"join 127.0.0.1 {PORT} Cleo"); c.cmd("tips off")
+        cs = c.state()
+        check("circuit: the reconnecting client gets the searched shelves", cs["entities"]["town.grocery.aisle_a"]["state"].get("searched") and cs["entities"]["town.grocery.aisle_d"]["state"].get("searched"), "")
+        check("circuit: and keeps its Scavenging XP", player(cs, "Cleo")["scav_xp"] == cx2, player(cs, "Cleo")["scav_xp"])
+        c.cmd("leave"); host.cmd("save"); host.cmd("leave")
+        host.cmd(f"host {PORT} continue Hosty"); host.cmd("dev peaceful 1")
+        hs = host.state()
+        check("circuit: after a restart searched containers stay searched (no regeneration)",
+              hs["entities"]["town.grocery.aisle_a"]["state"].get("searched") and hs["entities"]["town.pharmacy.dispensary_a"]["state"].get("searched"), "")
+        check("circuit: unsearched ones are still unsearched", not hs["entities"]["town.grocery.storeroom_shelf"]["state"].get("searched"), "")
+        check("circuit: the host's XP survived the restart", player(hs, "Hosty")["scav_xp"] == hx2, (player(hs, "Hosty")["scav_xp"], hx2))
+        r = c.cmd(f"join 127.0.0.1 {PORT} Cleo")
+        check("circuit: the client's XP survived too", player(c.state(), "Cleo")["scav_xp"] == cx2, player(c.state(), "Cleo")["scav_xp"])
+    finally:
+        for i in (host, c):
+            i.kill()
+
+
+SCENARIOS = {"circuit_multi": scenario_circuit_multi, "side_multi": scenario_side_multi, "blood_multi": scenario_blood_multi, "custom_graphics": scenario_custom_graphics, "wild_multi": scenario_wild_multi, "vehicle_multi": scenario_vehicle_multi, "winter_multi": scenario_winter_multi, "red_thaw_multi": scenario_red_thaw_multi, "perf_multi": scenario_perf_multi, "slice": scenario_slice, "settlement_multi": scenario_settlement_multi, "world_multi": scenario_world_multi, "craft_multi": scenario_craft_multi, "build_multi": scenario_build_multi, "accept": scenario_accept, "infra_multi": scenario_infra_multi, "dig_multi": scenario_dig_multi, "danger_single": scenario_danger_single, "danger_multi": scenario_danger_multi, "settings": scenario_settings, "bunker_single": scenario_bunker_single, "bunker_multi": scenario_bunker_multi, "single": scenario_single, "multiplayer": scenario_multiplayer,
              "netfail": scenario_connection_failure, "assets": scenario_assets}
 
 if __name__ == "__main__":

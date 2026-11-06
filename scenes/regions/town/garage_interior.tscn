@@ -1,0 +1,212 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://src/presentation/world/region_view.gd" id="region"]
+[ext_resource type="Script" path="res://src/presentation/world/prop.gd" id="prop"]
+[ext_resource type="Script" path="res://src/presentation/world/ground_patch.gd" id="ground"]
+[ext_resource type="Script" path="res://src/presentation/world/atmosphere.gd" id="atmo"]
+[ext_resource type="Script" path="res://src/presentation/world/portal_view.gd" id="portal"]
+[ext_resource type="Script" path="res://src/presentation/world/container_view.gd" id="container"]
+[ext_resource type="Script" path="res://src/presentation/world/light_spot.gd" id="light"]
+
+[node name="GarageInterior" type="Node2D"]
+script = ExtResource("region")
+region_id = "town.garage"
+ambience_id = "amb.wind_muffled"
+camera_limits = false
+
+[node name="Ground" type="Node2D" parent="."]
+z_index = -10
+
+[node name="Darkness" type="Polygon2D" parent="Ground"]
+color = Color(0.06, 0.055, 0.05, 1)
+polygon = PackedVector2Array(-2000, -2000, 4000, -2000, 4000, 4000, -2000, 4000)
+
+[node name="Floor" type="Polygon2D" parent="Ground"]
+script = ExtResource("ground")
+polygon = PackedVector2Array(100, 236, 880, 236, 880, 700, 100, 700)
+asset_id = "int.floor_concrete"
+
+[node name="BackroomFloor" type="Polygon2D" parent="Ground"]
+script = ExtResource("ground")
+polygon = PackedVector2Array(880, 236, 1100, 236, 1100, 700, 880, 700)
+asset_id = "int.floor_linoleum"
+
+[node name="SideWallLeft" type="Polygon2D" parent="Ground"]
+color = Color(0.24, 0.24, 0.24, 1)
+polygon = PackedVector2Array(76, 20, 100, 20, 100, 718, 76, 718)
+
+[node name="SideWallRight" type="Polygon2D" parent="Ground"]
+color = Color(0.24, 0.24, 0.24, 1)
+polygon = PackedVector2Array(1100, 20, 1124, 20, 1124, 718, 1100, 718)
+
+[node name="FrontWallLeft" type="Polygon2D" parent="Ground"]
+color = Color(0.18, 0.18, 0.18, 1)
+polygon = PackedVector2Array(76, 700, 500, 700, 500, 718, 76, 718)
+
+[node name="FrontWallRight" type="Polygon2D" parent="Ground"]
+color = Color(0.18, 0.18, 0.18, 1)
+polygon = PackedVector2Array(700, 700, 1124, 700, 1124, 718, 700, 718)
+
+[node name="PartitionTop" type="Polygon2D" parent="Ground"]
+color = Color(0.24, 0.24, 0.24, 1)
+polygon = PackedVector2Array(870, 236, 890, 236, 890, 300, 870, 300)
+
+[node name="PartitionBottom" type="Polygon2D" parent="Ground"]
+color = Color(0.24, 0.24, 0.24, 1)
+polygon = PackedVector2Array(870, 390, 890, 390, 890, 700, 870, 700)
+
+[node name="PartitionCapTop" type="Polygon2D" parent="Ground"]
+color = Color(0.18, 0.18, 0.18, 1)
+polygon = PackedVector2Array(870, 292, 890, 292, 890, 300, 870, 300)
+
+[node name="PartitionCapBottom" type="Polygon2D" parent="Ground"]
+color = Color(0.18, 0.18, 0.18, 1)
+polygon = PackedVector2Array(870, 692, 890, 692, 890, 700, 870, 700)
+
+[node name="Walls" type="StaticBody2D" parent="."]
+
+[node name="Edge" type="CollisionPolygon2D" parent="Walls"]
+build_mode = 1
+polygon = PackedVector2Array(100, 244, 1100, 244, 1100, 692, 100, 692, 100, 244)
+
+[node name="PartitionA" type="CollisionPolygon2D" parent="Walls"]
+polygon = PackedVector2Array(870, 240, 890, 240, 890, 300, 870, 300)
+
+[node name="PartitionB" type="CollisionPolygon2D" parent="Walls"]
+polygon = PackedVector2Array(870, 390, 890, 390, 890, 700, 870, 700)
+
+[node name="YSort" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="BackWall" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(600, 240)
+asset_id = "int.wall_garage"
+
+[node name="Prop0_car_lift" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(470, 520)
+asset_id = "int.car_lift"
+footprint = Vector2(230, 40)
+footprint_offset = Vector2(0, 20)
+
+[node name="Prop1_boxes" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(800, 620)
+asset_id = "int.boxes"
+footprint = Vector2(70, 30)
+footprint_offset = Vector2(0, 15)
+
+[node name="Prop2_boxes" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(960, 300)
+asset_id = "int.boxes"
+footprint = Vector2(70, 30)
+footprint_offset = Vector2(0, 15)
+
+[node name="Block_tool_chest" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(210, 300)
+footprint = Vector2(80, 28)
+footprint_offset = Vector2(0, 14)
+
+[node name="Container_tool_chest" type="Node2D" parent="YSort"]
+script = ExtResource("container")
+entity_id = "town.garage.tool_chest"
+occlude = true
+
+[node name="Block_parts_shelf" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(470, 310)
+footprint = Vector2(170, 30)
+footprint_offset = Vector2(0, 15)
+
+[node name="Container_parts_shelf" type="Node2D" parent="YSort"]
+script = ExtResource("container")
+entity_id = "town.garage.parts_shelf"
+occlude = true
+
+[node name="Block_locker_a" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(720, 290)
+footprint = Vector2(64, 24)
+footprint_offset = Vector2(0, 12)
+
+[node name="Container_locker_a" type="Node2D" parent="YSort"]
+script = ExtResource("container")
+entity_id = "town.garage.locker_a"
+occlude = true
+
+[node name="Block_locker_b" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(800, 290)
+footprint = Vector2(64, 24)
+footprint_offset = Vector2(0, 12)
+
+[node name="Container_locker_b" type="Node2D" parent="YSort"]
+script = ExtResource("container")
+entity_id = "town.garage.locker_b"
+occlude = true
+
+[node name="Block_scrap_crate" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(220, 620)
+footprint = Vector2(90, 30)
+footprint_offset = Vector2(0, 15)
+
+[node name="Container_scrap_crate" type="Node2D" parent="YSort"]
+script = ExtResource("container")
+entity_id = "town.garage.scrap_crate"
+
+[node name="Block_office_desk" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(1000, 470)
+footprint = Vector2(110, 28)
+footprint_offset = Vector2(0, 14)
+
+[node name="Container_office_desk" type="Node2D" parent="YSort"]
+script = ExtResource("container")
+entity_id = "town.garage.office_desk"
+
+[node name="Block_office_locker" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(1050, 290)
+footprint = Vector2(64, 24)
+footprint_offset = Vector2(0, 12)
+
+[node name="Container_office_locker" type="Node2D" parent="YSort"]
+script = ExtResource("container")
+entity_id = "town.garage.office_locker"
+occlude = true
+
+[node name="Exit" type="Node2D" parent="YSort"]
+script = ExtResource("portal")
+entity_id = "town.garage.exit"
+art_asset = "world.exit_mat"
+hide_when_unavailable = false
+floor_art = true
+
+[node name="WindowLight0" type="PointLight2D" parent="."]
+script = ExtResource("light")
+position = Vector2(600, 670)
+color = Color(0.92, 0.95, 1, 1)
+texture_scale = 3.6
+energy = 0.7
+daylight = true
+
+[node name="DoorLight" type="PointLight2D" parent="."]
+script = ExtResource("light")
+position = Vector2(600, 690)
+color = Color(0.9, 0.93, 1, 1)
+texture_scale = 2.4
+energy = 0.55
+daylight = true
+
+[node name="Atmosphere" type="Node2D" parent="."]
+script = ExtResource("atmo")
+tint = Color(0.46, 0.46, 0.48, 1)
+saturation = 0.72
+drift_amount = 0
+vignette_strength = 0.5
+follow_daylight = true
+area = Rect2(100, 240, 1000, 460)

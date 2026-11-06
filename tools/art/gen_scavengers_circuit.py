@@ -138,8 +138,8 @@ def floor_tile(kind):
     fine = value_noise(n, n, 6, int(rng.integers(1 << 20)), octaves=2, wrap=True)
     if kind == "linoleum":
         yy, xx = np.mgrid[0:n, 0:n]
-        check = ((xx // 64 + yy // 64) % 2).astype(np.float32)
-        a, b = np.array([176, 168, 150]), np.array([96, 102, 98])
+        check = ((xx // 32 + yy // 32) % 2).astype(np.float32)
+        a, b = np.array([134, 130, 118]), np.array([100, 104, 100])
         base = a[None, None, :] * (1 - check[..., None]) + b[None, None, :] * check[..., None]
         shade = 0.8 + (nz - 0.5) * 0.35 + (fine - 0.5) * 0.12
     elif kind == "concrete":

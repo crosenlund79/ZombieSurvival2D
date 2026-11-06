@@ -1,0 +1,125 @@
+{
+	"region_id": "town.house_west",
+	"display_key": "REGION_TOWN_HOUSE_WEST",
+	"scene": "res://scenes/regions/town/house_west_interior.tscn",
+	"bounds": [
+		0,
+		0,
+		1200,
+		760
+	],
+	"surface": {
+		"region": "town",
+		"position": [
+			561,
+			1456
+		]
+	},
+	"spawn_points": [
+		[
+			380,
+			610
+		]
+	],
+	"climate": {
+		"exposure": 1.0,
+		"fog": 0.0,
+		"shelter": 0.35
+	},
+	"interior": true,
+	"entities": [
+		{
+			"id": "town.house_west.exit",
+			"type": "portal",
+			"position": [
+				380,
+				672
+			],
+			"interact_range": 60,
+			"priority": 2,
+			"target": {
+				"region": "town",
+				"position": [
+					561,
+					1510
+				]
+			},
+			"prompt_key": "PROMPT_EXIT_HOUSE"
+		},
+		{
+			"id": "town.house_west.kitchen_cupboards",
+			"type": "container",
+			"kind": "cupboard",
+			"position": [
+				260,
+				290
+			],
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_CUPBOARD",
+			"art": "int.kitchen_counter",
+			"art_searched": "int.kitchen_counter",
+			"loot": {
+				"canned_food": 1,
+				"crackers": 1
+			},
+			"initial": {
+				"searched": false
+			}
+		},
+		{
+			"id": "town.house_west.fridge",
+			"type": "container",
+			"kind": "fridge",
+			"position": [
+				470,
+				290
+			],
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_FRIDGE",
+			"art": "int.home_fridge",
+			"art_searched": "int.home_fridge_open",
+			"loot": {
+				"water_dirty": 1
+			},
+			"initial": {
+				"searched": false
+			}
+		},
+		{
+			"id": "town.house_west.dresser",
+			"type": "container",
+			"kind": "drawer",
+			"position": [
+				770,
+				300
+			],
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_DRAWER",
+			"art": "int.dresser",
+			"art_searched": "int.dresser_open",
+			"loot": {
+				"cloth": 1
+			},
+			"initial": {
+				"searched": false
+			}
+		},
+		{
+			"id": "town.house_west.closet",
+			"type": "container",
+			"kind": "locker",
+			"position": [
+				1050,
+				300
+			],
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_LOCKER",
+			"art": "int.locker",
+			"art_searched": "int.locker_open",
+			"loot": {},
+			"initial": {
+				"searched": true
+			}
+		}
+	]
+}

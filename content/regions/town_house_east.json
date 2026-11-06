@@ -1,0 +1,142 @@
+{
+	"region_id": "town.house_east",
+	"display_key": "REGION_TOWN_HOUSE_EAST",
+	"scene": "res://scenes/regions/town/house_east_interior.tscn",
+	"bounds": [
+		0,
+		0,
+		1200,
+		760
+	],
+	"surface": {
+		"region": "town",
+		"position": [
+			1940,
+			1456
+		]
+	},
+	"spawn_points": [
+		[
+			760,
+			610
+		]
+	],
+	"climate": {
+		"exposure": 1.0,
+		"fog": 0.0,
+		"shelter": 0.35
+	},
+	"interior": true,
+	"entities": [
+		{
+			"id": "town.house_east.exit",
+			"type": "portal",
+			"position": [
+				760,
+				672
+			],
+			"interact_range": 60,
+			"priority": 2,
+			"target": {
+				"region": "town",
+				"position": [
+					1940,
+					1510
+				]
+			},
+			"prompt_key": "PROMPT_EXIT_HOUSE"
+		},
+		{
+			"id": "town.house_east.bookshelf",
+			"type": "container",
+			"kind": "shelf",
+			"position": [
+				220,
+				275
+			],
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_SHELF",
+			"art": "int.bookshelf",
+			"art_searched": "int.bookshelf",
+			"loot": {},
+			"initial": {
+				"searched": true
+			}
+		},
+		{
+			"id": "town.house_east.kitchen_fridge",
+			"type": "container",
+			"kind": "fridge",
+			"position": [
+				440,
+				280
+			],
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_FRIDGE",
+			"art": "int.home_fridge_open",
+			"art_searched": "int.home_fridge_open",
+			"loot": {},
+			"initial": {
+				"searched": true
+			}
+		},
+		{
+			"id": "town.house_east.dresser",
+			"type": "container",
+			"kind": "drawer",
+			"position": [
+				700,
+				290
+			],
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_DRAWER",
+			"art": "int.dresser",
+			"art_searched": "int.dresser_open",
+			"loot": {
+				"crackers": 1,
+				"cloth": 1
+			},
+			"initial": {
+				"searched": false
+			}
+		},
+		{
+			"id": "town.house_east.wardrobe",
+			"type": "container",
+			"kind": "locker",
+			"position": [
+				1040,
+				300
+			],
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_LOCKER",
+			"art": "int.locker",
+			"art_searched": "int.locker_open",
+			"loot": {
+				"cloth": 2
+			},
+			"initial": {
+				"searched": false
+			}
+		},
+		{
+			"id": "town.house_east.packed_crate",
+			"type": "container",
+			"kind": "crate",
+			"position": [
+				920,
+				600
+			],
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_CRATE",
+			"art": "int.crate",
+			"art_searched": "int.crate_open",
+			"loot": {
+				"canned_food": 1
+			},
+			"initial": {
+				"searched": false
+			}
+		}
+	]
+}

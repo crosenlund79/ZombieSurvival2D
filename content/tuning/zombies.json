@@ -92,6 +92,14 @@
 		"engine_start": {
 			"radius": 600,
 			"attention": 0.7
+		},
+		"search": {
+			"radius": 220,
+			"attention": 0.25
+		},
+		"search_loud": {
+			"radius": 380,
+			"attention": 0.5
 		}
 	},
 	"hunt_seconds": 240,

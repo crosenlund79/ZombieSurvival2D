@@ -7,7 +7,7 @@ extends RefCounted
 
 var lines: Array[Dictionary] = []
 ## Entity types whose state is stored (they need an "initial" block).
-const STATEFUL: Array[String] = ["door", "shelter_site", "tree", "support_site", "generator", "purifier", "loot", "starter_bag"]
+const STATEFUL: Array[String] = ["door", "shelter_site", "tree", "support_site", "generator", "purifier", "loot", "starter_bag", "container"]
 
 
 func run() -> Array[Dictionary]:
@@ -250,6 +250,18 @@ func _check_data() -> void:
 				if not Items.exists(item):
 					problems += 1
 					_add("FAIL", "%s loot has unknown item %s" % [eid, item])
+			for g in e.get("gear", []):
+				if not Items.exists(str(g)):
+					problems += 1
+					_add("FAIL", "%s gear has unknown item %s" % [eid, g])
+			if ScavengeSim.is_container(e):
+				for ak in ["art", "art_searched"]:
+					if not AssetCatalog.has(str(e.get(ak, ""))):
+						problems += 1
+						_add("FAIL", "%s %s asset %s not in any manifest" % [eid, ak, e.get(ak, "")])
+				if not (SkillSim.cfg("scavenging").get("base_seconds", {}) as Dictionary).has(str(e.get("kind", ""))):
+					problems += 1
+					_add("FAIL", "%s has unknown container kind %s" % [eid, e.get("kind", "")])
 			for k2 in ["prompt_key"]:
 				if e.has(k2):
 					keys[str(e[k2])] = def_id + ":" + eid

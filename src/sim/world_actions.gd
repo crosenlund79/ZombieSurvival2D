@@ -71,6 +71,8 @@ static func request_interact(world: WorldState, player_id: String, entity_id: St
 			return _support(world, region, entity_id, def, state, expected_rev)
 		"loot":
 			return _loot(world, p, region, entity_id, def)
+		"container":
+			return ScavengeSim.request(world, p, region, entity_id, def)
 		"starter_bag":
 			return _starter_bag(world, p, region, entity_id, def, state)
 		"bed":
@@ -400,6 +402,10 @@ static func request_entity_action(world: WorldState, player_id: String, eid: Str
 	res["players"] = [p.player_id]
 	if b != null:
 		res["bunkers"] = [b.bunker_id]
+	if ScavengeSim.is_container(def):
+		if action != "take":
+			return _fail("ACTION_NOT_SUPPORTED")
+		return ScavengeSim.take(world, p, region, eid, arg)
 	if action == "repair" and def.has("structure"):
 		return Build.repair_entity(world, p, region, eid)
 	if action == "upgrade" and str(def.get("type", "")) == "shelter_site":

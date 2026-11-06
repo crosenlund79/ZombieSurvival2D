@@ -1,7 +1,7 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://src/presentation/world/bed_view.gd" id="bedv"]
-[ext_resource type="Script" path="res://src/presentation/world/machine_view.gd" id="machinev"]
+[ext_resource type="Script" path="res://src/presentation/world/container_view.gd" id="containerv"]
 [ext_resource type="Script" path="res://src/presentation/world/region_view.gd" id="region"]
 [ext_resource type="Script" path="res://src/presentation/world/prop.gd" id="prop"]
 [ext_resource type="Script" path="res://src/presentation/world/ground_patch.gd" id="ground"]
@@ -68,8 +68,13 @@ asset_id = "world.interior_wall"
 [node name="Cupboard" type="Node2D" parent="YSort"]
 script = ExtResource("prop")
 position = Vector2(186, 262)
-asset_id = "world.furniture_cupboard"
 footprint = Vector2(100, 26)
+
+[node name="LinenBlock" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(330, 282)
+footprint = Vector2(110, 28)
+footprint_offset = Vector2(0, 14)
 
 [node name="Bed" type="Node2D" parent="YSort"]
 script = ExtResource("prop")
@@ -93,11 +98,12 @@ footprint = Vector2(80, 28)
 occlude = true
 
 [node name="Pantry" type="Node2D" parent="YSort"]
-script = ExtResource("machinev")
+script = ExtResource("containerv")
 entity_id = "town.house.pantry"
+occlude = true
 
 [node name="Linen" type="Node2D" parent="YSort"]
-script = ExtResource("machinev")
+script = ExtResource("containerv")
 entity_id = "town.house.linen"
 
 [node name="Exit" type="Node2D" parent="YSort"]

@@ -4,7 +4,7 @@ extends RefCounted
 ## the tick in snapshots. Timed systems hang off advance() instead of keeping
 ## their own clocks: construction, zombies/noise/attention (ZombieSim),
 ## player vitals (SurvivalSim), machines and hydration (InfraSim), production
-## by built objects (FarmSim) and weather (EnvSim).
+## by built objects (FarmSim), weather (EnvSim) and container searches (ScavengeSim).
 
 const TICK_RATE := 10  # ticks per real second
 
@@ -40,6 +40,7 @@ static func advance(world: WorldState, ticks: int) -> Array:
 	results.append_array(VehicleSim.step(world, ticks))
 	results.append_array(WildlifeSim.step(world, ticks))
 	results.append_array(BloodSim.step(world, ticks))
+	results.append_array(ScavengeSim.step(world, ticks))
 	return results
 
 

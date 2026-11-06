@@ -24,6 +24,9 @@ func save_world(world: WorldState) -> Dictionary:
 	Paths.ensure_dir(world_dir(world.world_id))
 	var path := world_file(world.world_id)
 	var data := SaveCodec.encode(world)
+	# The developer XP multiplier is a runtime tool, never written to a save (back to 1x on load).
+	((data.get("world", {}) as Dictionary).get("meta", {}) as Dictionary).erase("xp_multiplier")
+	ScavengeSim.strip_searches(data)
 	var err := SafeFile.write_json(path, data, SaveCodec.validate)
 	if err != "":
 		SessionLog.error("save", "save_failed", {"world_id": world.world_id, "error": err})

@@ -1,0 +1,181 @@
+{
+	"region_id": "town.pharmacy",
+	"display_key": "REGION_TOWN_PHARMACY",
+	"scene": "res://scenes/regions/town/pharmacy_interior.tscn",
+	"bounds": [
+		0,
+		0,
+		1200,
+		760
+	],
+	"surface": {
+		"region": "town",
+		"position": [
+			1112,
+			880
+		]
+	},
+	"spawn_points": [
+		[
+			760,
+			610
+		]
+	],
+	"climate": {
+		"exposure": 1.0,
+		"fog": 0.0,
+		"shelter": 0.35
+	},
+	"interior": true,
+	"entities": [
+		{
+			"id": "town.pharmacy.exit",
+			"type": "portal",
+			"position": [
+				760,
+				672
+			],
+			"interact_range": 60,
+			"priority": 2,
+			"target": {
+				"region": "town",
+				"position": [
+					1112,
+					926
+				]
+			},
+			"prompt_key": "PROMPT_EXIT_HOUSE"
+		},
+		{
+			"id": "town.pharmacy.shelf_a",
+			"type": "container",
+			"kind": "shelf",
+			"position": [
+				240,
+				440
+			],
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_SHELF",
+			"art": "int.gondola_sparse",
+			"art_searched": "int.gondola_empty",
+			"loot": {
+				"bandage": 1,
+				"water_bottle": 1
+			},
+			"initial": {
+				"searched": false
+			}
+		},
+		{
+			"id": "town.pharmacy.shelf_b",
+			"type": "container",
+			"kind": "shelf",
+			"position": [
+				240,
+				580
+			],
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_SHELF",
+			"art": "int.gondola_empty",
+			"art_searched": "int.gondola_empty",
+			"loot": {},
+			"initial": {
+				"searched": true
+			}
+		},
+		{
+			"id": "town.pharmacy.counter",
+			"type": "container",
+			"kind": "drawer",
+			"position": [
+				560,
+				420
+			],
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_DRAWER",
+			"art": "int.pharm_counter",
+			"art_searched": "int.pharm_counter",
+			"loot": {
+				"bandage": 1
+			},
+			"initial": {
+				"searched": false
+			}
+		},
+		{
+			"id": "town.pharmacy.wall_cabinet",
+			"type": "container",
+			"kind": "medical",
+			"position": [
+				330,
+				262
+			],
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_MEDICAL",
+			"art": "int.med_cabinet_open",
+			"art_searched": "int.med_cabinet_open",
+			"loot": {},
+			"initial": {
+				"searched": true
+			}
+		},
+		{
+			"id": "town.pharmacy.dispensary_a",
+			"type": "container",
+			"kind": "medical",
+			"position": [
+				930,
+				262
+			],
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_MEDICAL",
+			"art": "int.med_cabinet",
+			"art_searched": "int.med_cabinet_open",
+			"loot": {
+				"bandage": 2
+			},
+			"initial": {
+				"searched": false
+			}
+		},
+		{
+			"id": "town.pharmacy.dispensary_b",
+			"type": "container",
+			"kind": "medical",
+			"position": [
+				1040,
+				262
+			],
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_MEDICAL",
+			"art": "int.med_cabinet",
+			"art_searched": "int.med_cabinet_open",
+			"loot": {
+				"bandage": 1,
+				"water_clean": 1
+			},
+			"initial": {
+				"searched": false
+			}
+		},
+		{
+			"id": "town.pharmacy.dispensary_crate",
+			"type": "container",
+			"kind": "crate",
+			"position": [
+				990,
+				610
+			],
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_CRATE",
+			"art": "int.crate",
+			"art_searched": "int.crate_open",
+			"loot": {
+				"water_bottle": 1
+			},
+			"initial": {
+				"searched": false
+			}
+		}
+	]
+}
