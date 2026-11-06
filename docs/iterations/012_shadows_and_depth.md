@@ -5,9 +5,9 @@
 | Base | `iteration/011-world-awakens` @ `f4fba85` (verified locally and on the remote before any change) |
 | Recovery reference | **`backup/pre-sideview-iteration-012` → `f4fba85`** (pushed and verified on GitHub before any change) |
 | Branch | `iteration/012-shadows-and-depth` |
-| Milestone checkpoints | `backup/iteration-012-milestone-a` (`3f0cd85`), `-b` (`b250640`), `-c` (`4b99d0a`), `-d`, `-e` (see the final report) |
+| Milestone checkpoints | `backup/iteration-012-milestone-a` (`3f0cd85`), `-b` (`b250640`), `-c` (`4b99d0a`), `-d` (`28057a7`), `-e` (final) |
 | Engine | Godot 4.7.2 stable, Compatibility renderer |
-| Save schema | 4 (unchanged). New data is optional; saves load in both directions (see §5) |
+| Save schema | 4 (unchanged). New data is optional; saves load in both directions (see §5) · network protocol 8 · Red Thaw 0.4.0 |
 | Status | Implemented and tested on Linux (unit, real multi-process, rendered). **Windows acceptance pending.** The side-view bunker is an **experiment** awaiting a creator decision. |
 
 > Above ground, players fear what they cannot see. Below ground, they should clearly see what they have built.
@@ -134,7 +134,20 @@ Nothing is converted or stored twice, and the top-down view keeps reading the gr
     - a reconnect, then a save and restart with the dug cells and the crate intact
   - The original-bunker scenarios (`bunker_multi`, `dig_multi`) now explicitly select the top-down
     view, because they regress the original perspective.
-- **Rendered:** the screenshots in `../screenshots/iteration_012/` — see the final report.
+- **Full regression:** 429 of 430 checks passed across all scenarios (host simulation at most 0.63 ms
+  per frame with 30 Burnt Ones and two players). The one failure was `slice` step 16: the horde of the
+  defence event dispersed before damaging the barricades. It is timing-dependent; `slice` alone then
+  passed 29/29.
+- **Rendered** (`tools/shots_shadows_depth.py`, 26 screenshots in `../screenshots/iteration_012/`):
+  - silhouettes in daylight, crawling, under the flashlight, in a lightning flash and in headlights
+  - Burnt Ones at a warm engine, then the same marks on a clear day, in fog, in a blizzard and buried
+    by snow
+  - the side-view cabin bunker and the same bunker top-down
+  - a build preview, climbing a new scaffold, the raised chamber and its workbench panel, digging
+    refused as "too unstable", the storage panel
+  - levels −2 and −3, a ladder transition, back in the cabin
+  - the Ashgrove cellar in side view and in top-down
+  - custom graphics on and off
 
 ## 5. Saves and migration
 
