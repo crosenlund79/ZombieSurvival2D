@@ -116,6 +116,14 @@ func _add_props(r: RegionState, parent: Node2D) -> void:
 		if bool(pr.get("flip", false)):
 			sp.flip_h = true
 		parent.add_child(holder)
+		if bool(pr.get("light", false)):  # a lamp that still burns (the mine's wall lamps)
+			var l := PointLight2D.new()
+			l.set_script(LightSpot)
+			l.color = Color(1.0, 0.78, 0.45)
+			l.energy = 0.75
+			l.texture_scale = 1.6
+			l.position = holder.position + Vector2(0, -48)
+			add_child(l)
 
 
 ## A staircase flight between two floors (entity type "stairs"); climbable via SideSection.

@@ -130,7 +130,7 @@ def mine(rid, display, exit_region, exit_pos):
               {"asset": "side.rubble", "x": x(35.3), "y": floor(b1)}, {"asset": "side.rubble", "x": x(52.3), "y": floor(b3)},
               {"asset": "side.rubble", "x": x(8.6), "y": floor(b2)}]
     for col, b in ((10, b1), (26, b1), (20, b2), (40, b2), (30, b3), (45, b3)):
-        props.append({"asset": "side.mine_lamp", "x": x(col), "y": floor(b), "back": True})
+        props.append({"asset": "side.mine_lamp", "x": x(col), "y": floor(b), "back": True, "light": True})
     return {
         "region_id": rid, "display_key": display, "view": "side", "style": "mine",
         "bounds": [0, 0, cols * CELL, rows * CELL],
