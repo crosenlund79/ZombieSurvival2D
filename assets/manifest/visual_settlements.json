@@ -1,0 +1,1084 @@
+{
+	"kind": "visual",
+	"category": "settlements",
+	"assets": [
+		{
+			"id": "set.harbor_office",
+			"name": "Harbor master's office",
+			"template": "res://assets/templates/world/settlements/template_harbor_office.png",
+			"display_size": [
+				340,
+				260
+			],
+			"source_size": [
+				680,
+				520
+			],
+			"pivot": [
+				0.5,
+				0.9423
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_five_settlements.py) - replace with tablet art."
+		},
+		{
+			"id": "set.warehouse_a",
+			"name": "Waterfront warehouse",
+			"template": "res://assets/templates/world/settlements/template_warehouse_a.png",
+			"display_size": [
+				510,
+				260
+			],
+			"source_size": [
+				1020,
+				520
+			],
+			"pivot": [
+				0.5,
+				0.9423
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_five_settlements.py) - replace with tablet art."
+		},
+		{
+			"id": "set.cannery",
+			"name": "Cannery",
+			"template": "res://assets/templates/world/settlements/template_cannery.png",
+			"display_size": [
+				470,
+				260
+			],
+			"source_size": [
+				940,
+				520
+			],
+			"pivot": [
+				0.5,
+				0.9423
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_five_settlements.py) - replace with tablet art."
+		},
+		{
+			"id": "set.chandlery",
+			"name": "Ship chandlery (marine supplies)",
+			"template": "res://assets/templates/world/settlements/template_chandlery.png",
+			"display_size": [
+				320,
+				245
+			],
+			"source_size": [
+				640,
+				490
+			],
+			"pivot": [
+				0.5,
+				0.9388
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_five_settlements.py) - replace with tablet art."
+		},
+		{
+			"id": "set.net_shed",
+			"name": "Net shed",
+			"template": "res://assets/templates/world/settlements/template_net_shed.png",
+			"display_size": [
+				250,
+				165
+			],
+			"source_size": [
+				500,
+				330
+			],
+			"pivot": [
+				0.5,
+				0.9091
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_five_settlements.py) - replace with tablet art."
+		},
+		{
+			"id": "set.harbor_house",
+			"name": "Harbor cottage",
+			"template": "res://assets/templates/world/settlements/template_harbor_house.png",
+			"display_size": [
+				270,
+				275
+			],
+			"source_size": [
+				540,
+				550
+			],
+			"pivot": [
+				0.5,
+				0.9455
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_five_settlements.py) - replace with tablet art."
+		},
+		{
+			"id": "set.mine_office",
+			"name": "Mine office",
+			"template": "res://assets/templates/world/settlements/template_mine_office.png",
+			"display_size": [
+				360,
+				260
+			],
+			"source_size": [
+				720,
+				520
+			],
+			"pivot": [
+				0.5,
+				0.9423
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_five_settlements.py) - replace with tablet art."
+		},
+		{
+			"id": "set.general_store",
+			"name": "General store",
+			"template": "res://assets/templates/world/settlements/template_general_store.png",
+			"display_size": [
+				340,
+				245
+			],
+			"source_size": [
+				680,
+				490
+			],
+			"pivot": [
+				0.5,
+				0.9388
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_five_settlements.py) - replace with tablet art."
+		},
+		{
+			"id": "set.mine_supply",
+			"name": "Mining equipment supplier",
+			"template": "res://assets/templates/world/settlements/template_mine_supply.png",
+			"display_size": [
+				370,
+				185
+			],
+			"source_size": [
+				740,
+				370
+			],
+			"pivot": [
+				0.5,
+				0.9189
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_five_settlements.py) - replace with tablet art."
+		},
+		{
+			"id": "set.rowhouse",
+			"name": "Miners' row house",
+			"template": "res://assets/templates/world/settlements/template_rowhouse.png",
+			"display_size": [
+				420,
+				275
+			],
+			"source_size": [
+				840,
+				550
+			],
+			"pivot": [
+				0.5,
+				0.9455
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_five_settlements.py) - replace with tablet art."
+		},
+		{
+			"id": "set.store_shed",
+			"name": "Industrial storage shed",
+			"template": "res://assets/templates/world/settlements/template_store_shed.png",
+			"display_size": [
+				380,
+				165
+			],
+			"source_size": [
+				760,
+				330
+			],
+			"pivot": [
+				0.5,
+				0.9091
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_five_settlements.py) - replace with tablet art."
+		},
+		{
+			"id": "set.factory",
+			"name": "Factory hall",
+			"template": "res://assets/templates/world/settlements/template_factory.png",
+			"display_size": [
+				560,
+				260
+			],
+			"source_size": [
+				1120,
+				520
+			],
+			"pivot": [
+				0.5,
+				0.9423
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_five_settlements.py) - replace with tablet art."
+		},
+		{
+			"id": "set.machine_shop",
+			"name": "Machine shop",
+			"template": "res://assets/templates/world/settlements/template_machine_shop.png",
+			"display_size": [
+				370,
+				185
+			],
+			"source_size": [
+				740,
+				370
+			],
+			"pivot": [
+				0.5,
+				0.9189
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_five_settlements.py) - replace with tablet art."
+		},
+		{
+			"id": "set.utility",
+			"name": "Power & water utility building",
+			"template": "res://assets/templates/world/settlements/template_utility.png",
+			"display_size": [
+				340,
+				260
+			],
+			"source_size": [
+				680,
+				520
+			],
+			"pivot": [
+				0.5,
+				0.9423
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_five_settlements.py) - replace with tablet art."
+		},
+		{
+			"id": "set.corner_store",
+			"name": "Corner store",
+			"template": "res://assets/templates/world/settlements/template_corner_store.png",
+			"display_size": [
+				300,
+				210
+			],
+			"source_size": [
+				600,
+				420
+			],
+			"pivot": [
+				0.5,
+				0.9286
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_five_settlements.py) - replace with tablet art."
+		},
+		{
+			"id": "set.worker_house",
+			"name": "Worker's house",
+			"template": "res://assets/templates/world/settlements/template_worker_house.png",
+			"display_size": [
+				280,
+				200
+			],
+			"source_size": [
+				560,
+				400
+			],
+			"pivot": [
+				0.5,
+				0.925
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_five_settlements.py) - replace with tablet art."
+		},
+		{
+			"id": "set.warehouse_b",
+			"name": "Rail-side warehouse",
+			"template": "res://assets/templates/world/settlements/template_warehouse_b.png",
+			"display_size": [
+				490,
+				260
+			],
+			"source_size": [
+				980,
+				520
+			],
+			"pivot": [
+				0.5,
+				0.9423
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_five_settlements.py) - replace with tablet art."
+		},
+		{
+			"id": "set.civic_hall",
+			"name": "Stillwater Civic Hall (three storeys)",
+			"template": "res://assets/templates/world/settlements/template_civic_hall.png",
+			"display_size": [
+				440,
+				335
+			],
+			"source_size": [
+				880,
+				670
+			],
+			"pivot": [
+				0.5,
+				0.9552
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_five_settlements.py) - replace with tablet art."
+		},
+		{
+			"id": "set.clinic",
+			"name": "Clinic",
+			"template": "res://assets/templates/world/settlements/template_clinic.png",
+			"display_size": [
+				360,
+				185
+			],
+			"source_size": [
+				720,
+				370
+			],
+			"pivot": [
+				0.5,
+				0.9189
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_five_settlements.py) - replace with tablet art."
+		},
+		{
+			"id": "set.police",
+			"name": "Police station",
+			"template": "res://assets/templates/world/settlements/template_police.png",
+			"display_size": [
+				370,
+				260
+			],
+			"source_size": [
+				740,
+				520
+			],
+			"pivot": [
+				0.5,
+				0.9423
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_five_settlements.py) - replace with tablet art."
+		},
+		{
+			"id": "set.market",
+			"name": "Market (grocery)",
+			"template": "res://assets/templates/world/settlements/template_market.png",
+			"display_size": [
+				380,
+				210
+			],
+			"source_size": [
+				760,
+				420
+			],
+			"pivot": [
+				0.5,
+				0.9286
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_five_settlements.py) - replace with tablet art."
+		},
+		{
+			"id": "set.outfitters",
+			"name": "Outfitters (clothing)",
+			"template": "res://assets/templates/world/settlements/template_outfitters.png",
+			"display_size": [
+				340,
+				245
+			],
+			"source_size": [
+				680,
+				490
+			],
+			"pivot": [
+				0.5,
+				0.9388
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_five_settlements.py) - replace with tablet art."
+		},
+		{
+			"id": "set.apartments",
+			"name": "Apartment block",
+			"template": "res://assets/templates/world/settlements/template_apartments.png",
+			"display_size": [
+				400,
+				315
+			],
+			"source_size": [
+				800,
+				630
+			],
+			"pivot": [
+				0.5,
+				0.9524
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_five_settlements.py) - replace with tablet art."
+		},
+		{
+			"id": "set.church",
+			"name": "Church",
+			"template": "res://assets/templates/world/settlements/template_church.png",
+			"display_size": [
+				310,
+				310
+			],
+			"source_size": [
+				620,
+				620
+			],
+			"pivot": [
+				0.5,
+				0.9516
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_five_settlements.py) - replace with tablet art."
+		},
+		{
+			"id": "set.town_house_a",
+			"name": "Stillwater house",
+			"template": "res://assets/templates/world/settlements/template_town_house_a.png",
+			"display_size": [
+				280,
+				275
+			],
+			"source_size": [
+				560,
+				550
+			],
+			"pivot": [
+				0.5,
+				0.9455
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_five_settlements.py) - replace with tablet art."
+		},
+		{
+			"id": "set.quiet_house",
+			"name": "An ordinary house (quiet)",
+			"template": "res://assets/templates/world/settlements/template_quiet_house.png",
+			"display_size": [
+				290,
+				275
+			],
+			"source_size": [
+				580,
+				550
+			],
+			"pivot": [
+				0.5,
+				0.9455
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_five_settlements.py) - replace with tablet art."
+		},
+		{
+			"id": "set.lighthouse",
+			"name": "Harbor lighthouse (dark)",
+			"template": "res://assets/templates/world/settlements/template_lighthouse.png",
+			"display_size": [
+				130,
+				350
+			],
+			"source_size": [
+				260,
+				700
+			],
+			"pivot": [
+				0.5,
+				0.9714
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_five_settlements.py) - replace with tablet art."
+		},
+		{
+			"id": "set.crane",
+			"name": "Dock crane (frozen in place)",
+			"template": "res://assets/templates/world/settlements/template_crane.png",
+			"display_size": [
+				260,
+				320
+			],
+			"source_size": [
+				520,
+				640
+			],
+			"pivot": [
+				0.5,
+				0.9688
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_five_settlements.py) - replace with tablet art."
+		},
+		{
+			"id": "set.trawler",
+			"name": "Fishing trawler frozen into the ice",
+			"template": "res://assets/templates/world/settlements/template_trawler.png",
+			"display_size": [
+				380,
+				210
+			],
+			"source_size": [
+				760,
+				420
+			],
+			"pivot": [
+				0.5,
+				0.9048
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_five_settlements.py) - replace with tablet art."
+		},
+		{
+			"id": "set.container_red",
+			"name": "Shipping container (red)",
+			"template": "res://assets/templates/world/settlements/template_container_red.png",
+			"display_size": [
+				240,
+				130
+			],
+			"source_size": [
+				480,
+				260
+			],
+			"pivot": [
+				0.5,
+				0.9231
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_five_settlements.py) - replace with tablet art."
+		},
+		{
+			"id": "set.container_blue",
+			"name": "Shipping container (blue)",
+			"template": "res://assets/templates/world/settlements/template_container_blue.png",
+			"display_size": [
+				240,
+				130
+			],
+			"source_size": [
+				480,
+				260
+			],
+			"pivot": [
+				0.5,
+				0.9231
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_five_settlements.py) - replace with tablet art."
+		},
+		{
+			"id": "set.bollard",
+			"name": "Mooring bollard",
+			"template": "res://assets/templates/world/settlements/template_bollard.png",
+			"display_size": [
+				40,
+				60
+			],
+			"source_size": [
+				80,
+				120
+			],
+			"pivot": [
+				0.5,
+				0.9333
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_five_settlements.py) - replace with tablet art."
+		},
+		{
+			"id": "set.fish_crates",
+			"name": "Stacked fish crates",
+			"template": "res://assets/templates/world/settlements/template_fish_crates.png",
+			"display_size": [
+				100,
+				90
+			],
+			"source_size": [
+				200,
+				180
+			],
+			"pivot": [
+				0.5,
+				0.9444
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_five_settlements.py) - replace with tablet art."
+		},
+		{
+			"id": "set.headframe",
+			"name": "Mine headframe (winding tower)",
+			"template": "res://assets/templates/world/settlements/template_headframe.png",
+			"display_size": [
+				200,
+				320
+			],
+			"source_size": [
+				400,
+				640
+			],
+			"pivot": [
+				0.5,
+				0.9688
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_five_settlements.py) - replace with tablet art."
+		},
+		{
+			"id": "set.adit",
+			"name": "Mine entrance (adit No. 3) in the hillside",
+			"template": "res://assets/templates/world/settlements/template_adit.png",
+			"display_size": [
+				290,
+				200
+			],
+			"source_size": [
+				580,
+				400
+			],
+			"pivot": [
+				0.5,
+				0.95
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_five_settlements.py) - replace with tablet art."
+		},
+		{
+			"id": "set.hopper",
+			"name": "Ore hopper",
+			"template": "res://assets/templates/world/settlements/template_hopper.png",
+			"display_size": [
+				160,
+				140
+			],
+			"source_size": [
+				320,
+				280
+			],
+			"pivot": [
+				0.5,
+				0.9571
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_five_settlements.py) - replace with tablet art."
+		},
+		{
+			"id": "set.slag",
+			"name": "Slag heap",
+			"template": "res://assets/templates/world/settlements/template_slag.png",
+			"display_size": [
+				210,
+				130
+			],
+			"source_size": [
+				420,
+				260
+			],
+			"pivot": [
+				0.5,
+				0.9615
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_five_settlements.py) - replace with tablet art."
+		},
+		{
+			"id": "set.water_tower",
+			"name": "Water tower",
+			"template": "res://assets/templates/world/settlements/template_water_tower.png",
+			"display_size": [
+				160,
+				350
+			],
+			"source_size": [
+				320,
+				700
+			],
+			"pivot": [
+				0.5,
+				0.9714
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_five_settlements.py) - replace with tablet art."
+		},
+		{
+			"id": "set.fuel_tanks",
+			"name": "Fuel depot tanks",
+			"template": "res://assets/templates/world/settlements/template_fuel_tanks.png",
+			"display_size": [
+				220,
+				170
+			],
+			"source_size": [
+				440,
+				340
+			],
+			"pivot": [
+				0.5,
+				0.9529
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_five_settlements.py) - replace with tablet art."
+		},
+		{
+			"id": "set.substation",
+			"name": "Electrical substation",
+			"template": "res://assets/templates/world/settlements/template_substation.png",
+			"display_size": [
+				180,
+				120
+			],
+			"source_size": [
+				360,
+				240
+			],
+			"pivot": [
+				0.5,
+				0.9583
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_five_settlements.py) - replace with tablet art."
+		},
+		{
+			"id": "set.memorial",
+			"name": "War memorial",
+			"template": "res://assets/templates/world/settlements/template_memorial.png",
+			"display_size": [
+				120,
+				130
+			],
+			"source_size": [
+				240,
+				260
+			],
+			"pivot": [
+				0.5,
+				0.9615
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_five_settlements.py) - replace with tablet art."
+		},
+		{
+			"id": "set.iceberg_a",
+			"name": "Iceberg (a), drifts in the channel",
+			"template": "res://assets/templates/world/settlements/template_iceberg_a.png",
+			"display_size": [
+				180,
+				120
+			],
+			"source_size": [
+				360,
+				240
+			],
+			"pivot": [
+				0.5,
+				0.9167
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_five_settlements.py) - replace with tablet art."
+		},
+		{
+			"id": "set.iceberg_b",
+			"name": "Iceberg (b), drifts in the channel",
+			"template": "res://assets/templates/world/settlements/template_iceberg_b.png",
+			"display_size": [
+				210,
+				140
+			],
+			"source_size": [
+				420,
+				280
+			],
+			"pivot": [
+				0.5,
+				0.9286
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_five_settlements.py) - replace with tablet art."
+		},
+		{
+			"id": "set.iceberg_c",
+			"name": "Iceberg (c), drifts in the channel",
+			"template": "res://assets/templates/world/settlements/template_iceberg_c.png",
+			"display_size": [
+				240,
+				160
+			],
+			"source_size": [
+				480,
+				320
+			],
+			"pivot": [
+				0.5,
+				0.9375
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_five_settlements.py) - replace with tablet art."
+		},
+		{
+			"id": "set.floe",
+			"name": "Ice floe",
+			"template": "res://assets/templates/world/settlements/template_floe.png",
+			"display_size": [
+				130,
+				40
+			],
+			"source_size": [
+				260,
+				80
+			],
+			"pivot": [
+				0.5,
+				0.925
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_five_settlements.py) - replace with tablet art."
+		},
+		{
+			"id": "set.water",
+			"name": "Open harbor water, black and cold (tile)",
+			"template": "res://assets/templates/world/settlements/template_water.png",
+			"display_size": [
+				256,
+				256
+			],
+			"source_size": [
+				256,
+				256
+			],
+			"pivot": [
+				0,
+				0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated seamless tile (tools/art/gen_five_settlements.py)."
+		},
+		{
+			"id": "set.sea_ice",
+			"name": "Sea ice (tile)",
+			"template": "res://assets/templates/world/settlements/template_sea_ice.png",
+			"display_size": [
+				256,
+				256
+			],
+			"source_size": [
+				256,
+				256
+			],
+			"pivot": [
+				0,
+				0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated seamless tile (tools/art/gen_five_settlements.py)."
+		},
+		{
+			"id": "set.pier",
+			"name": "Pier planks (tile)",
+			"template": "res://assets/templates/world/settlements/template_pier.png",
+			"display_size": [
+				256,
+				256
+			],
+			"source_size": [
+				256,
+				256
+			],
+			"pivot": [
+				0,
+				0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated seamless tile (tools/art/gen_five_settlements.py)."
+		},
+		{
+			"id": "set.rail",
+			"name": "Rail track in frozen ballast (tile)",
+			"template": "res://assets/templates/world/settlements/template_rail.png",
+			"display_size": [
+				256,
+				256
+			],
+			"source_size": [
+				256,
+				256
+			],
+			"pivot": [
+				0,
+				0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated seamless tile (tools/art/gen_five_settlements.py)."
+		}
+	]
+}

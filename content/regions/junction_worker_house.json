@@ -1,0 +1,197 @@
+{
+	"region_id": "junction.worker_house",
+	"display_key": "REGION_JUNCTION_HOUSE",
+	"view": "side",
+	"style": "building",
+	"bounds": [
+		0,
+		0,
+		1664,
+		768
+	],
+	"excavation": {
+		"cell": 64,
+		"origin": [
+			0,
+			0
+		],
+		"cols": 26,
+		"rows": 12,
+		"fixed": true,
+		"initial_open": [
+			[
+				5,
+				4,
+				16,
+				4
+			]
+		],
+		"platforms": [],
+		"_comment": "Authored building cross-section (tools/build_side_interiors.py); fixed, never dug."
+	},
+	"section": {
+		"ground_row": 8,
+		"envelope": [
+			4,
+			3,
+			18,
+			6
+		],
+		"exterior": "side.ext_siding",
+		"basement": "",
+		"rooms": [
+			{
+				"rect": [
+					5,
+					4,
+					9,
+					4
+				],
+				"wall": "side.wall_house",
+				"floor": "side.floor_linoleum"
+			},
+			{
+				"rect": [
+					14,
+					4,
+					7,
+					4
+				],
+				"wall": "side.wall_house_b",
+				"floor": "side.floorboards"
+			}
+		],
+		"windows": [
+			[
+				640.0,
+				363.5
+			],
+			[
+				1120.0,
+				363.5,
+				"boarded"
+			]
+		],
+		"dividers": [
+			[
+				896,
+				256,
+				345.6,
+				512
+			]
+		],
+		"labels": []
+	},
+	"side_props": [
+		{
+			"asset": "int.meal_table",
+			"x": 819.2,
+			"y": 509
+		},
+		{
+			"asset": "int.sofa",
+			"x": 1024.0,
+			"y": 509
+		}
+	],
+	"spawn_points": [
+		[
+			422.4,
+			509
+		]
+	],
+	"entities": [
+		{
+			"id": "junction.worker_house.exit",
+			"type": "portal",
+			"interact_range": 70,
+			"priority": 2,
+			"side_art": "side.door_ext",
+			"target": {
+				"region": "junction",
+				"position": [
+					900,
+					1492
+				]
+			},
+			"prompt_key": "PROMPT_EXIT_HOUSE",
+			"position": [
+				364.8,
+				509
+			]
+		},
+		{
+			"id": "junction.worker_house.kitchen",
+			"type": "container",
+			"kind": "cupboard",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_CUPBOARD",
+			"art": "int.kitchen_counter",
+			"art_searched": "int.kitchen_counter",
+			"loot": {},
+			"pool": "home_kitchen",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				512.0,
+				509
+			]
+		},
+		{
+			"id": "junction.worker_house.fridge",
+			"type": "container",
+			"kind": "fridge",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_FRIDGE",
+			"art": "int.home_fridge",
+			"art_searched": "int.home_fridge_open",
+			"loot": {},
+			"pool": "home_fridge",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				704.0,
+				509
+			]
+		},
+		{
+			"id": "junction.worker_house.dresser",
+			"type": "container",
+			"kind": "drawer",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_DRAWER",
+			"art": "int.dresser",
+			"art_searched": "int.dresser_open",
+			"loot": {},
+			"pool": "home_bedroom",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				1177.6,
+				509
+			]
+		}
+	],
+	"surface": {
+		"region": "junction",
+		"position": [
+			900,
+			1440
+		]
+	},
+	"tint": [
+		0.5,
+		0.5,
+		0.53
+	],
+	"climate": {
+		"exposure": 1.0,
+		"fog": 0.0,
+		"shelter": 0.35
+	},
+	"interior": true,
+	"ambience": "amb.wind_muffled"
+}

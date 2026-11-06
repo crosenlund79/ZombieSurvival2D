@@ -141,6 +141,76 @@
 			"loop": true,
 			"status": "READY",
 			"notes": "From the creator's audio inbox: 'Theme/Where the Ice Once Lay.mp3' (copied by tools/art/import_audio_inbox.py)."
+		},
+		{
+			"id": "sfx.gun_pistol",
+			"name": "Handgun shot",
+			"template": "res://assets/templates/audio/inbox/template_gun_pistol.wav",
+			"bus": "SFX",
+			"volume_db": -3.0,
+			"loop": false,
+			"status": "READY",
+			"notes": "From the creator's audio inbox: 'Gun sounds/Assault Rifle Shot 10.wav' (copied, processed: atrim=0:0.7,highpass=f=160,afade=t=out:st=0.45:d=0.25 by tools/art/import_audio_inbox.py)."
+		},
+		{
+			"id": "sfx.gun_revolver",
+			"name": "Revolver shot (heavier)",
+			"template": "res://assets/templates/audio/inbox/template_gun_revolver.wav",
+			"bus": "SFX",
+			"volume_db": -3.0,
+			"loop": false,
+			"status": "READY",
+			"notes": "From the creator's audio inbox: 'Gun sounds/Assault Rifle Shot 12.wav' (copied, processed: atrim=0:0.9,lowpass=f=5000,afade=t=out:st=0.6:d=0.3 by tools/art/import_audio_inbox.py)."
+		},
+		{
+			"id": "sfx.gun_shotgun",
+			"name": "Shotgun blast",
+			"template": "res://assets/templates/audio/inbox/template_gun_shotgun.wav",
+			"bus": "SFX",
+			"volume_db": -2.0,
+			"loop": false,
+			"status": "READY",
+			"notes": "From the creator's audio inbox: 'Gun sounds/Machine Gun Shot 2.wav' (copied, processed: atrim=0:1.0,lowpass=f=2600,volume=3dB,afade=t=out:st=0.6:d=0.4 by tools/art/import_audio_inbox.py)."
+		},
+		{
+			"id": "sfx.gun_rifle",
+			"name": "Rifle shot (echoes off the hills)",
+			"template": "res://assets/templates/audio/inbox/template_gun_rifle.wav",
+			"bus": "SFX",
+			"volume_db": -2.0,
+			"loop": false,
+			"status": "READY",
+			"notes": "From the creator's audio inbox: 'Gun sounds/Assault Rifle Shot 13.wav' (copied, processed: atrim=0:1.1,aecho=0.8:0.5:350:0.3,afade=t=out:st=0.7:d=0.4 by tools/art/import_audio_inbox.py)."
+		},
+		{
+			"id": "sfx.gun_mag_out",
+			"name": "Reload: magazine out",
+			"template": "res://assets/templates/audio/inbox/template_gun_mag_out.wav",
+			"bus": "SFX",
+			"volume_db": -8.0,
+			"loop": false,
+			"status": "READY",
+			"notes": "From the creator's audio inbox: 'Gun sounds/Mag Out.wav' (copied by tools/art/import_audio_inbox.py)."
+		},
+		{
+			"id": "sfx.gun_mag_in",
+			"name": "Reload: magazine in",
+			"template": "res://assets/templates/audio/inbox/template_gun_mag_in.wav",
+			"bus": "SFX",
+			"volume_db": -8.0,
+			"loop": false,
+			"status": "READY",
+			"notes": "From the creator's audio inbox: 'Gun sounds/Mag In.wav' (copied by tools/art/import_audio_inbox.py)."
+		},
+		{
+			"id": "sfx.gun_dry",
+			"name": "Dry fire: click on an empty chamber",
+			"template": "res://assets/templates/audio/inbox/template_gun_dry.wav",
+			"bus": "SFX",
+			"volume_db": -6.0,
+			"loop": false,
+			"status": "READY",
+			"notes": "From the creator's audio inbox: 'UI sounds/Simple Click Sound 11.wav' (copied, processed: atrim=0:0.12,lowpass=f=3000,volume=-2dB by tools/art/import_audio_inbox.py)."
 		}
 	]
 }

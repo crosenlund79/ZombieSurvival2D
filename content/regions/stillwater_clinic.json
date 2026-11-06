@@ -1,0 +1,245 @@
+{
+	"region_id": "stillwater.clinic",
+	"display_key": "REGION_STILLWATER_CLINIC",
+	"view": "side",
+	"style": "building",
+	"bounds": [
+		0,
+		0,
+		2304,
+		768
+	],
+	"excavation": {
+		"cell": 64,
+		"origin": [
+			0,
+			0
+		],
+		"cols": 36,
+		"rows": 12,
+		"fixed": true,
+		"initial_open": [
+			[
+				5,
+				4,
+				26,
+				4
+			]
+		],
+		"platforms": [],
+		"_comment": "Authored building cross-section (tools/build_side_interiors.py); fixed, never dug."
+	},
+	"section": {
+		"ground_row": 8,
+		"envelope": [
+			4,
+			3,
+			28,
+			6
+		],
+		"exterior": "side.ext_concrete",
+		"basement": "",
+		"rooms": [
+			{
+				"rect": [
+					5,
+					4,
+					17,
+					4
+				],
+				"wall": "side.wall_office",
+				"floor": "side.floor_linoleum"
+			},
+			{
+				"rect": [
+					22,
+					4,
+					9,
+					4
+				],
+				"wall": "side.wall_brick_in",
+				"floor": "side.floor_concrete"
+			}
+		],
+		"windows": [
+			[
+				512.0,
+				363.5
+			],
+			[
+				832.0,
+				363.5
+			]
+		],
+		"dividers": [
+			[
+				1408,
+				256,
+				345.6,
+				512
+			]
+		],
+		"labels": [
+			[
+				1433.6,
+				284,
+				"SIDE_DISPENSARY"
+			]
+		]
+	},
+	"side_props": [],
+	"spawn_points": [
+		[
+			422.4,
+			509
+		]
+	],
+	"entities": [
+		{
+			"id": "stillwater.clinic.exit",
+			"type": "portal",
+			"interact_range": 70,
+			"priority": 2,
+			"side_art": "side.door_ext",
+			"target": {
+				"region": "stillwater",
+				"position": [
+					2550,
+					1112
+				]
+			},
+			"prompt_key": "PROMPT_EXIT_HOUSE",
+			"position": [
+				364.8,
+				509
+			]
+		},
+		{
+			"id": "stillwater.clinic.reception",
+			"type": "container",
+			"kind": "drawer",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_DRAWER",
+			"art": "int.pharm_counter",
+			"art_searched": "int.pharm_counter",
+			"loot": {},
+			"pool": "clinic_desk",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				512.0,
+				509
+			]
+		},
+		{
+			"id": "stillwater.clinic.exam_a",
+			"type": "container",
+			"kind": "medical",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_MEDICAL",
+			"art": "int.med_cabinet",
+			"art_searched": "int.med_cabinet_open",
+			"loot": {},
+			"pool": "clinic_medical",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				704.0,
+				509
+			]
+		},
+		{
+			"id": "stillwater.clinic.exam_b",
+			"type": "container",
+			"kind": "medical",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_MEDICAL",
+			"art": "int.med_cabinet_open",
+			"art_searched": "int.med_cabinet_open",
+			"loot": {},
+			"pool": "clinic_medical",
+			"initial": {
+				"searched": true
+			},
+			"position": [
+				896.0,
+				509
+			]
+		},
+		{
+			"id": "stillwater.clinic.supply",
+			"type": "container",
+			"kind": "shelf",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_SHELF",
+			"art": "int.metal_shelf_full",
+			"art_searched": "int.metal_shelf_empty",
+			"loot": {},
+			"pool": "clinic_supply",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				1088.0,
+				509
+			]
+		},
+		{
+			"id": "stillwater.clinic.drug_store",
+			"type": "container",
+			"kind": "medical",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_MEDICAL",
+			"art": "int.med_cabinet",
+			"art_searched": "int.med_cabinet_open",
+			"loot": {},
+			"pool": "clinic_drugs",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				1510.4,
+				509
+			]
+		},
+		{
+			"id": "stillwater.clinic.crate",
+			"type": "container",
+			"kind": "crate",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_CRATE",
+			"art": "int.crate",
+			"art_searched": "int.crate_open",
+			"loot": {},
+			"pool": "clinic_supply",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				1702.4,
+				509
+			]
+		}
+	],
+	"surface": {
+		"region": "stillwater",
+		"position": [
+			2550,
+			1060
+		]
+	},
+	"tint": [
+		0.5,
+		0.5,
+		0.53
+	],
+	"climate": {
+		"exposure": 1.0,
+		"fog": 0.0,
+		"shelter": 0.35
+	},
+	"interior": true,
+	"ambience": "amb.wind_muffled"
+}

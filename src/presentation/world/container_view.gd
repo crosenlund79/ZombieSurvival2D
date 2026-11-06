@@ -39,7 +39,9 @@ func _activate() -> void:
 func _refresh(cause: String) -> void:
 	var st := state()
 	var searched := bool(st.get("searched", false))
-	show_art("Main", str(def.get("art_searched" if searched else "art", "")))
+	var art := str(def.get("art_searched" if searched else "art", ""))
+	if art != "":
+		show_art("Main", art)  # vehicles and other scenery-backed containers have none
 	if interact != null:
 		var by := ScavengeSim.searching(st)
 		var me := Session.local_player_id

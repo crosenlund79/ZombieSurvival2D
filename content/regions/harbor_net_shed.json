@@ -1,0 +1,169 @@
+{
+	"region_id": "harbor.net_shed",
+	"display_key": "REGION_HARBOR_NET_SHED",
+	"view": "side",
+	"style": "building",
+	"bounds": [
+		0,
+		0,
+		1664,
+		768
+	],
+	"excavation": {
+		"cell": 64,
+		"origin": [
+			0,
+			0
+		],
+		"cols": 26,
+		"rows": 12,
+		"fixed": true,
+		"initial_open": [
+			[
+				5,
+				4,
+				16,
+				4
+			]
+		],
+		"platforms": [],
+		"_comment": "Authored building cross-section (tools/build_side_interiors.py); fixed, never dug."
+	},
+	"section": {
+		"ground_row": 8,
+		"envelope": [
+			4,
+			3,
+			18,
+			6
+		],
+		"exterior": "side.ext_siding",
+		"basement": "",
+		"rooms": [
+			{
+				"rect": [
+					5,
+					4,
+					16,
+					4
+				],
+				"wall": "side.wall_cabin",
+				"floor": "side.floor_concrete"
+			}
+		],
+		"windows": [
+			[
+				640.0,
+				363.5,
+				"boarded"
+			],
+			[
+				1024.0,
+				363.5
+			]
+		],
+		"dividers": [],
+		"labels": []
+	},
+	"side_props": [],
+	"spawn_points": [
+		[
+			422.4,
+			509
+		]
+	],
+	"entities": [
+		{
+			"id": "harbor.net_shed.exit",
+			"type": "portal",
+			"interact_range": 70,
+			"priority": 2,
+			"side_art": "side.door_ext",
+			"target": {
+				"region": "harbor",
+				"position": [
+					2000,
+					1352
+				]
+			},
+			"prompt_key": "PROMPT_EXIT_HOUSE",
+			"position": [
+				364.8,
+				509
+			]
+		},
+		{
+			"id": "harbor.net_shed.nets",
+			"type": "container",
+			"kind": "shelf",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_SHELF",
+			"art": "int.metal_shelf_full",
+			"art_searched": "int.metal_shelf_empty",
+			"loot": {},
+			"pool": "marine",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				512.0,
+				509
+			]
+		},
+		{
+			"id": "harbor.net_shed.chest",
+			"type": "container",
+			"kind": "toolbox",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_TOOLBOX",
+			"art": "int.tool_chest",
+			"art_searched": "int.tool_chest_open",
+			"loot": {},
+			"pool": "marine",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				768.0,
+				509
+			]
+		},
+		{
+			"id": "harbor.net_shed.crate",
+			"type": "container",
+			"kind": "crate",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_CRATE",
+			"art": "int.crate",
+			"art_searched": "int.crate_open",
+			"loot": {},
+			"pool": "marine_safety",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				1024.0,
+				509
+			]
+		}
+	],
+	"surface": {
+		"region": "harbor",
+		"position": [
+			2000,
+			1300
+		]
+	},
+	"tint": [
+		0.5,
+		0.5,
+		0.53
+	],
+	"climate": {
+		"exposure": 1.0,
+		"fog": 0.0,
+		"shelter": 0.35
+	},
+	"interior": true,
+	"ambience": "amb.wind_muffled"
+}

@@ -1,0 +1,245 @@
+{
+	"region_id": "greyhollow.mine_supply",
+	"display_key": "REGION_GREYHOLLOW_MINE_SUPPLY",
+	"view": "side",
+	"style": "building",
+	"bounds": [
+		0,
+		0,
+		2304,
+		768
+	],
+	"excavation": {
+		"cell": 64,
+		"origin": [
+			0,
+			0
+		],
+		"cols": 36,
+		"rows": 12,
+		"fixed": true,
+		"initial_open": [
+			[
+				5,
+				4,
+				26,
+				4
+			]
+		],
+		"platforms": [],
+		"_comment": "Authored building cross-section (tools/build_side_interiors.py); fixed, never dug."
+	},
+	"section": {
+		"ground_row": 8,
+		"envelope": [
+			4,
+			3,
+			28,
+			6
+		],
+		"exterior": "side.ext_brick",
+		"basement": "",
+		"rooms": [
+			{
+				"rect": [
+					5,
+					4,
+					17,
+					4
+				],
+				"wall": "side.wall_brick_in",
+				"floor": "side.floor_concrete"
+			},
+			{
+				"rect": [
+					22,
+					4,
+					9,
+					4
+				],
+				"wall": "side.wall_brick_in",
+				"floor": "side.floor_concrete"
+			}
+		],
+		"windows": [
+			[
+				512.0,
+				363.5
+			],
+			[
+				832.0,
+				363.5
+			]
+		],
+		"dividers": [
+			[
+				1408,
+				256,
+				345.6,
+				512
+			]
+		],
+		"labels": [
+			[
+				1433.6,
+				284,
+				"SIDE_STOCKROOM"
+			]
+		]
+	},
+	"side_props": [],
+	"spawn_points": [
+		[
+			422.4,
+			509
+		]
+	],
+	"entities": [
+		{
+			"id": "greyhollow.mine_supply.exit",
+			"type": "portal",
+			"interact_range": 70,
+			"priority": 2,
+			"side_art": "side.door_ext",
+			"target": {
+				"region": "greyhollow",
+				"position": [
+					700,
+					1732
+				]
+			},
+			"prompt_key": "PROMPT_EXIT_HOUSE",
+			"position": [
+				364.8,
+				509
+			]
+		},
+		{
+			"id": "greyhollow.mine_supply.counter",
+			"type": "container",
+			"kind": "drawer",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_DRAWER",
+			"art": "int.pharm_counter",
+			"art_searched": "int.pharm_counter",
+			"loot": {},
+			"pool": "store_counter",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				512.0,
+				509
+			]
+		},
+		{
+			"id": "greyhollow.mine_supply.tool_wall",
+			"type": "container",
+			"kind": "shelf",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_SHELF",
+			"art": "int.metal_shelf_full",
+			"art_searched": "int.metal_shelf_empty",
+			"loot": {},
+			"pool": "mine_tools",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				704.0,
+				509
+			]
+		},
+		{
+			"id": "greyhollow.mine_supply.lamps",
+			"type": "container",
+			"kind": "shelf",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_SHELF",
+			"art": "int.metal_shelf_full",
+			"art_searched": "int.metal_shelf_empty",
+			"loot": {},
+			"pool": "mine_lamps",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				896.0,
+				509
+			]
+		},
+		{
+			"id": "greyhollow.mine_supply.ropes",
+			"type": "container",
+			"kind": "garage",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_GARAGE",
+			"art": "int.crate",
+			"art_searched": "int.crate_open",
+			"loot": {},
+			"pool": "mine_tools",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				1088.0,
+				509
+			]
+		},
+		{
+			"id": "greyhollow.mine_supply.explosives_locker",
+			"type": "container",
+			"kind": "locker",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_LOCKER",
+			"art": "int.locker",
+			"art_searched": "int.locker_open",
+			"loot": {},
+			"pool": "mine_store",
+			"initial": {
+				"searched": true
+			},
+			"position": [
+				1510.4,
+				509
+			]
+		},
+		{
+			"id": "greyhollow.mine_supply.parts",
+			"type": "container",
+			"kind": "garage",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_GARAGE",
+			"art": "int.metal_shelf_full",
+			"art_searched": "int.metal_shelf_empty",
+			"loot": {},
+			"pool": "industrial_parts",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				1702.4,
+				509
+			]
+		}
+	],
+	"surface": {
+		"region": "greyhollow",
+		"position": [
+			700,
+			1680
+		]
+	},
+	"tint": [
+		0.5,
+		0.5,
+		0.53
+	],
+	"climate": {
+		"exposure": 1.0,
+		"fog": 0.0,
+		"shelter": 0.35
+	},
+	"interior": true,
+	"ambience": "amb.wind_muffled"
+}

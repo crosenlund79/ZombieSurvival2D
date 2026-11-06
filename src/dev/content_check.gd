@@ -258,7 +258,7 @@ func _check_data() -> void:
 					_add("FAIL", "%s gear has unknown item %s" % [eid, g])
 			if ScavengeSim.is_container(e):
 				for ak in ["art", "art_searched"]:
-					if not AssetCatalog.has(str(e.get(ak, ""))):
+					if str(e.get(ak, "")) != "" and not AssetCatalog.has(str(e.get(ak, ""))):
 						problems += 1
 						_add("FAIL", "%s %s asset %s not in any manifest" % [eid, ak, e.get(ak, "")])
 				if not (SkillSim.cfg("scavenging").get("base_seconds", {}) as Dictionary).has(str(e.get("kind", ""))):

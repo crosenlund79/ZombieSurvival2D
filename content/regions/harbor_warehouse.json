@@ -1,0 +1,229 @@
+{
+	"region_id": "harbor.warehouse",
+	"display_key": "REGION_HARBOR_WAREHOUSE",
+	"view": "side",
+	"style": "building",
+	"bounds": [
+		0,
+		0,
+		2560,
+		768
+	],
+	"excavation": {
+		"cell": 64,
+		"origin": [
+			0,
+			0
+		],
+		"cols": 40,
+		"rows": 12,
+		"fixed": true,
+		"initial_open": [
+			[
+				5,
+				4,
+				30,
+				4
+			]
+		],
+		"platforms": [],
+		"_comment": "Authored building cross-section (tools/build_side_interiors.py); fixed, never dug."
+	},
+	"section": {
+		"ground_row": 8,
+		"envelope": [
+			4,
+			3,
+			32,
+			6
+		],
+		"exterior": "side.ext_brick",
+		"basement": "",
+		"rooms": [
+			{
+				"rect": [
+					5,
+					4,
+					30,
+					4
+				],
+				"wall": "side.wall_brick_in",
+				"floor": "side.floor_concrete"
+			}
+		],
+		"windows": [
+			[
+				640.0,
+				363.5,
+				"boarded"
+			],
+			[
+				1920.0,
+				363.5
+			]
+		],
+		"dividers": [],
+		"labels": []
+	},
+	"side_props": [
+		{
+			"asset": "int.boxes",
+			"x": 1216.0,
+			"y": 509
+		}
+	],
+	"spawn_points": [
+		[
+			422.4,
+			509
+		]
+	],
+	"entities": [
+		{
+			"id": "harbor.warehouse.exit",
+			"type": "portal",
+			"interact_range": 70,
+			"priority": 2,
+			"side_art": "side.door_ext",
+			"target": {
+				"region": "harbor",
+				"position": [
+					1400,
+					1352
+				]
+			},
+			"prompt_key": "PROMPT_EXIT_HOUSE",
+			"position": [
+				364.8,
+				509
+			]
+		},
+		{
+			"id": "harbor.warehouse.pallet_a",
+			"type": "container",
+			"kind": "crate",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_CRATE",
+			"art": "int.crate",
+			"art_searched": "int.crate_open",
+			"loot": {},
+			"pool": "harbor_cargo",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				512.0,
+				509
+			]
+		},
+		{
+			"id": "harbor.warehouse.rack_a",
+			"type": "container",
+			"kind": "shelf",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_SHELF",
+			"art": "int.metal_shelf_full",
+			"art_searched": "int.metal_shelf_empty",
+			"loot": {},
+			"pool": "marine",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				789.3,
+				509
+			]
+		},
+		{
+			"id": "harbor.warehouse.pallet_b",
+			"type": "container",
+			"kind": "crate",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_CRATE",
+			"art": "int.crate",
+			"art_searched": "int.crate_open",
+			"loot": {},
+			"pool": "harbor_cargo",
+			"initial": {
+				"searched": true
+			},
+			"position": [
+				1066.7,
+				509
+			]
+		},
+		{
+			"id": "harbor.warehouse.rack_b",
+			"type": "container",
+			"kind": "shelf",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_SHELF",
+			"art": "int.metal_shelf_full",
+			"art_searched": "int.metal_shelf_empty",
+			"loot": {},
+			"pool": "warehouse_freight",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				1344.0,
+				509
+			]
+		},
+		{
+			"id": "harbor.warehouse.fuel_cage",
+			"type": "container",
+			"kind": "garage",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_GARAGE",
+			"art": "int.crate",
+			"art_searched": "int.crate_open",
+			"loot": {},
+			"pool": "fuel_depot",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				1621.3,
+				509
+			]
+		},
+		{
+			"id": "harbor.warehouse.tool_chest",
+			"type": "container",
+			"kind": "toolbox",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_TOOLBOX",
+			"art": "int.tool_chest",
+			"art_searched": "int.tool_chest_open",
+			"loot": {},
+			"pool": "workshop_tools",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				1898.7,
+				509
+			]
+		}
+	],
+	"surface": {
+		"region": "harbor",
+		"position": [
+			1400,
+			1300
+		]
+	},
+	"tint": [
+		0.5,
+		0.5,
+		0.53
+	],
+	"climate": {
+		"exposure": 1.0,
+		"fog": 0.0,
+		"shelter": 0.35
+	},
+	"interior": true,
+	"ambience": "amb.wind_muffled"
+}

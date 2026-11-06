@@ -1,0 +1,318 @@
+{
+	"region_id": "stillwater.police",
+	"display_key": "REGION_STILLWATER_POLICE",
+	"view": "side",
+	"style": "building",
+	"bounds": [
+		0,
+		0,
+		1792,
+		1088
+	],
+	"excavation": {
+		"cell": 64,
+		"origin": [
+			0,
+			0
+		],
+		"cols": 28,
+		"rows": 17,
+		"fixed": true,
+		"initial_open": [
+			[
+				5,
+				9,
+				18,
+				4
+			],
+			[
+				5,
+				4,
+				18,
+				4
+			],
+			[
+				21,
+				8,
+				1,
+				1
+			]
+		],
+		"platforms": [
+			[
+				21,
+				7,
+				1,
+				1
+			]
+		],
+		"_comment": "Authored building cross-section (tools/build_side_interiors.py); fixed, never dug."
+	},
+	"section": {
+		"ground_row": 13,
+		"envelope": [
+			4,
+			3,
+			20,
+			11
+		],
+		"exterior": "side.ext_brick",
+		"basement": "",
+		"rooms": [
+			{
+				"rect": [
+					5,
+					9,
+					18,
+					4
+				],
+				"wall": "side.wall_office",
+				"floor": "side.floor_linoleum"
+			},
+			{
+				"rect": [
+					5,
+					4,
+					18,
+					4
+				],
+				"wall": "side.wall_office",
+				"floor": "side.floor_linoleum"
+			}
+		],
+		"windows": [
+			[
+				576.0,
+				683.5
+			],
+			[
+				1024.0,
+				683.5
+			],
+			[
+				576.0,
+				363.5,
+				"boarded"
+			],
+			[
+				960.0,
+				363.5
+			]
+		],
+		"dividers": [],
+		"labels": [
+			[
+				345.6,
+				284,
+				"SIDE_UPSTAIRS"
+			]
+		]
+	},
+	"side_props": [
+		{
+			"asset": "int.boxes",
+			"x": 985.6,
+			"y": 829
+		}
+	],
+	"spawn_points": [
+		[
+			422.4,
+			829
+		]
+	],
+	"entities": [
+		{
+			"id": "stillwater.police.exit",
+			"type": "portal",
+			"interact_range": 70,
+			"priority": 2,
+			"side_art": "side.door_ext",
+			"target": {
+				"region": "stillwater",
+				"position": [
+					3080,
+					1112
+				]
+			},
+			"prompt_key": "PROMPT_EXIT_HOUSE",
+			"position": [
+				364.8,
+				829
+			]
+		},
+		{
+			"id": "stillwater.police.reception",
+			"type": "container",
+			"kind": "drawer",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_DRAWER",
+			"art": "int.pharm_counter",
+			"art_searched": "int.pharm_counter",
+			"loot": {},
+			"pool": "police_desk",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				550.4,
+				829
+			]
+		},
+		{
+			"id": "stillwater.police.files",
+			"type": "container",
+			"kind": "locker",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_LOCKER",
+			"art": "int.locker",
+			"art_searched": "int.locker_open",
+			"loot": {},
+			"pool": "police_files",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				780.8,
+				829
+			]
+		},
+		{
+			"id": "stillwater.police.files_b",
+			"type": "container",
+			"kind": "locker",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_LOCKER",
+			"art": "int.locker_open",
+			"art_searched": "int.locker_open",
+			"loot": {},
+			"pool": "police_files",
+			"initial": {
+				"searched": true
+			},
+			"position": [
+				857.6,
+				829
+			]
+		},
+		{
+			"id": "stillwater.police.evidence",
+			"type": "container",
+			"kind": "crate",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_CRATE",
+			"art": "int.crate",
+			"art_searched": "int.crate_open",
+			"loot": {},
+			"pool": "police_evidence",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				1088.0,
+				829
+			]
+		},
+		{
+			"id": "stillwater.police.stairs_0",
+			"type": "stairs",
+			"position": [
+				1376.0,
+				829
+			],
+			"top": 509,
+			"flip": false
+		},
+		{
+			"id": "stillwater.police.desk",
+			"type": "container",
+			"kind": "drawer",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_DRAWER",
+			"art": "int.dresser",
+			"art_searched": "int.dresser_open",
+			"loot": {},
+			"pool": "police_desk",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				550.4,
+				509
+			]
+		},
+		{
+			"id": "stillwater.police.cabinet",
+			"type": "container",
+			"kind": "locker",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_LOCKER",
+			"art": "int.locker",
+			"art_searched": "int.locker_open",
+			"loot": {},
+			"pool": "police_files",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				768.0,
+				509
+			]
+		},
+		{
+			"id": "stillwater.police.storage",
+			"type": "container",
+			"kind": "crate",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_CRATE",
+			"art": "int.crate",
+			"art_searched": "int.crate_open",
+			"loot": {},
+			"pool": "police_storage",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				1024.0,
+				509
+			]
+		},
+		{
+			"id": "stillwater.police.armory",
+			"type": "container",
+			"kind": "locker",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_LOCKER",
+			"art": "int.locker",
+			"art_searched": "int.locker_open",
+			"loot": {},
+			"pool": "police_armory",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				1216.0,
+				509
+			]
+		}
+	],
+	"surface": {
+		"region": "stillwater",
+		"position": [
+			3080,
+			1060
+		]
+	},
+	"tint": [
+		0.5,
+		0.5,
+		0.53
+	],
+	"climate": {
+		"exposure": 1.0,
+		"fog": 0.0,
+		"shelter": 0.35
+	},
+	"interior": true,
+	"ambience": "amb.wind_muffled"
+}

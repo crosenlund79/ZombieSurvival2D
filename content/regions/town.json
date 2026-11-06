@@ -35,6 +35,22 @@
 				],
 				"rotation": 180
 			}
+		},
+		{
+			"rect": [
+				3160,
+				920,
+				40,
+				180
+			],
+			"target": {
+				"region": "junction",
+				"position": [
+					220,
+					1100
+				],
+				"rotation": 0
+			}
 		}
 	],
 	"zombies": {
@@ -393,6 +409,24 @@
 				]
 			},
 			"prompt_key": "PROMPT_ENTER_HOME"
+		},
+		{
+			"id": "town.road_east",
+			"type": "portal",
+			"position": [
+				3140,
+				1010
+			],
+			"interact_range": 80,
+			"priority": 2,
+			"target": {
+				"region": "junction",
+				"position": [
+					220,
+					1100
+				]
+			},
+			"prompt_key": "PROMPT_ROAD_JUNCTION"
 		}
 	],
 	"map": {
@@ -475,7 +509,7 @@
 						1010
 					],
 					[
-						3000,
+						3200,
 						1010
 					]
 				]
@@ -586,18 +620,6 @@
 					240,
 					70
 				]
-			},
-			{
-				"kind": "ruin",
-				"position": [
-					3080,
-					1060
-				],
-				"size": [
-					200,
-					90
-				],
-				"label_key": "MAP_ROAD_BLOCKED"
 			}
 		]
 	}

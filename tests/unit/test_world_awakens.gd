@@ -466,7 +466,9 @@ func test_map_marks_unexplored_road_exits() -> void:
 	eq(ex.size(), 1, "one road leads somewhere unexplored")
 	eq(str(ex[0]["region_id"]), "service_station", "it leaves the settlement")
 	eq(ex[0]["dir"], Vector2.RIGHT, "heading east")
-	eq(MapPanel.unexplored_exits(w, ["homestead", "service_station", "town"]).size(), 0, "nothing once the town is found")
+	var past := MapPanel.unexplored_exits(w, ["homestead", "service_station", "town"])
+	eq(past.size(), 1, "once Ashgrove is found, only its road east is unexplored (iteration 014)")
+	eq(str(past[0]["region_id"]), "town", "leaving Ashgrove")
 
 
 # ---------------------------------------------------------------- milestone D: wildlife, flashlight

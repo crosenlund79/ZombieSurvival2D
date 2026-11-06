@@ -124,7 +124,7 @@ func _add_stairs(r: RegionState, ed: Dictionary, parent: Node2D) -> void:
 	var bottom := SideSection.to_screen(r, Vector2(p.x, p.y))
 	var top := SideSection.to_screen(r, Vector2(p.x, float(ed.get("top", p.y - 320.0))))
 	var sp := Sprite2D.new()
-	Assets.apply_to_sprite(sp, "side.stairs")
+	Assets.apply_to_sprite(sp, "side.ladder" if str(ed.get("style", "")) == "ladder" else "side.stairs")
 	var h := maxf(40.0, bottom.y - top.y)
 	var k := h / maxf(1.0, sp.texture.get_size().y * sp.scale.y)
 	sp.position.y *= k

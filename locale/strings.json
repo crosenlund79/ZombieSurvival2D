@@ -2918,5 +2918,293 @@
 	"SIDE_OFFICE": {
 		"en": "Office",
 		"da": "Kontor"
+	},
+	"REGION_JUNCTION": {
+		"en": "Corran Junction",
+		"da": "Corran Junction"
+	},
+	"REGION_JUNCTION_MACHINE_SHOP": {
+		"en": "Corran Machine Shop",
+		"da": "Corrans maskinværksted"
+	},
+	"REGION_JUNCTION_WAREHOUSE": {
+		"en": "Rail-side Warehouse",
+		"da": "Pakhuset ved sporet"
+	},
+	"REGION_JUNCTION_CORNER_STORE": {
+		"en": "Corner Store",
+		"da": "Hjørnebutikken"
+	},
+	"REGION_JUNCTION_HOUSE": {
+		"en": "Worker's House",
+		"da": "Arbejderhuset"
+	},
+	"REGION_JUNCTION_UTILITY": {
+		"en": "Power & Water Building",
+		"da": "El- og vandværket"
+	},
+	"REGION_GREYHOLLOW": {
+		"en": "Greyhollow",
+		"da": "Greyhollow"
+	},
+	"REGION_GREYHOLLOW_MINE": {
+		"en": "Greyhollow Mine, Adit No. 3",
+		"da": "Greyhollow-minen, stoll nr. 3"
+	},
+	"REGION_GREYHOLLOW_MINE_OFFICE": {
+		"en": "Greyhollow Mining Co.",
+		"da": "Greyhollow Mineselskab"
+	},
+	"REGION_GREYHOLLOW_GENERAL_STORE": {
+		"en": "General Store",
+		"da": "Landhandelen"
+	},
+	"REGION_GREYHOLLOW_MINE_SUPPLY": {
+		"en": "Mine Supply",
+		"da": "Mineudstyr"
+	},
+	"REGION_GREYHOLLOW_ROWHOUSE": {
+		"en": "Miners' Row House",
+		"da": "Minearbejdernes rækkehus"
+	},
+	"REGION_GREYHOLLOW_STORE_SHED": {
+		"en": "Storage Shed",
+		"da": "Lagerskuret"
+	},
+	"REGION_STILLWATER": {
+		"en": "Stillwater",
+		"da": "Stillwater"
+	},
+	"REGION_STILLWATER_MARKET": {
+		"en": "Stillwater Market",
+		"da": "Stillwater Marked"
+	},
+	"REGION_STILLWATER_OUTFITTERS": {
+		"en": "Stillwater Outfitters",
+		"da": "Stillwater Udstyr"
+	},
+	"REGION_STILLWATER_CIVIC_HALL": {
+		"en": "Stillwater Civic Hall",
+		"da": "Stillwater Rådhus"
+	},
+	"REGION_STILLWATER_CLINIC": {
+		"en": "Stillwater Clinic",
+		"da": "Stillwater Klinik"
+	},
+	"REGION_STILLWATER_POLICE": {
+		"en": "Stillwater Police Station",
+		"da": "Stillwater Politistation"
+	},
+	"REGION_STILLWATER_APARTMENTS": {
+		"en": "Apartment Block",
+		"da": "Etageboligen"
+	},
+	"REGION_STILLWATER_HOUSE": {
+		"en": "A House on Mill Road",
+		"da": "Et hus på Mill Road"
+	},
+	"REGION_STILLWATER_QUIET_HOUSE": {
+		"en": "A Quiet House",
+		"da": "Et stille hus"
+	},
+	"REGION_HARBOR": {
+		"en": "Port Halden",
+		"da": "Port Halden"
+	},
+	"REGION_HARBOR_COTTAGE": {
+		"en": "Harbor Cottage",
+		"da": "Havnehuset"
+	},
+	"REGION_HARBOR_CHANDLERY": {
+		"en": "Ship Chandlery",
+		"da": "Skibshandleren"
+	},
+	"REGION_HARBOR_OFFICE": {
+		"en": "Harbor Master's Office",
+		"da": "Havnefogedens kontor"
+	},
+	"REGION_HARBOR_CANNERY": {
+		"en": "Northsea Cannery",
+		"da": "Northsea Konservesfabrik"
+	},
+	"REGION_HARBOR_WAREHOUSE": {
+		"en": "Pier 4 Warehouse",
+		"da": "Pakhus ved Pier 4"
+	},
+	"REGION_HARBOR_NET_SHED": {
+		"en": "Net Shed",
+		"da": "Garnskuret"
+	},
+	"PROMPT_ENTER_BUILDING": {
+		"en": "Go inside",
+		"da": "Gå indenfor"
+	},
+	"PROMPT_ENTER_STORE": {
+		"en": "Enter the shop",
+		"da": "Gå ind i butikken"
+	},
+	"PROMPT_ENTER_MINE": {
+		"en": "Enter the mine",
+		"da": "Gå ind i minen"
+	},
+	"PROMPT_LEAVE_MINE": {
+		"en": "Back out into daylight",
+		"da": "Tilbage ud i dagslyset"
+	},
+	"PROMPT_ROAD_ASHGROVE": {
+		"en": "Road west to Ashgrove",
+		"da": "Vejen vestpå til Ashgrove"
+	},
+	"PROMPT_ROAD_JUNCTION": {
+		"en": "Road to Corran Junction",
+		"da": "Vejen til Corran Junction"
+	},
+	"PROMPT_ROAD_GREYHOLLOW": {
+		"en": "Road north to Greyhollow",
+		"da": "Vejen nordpå til Greyhollow"
+	},
+	"PROMPT_ROAD_STILLWATER": {
+		"en": "Road to Stillwater",
+		"da": "Vejen til Stillwater"
+	},
+	"PROMPT_ROAD_HARBOR": {
+		"en": "Coast road east to Port Halden",
+		"da": "Kystvejen østpå til Port Halden"
+	},
+	"PROMPT_SEARCH_VEHICLE": {
+		"en": "Search the abandoned vehicle",
+		"da": "Gennemsøg det efterladte køretøj"
+	},
+	"CONTAINER_VEHICLE": {
+		"en": "Abandoned vehicle",
+		"da": "Efterladt køretøj"
+	},
+	"MAP_FACTORY": {
+		"en": "Factory",
+		"da": "Fabrik"
+	},
+	"MAP_MACHINE_SHOP": {
+		"en": "Machine shop",
+		"da": "Maskinværksted"
+	},
+	"MAP_WAREHOUSE": {
+		"en": "Warehouse",
+		"da": "Pakhus"
+	},
+	"MAP_FUEL_DEPOT": {
+		"en": "Fuel depot",
+		"da": "Brændstofdepot"
+	},
+	"MAP_CORNER_STORE": {
+		"en": "Corner store",
+		"da": "Hjørnebutik"
+	},
+	"MAP_UTILITY": {
+		"en": "Power & water",
+		"da": "El og vand"
+	},
+	"MAP_WATER_TOWER": {
+		"en": "Water tower",
+		"da": "Vandtårn"
+	},
+	"MAP_MINE": {
+		"en": "Mine adit",
+		"da": "Minens stoll"
+	},
+	"MAP_HEADFRAME": {
+		"en": "Headframe",
+		"da": "Skakttårn"
+	},
+	"MAP_MINE_OFFICE": {
+		"en": "Mine office",
+		"da": "Minekontor"
+	},
+	"MAP_GENERAL_STORE": {
+		"en": "General store",
+		"da": "Landhandel"
+	},
+	"MAP_MINE_SUPPLY": {
+		"en": "Mine supply",
+		"da": "Mineudstyr"
+	},
+	"MAP_ROWHOUSES": {
+		"en": "Row houses",
+		"da": "Rækkehuse"
+	},
+	"MAP_STORAGE": {
+		"en": "Storage shed",
+		"da": "Lagerskur"
+	},
+	"MAP_SQUARE": {
+		"en": "Town square",
+		"da": "Torvet"
+	},
+	"MAP_MARKET": {
+		"en": "Market",
+		"da": "Marked"
+	},
+	"MAP_OUTFITTERS": {
+		"en": "Outfitters",
+		"da": "Udstyr"
+	},
+	"MAP_CIVIC_HALL": {
+		"en": "Civic hall",
+		"da": "Rådhus"
+	},
+	"MAP_CLINIC": {
+		"en": "Clinic",
+		"da": "Klinik"
+	},
+	"MAP_POLICE": {
+		"en": "Police",
+		"da": "Politi"
+	},
+	"MAP_CHURCH": {
+		"en": "Church",
+		"da": "Kirke"
+	},
+	"MAP_APARTMENTS": {
+		"en": "Apartments",
+		"da": "Lejligheder"
+	},
+	"MAP_TRAWLER": {
+		"en": "Frozen trawler",
+		"da": "Indefrosset trawler"
+	},
+	"MAP_CRANE": {
+		"en": "Dock crane",
+		"da": "Kajkran"
+	},
+	"MAP_LIGHTHOUSE": {
+		"en": "Lighthouse",
+		"da": "Fyrtårn"
+	},
+	"MAP_CHANDLERY": {
+		"en": "Chandlery",
+		"da": "Skibshandel"
+	},
+	"MAP_HARBOR_MASTER": {
+		"en": "Harbor master",
+		"da": "Havnefoged"
+	},
+	"MAP_CANNERY": {
+		"en": "Cannery",
+		"da": "Konservesfabrik"
+	},
+	"SIDE_BASEMENT": {
+		"en": "Basement",
+		"da": "Kælder"
+	},
+	"SIDE_FLOOR_1": {
+		"en": "First floor",
+		"da": "1. sal"
+	},
+	"SIDE_FLOOR_2": {
+		"en": "Second floor",
+		"da": "2. sal"
+	},
+	"SIDE_RECORDS": {
+		"en": "Records",
+		"da": "Arkiv"
 	}
 }

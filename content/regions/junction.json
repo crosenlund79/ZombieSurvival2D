@@ -1,0 +1,585 @@
+{
+	"region_id": "junction",
+	"display_key": "REGION_JUNCTION",
+	"scene": "res://scenes/regions/settlements/junction.tscn",
+	"bounds": [
+		0,
+		0,
+		3200,
+		2200
+	],
+	"entities": [
+		{
+			"id": "junction.road_west",
+			"type": "portal",
+			"position": [
+				60,
+				1100
+			],
+			"interact_range": 80,
+			"priority": 2,
+			"target": {
+				"region": "town",
+				"position": [
+					3040,
+					1010
+				]
+			},
+			"prompt_key": "PROMPT_ROAD_ASHGROVE"
+		},
+		{
+			"id": "junction.road_east",
+			"type": "portal",
+			"position": [
+				3140,
+				1100
+			],
+			"interact_range": 80,
+			"priority": 2,
+			"target": {
+				"region": "stillwater",
+				"position": [
+					220,
+					1200
+				]
+			},
+			"prompt_key": "PROMPT_ROAD_STILLWATER"
+		},
+		{
+			"id": "junction.road_north",
+			"type": "portal",
+			"position": [
+				1600,
+				60
+			],
+			"interact_range": 80,
+			"priority": 2,
+			"target": {
+				"region": "greyhollow",
+				"position": [
+					1400,
+					2040
+				]
+			},
+			"prompt_key": "PROMPT_ROAD_GREYHOLLOW"
+		},
+		{
+			"id": "junction.machine_shop_entrance",
+			"type": "portal",
+			"position": [
+				950,
+				966
+			],
+			"interact_range": 52,
+			"priority": 2,
+			"target": {
+				"region": "junction.machine_shop",
+				"position": [
+					422.4,
+					509
+				]
+			},
+			"prompt_key": "PROMPT_ENTER_BUILDING"
+		},
+		{
+			"id": "junction.warehouse_entrance",
+			"type": "portal",
+			"position": [
+				2050,
+				966
+			],
+			"interact_range": 52,
+			"priority": 2,
+			"target": {
+				"region": "junction.warehouse",
+				"position": [
+					422.4,
+					509
+				]
+			},
+			"prompt_key": "PROMPT_ENTER_BUILDING"
+		},
+		{
+			"id": "junction.fuel_valve",
+			"type": "container",
+			"kind": "garage",
+			"position": [
+				2620,
+				980
+			],
+			"interact_range": 90,
+			"prompt_key": "PROMPT_SEARCH_GARAGE",
+			"art": "",
+			"art_searched": "",
+			"loot": {},
+			"pool": "fuel_depot",
+			"initial": {
+				"searched": false
+			}
+		},
+		{
+			"id": "junction.corner_store_entrance",
+			"type": "portal",
+			"position": [
+				500,
+				1446
+			],
+			"interact_range": 52,
+			"priority": 2,
+			"target": {
+				"region": "junction.corner_store",
+				"position": [
+					422.4,
+					509
+				]
+			},
+			"prompt_key": "PROMPT_ENTER_STORE"
+		},
+		{
+			"id": "junction.worker_house_entrance",
+			"type": "portal",
+			"position": [
+				900,
+				1446
+			],
+			"interact_range": 52,
+			"priority": 2,
+			"target": {
+				"region": "junction.worker_house",
+				"position": [
+					422.4,
+					509
+				]
+			},
+			"prompt_key": "PROMPT_ENTER_HOME"
+		},
+		{
+			"id": "junction.utility_entrance",
+			"type": "portal",
+			"position": [
+				2000,
+				1446
+			],
+			"interact_range": 52,
+			"priority": 2,
+			"target": {
+				"region": "junction.utility",
+				"position": [
+					422.4,
+					829
+				]
+			},
+			"prompt_key": "PROMPT_ENTER_BUILDING"
+		},
+		{
+			"id": "junction.truck",
+			"type": "container",
+			"kind": "vehicle",
+			"position": [
+				1340,
+				1244
+			],
+			"interact_range": 90,
+			"prompt_key": "PROMPT_SEARCH_VEHICLE",
+			"art": "",
+			"art_searched": "",
+			"loot": {},
+			"pool": "vehicle_truck",
+			"initial": {
+				"searched": false
+			}
+		},
+		{
+			"id": "junction.sedan",
+			"type": "container",
+			"kind": "vehicle",
+			"position": [
+				2440,
+				1004
+			],
+			"interact_range": 90,
+			"prompt_key": "PROMPT_SEARCH_VEHICLE",
+			"art": "",
+			"art_searched": "",
+			"loot": {},
+			"pool": "vehicle_car",
+			"initial": {
+				"searched": false
+			}
+		}
+	],
+	"vehicle_exits": [
+		{
+			"rect": [
+				0,
+				1010,
+				40,
+				180
+			],
+			"target": {
+				"region": "town",
+				"position": [
+					3040,
+					1010
+				],
+				"rotation": 180
+			}
+		},
+		{
+			"rect": [
+				3160,
+				1010,
+				40,
+				180
+			],
+			"target": {
+				"region": "stillwater",
+				"position": [
+					220,
+					1200
+				],
+				"rotation": 0
+			}
+		},
+		{
+			"rect": [
+				1510,
+				0,
+				180,
+				40
+			],
+			"target": {
+				"region": "greyhollow",
+				"position": [
+					1400,
+					2040
+				],
+				"rotation": -90
+			}
+		}
+	],
+	"spawn_points": [
+		[
+			220,
+			1100
+		]
+	],
+	"climate": {
+		"exposure": 1.1,
+		"fog": 1.0
+	},
+	"discovery": "junction",
+	"zombies": {
+		"base_population": 4,
+		"spawns": [
+			[
+				700,
+				700
+			],
+			[
+				1800,
+				650
+			],
+			[
+				2600,
+				1600
+			],
+			[
+				400,
+				1700
+			],
+			[
+				1300,
+				1600
+			]
+		],
+		"entries": [
+			[
+				20,
+				400
+			],
+			[
+				20,
+				1800
+			],
+			[
+				3180,
+				400
+			],
+			[
+				3180,
+				1800
+			],
+			[
+				1600,
+				20
+			],
+			[
+				800,
+				2180
+			]
+		]
+	},
+	"omens": {
+		"laugh_spots": [
+			[
+				420,
+				900
+			],
+			[
+				2050,
+				900
+			],
+			[
+				2860,
+				1400
+			]
+		],
+		"laugh_radius": 700,
+		"shadow_paths": [
+			[
+				[
+					1700,
+					1500
+				],
+				[
+					1820,
+					1520
+				]
+			],
+			[
+				[
+					2700,
+					900
+				],
+				[
+					2840,
+					880
+				]
+			]
+		]
+	},
+	"map": {
+		"offset": [
+			7840,
+			285
+		],
+		"areas": [
+			{
+				"kind": "woods",
+				"polygon": [
+					[
+						40,
+						0
+					],
+					[
+						3160,
+						0
+					],
+					[
+						3160,
+						440
+					],
+					[
+						40,
+						440
+					]
+				]
+			},
+			{
+				"kind": "woods",
+				"polygon": [
+					[
+						40,
+						1720
+					],
+					[
+						3160,
+						1720
+					],
+					[
+						3160,
+						2220
+					],
+					[
+						40,
+						2220
+					]
+				]
+			},
+			{
+				"kind": "yard",
+				"polygon": [
+					[
+						120,
+						620
+					],
+					[
+						2900,
+						620
+					],
+					[
+						2900,
+						990
+					],
+					[
+						120,
+						990
+					]
+				]
+			}
+		],
+		"roads": [
+			{
+				"kind": "road",
+				"width": 140,
+				"points": [
+					[
+						0,
+						1100
+					],
+					[
+						3200,
+						1100
+					]
+				]
+			},
+			{
+				"kind": "road",
+				"width": 140,
+				"points": [
+					[
+						1600,
+						0
+					],
+					[
+						1600,
+						1100
+					]
+				]
+			},
+			{
+				"kind": "track",
+				"width": 30,
+				"points": [
+					[
+						0,
+						500
+					],
+					[
+						3200,
+						500
+					]
+				]
+			}
+		],
+		"landmarks": [
+			{
+				"kind": "building",
+				"position": [
+					420,
+					920
+				],
+				"size": [
+					560,
+					80
+				],
+				"label_key": "MAP_FACTORY"
+			},
+			{
+				"kind": "building",
+				"position": [
+					950,
+					920
+				],
+				"size": [
+					370,
+					80
+				],
+				"label_key": "MAP_MACHINE_SHOP"
+			},
+			{
+				"kind": "building",
+				"position": [
+					2050,
+					920
+				],
+				"size": [
+					490,
+					80
+				],
+				"label_key": "MAP_WAREHOUSE"
+			},
+			{
+				"kind": "building",
+				"position": [
+					2620,
+					920
+				],
+				"size": [
+					220,
+					80
+				],
+				"label_key": "MAP_FUEL_DEPOT"
+			},
+			{
+				"kind": "building",
+				"position": [
+					500,
+					1400
+				],
+				"size": [
+					300,
+					80
+				],
+				"label_key": "MAP_CORNER_STORE"
+			},
+			{
+				"kind": "building",
+				"position": [
+					900,
+					1400
+				],
+				"size": [
+					280,
+					80
+				]
+			},
+			{
+				"kind": "building",
+				"position": [
+					1250,
+					1400
+				],
+				"size": [
+					280,
+					80
+				]
+			},
+			{
+				"kind": "building",
+				"position": [
+					2000,
+					1400
+				],
+				"size": [
+					340,
+					80
+				],
+				"label_key": "MAP_UTILITY"
+			},
+			{
+				"kind": "building",
+				"position": [
+					2860,
+					1380
+				],
+				"size": [
+					140,
+					90
+				],
+				"label_key": "MAP_WATER_TOWER"
+			}
+		]
+	}
+}

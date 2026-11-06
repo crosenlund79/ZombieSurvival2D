@@ -1,0 +1,580 @@
+{
+	"region_id": "stillwater.civic_hall",
+	"display_key": "REGION_STILLWATER_CIVIC_HALL",
+	"view": "side",
+	"style": "building",
+	"bounds": [
+		0,
+		0,
+		2176,
+		1728
+	],
+	"excavation": {
+		"cell": 64,
+		"origin": [
+			0,
+			0
+		],
+		"cols": 34,
+		"rows": 27,
+		"fixed": true,
+		"initial_open": [
+			[
+				5,
+				19,
+				24,
+				4
+			],
+			[
+				5,
+				14,
+				24,
+				4
+			],
+			[
+				5,
+				9,
+				24,
+				4
+			],
+			[
+				5,
+				4,
+				24,
+				4
+			],
+			[
+				6,
+				18,
+				1,
+				1
+			],
+			[
+				27,
+				13,
+				1,
+				1
+			],
+			[
+				6,
+				8,
+				1,
+				1
+			]
+		],
+		"platforms": [
+			[
+				6,
+				17,
+				1,
+				1
+			],
+			[
+				27,
+				12,
+				1,
+				1
+			],
+			[
+				6,
+				7,
+				1,
+				1
+			]
+		],
+		"_comment": "Authored building cross-section (tools/build_side_interiors.py); fixed, never dug."
+	},
+	"section": {
+		"ground_row": 18,
+		"envelope": [
+			4,
+			3,
+			26,
+			21
+		],
+		"exterior": "side.ext_brick",
+		"basement": "side.ext_concrete",
+		"rooms": [
+			{
+				"rect": [
+					5,
+					19,
+					24,
+					4
+				],
+				"wall": "side.wall_brick_in",
+				"floor": "side.floor_concrete"
+			},
+			{
+				"rect": [
+					5,
+					14,
+					13,
+					4
+				],
+				"wall": "side.wall_office",
+				"floor": "side.floor_linoleum"
+			},
+			{
+				"rect": [
+					18,
+					14,
+					11,
+					4
+				],
+				"wall": "side.wall_house",
+				"floor": "side.floor_linoleum"
+			},
+			{
+				"rect": [
+					5,
+					9,
+					24,
+					4
+				],
+				"wall": "side.wall_house_b",
+				"floor": "side.floorboards"
+			},
+			{
+				"rect": [
+					5,
+					4,
+					24,
+					4
+				],
+				"wall": "side.wall_office",
+				"floor": "side.floorboards"
+			}
+		],
+		"windows": [
+			[
+				768.0,
+				1003.5
+			],
+			[
+				1472.0,
+				1003.5
+			],
+			[
+				640.0,
+				683.5
+			],
+			[
+				1088.0,
+				683.5,
+				"boarded"
+			],
+			[
+				1536.0,
+				683.5
+			],
+			[
+				896.0,
+				363.5,
+				"boarded"
+			],
+			[
+				1344.0,
+				363.5
+			]
+		],
+		"dividers": [
+			[
+				1152,
+				896,
+				985.6,
+				1152
+			]
+		],
+		"labels": [
+			[
+				512.0,
+				1244,
+				"SIDE_BASEMENT"
+			],
+			[
+				1177.6,
+				924,
+				"SIDE_RECORDS"
+			],
+			[
+				460.8,
+				604,
+				"SIDE_FLOOR_1"
+			],
+			[
+				512.0,
+				284,
+				"SIDE_FLOOR_2"
+			]
+		]
+	},
+	"side_props": [
+		{
+			"asset": "int.boxes",
+			"x": 1600.0,
+			"y": 1469
+		},
+		{
+			"asset": "int.armchair",
+			"x": 960.0,
+			"y": 1149
+		},
+		{
+			"asset": "int.meal_table",
+			"x": 832.0,
+			"y": 829
+		},
+		{
+			"asset": "int.boxes",
+			"x": 1408.0,
+			"y": 509
+		}
+	],
+	"spawn_points": [
+		[
+			422.4,
+			1149
+		]
+	],
+	"entities": [
+		{
+			"id": "stillwater.civic_hall.boiler_tools",
+			"type": "container",
+			"kind": "toolbox",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_TOOLBOX",
+			"art": "int.tool_chest",
+			"art_searched": "int.tool_chest_open",
+			"loot": {},
+			"pool": "workshop_tools",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				704.0,
+				1469
+			]
+		},
+		{
+			"id": "stillwater.civic_hall.emergency_a",
+			"type": "container",
+			"kind": "crate",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_CRATE",
+			"art": "int.crate",
+			"art_searched": "int.crate_open",
+			"loot": {},
+			"pool": "civic_emergency",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				960.0,
+				1469
+			]
+		},
+		{
+			"id": "stillwater.civic_hall.emergency_b",
+			"type": "container",
+			"kind": "shelf",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_SHELF",
+			"art": "int.metal_shelf_full",
+			"art_searched": "int.metal_shelf_empty",
+			"loot": {},
+			"pool": "civic_emergency",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				1190.4,
+				1469
+			]
+		},
+		{
+			"id": "stillwater.civic_hall.fuel_cage",
+			"type": "container",
+			"kind": "garage",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_GARAGE",
+			"art": "int.crate",
+			"art_searched": "int.crate_open",
+			"loot": {},
+			"pool": "fuel_depot",
+			"initial": {
+				"searched": true
+			},
+			"position": [
+				1433.6,
+				1469
+			]
+		},
+		{
+			"id": "stillwater.civic_hall.exit",
+			"type": "portal",
+			"interact_range": 70,
+			"priority": 2,
+			"side_art": "side.door_ext",
+			"target": {
+				"region": "stillwater",
+				"position": [
+					1800,
+					1112
+				]
+			},
+			"prompt_key": "PROMPT_EXIT_HOUSE",
+			"position": [
+				537.6,
+				1149
+			]
+		},
+		{
+			"id": "stillwater.civic_hall.lobby_desk",
+			"type": "container",
+			"kind": "drawer",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_DRAWER",
+			"art": "int.pharm_counter",
+			"art_searched": "int.pharm_counter",
+			"loot": {},
+			"pool": "office_desk",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				742.4,
+				1149
+			]
+		},
+		{
+			"id": "stillwater.civic_hall.records",
+			"type": "container",
+			"kind": "locker",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_LOCKER",
+			"art": "int.locker",
+			"art_searched": "int.locker_open",
+			"loot": {},
+			"pool": "office_files",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				1305.6,
+				1149
+			]
+		},
+		{
+			"id": "stillwater.civic_hall.records_b",
+			"type": "container",
+			"kind": "locker",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_LOCKER",
+			"art": "int.locker_open",
+			"art_searched": "int.locker_open",
+			"loot": {},
+			"pool": "office_files",
+			"initial": {
+				"searched": true
+			},
+			"position": [
+				1382.4,
+				1149
+			]
+		},
+		{
+			"id": "stillwater.civic_hall.clerk_desk",
+			"type": "container",
+			"kind": "drawer",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_DRAWER",
+			"art": "int.dresser",
+			"art_searched": "int.dresser_open",
+			"loot": {},
+			"pool": "office_desk",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				1574.4,
+				1149
+			]
+		},
+		{
+			"id": "stillwater.civic_hall.council_cabinet",
+			"type": "container",
+			"kind": "locker",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_LOCKER",
+			"art": "int.locker",
+			"art_searched": "int.locker_open",
+			"loot": {},
+			"pool": "office_files",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				1049.6,
+				829
+			]
+		},
+		{
+			"id": "stillwater.civic_hall.mayor_desk",
+			"type": "container",
+			"kind": "drawer",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_DRAWER",
+			"art": "int.dresser",
+			"art_searched": "int.dresser_open",
+			"loot": {},
+			"pool": "civic_mayor",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				1280.0,
+				829
+			]
+		},
+		{
+			"id": "stillwater.civic_hall.bookcase",
+			"type": "container",
+			"kind": "shelf",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_SHELF",
+			"art": "int.bookshelf",
+			"art_searched": "int.bookshelf",
+			"loot": {},
+			"pool": "household",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				1497.6,
+				829
+			]
+		},
+		{
+			"id": "stillwater.civic_hall.archive_a",
+			"type": "container",
+			"kind": "shelf",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_SHELF",
+			"art": "int.metal_shelf_full",
+			"art_searched": "int.metal_shelf_empty",
+			"loot": {},
+			"pool": "office_files",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				704.0,
+				509
+			]
+		},
+		{
+			"id": "stillwater.civic_hall.archive_b",
+			"type": "container",
+			"kind": "shelf",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_SHELF",
+			"art": "int.metal_shelf_empty",
+			"art_searched": "int.metal_shelf_empty",
+			"loot": {},
+			"pool": "office_files",
+			"initial": {
+				"searched": true
+			},
+			"position": [
+				934.4,
+				509
+			]
+		},
+		{
+			"id": "stillwater.civic_hall.attic_trunk",
+			"type": "container",
+			"kind": "crate",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_CRATE",
+			"art": "int.crate",
+			"art_searched": "int.crate_open",
+			"loot": {},
+			"pool": "attic",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				1216.0,
+				509
+			]
+		},
+		{
+			"id": "stillwater.civic_hall.attic_wardrobe",
+			"type": "container",
+			"kind": "locker",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_LOCKER",
+			"art": "int.locker",
+			"art_searched": "int.locker_open",
+			"loot": {},
+			"pool": "home_closet",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				1600.0,
+				509
+			]
+		},
+		{
+			"id": "stillwater.civic_hall.stairs_basement_-1",
+			"type": "stairs",
+			"position": [
+				416.0,
+				1469
+			],
+			"top": 1149,
+			"flip": true
+		},
+		{
+			"id": "stillwater.civic_hall.stairs_main_0",
+			"type": "stairs",
+			"position": [
+				1760.0,
+				1149
+			],
+			"top": 829,
+			"flip": false
+		},
+		{
+			"id": "stillwater.civic_hall.stairs_upper_1",
+			"type": "stairs",
+			"position": [
+				416.0,
+				829
+			],
+			"top": 509,
+			"flip": true
+		}
+	],
+	"surface": {
+		"region": "stillwater",
+		"position": [
+			1800,
+			1060
+		]
+	},
+	"tint": [
+		0.5,
+		0.5,
+		0.53
+	],
+	"climate": {
+		"exposure": 1.0,
+		"fog": 0.0,
+		"shelter": 0.35
+	},
+	"interior": true,
+	"ambience": "amb.wind_muffled"
+}

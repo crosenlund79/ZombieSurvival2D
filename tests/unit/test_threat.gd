@@ -106,7 +106,8 @@ func test_escalation_recruits_then_reinforces_within_limits() -> void:
 		if not z.persistent:
 			t2 += 1
 	check(t2 <= int(ZombieSim.c("max_reinforcements", 8)), "reinforcement cap respected (%d)" % t2)
-	check(w.zombies.size() <= int(ZombieSim.c("max_active", 16)) + 1, "active cap respected")
+	var here := w.zombies.values().filter(func(z): return z.region_id == "homestead").size()
+	check(here <= int(ZombieSim.c("max_active", 16)) + 1, "active cap respected (%d in the region)" % here)
 
 
 func _arm(w: WorldState, p: PlayerState, item: String) -> void:

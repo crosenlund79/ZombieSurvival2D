@@ -1,0 +1,227 @@
+{
+	"region_id": "junction.corner_store",
+	"display_key": "REGION_JUNCTION_CORNER_STORE",
+	"view": "side",
+	"style": "building",
+	"bounds": [
+		0,
+		0,
+		2112,
+		768
+	],
+	"excavation": {
+		"cell": 64,
+		"origin": [
+			0,
+			0
+		],
+		"cols": 33,
+		"rows": 12,
+		"fixed": true,
+		"initial_open": [
+			[
+				5,
+				4,
+				23,
+				4
+			]
+		],
+		"platforms": [],
+		"_comment": "Authored building cross-section (tools/build_side_interiors.py); fixed, never dug."
+	},
+	"section": {
+		"ground_row": 8,
+		"envelope": [
+			4,
+			3,
+			25,
+			6
+		],
+		"exterior": "side.ext_brick",
+		"basement": "",
+		"rooms": [
+			{
+				"rect": [
+					5,
+					4,
+					17,
+					4
+				],
+				"wall": "side.wall_shop",
+				"floor": "side.floor_linoleum"
+			},
+			{
+				"rect": [
+					22,
+					4,
+					6,
+					4
+				],
+				"wall": "side.wall_brick_in",
+				"floor": "side.floor_concrete"
+			}
+		],
+		"windows": [
+			[
+				512.0,
+				363.5
+			],
+			[
+				832.0,
+				363.5
+			]
+		],
+		"dividers": [
+			[
+				1408,
+				256,
+				345.6,
+				512
+			]
+		],
+		"labels": [
+			[
+				1433.6,
+				284,
+				"SIDE_STOREROOM"
+			]
+		]
+	},
+	"side_props": [],
+	"spawn_points": [
+		[
+			422.4,
+			509
+		]
+	],
+	"entities": [
+		{
+			"id": "junction.corner_store.exit",
+			"type": "portal",
+			"interact_range": 70,
+			"priority": 2,
+			"side_art": "side.door_ext",
+			"target": {
+				"region": "junction",
+				"position": [
+					500,
+					1492
+				]
+			},
+			"prompt_key": "PROMPT_EXIT_HOUSE",
+			"position": [
+				364.8,
+				509
+			]
+		},
+		{
+			"id": "junction.corner_store.counter",
+			"type": "container",
+			"kind": "drawer",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_DRAWER",
+			"art": "int.checkout",
+			"art_searched": "int.checkout",
+			"loot": {},
+			"pool": "store_counter",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				512.0,
+				509
+			]
+		},
+		{
+			"id": "junction.corner_store.aisle_a",
+			"type": "container",
+			"kind": "shelf",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_SHELF",
+			"art": "int.gondola_sparse",
+			"art_searched": "int.gondola_empty",
+			"loot": {},
+			"pool": "grocery_shelf",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				704.0,
+				509
+			]
+		},
+		{
+			"id": "junction.corner_store.aisle_b",
+			"type": "container",
+			"kind": "shelf",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_SHELF",
+			"art": "int.gondola_empty",
+			"art_searched": "int.gondola_empty",
+			"loot": {},
+			"pool": "grocery_shelf",
+			"initial": {
+				"searched": true
+			},
+			"position": [
+				896.0,
+				509
+			]
+		},
+		{
+			"id": "junction.corner_store.cooler",
+			"type": "container",
+			"kind": "fridge",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_FRIDGE",
+			"art": "int.freezer",
+			"art_searched": "int.freezer_open",
+			"loot": {},
+			"pool": "grocery_cooler",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				1088.0,
+				509
+			]
+		},
+		{
+			"id": "junction.corner_store.stock",
+			"type": "container",
+			"kind": "crate",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_CRATE",
+			"art": "int.crate",
+			"art_searched": "int.crate_open",
+			"loot": {},
+			"pool": "grocery_stock",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				1510.4,
+				509
+			]
+		}
+	],
+	"surface": {
+		"region": "junction",
+		"position": [
+			500,
+			1440
+		]
+	},
+	"tint": [
+		0.5,
+		0.5,
+		0.53
+	],
+	"climate": {
+		"exposure": 1.0,
+		"fog": 0.0,
+		"shelter": 0.35
+	},
+	"interior": true,
+	"ambience": "amb.wind_muffled"
+}

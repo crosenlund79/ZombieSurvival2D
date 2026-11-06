@@ -1,0 +1,470 @@
+{
+	"region_id": "greyhollow.mine",
+	"display_key": "REGION_GREYHOLLOW_MINE",
+	"view": "side",
+	"style": "mine",
+	"bounds": [
+		0,
+		0,
+		4096,
+		1920
+	],
+	"excavation": {
+		"cell": 64,
+		"origin": [
+			0,
+			0
+		],
+		"cols": 64,
+		"rows": 30,
+		"fixed": true,
+		"initial_open": [
+			[
+				2,
+				4,
+				34,
+				3
+			],
+			[
+				8,
+				12,
+				53,
+				3
+			],
+			[
+				20,
+				21,
+				33,
+				3
+			],
+			[
+				44,
+				10,
+				6,
+				2
+			],
+			[
+				30,
+				7,
+				1,
+				5
+			],
+			[
+				48,
+				15,
+				1,
+				6
+			]
+		],
+		"platforms": [
+			[
+				30,
+				6,
+				1,
+				1
+			],
+			[
+				48,
+				14,
+				1,
+				1
+			]
+		],
+		"_comment": "Adit No. 3 (tools/build_landmarks.py): three levels, a ladder shaft and a winze, collapsed ends. Fixed."
+	},
+	"side_props": [
+		{
+			"asset": "side.mine_beam",
+			"x": 416.0,
+			"y": 445,
+			"back": true
+		},
+		{
+			"asset": "side.mine_beam",
+			"x": 800.0,
+			"y": 445,
+			"back": true
+		},
+		{
+			"asset": "side.mine_beam",
+			"x": 1184.0,
+			"y": 445,
+			"back": true
+		},
+		{
+			"asset": "side.mine_beam",
+			"x": 1568.0,
+			"y": 445,
+			"back": true
+		},
+		{
+			"asset": "side.mine_beam",
+			"x": 1952.0,
+			"y": 445,
+			"back": true
+		},
+		{
+			"asset": "side.mine_beam",
+			"x": 800.0,
+			"y": 957,
+			"back": true
+		},
+		{
+			"asset": "side.mine_beam",
+			"x": 1248.0,
+			"y": 957,
+			"back": true
+		},
+		{
+			"asset": "side.mine_beam",
+			"x": 1696.0,
+			"y": 957,
+			"back": true
+		},
+		{
+			"asset": "side.mine_beam",
+			"x": 2144.0,
+			"y": 957,
+			"back": true
+		},
+		{
+			"asset": "side.mine_beam",
+			"x": 2592.0,
+			"y": 957,
+			"back": true
+		},
+		{
+			"asset": "side.mine_beam",
+			"x": 3040.0,
+			"y": 957,
+			"back": true
+		},
+		{
+			"asset": "side.mine_beam",
+			"x": 3488.0,
+			"y": 957,
+			"back": true
+		},
+		{
+			"asset": "side.mine_beam",
+			"x": 1568.0,
+			"y": 1533,
+			"back": true
+		},
+		{
+			"asset": "side.mine_beam",
+			"x": 1952.0,
+			"y": 1533,
+			"back": true
+		},
+		{
+			"asset": "side.mine_beam",
+			"x": 2336.0,
+			"y": 1533,
+			"back": true
+		},
+		{
+			"asset": "side.mine_beam",
+			"x": 2720.0,
+			"y": 1533,
+			"back": true
+		},
+		{
+			"asset": "side.mine_beam",
+			"x": 3104.0,
+			"y": 1533,
+			"back": true
+		},
+		{
+			"asset": "side.mine_cart",
+			"x": 1184.0,
+			"y": 445
+		},
+		{
+			"asset": "side.mine_cart",
+			"x": 3488.0,
+			"y": 957
+		},
+		{
+			"asset": "side.ore",
+			"x": 1696.0,
+			"y": 957,
+			"back": true
+		},
+		{
+			"asset": "side.ore",
+			"x": 2144.0,
+			"y": 1533,
+			"back": true
+		},
+		{
+			"asset": "side.ore",
+			"x": 3744.0,
+			"y": 957,
+			"back": true
+		},
+		{
+			"asset": "side.rubble",
+			"x": 2291.2,
+			"y": 445
+		},
+		{
+			"asset": "side.rubble",
+			"x": 3379.2,
+			"y": 1533
+		},
+		{
+			"asset": "side.rubble",
+			"x": 582.4,
+			"y": 957
+		},
+		{
+			"asset": "side.mine_lamp",
+			"x": 672.0,
+			"y": 445,
+			"back": true
+		},
+		{
+			"asset": "side.mine_lamp",
+			"x": 1696.0,
+			"y": 445,
+			"back": true
+		},
+		{
+			"asset": "side.mine_lamp",
+			"x": 1312.0,
+			"y": 957,
+			"back": true
+		},
+		{
+			"asset": "side.mine_lamp",
+			"x": 2592.0,
+			"y": 957,
+			"back": true
+		},
+		{
+			"asset": "side.mine_lamp",
+			"x": 1952.0,
+			"y": 1533,
+			"back": true
+		},
+		{
+			"asset": "side.mine_lamp",
+			"x": 2912.0,
+			"y": 1533,
+			"back": true
+		}
+	],
+	"spawn_points": [
+		[
+			249.6,
+			445
+		]
+	],
+	"surface": {
+		"region": "greyhollow",
+		"position": [
+			1700,
+			780
+		]
+	},
+	"climate": {
+		"exposure": 1.0,
+		"fog": 0.0,
+		"shelter": 0.5
+	},
+	"interior": true,
+	"ambience": "amb.underground",
+	"ambience2": "amb.mine_drip",
+	"tint": [
+		0.3,
+		0.29,
+		0.28
+	],
+	"warm": false,
+	"entities": [
+		{
+			"id": "greyhollow.mine.shaft_1",
+			"type": "stairs",
+			"style": "ladder",
+			"position": [
+				1952.0,
+				957
+			],
+			"top": 445
+		},
+		{
+			"id": "greyhollow.mine.winze_2",
+			"type": "stairs",
+			"style": "ladder",
+			"position": [
+				3104.0,
+				1533
+			],
+			"top": 957
+		},
+		{
+			"id": "greyhollow.mine.exit",
+			"type": "portal",
+			"position": [
+				185.6,
+				445
+			],
+			"interact_range": 70,
+			"priority": 2,
+			"side_art": "side.door_ext",
+			"target": {
+				"region": "greyhollow",
+				"position": [
+					1700,
+					780
+				]
+			},
+			"prompt_key": "PROMPT_LEAVE_MINE"
+		},
+		{
+			"id": "greyhollow.mine.lamp_locker",
+			"type": "container",
+			"kind": "locker",
+			"position": [
+				544.0,
+				445
+			],
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_LOCKER",
+			"art": "int.locker",
+			"art_searched": "int.locker_open",
+			"loot": {},
+			"pool": "mine_lamps",
+			"initial": {
+				"searched": false
+			}
+		},
+		{
+			"id": "greyhollow.mine.tool_crate",
+			"type": "container",
+			"kind": "crate",
+			"position": [
+				928.0,
+				445
+			],
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_CRATE",
+			"art": "int.crate",
+			"art_searched": "int.crate_open",
+			"loot": {},
+			"pool": "mine_tools",
+			"initial": {
+				"searched": false
+			}
+		},
+		{
+			"id": "greyhollow.mine.powder_box",
+			"type": "container",
+			"kind": "crate",
+			"position": [
+				1440.0,
+				445
+			],
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_CRATE",
+			"art": "int.crate_open",
+			"art_searched": "int.crate_open",
+			"loot": {},
+			"pool": "mine_store",
+			"initial": {
+				"searched": true
+			}
+		},
+		{
+			"id": "greyhollow.mine.pump_room_chest",
+			"type": "container",
+			"kind": "toolbox",
+			"position": [
+				2976.0,
+				765
+			],
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_TOOLBOX",
+			"art": "int.tool_chest",
+			"art_searched": "int.tool_chest_open",
+			"loot": {},
+			"pool": "industrial_parts",
+			"initial": {
+				"searched": false
+			}
+		},
+		{
+			"id": "greyhollow.mine.supply_cache",
+			"type": "container",
+			"kind": "crate",
+			"position": [
+				800.0,
+				957
+			],
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_CRATE",
+			"art": "int.crate",
+			"art_searched": "int.crate_open",
+			"loot": {},
+			"pool": "mine_store",
+			"initial": {
+				"searched": false
+			}
+		},
+		{
+			"id": "greyhollow.mine.shift_locker",
+			"type": "container",
+			"kind": "locker",
+			"position": [
+				2464.0,
+				957
+			],
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_LOCKER",
+			"art": "int.locker",
+			"art_searched": "int.locker_open",
+			"loot": {},
+			"pool": "worker_locker",
+			"initial": {
+				"searched": false
+			}
+		},
+		{
+			"id": "greyhollow.mine.deep_cache",
+			"type": "container",
+			"kind": "crate",
+			"position": [
+				1696.0,
+				1533
+			],
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_CRATE",
+			"art": "int.crate",
+			"art_searched": "int.crate_open",
+			"loot": {},
+			"pool": "mine_deep",
+			"initial": {
+				"searched": false
+			}
+		},
+		{
+			"id": "greyhollow.mine.last_shift",
+			"type": "container",
+			"kind": "drawer",
+			"position": [
+				2592.0,
+				1533
+			],
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_DRAWER",
+			"art": "int.dresser",
+			"art_searched": "int.dresser_open",
+			"loot": {},
+			"pool": "mine_deep",
+			"initial": {
+				"searched": false
+			}
+		}
+	]
+}

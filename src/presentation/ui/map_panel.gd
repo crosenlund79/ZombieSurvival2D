@@ -301,6 +301,10 @@ func _draw_region(w: WorldState, rid: String, to_map: Callable, sc: float) -> vo
 		if area.get("kind") == "woods":
 			draw_colored_polygon(pts, WOODS)
 			woods_polys.append(pts)
+		elif area.get("kind") == "water":
+			draw_colored_polygon(pts, Color(0.16, 0.24, 0.3, 0.55))
+		elif area.get("kind") == "ice":
+			draw_colored_polygon(pts, Color(0.72, 0.8, 0.85, 0.45))
 		else:
 			draw_colored_polygon(pts, YARD)
 			pts.append(pts[0])

@@ -1,0 +1,26 @@
+{
+	"kind": "audio",
+	"category": "five",
+	"assets": [
+		{
+			"id": "amb.harbor_ice",
+			"name": "Harbor: sea ice creaking and groaning under the wind",
+			"template": "res://assets/templates/audio/five/template_harbor_ice.wav",
+			"bus": "Ambience",
+			"volume_db": -12.0,
+			"loop": true,
+			"status": "READY",
+			"notes": "Generated (tools/art/gen_five_audio.py) - replace with a field recording."
+		},
+		{
+			"id": "amb.mine_drip",
+			"name": "Mine: low rumble, dripping water, settling timber",
+			"template": "res://assets/templates/audio/five/template_mine_drip.wav",
+			"bus": "Ambience",
+			"volume_db": -12.0,
+			"loop": true,
+			"status": "READY",
+			"notes": "Generated (tools/art/gen_five_audio.py) - replace with a field recording."
+		}
+	]
+}

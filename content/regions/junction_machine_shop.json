@@ -1,0 +1,211 @@
+{
+	"region_id": "junction.machine_shop",
+	"display_key": "REGION_JUNCTION_MACHINE_SHOP",
+	"view": "side",
+	"style": "building",
+	"bounds": [
+		0,
+		0,
+		2048,
+		768
+	],
+	"excavation": {
+		"cell": 64,
+		"origin": [
+			0,
+			0
+		],
+		"cols": 32,
+		"rows": 12,
+		"fixed": true,
+		"initial_open": [
+			[
+				5,
+				4,
+				22,
+				4
+			]
+		],
+		"platforms": [],
+		"_comment": "Authored building cross-section (tools/build_side_interiors.py); fixed, never dug."
+	},
+	"section": {
+		"ground_row": 8,
+		"envelope": [
+			4,
+			3,
+			24,
+			6
+		],
+		"exterior": "side.ext_concrete",
+		"basement": "",
+		"rooms": [
+			{
+				"rect": [
+					5,
+					4,
+					22,
+					4
+				],
+				"wall": "side.wall_brick_in",
+				"floor": "side.floor_concrete"
+			}
+		],
+		"windows": [
+			[
+				640.0,
+				363.5,
+				"boarded"
+			],
+			[
+				1408.0,
+				363.5
+			]
+		],
+		"dividers": [],
+		"labels": []
+	},
+	"side_props": [
+		{
+			"asset": "int.pegboard",
+			"x": 896.0,
+			"y": 509
+		}
+	],
+	"spawn_points": [
+		[
+			422.4,
+			509
+		]
+	],
+	"entities": [
+		{
+			"id": "junction.machine_shop.exit",
+			"type": "portal",
+			"interact_range": 70,
+			"priority": 2,
+			"side_art": "side.door_ext",
+			"target": {
+				"region": "junction",
+				"position": [
+					950,
+					1012
+				]
+			},
+			"prompt_key": "PROMPT_EXIT_HOUSE",
+			"position": [
+				364.8,
+				509
+			]
+		},
+		{
+			"id": "junction.machine_shop.tool_chest",
+			"type": "container",
+			"kind": "toolbox",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_TOOLBOX",
+			"art": "int.tool_chest",
+			"art_searched": "int.tool_chest_open",
+			"loot": {},
+			"pool": "workshop_tools",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				512.0,
+				509
+			]
+		},
+		{
+			"id": "junction.machine_shop.parts_shelf",
+			"type": "container",
+			"kind": "garage",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_GARAGE",
+			"art": "int.metal_shelf_full",
+			"art_searched": "int.metal_shelf_empty",
+			"loot": {},
+			"pool": "workshop_parts",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				742.4,
+				509
+			]
+		},
+		{
+			"id": "junction.machine_shop.lathe_bench",
+			"type": "container",
+			"kind": "drawer",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_DRAWER",
+			"art": "int.display_table",
+			"art_searched": "int.display_table",
+			"loot": {},
+			"pool": "workshop_tools",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				972.8,
+				509
+			]
+		},
+		{
+			"id": "junction.machine_shop.scrap_bin",
+			"type": "container",
+			"kind": "garage",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_GARAGE",
+			"art": "int.crate",
+			"art_searched": "int.crate_open",
+			"loot": {},
+			"pool": "industrial_scrap",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				1203.2,
+				509
+			]
+		},
+		{
+			"id": "junction.machine_shop.locker",
+			"type": "container",
+			"kind": "locker",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_LOCKER",
+			"art": "int.locker",
+			"art_searched": "int.locker_open",
+			"loot": {},
+			"pool": "worker_locker",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				1433.6,
+				509
+			]
+		}
+	],
+	"surface": {
+		"region": "junction",
+		"position": [
+			950,
+			960
+		]
+	},
+	"tint": [
+		0.5,
+		0.5,
+		0.53
+	],
+	"climate": {
+		"exposure": 1.0,
+		"fog": 0.0,
+		"shelter": 0.35
+	},
+	"interior": true,
+	"ambience": "amb.wind_muffled"
+}

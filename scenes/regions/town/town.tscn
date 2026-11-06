@@ -214,7 +214,7 @@ flip_h = true
 
 [node name="Roadblock" type="Node2D" parent="YSort"]
 script = ExtResource("prop")
-position = Vector2(3080, 1100)
+position = Vector2(3080, 1330)
 asset_id = "world.town_roadblock"
 footprint = Vector2(480, 220)
 footprint_offset = Vector2(0, -100)
@@ -847,3 +847,7 @@ prompt_close_key = "PROMPT_CLOSE_DOOR"
 [node name="HouseEastEntry" type="Node2D" parent="YSort"]
 script = ExtResource("portalv")
 entity_id = "town.house_east_entrance"
+
+[node name="RoadEast" type="Node2D" parent="YSort"]
+script = ExtResource("portalv")
+entity_id = "town.road_east"

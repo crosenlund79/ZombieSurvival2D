@@ -1,0 +1,281 @@
+{
+	"region_id": "stillwater.market",
+	"display_key": "REGION_STILLWATER_MARKET",
+	"view": "side",
+	"style": "building",
+	"bounds": [
+		0,
+		0,
+		2688,
+		768
+	],
+	"excavation": {
+		"cell": 64,
+		"origin": [
+			0,
+			0
+		],
+		"cols": 42,
+		"rows": 12,
+		"fixed": true,
+		"initial_open": [
+			[
+				5,
+				4,
+				32,
+				4
+			]
+		],
+		"platforms": [],
+		"_comment": "Authored building cross-section (tools/build_side_interiors.py); fixed, never dug."
+	},
+	"section": {
+		"ground_row": 8,
+		"envelope": [
+			4,
+			3,
+			34,
+			6
+		],
+		"exterior": "side.ext_brick",
+		"basement": "",
+		"rooms": [
+			{
+				"rect": [
+					5,
+					4,
+					23,
+					4
+				],
+				"wall": "side.wall_shop",
+				"floor": "side.floor_linoleum"
+			},
+			{
+				"rect": [
+					28,
+					4,
+					9,
+					4
+				],
+				"wall": "side.wall_brick_in",
+				"floor": "side.floor_concrete"
+			}
+		],
+		"windows": [
+			[
+				512.0,
+				363.5
+			],
+			[
+				832.0,
+				363.5
+			]
+		],
+		"dividers": [
+			[
+				1792,
+				256,
+				345.6,
+				512
+			]
+		],
+		"labels": [
+			[
+				1817.6,
+				284,
+				"SIDE_STOREROOM"
+			]
+		]
+	},
+	"side_props": [],
+	"spawn_points": [
+		[
+			422.4,
+			509
+		]
+	],
+	"entities": [
+		{
+			"id": "stillwater.market.exit",
+			"type": "portal",
+			"interact_range": 70,
+			"priority": 2,
+			"side_art": "side.door_ext",
+			"target": {
+				"region": "stillwater",
+				"position": [
+					500,
+					1112
+				]
+			},
+			"prompt_key": "PROMPT_EXIT_HOUSE",
+			"position": [
+				364.8,
+				509
+			]
+		},
+		{
+			"id": "stillwater.market.checkout",
+			"type": "container",
+			"kind": "drawer",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_DRAWER",
+			"art": "int.checkout",
+			"art_searched": "int.checkout",
+			"loot": {},
+			"pool": "store_counter",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				512.0,
+				509
+			]
+		},
+		{
+			"id": "stillwater.market.aisle_a",
+			"type": "container",
+			"kind": "shelf",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_SHELF",
+			"art": "int.gondola_full",
+			"art_searched": "int.gondola_empty",
+			"loot": {},
+			"pool": "grocery_shelf",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				704.0,
+				509
+			]
+		},
+		{
+			"id": "stillwater.market.aisle_b",
+			"type": "container",
+			"kind": "shelf",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_SHELF",
+			"art": "int.gondola_sparse",
+			"art_searched": "int.gondola_empty",
+			"loot": {},
+			"pool": "grocery_shelf",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				896.0,
+				509
+			]
+		},
+		{
+			"id": "stillwater.market.aisle_c",
+			"type": "container",
+			"kind": "shelf",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_SHELF",
+			"art": "int.gondola_empty",
+			"art_searched": "int.gondola_empty",
+			"loot": {},
+			"pool": "grocery_shelf",
+			"initial": {
+				"searched": true
+			},
+			"position": [
+				1088.0,
+				509
+			]
+		},
+		{
+			"id": "stillwater.market.drinks",
+			"type": "container",
+			"kind": "fridge",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_FRIDGE",
+			"art": "int.freezer",
+			"art_searched": "int.freezer_open",
+			"loot": {},
+			"pool": "grocery_cooler",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				1280.0,
+				509
+			]
+		},
+		{
+			"id": "stillwater.market.household",
+			"type": "container",
+			"kind": "shelf",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_SHELF",
+			"art": "int.gondola_sparse",
+			"art_searched": "int.gondola_empty",
+			"loot": {},
+			"pool": "household",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				1472.0,
+				509
+			]
+		},
+		{
+			"id": "stillwater.market.stock_a",
+			"type": "container",
+			"kind": "shelf",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_SHELF",
+			"art": "int.metal_shelf_full",
+			"art_searched": "int.metal_shelf_empty",
+			"loot": {},
+			"pool": "grocery_stock",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				1894.4,
+				509
+			]
+		},
+		{
+			"id": "stillwater.market.stock_b",
+			"type": "container",
+			"kind": "crate",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_CRATE",
+			"art": "int.crate",
+			"art_searched": "int.crate_open",
+			"loot": {},
+			"pool": "grocery_stock",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				2086.4,
+				509
+			]
+		}
+	],
+	"surface": {
+		"region": "stillwater",
+		"position": [
+			500,
+			1060
+		]
+	},
+	"tint": [
+		0.5,
+		0.5,
+		0.53
+	],
+	"climate": {
+		"exposure": 1.0,
+		"fog": 0.0,
+		"shelter": 0.35
+	},
+	"interior": true,
+	"ambience": "amb.wind_muffled"
+}

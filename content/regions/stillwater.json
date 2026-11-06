@@ -1,0 +1,596 @@
+{
+	"region_id": "stillwater",
+	"display_key": "REGION_STILLWATER",
+	"scene": "res://scenes/regions/settlements/stillwater.tscn",
+	"bounds": [
+		0,
+		0,
+		3600,
+		2400
+	],
+	"entities": [
+		{
+			"id": "stillwater.road_west",
+			"type": "portal",
+			"position": [
+				60,
+				1200
+			],
+			"interact_range": 80,
+			"priority": 2,
+			"target": {
+				"region": "junction",
+				"position": [
+					3000,
+					1100
+				]
+			},
+			"prompt_key": "PROMPT_ROAD_JUNCTION"
+		},
+		{
+			"id": "stillwater.road_east",
+			"type": "portal",
+			"position": [
+				3540,
+				1200
+			],
+			"interact_range": 80,
+			"priority": 2,
+			"target": {
+				"region": "harbor",
+				"position": [
+					220,
+					900
+				]
+			},
+			"prompt_key": "PROMPT_ROAD_HARBOR"
+		},
+		{
+			"id": "stillwater.market_entrance",
+			"type": "portal",
+			"position": [
+				500,
+				1066
+			],
+			"interact_range": 52,
+			"priority": 2,
+			"target": {
+				"region": "stillwater.market",
+				"position": [
+					422.4,
+					509
+				]
+			},
+			"prompt_key": "PROMPT_ENTER_STORE"
+		},
+		{
+			"id": "stillwater.outfitters_entrance",
+			"type": "portal",
+			"position": [
+				950,
+				1066
+			],
+			"interact_range": 52,
+			"priority": 2,
+			"target": {
+				"region": "stillwater.outfitters",
+				"position": [
+					422.4,
+					509
+				]
+			},
+			"prompt_key": "PROMPT_ENTER_STORE"
+		},
+		{
+			"id": "stillwater.civic_hall_entrance",
+			"type": "portal",
+			"position": [
+				1800,
+				1066
+			],
+			"interact_range": 52,
+			"priority": 2,
+			"target": {
+				"region": "stillwater.civic_hall",
+				"position": [
+					422.4,
+					1149
+				]
+			},
+			"prompt_key": "PROMPT_ENTER_BUILDING"
+		},
+		{
+			"id": "stillwater.clinic_entrance",
+			"type": "portal",
+			"position": [
+				2550,
+				1066
+			],
+			"interact_range": 52,
+			"priority": 2,
+			"target": {
+				"region": "stillwater.clinic",
+				"position": [
+					422.4,
+					509
+				]
+			},
+			"prompt_key": "PROMPT_ENTER_BUILDING"
+		},
+		{
+			"id": "stillwater.police_entrance",
+			"type": "portal",
+			"position": [
+				3080,
+				1066
+			],
+			"interact_range": 52,
+			"priority": 2,
+			"target": {
+				"region": "stillwater.police",
+				"position": [
+					422.4,
+					829
+				]
+			},
+			"prompt_key": "PROMPT_ENTER_BUILDING"
+		},
+		{
+			"id": "stillwater.apartments_entrance",
+			"type": "portal",
+			"position": [
+				1050,
+				1726
+			],
+			"interact_range": 52,
+			"priority": 2,
+			"target": {
+				"region": "stillwater.apartments",
+				"position": [
+					422.4,
+					829
+				]
+			},
+			"prompt_key": "PROMPT_ENTER_BUILDING"
+		},
+		{
+			"id": "stillwater.house_entrance",
+			"type": "portal",
+			"position": [
+				2300,
+				1726
+			],
+			"interact_range": 52,
+			"priority": 2,
+			"target": {
+				"region": "stillwater.house",
+				"position": [
+					422.4,
+					829
+				]
+			},
+			"prompt_key": "PROMPT_ENTER_HOME"
+		},
+		{
+			"id": "stillwater.quiet_house_entrance",
+			"type": "portal",
+			"position": [
+				2800,
+				1726
+			],
+			"interact_range": 52,
+			"priority": 2,
+			"target": {
+				"region": "stillwater.quiet_house",
+				"position": [
+					422.4,
+					829
+				]
+			},
+			"prompt_key": "PROMPT_ENTER_HOME"
+		},
+		{
+			"id": "stillwater.sedan",
+			"type": "container",
+			"kind": "vehicle",
+			"position": [
+				1340,
+				1354
+			],
+			"interact_range": 90,
+			"prompt_key": "PROMPT_SEARCH_VEHICLE",
+			"art": "",
+			"art_searched": "",
+			"loot": {},
+			"pool": "vehicle_car",
+			"initial": {
+				"searched": false
+			}
+		},
+		{
+			"id": "stillwater.police_car",
+			"type": "container",
+			"kind": "vehicle",
+			"position": [
+				2890,
+				1084
+			],
+			"interact_range": 90,
+			"prompt_key": "PROMPT_SEARCH_VEHICLE",
+			"art": "",
+			"art_searched": "",
+			"loot": {},
+			"pool": "vehicle_police",
+			"initial": {
+				"searched": false
+			}
+		}
+	],
+	"vehicle_exits": [
+		{
+			"rect": [
+				0,
+				1110,
+				40,
+				180
+			],
+			"target": {
+				"region": "junction",
+				"position": [
+					3000,
+					1100
+				],
+				"rotation": 180
+			}
+		},
+		{
+			"rect": [
+				3560,
+				1110,
+				40,
+				180
+			],
+			"target": {
+				"region": "harbor",
+				"position": [
+					220,
+					900
+				],
+				"rotation": 0
+			}
+		}
+	],
+	"spawn_points": [
+		[
+			220,
+			1200
+		]
+	],
+	"climate": {
+		"exposure": 1.0,
+		"fog": 1.0
+	},
+	"discovery": "stillwater",
+	"zombies": {
+		"base_population": 5,
+		"spawns": [
+			[
+				700,
+				800
+			],
+			[
+				2000,
+				760
+			],
+			[
+				3100,
+				1500
+			],
+			[
+				1500,
+				1900
+			],
+			[
+				600,
+				1950
+			]
+		],
+		"entries": [
+			[
+				20,
+				500
+			],
+			[
+				20,
+				1900
+			],
+			[
+				3580,
+				500
+			],
+			[
+				3580,
+				1900
+			],
+			[
+				1800,
+				20
+			],
+			[
+				1800,
+				2380
+			]
+		]
+	},
+	"omens": {
+		"laugh_spots": [
+			[
+				1800,
+				1000
+			],
+			[
+				2800,
+				1680
+			],
+			[
+				500,
+				1680
+			]
+		],
+		"laugh_radius": 700,
+		"shadow_paths": [
+			[
+				[
+					2700,
+					1800
+				],
+				[
+					2860,
+					1790
+				]
+			],
+			[
+				[
+					1000,
+					900
+				],
+				[
+					1150,
+					920
+				]
+			]
+		]
+	},
+	"map": {
+		"offset": [
+			10840,
+			185
+		],
+		"areas": [
+			{
+				"kind": "woods",
+				"polygon": [
+					[
+						40,
+						0
+					],
+					[
+						3560,
+						0
+					],
+					[
+						3560,
+						480
+					],
+					[
+						40,
+						480
+					]
+				]
+			},
+			{
+				"kind": "woods",
+				"polygon": [
+					[
+						40,
+						1940
+					],
+					[
+						3560,
+						1940
+					],
+					[
+						3560,
+						2420
+					],
+					[
+						40,
+						2420
+					]
+				]
+			},
+			{
+				"kind": "yard",
+				"polygon": [
+					[
+						200,
+						760
+					],
+					[
+						3400,
+						760
+					],
+					[
+						3400,
+						1110
+					],
+					[
+						200,
+						1110
+					]
+				]
+			}
+		],
+		"roads": [
+			{
+				"kind": "road",
+				"width": 140,
+				"points": [
+					[
+						0,
+						1200
+					],
+					[
+						3600,
+						1200
+					]
+				]
+			},
+			{
+				"kind": "road",
+				"width": 120,
+				"points": [
+					[
+						1800,
+						1200
+					],
+					[
+						1800,
+						1520
+					]
+				]
+			}
+		],
+		"landmarks": [
+			{
+				"kind": "ruin",
+				"position": [
+					1800,
+					1400
+				],
+				"size": [
+					160,
+					120
+				],
+				"label_key": "MAP_SQUARE"
+			},
+			{
+				"kind": "building",
+				"position": [
+					500,
+					1020
+				],
+				"size": [
+					380,
+					80
+				],
+				"label_key": "MAP_MARKET"
+			},
+			{
+				"kind": "building",
+				"position": [
+					950,
+					1020
+				],
+				"size": [
+					340,
+					80
+				],
+				"label_key": "MAP_OUTFITTERS"
+			},
+			{
+				"kind": "building",
+				"position": [
+					1800,
+					1020
+				],
+				"size": [
+					440,
+					80
+				],
+				"label_key": "MAP_CIVIC_HALL"
+			},
+			{
+				"kind": "building",
+				"position": [
+					2550,
+					1020
+				],
+				"size": [
+					360,
+					80
+				],
+				"label_key": "MAP_CLINIC"
+			},
+			{
+				"kind": "building",
+				"position": [
+					3080,
+					1020
+				],
+				"size": [
+					370,
+					80
+				],
+				"label_key": "MAP_POLICE"
+			},
+			{
+				"kind": "building",
+				"position": [
+					500,
+					1680
+				],
+				"size": [
+					310,
+					80
+				],
+				"label_key": "MAP_CHURCH"
+			},
+			{
+				"kind": "building",
+				"position": [
+					1050,
+					1680
+				],
+				"size": [
+					400,
+					80
+				],
+				"label_key": "MAP_APARTMENTS"
+			},
+			{
+				"kind": "building",
+				"position": [
+					2300,
+					1680
+				],
+				"size": [
+					280,
+					80
+				]
+			},
+			{
+				"kind": "building",
+				"position": [
+					2800,
+					1680
+				],
+				"size": [
+					290,
+					80
+				]
+			},
+			{
+				"kind": "building",
+				"position": [
+					3250,
+					1680
+				],
+				"size": [
+					280,
+					80
+				]
+			}
+		]
+	}
+}

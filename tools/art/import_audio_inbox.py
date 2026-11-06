@@ -56,6 +56,19 @@ SELECTION = [
      "atrim=0:0.6,afade=t=out:st=0.4:d=0.2", "UI", -14.0, False, "Refused action / declined vote"),
     ("music.theme", "Theme/Where the Ice Once Lay.mp3", "theme_where_the_ice_once_lay.ogg",
      "", "Music", -8.0, True, "Main-menu theme \"Where the Ice Once Lay\""),
+    # iteration 014: firearms (single shots trimmed from the creator's gun library)
+    ("sfx.gun_pistol", "Gun sounds/Assault Rifle Shot 10.wav", "gun_pistol.wav",
+     "atrim=0:0.7,highpass=f=160,afade=t=out:st=0.45:d=0.25", "SFX", -3.0, False, "Handgun shot"),
+    ("sfx.gun_revolver", "Gun sounds/Assault Rifle Shot 12.wav", "gun_revolver.wav",
+     "atrim=0:0.9,lowpass=f=5000,afade=t=out:st=0.6:d=0.3", "SFX", -3.0, False, "Revolver shot (heavier)"),
+    ("sfx.gun_shotgun", "Gun sounds/Machine Gun Shot 2.wav", "gun_shotgun.wav",
+     "atrim=0:1.0,lowpass=f=2600,volume=3dB,afade=t=out:st=0.6:d=0.4", "SFX", -2.0, False, "Shotgun blast"),
+    ("sfx.gun_rifle", "Gun sounds/Assault Rifle Shot 13.wav", "gun_rifle.wav",
+     "atrim=0:1.1,aecho=0.8:0.5:350:0.3,afade=t=out:st=0.7:d=0.4", "SFX", -2.0, False, "Rifle shot (echoes off the hills)"),
+    ("sfx.gun_mag_out", "Gun sounds/Mag Out.wav", "gun_mag_out.wav", "", "SFX", -8.0, False, "Reload: magazine out"),
+    ("sfx.gun_mag_in", "Gun sounds/Mag In.wav", "gun_mag_in.wav", "", "SFX", -8.0, False, "Reload: magazine in"),
+    ("sfx.gun_dry", "UI sounds/Simple Click Sound 11.wav", "gun_dry.wav",
+     "atrim=0:0.12,lowpass=f=3000,volume=-2dB", "SFX", -6.0, False, "Dry fire: click on an empty chamber"),
 ]
 
 

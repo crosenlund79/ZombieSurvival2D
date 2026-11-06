@@ -1,0 +1,511 @@
+{
+	"region_id": "harbor",
+	"display_key": "REGION_HARBOR",
+	"scene": "res://scenes/regions/settlements/harbor.tscn",
+	"bounds": [
+		0,
+		0,
+		3600,
+		2600
+	],
+	"entities": [
+		{
+			"id": "harbor.road_west",
+			"type": "portal",
+			"position": [
+				60,
+				900
+			],
+			"interact_range": 80,
+			"priority": 2,
+			"target": {
+				"region": "stillwater",
+				"position": [
+					3400,
+					1200
+				]
+			},
+			"prompt_key": "PROMPT_ROAD_STILLWATER"
+		},
+		{
+			"id": "harbor.trawler_hold",
+			"type": "container",
+			"kind": "crate",
+			"position": [
+				1760,
+				1680
+			],
+			"interact_range": 90,
+			"prompt_key": "PROMPT_SEARCH_CRATE",
+			"art": "",
+			"art_searched": "",
+			"loot": {},
+			"pool": "marine",
+			"initial": {
+				"searched": false
+			}
+		},
+		{
+			"id": "harbor.container_cargo",
+			"type": "container",
+			"kind": "crate",
+			"position": [
+				2420,
+				1360
+			],
+			"interact_range": 90,
+			"prompt_key": "PROMPT_SEARCH_CRATE",
+			"art": "",
+			"art_searched": "",
+			"loot": {},
+			"pool": "harbor_cargo",
+			"initial": {
+				"searched": false
+			}
+		},
+		{
+			"id": "harbor.cottage_entrance",
+			"type": "portal",
+			"position": [
+				500,
+				786
+			],
+			"interact_range": 52,
+			"priority": 2,
+			"target": {
+				"region": "harbor.cottage",
+				"position": [
+					422.4,
+					829
+				]
+			},
+			"prompt_key": "PROMPT_ENTER_HOME"
+		},
+		{
+			"id": "harbor.chandlery_entrance",
+			"type": "portal",
+			"position": [
+				1450,
+				786
+			],
+			"interact_range": 52,
+			"priority": 2,
+			"target": {
+				"region": "harbor.chandlery",
+				"position": [
+					422.4,
+					509
+				]
+			},
+			"prompt_key": "PROMPT_ENTER_STORE"
+		},
+		{
+			"id": "harbor.office_entrance",
+			"type": "portal",
+			"position": [
+				2150,
+				786
+			],
+			"interact_range": 52,
+			"priority": 2,
+			"target": {
+				"region": "harbor.office",
+				"position": [
+					422.4,
+					829
+				]
+			},
+			"prompt_key": "PROMPT_ENTER_BUILDING"
+		},
+		{
+			"id": "harbor.cannery_entrance",
+			"type": "portal",
+			"position": [
+				600,
+				1306
+			],
+			"interact_range": 52,
+			"priority": 2,
+			"target": {
+				"region": "harbor.cannery",
+				"position": [
+					422.4,
+					509
+				]
+			},
+			"prompt_key": "PROMPT_ENTER_BUILDING"
+		},
+		{
+			"id": "harbor.warehouse_entrance",
+			"type": "portal",
+			"position": [
+				1400,
+				1306
+			],
+			"interact_range": 52,
+			"priority": 2,
+			"target": {
+				"region": "harbor.warehouse",
+				"position": [
+					422.4,
+					509
+				]
+			},
+			"prompt_key": "PROMPT_ENTER_BUILDING"
+		},
+		{
+			"id": "harbor.net_shed_entrance",
+			"type": "portal",
+			"position": [
+				2000,
+				1306
+			],
+			"interact_range": 52,
+			"priority": 2,
+			"target": {
+				"region": "harbor.net_shed",
+				"position": [
+					422.4,
+					509
+				]
+			},
+			"prompt_key": "PROMPT_ENTER_BUILDING"
+		},
+		{
+			"id": "harbor.pickup",
+			"type": "container",
+			"kind": "vehicle",
+			"position": [
+				2740,
+				1044
+			],
+			"interact_range": 90,
+			"prompt_key": "PROMPT_SEARCH_VEHICLE",
+			"art": "",
+			"art_searched": "",
+			"loot": {},
+			"pool": "vehicle_truck",
+			"initial": {
+				"searched": false
+			}
+		}
+	],
+	"vehicle_exits": [
+		{
+			"rect": [
+				0,
+				810,
+				40,
+				180
+			],
+			"target": {
+				"region": "stillwater",
+				"position": [
+					3400,
+					1200
+				],
+				"rotation": 180
+			}
+		}
+	],
+	"spawn_points": [
+		[
+			220,
+			900
+		]
+	],
+	"climate": {
+		"exposure": 1.35,
+		"fog": 1.4
+	},
+	"discovery": "harbor",
+	"ambience2": "amb.harbor_ice",
+	"zombies": {
+		"base_population": 4,
+		"spawns": [
+			[
+				700,
+				600
+			],
+			[
+				2200,
+				1200
+			],
+			[
+				3000,
+				1400
+			],
+			[
+				1500,
+				600
+			]
+		],
+		"entries": [
+			[
+				20,
+				500
+			],
+			[
+				20,
+				1300
+			],
+			[
+				3580,
+				500
+			],
+			[
+				3580,
+				1300
+			],
+			[
+				1700,
+				20
+			]
+		]
+	},
+	"omens": {
+		"laugh_spots": [
+			[
+				1400,
+				1250
+			],
+			[
+				3350,
+				700
+			],
+			[
+				1700,
+				1600
+			]
+		],
+		"laugh_radius": 700,
+		"shadow_paths": [
+			[
+				[
+					2300,
+					1500
+				],
+				[
+					2300,
+					1640
+				]
+			],
+			[
+				[
+					600,
+					1350
+				],
+				[
+					760,
+					1360
+				]
+			]
+		]
+	},
+	"map": {
+		"offset": [
+			14440,
+			85
+		],
+		"areas": [
+			{
+				"kind": "water",
+				"polygon": [
+					[
+						0,
+						1720
+					],
+					[
+						3600,
+						1720
+					],
+					[
+						3600,
+						2600
+					],
+					[
+						0,
+						2600
+					]
+				]
+			},
+			{
+				"kind": "ice",
+				"polygon": [
+					[
+						0,
+						1460
+					],
+					[
+						3600,
+						1460
+					],
+					[
+						3600,
+						1720
+					],
+					[
+						0,
+						1720
+					]
+				]
+			},
+			{
+				"kind": "woods",
+				"polygon": [
+					[
+						40,
+						0
+					],
+					[
+						3200,
+						0
+					],
+					[
+						3200,
+						440
+					],
+					[
+						40,
+						440
+					]
+				]
+			}
+		],
+		"roads": [
+			{
+				"kind": "road",
+				"width": 140,
+				"points": [
+					[
+						0,
+						900
+					],
+					[
+						3500,
+						900
+					]
+				]
+			}
+		],
+		"landmarks": [
+			{
+				"kind": "ruin",
+				"position": [
+					1700,
+					1600
+				],
+				"size": [
+					320,
+					70
+				],
+				"label_key": "MAP_TRAWLER"
+			},
+			{
+				"kind": "building",
+				"position": [
+					2900,
+					1300
+				],
+				"size": [
+					200,
+					80
+				],
+				"label_key": "MAP_CRANE"
+			},
+			{
+				"kind": "building",
+				"position": [
+					3350,
+					600
+				],
+				"size": [
+					110,
+					90
+				],
+				"label_key": "MAP_LIGHTHOUSE"
+			},
+			{
+				"kind": "building",
+				"position": [
+					500,
+					740
+				],
+				"size": [
+					270,
+					80
+				]
+			},
+			{
+				"kind": "building",
+				"position": [
+					850,
+					740
+				],
+				"size": [
+					270,
+					80
+				]
+			},
+			{
+				"kind": "building",
+				"position": [
+					1450,
+					740
+				],
+				"size": [
+					320,
+					80
+				],
+				"label_key": "MAP_CHANDLERY"
+			},
+			{
+				"kind": "building",
+				"position": [
+					2150,
+					740
+				],
+				"size": [
+					340,
+					80
+				],
+				"label_key": "MAP_HARBOR_MASTER"
+			},
+			{
+				"kind": "building",
+				"position": [
+					600,
+					1260
+				],
+				"size": [
+					470,
+					80
+				],
+				"label_key": "MAP_CANNERY"
+			},
+			{
+				"kind": "building",
+				"position": [
+					1400,
+					1260
+				],
+				"size": [
+					510,
+					80
+				],
+				"label_key": "MAP_WAREHOUSE"
+			},
+			{
+				"kind": "building",
+				"position": [
+					2000,
+					1260
+				],
+				"size": [
+					250,
+					80
+				]
+			}
+		]
+	}
+}

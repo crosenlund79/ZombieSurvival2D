@@ -1,0 +1,187 @@
+{
+	"region_id": "greyhollow.store_shed",
+	"display_key": "REGION_GREYHOLLOW_STORE_SHED",
+	"view": "side",
+	"style": "building",
+	"bounds": [
+		0,
+		0,
+		1920,
+		768
+	],
+	"excavation": {
+		"cell": 64,
+		"origin": [
+			0,
+			0
+		],
+		"cols": 30,
+		"rows": 12,
+		"fixed": true,
+		"initial_open": [
+			[
+				5,
+				4,
+				20,
+				4
+			]
+		],
+		"platforms": [],
+		"_comment": "Authored building cross-section (tools/build_side_interiors.py); fixed, never dug."
+	},
+	"section": {
+		"ground_row": 8,
+		"envelope": [
+			4,
+			3,
+			22,
+			6
+		],
+		"exterior": "side.ext_concrete",
+		"basement": "",
+		"rooms": [
+			{
+				"rect": [
+					5,
+					4,
+					20,
+					4
+				],
+				"wall": "side.wall_brick_in",
+				"floor": "side.floor_concrete"
+			}
+		],
+		"windows": [
+			[
+				640.0,
+				363.5,
+				"boarded"
+			],
+			[
+				1280.0,
+				363.5
+			]
+		],
+		"dividers": [],
+		"labels": []
+	},
+	"side_props": [],
+	"spawn_points": [
+		[
+			422.4,
+			509
+		]
+	],
+	"entities": [
+		{
+			"id": "greyhollow.store_shed.exit",
+			"type": "portal",
+			"interact_range": 70,
+			"priority": 2,
+			"side_art": "side.door_ext",
+			"target": {
+				"region": "greyhollow",
+				"position": [
+					2350,
+					1222
+				]
+			},
+			"prompt_key": "PROMPT_EXIT_HOUSE",
+			"position": [
+				364.8,
+				509
+			]
+		},
+		{
+			"id": "greyhollow.store_shed.crate_a",
+			"type": "container",
+			"kind": "crate",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_CRATE",
+			"art": "int.crate",
+			"art_searched": "int.crate_open",
+			"loot": {},
+			"pool": "industrial_materials",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				512.0,
+				509
+			]
+		},
+		{
+			"id": "greyhollow.store_shed.shelf_a",
+			"type": "container",
+			"kind": "shelf",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_SHELF",
+			"art": "int.metal_shelf_full",
+			"art_searched": "int.metal_shelf_empty",
+			"loot": {},
+			"pool": "industrial_parts",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				768.0,
+				509
+			]
+		},
+		{
+			"id": "greyhollow.store_shed.crate_b",
+			"type": "container",
+			"kind": "crate",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_CRATE",
+			"art": "int.crate",
+			"art_searched": "int.crate_open",
+			"loot": {},
+			"pool": "mine_store",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				1024.0,
+				509
+			]
+		},
+		{
+			"id": "greyhollow.store_shed.drums",
+			"type": "container",
+			"kind": "garage",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_GARAGE",
+			"art": "int.crate",
+			"art_searched": "int.crate_open",
+			"loot": {},
+			"pool": "fuel_depot",
+			"initial": {
+				"searched": true
+			},
+			"position": [
+				1280.0,
+				509
+			]
+		}
+	],
+	"surface": {
+		"region": "greyhollow",
+		"position": [
+			2350,
+			1170
+		]
+	},
+	"tint": [
+		0.5,
+		0.5,
+		0.53
+	],
+	"climate": {
+		"exposure": 1.0,
+		"fog": 0.0,
+		"shelter": 0.35
+	},
+	"interior": true,
+	"ambience": "amb.wind_muffled"
+}

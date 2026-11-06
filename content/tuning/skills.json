@@ -43,7 +43,8 @@
 			"crate": 6.0,
 			"locker": 5.5,
 			"toolbox": 6.5,
-			"garage": 6.0
+			"garage": 6.0,
+			"vehicle": 4.5
 		},
 		"loud_kinds": [
 			"crate",

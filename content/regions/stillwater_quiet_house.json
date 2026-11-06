@@ -1,0 +1,280 @@
+{
+	"region_id": "stillwater.quiet_house",
+	"display_key": "REGION_STILLWATER_QUIET_HOUSE",
+	"view": "side",
+	"style": "building",
+	"bounds": [
+		0,
+		0,
+		1664,
+		1088
+	],
+	"excavation": {
+		"cell": 64,
+		"origin": [
+			0,
+			0
+		],
+		"cols": 26,
+		"rows": 17,
+		"fixed": true,
+		"initial_open": [
+			[
+				5,
+				9,
+				16,
+				4
+			],
+			[
+				5,
+				4,
+				16,
+				4
+			],
+			[
+				19,
+				8,
+				1,
+				1
+			]
+		],
+		"platforms": [
+			[
+				19,
+				7,
+				1,
+				1
+			]
+		],
+		"_comment": "Authored building cross-section (tools/build_side_interiors.py); fixed, never dug."
+	},
+	"section": {
+		"ground_row": 13,
+		"envelope": [
+			4,
+			3,
+			18,
+			11
+		],
+		"exterior": "side.ext_siding",
+		"basement": "",
+		"rooms": [
+			{
+				"rect": [
+					5,
+					9,
+					9,
+					4
+				],
+				"wall": "side.wall_house_b",
+				"floor": "side.floor_linoleum"
+			},
+			{
+				"rect": [
+					14,
+					9,
+					7,
+					4
+				],
+				"wall": "side.wall_house_b",
+				"floor": "side.floorboards"
+			},
+			{
+				"rect": [
+					5,
+					4,
+					16,
+					4
+				],
+				"wall": "side.wall_house_b",
+				"floor": "side.floorboards"
+			}
+		],
+		"windows": [
+			[
+				640.0,
+				683.5
+			],
+			[
+				1120.0,
+				683.5,
+				"boarded"
+			],
+			[
+				832.0,
+				363.5
+			],
+			[
+				1152.0,
+				363.5,
+				"boarded"
+			]
+		],
+		"dividers": [
+			[
+				896,
+				576,
+				665.6,
+				832
+			]
+		],
+		"labels": [
+			[
+				345.6,
+				284,
+				"SIDE_UPSTAIRS"
+			]
+		]
+	},
+	"side_props": [
+		{
+			"asset": "int.meal_table",
+			"x": 819.2,
+			"y": 829
+		},
+		{
+			"asset": "int.sofa",
+			"x": 1024.0,
+			"y": 829
+		},
+		{
+			"asset": "world.furniture_bed",
+			"x": 768.0,
+			"y": 509,
+			"back": true
+		},
+		{
+			"asset": "int.boxes",
+			"x": 1088.0,
+			"y": 509
+		}
+	],
+	"spawn_points": [
+		[
+			422.4,
+			829
+		]
+	],
+	"entities": [
+		{
+			"id": "stillwater.quiet_house.exit",
+			"type": "portal",
+			"interact_range": 70,
+			"priority": 2,
+			"side_art": "side.door_ext",
+			"target": {
+				"region": "stillwater",
+				"position": [
+					2800,
+					1772
+				]
+			},
+			"prompt_key": "PROMPT_EXIT_HOUSE",
+			"position": [
+				364.8,
+				829
+			]
+		},
+		{
+			"id": "stillwater.quiet_house.kitchen",
+			"type": "container",
+			"kind": "cupboard",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_CUPBOARD",
+			"art": "int.kitchen_counter",
+			"art_searched": "int.kitchen_counter",
+			"loot": {},
+			"pool": "home_kitchen",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				512.0,
+				829
+			]
+		},
+		{
+			"id": "stillwater.quiet_house.fridge",
+			"type": "container",
+			"kind": "fridge",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_FRIDGE",
+			"art": "int.home_fridge",
+			"art_searched": "int.home_fridge_open",
+			"loot": {},
+			"pool": "home_fridge",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				704.0,
+				829
+			]
+		},
+		{
+			"id": "stillwater.quiet_house.stairs_0",
+			"type": "stairs",
+			"position": [
+				1248.0,
+				829
+			],
+			"top": 509,
+			"flip": false
+		},
+		{
+			"id": "stillwater.quiet_house.dresser",
+			"type": "container",
+			"kind": "drawer",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_DRAWER",
+			"art": "int.dresser",
+			"art_searched": "int.dresser_open",
+			"loot": {},
+			"pool": "home_bedroom",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				576.0,
+				509
+			]
+		},
+		{
+			"id": "stillwater.quiet_house.wardrobe",
+			"type": "container",
+			"kind": "locker",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_LOCKER",
+			"art": "int.locker",
+			"art_searched": "int.locker_open",
+			"loot": {},
+			"pool": "home_closet",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				992.0,
+				509
+			]
+		}
+	],
+	"surface": {
+		"region": "stillwater",
+		"position": [
+			2800,
+			1720
+		]
+	},
+	"tint": [
+		0.5,
+		0.5,
+		0.53
+	],
+	"climate": {
+		"exposure": 1.0,
+		"fog": 0.0,
+		"shelter": 0.35
+	},
+	"interior": true,
+	"ambience": "amb.wind_muffled"
+}

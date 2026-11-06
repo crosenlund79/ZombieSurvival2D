@@ -1,0 +1,245 @@
+{
+	"region_id": "greyhollow.general_store",
+	"display_key": "REGION_GREYHOLLOW_GENERAL_STORE",
+	"view": "side",
+	"style": "building",
+	"bounds": [
+		0,
+		0,
+		2304,
+		768
+	],
+	"excavation": {
+		"cell": 64,
+		"origin": [
+			0,
+			0
+		],
+		"cols": 36,
+		"rows": 12,
+		"fixed": true,
+		"initial_open": [
+			[
+				5,
+				4,
+				26,
+				4
+			]
+		],
+		"platforms": [],
+		"_comment": "Authored building cross-section (tools/build_side_interiors.py); fixed, never dug."
+	},
+	"section": {
+		"ground_row": 8,
+		"envelope": [
+			4,
+			3,
+			28,
+			6
+		],
+		"exterior": "side.ext_siding",
+		"basement": "",
+		"rooms": [
+			{
+				"rect": [
+					5,
+					4,
+					17,
+					4
+				],
+				"wall": "side.wall_house_b",
+				"floor": "side.floorboards"
+			},
+			{
+				"rect": [
+					22,
+					4,
+					9,
+					4
+				],
+				"wall": "side.wall_brick_in",
+				"floor": "side.floor_concrete"
+			}
+		],
+		"windows": [
+			[
+				512.0,
+				363.5
+			],
+			[
+				832.0,
+				363.5
+			]
+		],
+		"dividers": [
+			[
+				1408,
+				256,
+				345.6,
+				512
+			]
+		],
+		"labels": [
+			[
+				1433.6,
+				284,
+				"SIDE_STOREROOM"
+			]
+		]
+	},
+	"side_props": [],
+	"spawn_points": [
+		[
+			422.4,
+			509
+		]
+	],
+	"entities": [
+		{
+			"id": "greyhollow.general_store.exit",
+			"type": "portal",
+			"interact_range": 70,
+			"priority": 2,
+			"side_art": "side.door_ext",
+			"target": {
+				"region": "greyhollow",
+				"position": [
+					1050,
+					1222
+				]
+			},
+			"prompt_key": "PROMPT_EXIT_HOUSE",
+			"position": [
+				364.8,
+				509
+			]
+		},
+		{
+			"id": "greyhollow.general_store.counter",
+			"type": "container",
+			"kind": "drawer",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_DRAWER",
+			"art": "int.checkout",
+			"art_searched": "int.checkout",
+			"loot": {},
+			"pool": "store_counter",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				512.0,
+				509
+			]
+		},
+		{
+			"id": "greyhollow.general_store.aisle_food",
+			"type": "container",
+			"kind": "shelf",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_SHELF",
+			"art": "int.gondola_sparse",
+			"art_searched": "int.gondola_empty",
+			"loot": {},
+			"pool": "grocery_shelf",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				704.0,
+				509
+			]
+		},
+		{
+			"id": "greyhollow.general_store.aisle_goods",
+			"type": "container",
+			"kind": "shelf",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_SHELF",
+			"art": "int.gondola_full",
+			"art_searched": "int.gondola_empty",
+			"loot": {},
+			"pool": "general_goods",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				896.0,
+				509
+			]
+		},
+		{
+			"id": "greyhollow.general_store.rack",
+			"type": "container",
+			"kind": "rack",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_RACK",
+			"art": "int.clothes_rack_full",
+			"art_searched": "int.clothes_rack_empty",
+			"loot": {},
+			"pool": "clothing_rack",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				1088.0,
+				509
+			]
+		},
+		{
+			"id": "greyhollow.general_store.stock",
+			"type": "container",
+			"kind": "crate",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_CRATE",
+			"art": "int.crate",
+			"art_searched": "int.crate_open",
+			"loot": {},
+			"pool": "grocery_stock",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				1510.4,
+				509
+			]
+		},
+		{
+			"id": "greyhollow.general_store.stock_b",
+			"type": "container",
+			"kind": "crate",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_CRATE",
+			"art": "int.crate",
+			"art_searched": "int.crate_open",
+			"loot": {},
+			"pool": "general_goods",
+			"initial": {
+				"searched": true
+			},
+			"position": [
+				1702.4,
+				509
+			]
+		}
+	],
+	"surface": {
+		"region": "greyhollow",
+		"position": [
+			1050,
+			1170
+		]
+	},
+	"tint": [
+		0.5,
+		0.5,
+		0.53
+	],
+	"climate": {
+		"exposure": 1.0,
+		"fog": 0.0,
+		"shelter": 0.35
+	},
+	"interior": true,
+	"ambience": "amb.wind_muffled"
+}

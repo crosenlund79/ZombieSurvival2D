@@ -1,0 +1,227 @@
+{
+	"region_id": "stillwater.outfitters",
+	"display_key": "REGION_STILLWATER_OUTFITTERS",
+	"view": "side",
+	"style": "building",
+	"bounds": [
+		0,
+		0,
+		2112,
+		768
+	],
+	"excavation": {
+		"cell": 64,
+		"origin": [
+			0,
+			0
+		],
+		"cols": 33,
+		"rows": 12,
+		"fixed": true,
+		"initial_open": [
+			[
+				5,
+				4,
+				23,
+				4
+			]
+		],
+		"platforms": [],
+		"_comment": "Authored building cross-section (tools/build_side_interiors.py); fixed, never dug."
+	},
+	"section": {
+		"ground_row": 8,
+		"envelope": [
+			4,
+			3,
+			25,
+			6
+		],
+		"exterior": "side.ext_siding",
+		"basement": "",
+		"rooms": [
+			{
+				"rect": [
+					5,
+					4,
+					17,
+					4
+				],
+				"wall": "side.wall_house_b",
+				"floor": "side.floorboards"
+			},
+			{
+				"rect": [
+					22,
+					4,
+					6,
+					4
+				],
+				"wall": "side.wall_brick_in",
+				"floor": "side.floor_concrete"
+			}
+		],
+		"windows": [
+			[
+				512.0,
+				363.5
+			],
+			[
+				832.0,
+				363.5
+			]
+		],
+		"dividers": [
+			[
+				1408,
+				256,
+				345.6,
+				512
+			]
+		],
+		"labels": [
+			[
+				1433.6,
+				284,
+				"SIDE_STOCKROOM"
+			]
+		]
+	},
+	"side_props": [],
+	"spawn_points": [
+		[
+			422.4,
+			509
+		]
+	],
+	"entities": [
+		{
+			"id": "stillwater.outfitters.exit",
+			"type": "portal",
+			"interact_range": 70,
+			"priority": 2,
+			"side_art": "side.door_ext",
+			"target": {
+				"region": "stillwater",
+				"position": [
+					950,
+					1112
+				]
+			},
+			"prompt_key": "PROMPT_EXIT_HOUSE",
+			"position": [
+				364.8,
+				509
+			]
+		},
+		{
+			"id": "stillwater.outfitters.rack_coats",
+			"type": "container",
+			"kind": "rack",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_RACK",
+			"art": "int.clothes_rack_full",
+			"art_searched": "int.clothes_rack_empty",
+			"loot": {},
+			"pool": "clothing_rack",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				512.0,
+				509
+			]
+		},
+		{
+			"id": "stillwater.outfitters.rack_b",
+			"type": "container",
+			"kind": "rack",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_RACK",
+			"art": "int.clothes_rack_empty",
+			"art_searched": "int.clothes_rack_empty",
+			"loot": {},
+			"pool": "clothing_rack",
+			"initial": {
+				"searched": true
+			},
+			"position": [
+				704.0,
+				509
+			]
+		},
+		{
+			"id": "stillwater.outfitters.boots",
+			"type": "container",
+			"kind": "shelf",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_SHELF",
+			"art": "int.display_table",
+			"art_searched": "int.display_table",
+			"loot": {},
+			"pool": "clothing_shoes",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				896.0,
+				509
+			]
+		},
+		{
+			"id": "stillwater.outfitters.packs",
+			"type": "container",
+			"kind": "shelf",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_SHELF",
+			"art": "int.gondola_sparse",
+			"art_searched": "int.gondola_empty",
+			"loot": {},
+			"pool": "clothing_gear",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				1088.0,
+				509
+			]
+		},
+		{
+			"id": "stillwater.outfitters.stock",
+			"type": "container",
+			"kind": "crate",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_CRATE",
+			"art": "int.crate",
+			"art_searched": "int.crate_open",
+			"loot": {},
+			"pool": "clothing_stock",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				1510.4,
+				509
+			]
+		}
+	],
+	"surface": {
+		"region": "stillwater",
+		"position": [
+			950,
+			1060
+		]
+	},
+	"tint": [
+		0.5,
+		0.5,
+		0.53
+	],
+	"climate": {
+		"exposure": 1.0,
+		"fog": 0.0,
+		"shelter": 0.35
+	},
+	"interior": true,
+	"ambience": "amb.wind_muffled"
+}
