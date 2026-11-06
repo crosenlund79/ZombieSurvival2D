@@ -12,6 +12,18 @@ const CRAWL_IDS := {"down": ["char.burnt_crawl_down_0", "char.burnt_crawl_down_1
 	"up": ["char.burnt_crawl_up_0", "char.burnt_crawl_up_1"], "side": ["char.burnt_crawl_side_0", "char.burnt_crawl_side_1"]}
 const CROUCH_IDS := {"down": "char.burnt_crouch_down", "up": "char.burnt_crouch_up", "side": "char.burnt_crouch_side"}
 static var show_debug := false
+const SILHOUETTE_SHADER := preload("res://src/presentation/world/silhouette.gdshader")
+## Iteration 012: four body archetypes so Burnt Ones read as different people in
+## silhouette (height, build, posture, gait). Picked from the creature's id;
+## modest ranges keep them human, never cartoonish.
+##   scale: width/height of the shape · skew: forward hunch · lean: held tilt
+##   bob: gait bounce · limp: uneven step · crawl: crawl tempo · flat: crawl height
+const ARCHETYPES := [
+	{"name": "gaunt", "scale": Vector2(0.88, 1.09), "skew": 0.0, "lean": -0.03, "bob": 1.2, "limp": 0.0, "crawl": 1.15, "flat": 1.0},
+	{"name": "hunched", "scale": Vector2(1.0, 0.92), "skew": 0.14, "lean": 0.08, "bob": 0.8, "limp": 0.0, "crawl": 0.9, "flat": 0.9},
+	{"name": "heavy", "scale": Vector2(1.12, 0.97), "skew": 0.04, "lean": 0.02, "bob": 0.6, "limp": 0.0, "crawl": 0.8, "flat": 1.05},
+	{"name": "limping", "scale": Vector2(0.95, 1.02), "skew": 0.06, "lean": -0.06, "bob": 1.0, "limp": 0.7, "crawl": 1.0, "flat": 0.95},
+]
 
 var zombie_id := ""
 var _sprite: Sprite2D
@@ -34,6 +46,9 @@ var _track_dist := 0.0
 var _last_pos := Vector2.INF
 var _screech_t := 0.0
 var _outdoor := false
+var _mat: ShaderMaterial
+var _arch: Dictionary = {}
+var _jitter := Vector2.ONE
 static var _tracks: Array = []   # recent track decals (shared cap across all views)
 const MAX_TRACKS := 60
 
@@ -59,7 +74,14 @@ func setup(z: ZombieState) -> void:
 	_bar.draw.connect(_draw_bar)
 	add_child(_bar)
 	_groan_timer = randf_range(3.0, 9.0)
-	_lean = randf_range(-0.09, 0.09)
+	var h := absi(z.zombie_id.hash())
+	_arch = ARCHETYPES[h % ARCHETYPES.size()]
+	_jitter = Vector2(0.97 + float(h / 7 % 7) / 100.0, 0.96 + float(h / 49 % 9) / 100.0)
+	_lean = float(_arch["lean"]) + randf_range(-0.03, 0.03)
+	_sprite.skew = float(_arch["skew"])
+	_mat = ShaderMaterial.new()
+	_mat.shader = SILHOUETTE_SHADER
+	_sprite.material = _mat
 	_outdoor = Session.world != null and Session.world.region_def(z.region_id).has("zombies")
 	Assets.reloaded.connect(func() -> void: _shown = "")
 
@@ -78,7 +100,7 @@ func _process(delta: float) -> void:
 	var before := position
 	position = position.lerp(_target, 1.0 - exp(-10.0 * delta))
 	var moving := before.distance_to(position) > 0.2
-	_frame_t += delta * (1.0 if moving else 0.25)
+	_frame_t += delta * (1.0 if moving else 0.25) * float(_arch.get("crawl", 1.0))
 	if _frame_t >= (0.09 if z.burst > 0.0 else 0.17):
 		_frame_t = 0.0
 		_frame = 1 - _frame
@@ -87,7 +109,7 @@ func _process(delta: float) -> void:
 	_screech_t = maxf(0.0, _screech_t - delta)
 	# Body language: a held, slightly wrong lean, an uneven gait and now and then a
 	# sudden jerk of the whole body (unsettling, but physically plausible).
-	_bob = _bob + delta * (7.0 if moving else 1.5)
+	_bob = _bob + delta * (7.0 if moving else 1.5) * (0.85 + 0.3 * float(_arch.get("bob", 1.0)) * 0.5)
 	_twitch_timer -= delta
 	if _twitch_timer <= 0.0 and not z.is_dead():
 		_twitch_timer = randf_range(1.5, 6.0)
@@ -101,21 +123,36 @@ func _process(delta: float) -> void:
 		_sprite.scale.y = _base_scale_y * (1.0 + 0.06 * _screech_t)
 	elif _base_scale_y > 0.0:
 		_sprite.scale.y = _base_scale_y
-	_sprite.offset.y = -absf(sin(_bob)) * 3.0 / maxf(_sprite.scale.y, 0.01)
+	var step := absf(sin(_bob)) * float(_arch.get("bob", 1.0))
+	if float(_arch.get("limp", 0.0)) > 0.0 and moving:  # an uneven, dragging step
+		step = maxf(step, 0.0) * (1.0 + float(_arch["limp"]) * (1.0 if sin(_bob * 0.5) > 0.0 else -0.6))
+		_sprite.rotation += sin(_bob * 0.5) * 0.05 * float(_arch["limp"])
+	_sprite.offset.y = -step * 3.0 / maxf(_sprite.scale.y, 0.01)
 	_flash = maxf(0.0, _flash - delta * 4.0)
 	var tint := Color(1, 1, 1).lerp(Color(1.8, 0.6, 0.5), _flash)
 	if z.ai == ZombieState.AI.WINDUP:
 		tint = tint * Color(1.25, 0.85, 0.8)
-	_sprite.modulate = tint
+	# Silhouette (iteration 012): the tint goes to the shader so a hit or a wind-up
+	# warms the dark shape without revealing anything. Developer debug view only
+	# (F3 "zombie debug") shows the full figure.
+	_sprite.material = null if show_debug else _mat
+	if show_debug:
+		_sprite.modulate = tint
+	else:
+		_sprite.modulate = Color(1, 1, 1, 1)
+		_mat.set_shader_parameter("tint", tint)
 	if z.ai != _last_ai:
 		_on_ai_changed(z)
 		_last_ai = z.ai
 	_cue.text = "?" if z.ai in [ZombieState.AI.INVESTIGATE, ZombieState.AI.LISTEN] else ("!" if z.ai in [ZombieState.AI.CHASE, ZombieState.AI.WINDUP] else "")
 	_cue.modulate = Color(1, 0.85, 0.4) if _cue.text == "?" else Color(1, 0.4, 0.3)
+	# Iteration 012: no enemy indicators in ordinary play (the "?"/"!" cues and the
+	# health bar are technical detail, shown only with the developer AI labels).
+	_cue.visible = show_debug
 	_debug.visible = show_debug
 	if show_debug:
 		_debug.text = "%s %s %d" % [zombie_id, z.state_name(), roundi(z.health)]
-	_bar.visible = z.health < 99.0 and not z.is_dead()
+	_bar.visible = show_debug and z.health < 99.0 and not z.is_dead()
 	_bar.queue_redraw()
 	_groan_timer -= delta
 	if _groan_timer <= 0.0 and not z.is_dead():
@@ -145,6 +182,11 @@ func _art(z: ZombieState) -> void:
 		flip = side and f.x < 0
 	if id != _shown:
 		Assets.apply_to_sprite(_sprite, id)
+		var shape: Vector2 = _arch.get("scale", Vector2.ONE) * _jitter
+		if z.posture == ZombieState.Posture.CRAWL and not z.is_dead():
+			shape.y *= float(_arch.get("flat", 1.0))
+		_sprite.position *= shape  # keep the feet on the ground point
+		_sprite.scale *= shape
 		_base_scale_y = _sprite.scale.y
 		_shown = id
 	_sprite.flip_h = flip

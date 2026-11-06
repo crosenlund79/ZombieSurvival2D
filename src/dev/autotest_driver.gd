@@ -95,6 +95,12 @@ func _run(line: String) -> void:
 			await get_tree().create_timer(float(a[2])).timeout
 			Input.action_release(a[0])
 			Input.action_release(a[1])
+		"flash":
+			# Presentation test: a lightning flash right now (the real ones are seeded by the world).
+			var atm: Node = main.region_view.get_node_or_null("Atmosphere") if main.region_view != null else null
+			if atm != null:
+				atm.set("_flash", 1.0)
+			await get_tree().process_frame
 		"custom_graphics":
 			Assets.set_custom_graphics(a[0] == "on")
 			await get_tree().process_frame
