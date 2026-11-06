@@ -5,7 +5,7 @@
 | Base | `iteration/012-shadows-and-depth` @ `b6914c1` (verified locally and on the remote before any change) |
 | Recovery reference | **`backup/pre-iteration-013` → `b6914c1`** (pushed and verified on GitHub before any change) |
 | Branch | `iteration/013-scavengers-circuit` |
-| Milestone checkpoints | `backup/iteration-013-milestone-a` (`67e14be`), `-b` (`b065d9f`), `-c` (`5bfbb5c`), `-d` (`3ef5894`), `-e` (final) |
+| Milestone checkpoints | `backup/iteration-013-milestone-a` (`67e14be`), `-b` (`b065d9f`), `-c` (`5bfbb5c`), `-d` (`3ef5894`), `-e` (`808e62f`, final) |
 | Engine | Godot 4.7.2 stable, Compatibility renderer |
 | Build | Red Thaw 0.5.0 · iteration 013 · network protocol 9 · save schema 4 (unchanged, see §7) |
 | Status | Implemented and tested on Linux (unit, real two-process multiplayer, rendered). **Windows acceptance pending.** |
