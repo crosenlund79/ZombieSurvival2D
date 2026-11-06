@@ -353,6 +353,182 @@
 			"complexity": "moderate",
 			"status": "READY",
 			"notes": "Generated placeholder (tools/art/gen_world_awakens.py): 16 headings of one 3D model. Replace each heading with matching art; origin = centre of the car on the ground."
+		},
+		{
+			"id": "world.town_grocery",
+			"name": "Town grocery storefront",
+			"template": "res://assets/templates/world/town/template_grocery.png",
+			"display_size": [
+				440,
+				320
+			],
+			"source_size": [
+				880,
+				640
+			],
+			"pivot": [
+				0.5,
+				0.9563
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_world_awakens.py) - replace with tablet art."
+		},
+		{
+			"id": "world.town_pharmacy",
+			"name": "Town pharmacy storefront",
+			"template": "res://assets/templates/world/town/template_pharmacy.png",
+			"display_size": [
+				440,
+				320
+			],
+			"source_size": [
+				880,
+				640
+			],
+			"pivot": [
+				0.5,
+				0.9563
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_world_awakens.py) - replace with tablet art."
+		},
+		{
+			"id": "world.town_hardware",
+			"name": "Town hardware storefront",
+			"template": "res://assets/templates/world/town/template_hardware.png",
+			"display_size": [
+				440,
+				320
+			],
+			"source_size": [
+				880,
+				640
+			],
+			"pivot": [
+				0.5,
+				0.9563
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_world_awakens.py) - replace with tablet art."
+		},
+		{
+			"id": "world.town_clothing",
+			"name": "Town clothing storefront",
+			"template": "res://assets/templates/world/town/template_clothing.png",
+			"display_size": [
+				440,
+				320
+			],
+			"source_size": [
+				880,
+				640
+			],
+			"pivot": [
+				0.5,
+				0.9563
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_world_awakens.py) - replace with tablet art."
+		},
+		{
+			"id": "world.town_garage",
+			"name": "Town garage storefront",
+			"template": "res://assets/templates/world/town/template_garage.png",
+			"display_size": [
+				440,
+				320
+			],
+			"source_size": [
+				880,
+				640
+			],
+			"pivot": [
+				0.5,
+				0.9563
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_world_awakens.py) - replace with tablet art."
+		},
+		{
+			"id": "world.town_streetlamp",
+			"name": "Dead street lamp",
+			"template": "res://assets/templates/world/town/template_streetlamp.png",
+			"display_size": [
+				60,
+				200
+			],
+			"source_size": [
+				120,
+				400
+			],
+			"pivot": [
+				0.5,
+				0.97
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_world_awakens.py) - replace with tablet art."
+		},
+		{
+			"id": "world.town_sign",
+			"name": "Town sign: Ashgrove (population crossed out)",
+			"template": "res://assets/templates/world/town/template_town_sign.png",
+			"display_size": [
+				150,
+				120
+			],
+			"source_size": [
+				300,
+				240
+			],
+			"pivot": [
+				0.5,
+				0.9417
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_world_awakens.py) - replace with tablet art."
+		},
+		{
+			"id": "world.town_roadblock",
+			"name": "Road east blocked: jackknifed trailer in ploughed snow",
+			"template": "res://assets/templates/world/town/template_roadblock.png",
+			"display_size": [
+				280,
+				180
+			],
+			"source_size": [
+				560,
+				360
+			],
+			"pivot": [
+				0.5,
+				0.9444
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_world_awakens.py) - replace with tablet art."
 		}
 	]
 }

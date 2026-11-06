@@ -9,6 +9,10 @@ extends Control
 ## content file (roads, areas, landmarks), live bunker records, and player
 ## positions. Players indoors or underground are shown at the surface point
 ## of the building/shelter they are in, with their depth.
+## Iteration 011: the region you are in is outlined in red ink, road exits that
+## lead somewhere not yet discovered get an "unexplored" arrow where they leave
+## a discovered region, vehicles are marked, and at night the paper darkens
+## (labels and markers are drawn after the shade so they stay readable).
 
 const INK := Color(0.12, 0.13, 0.14)
 const INK_SOFT := Color(0.12, 0.13, 0.14, 0.4)
@@ -27,6 +31,7 @@ const BUNKER := Color("#5A4632")
 static var instance: MapPanel
 
 var _paper: TextureRect
+var _later: Array = []   # labels drawn after the night shade
 var _legend: Label
 var _title: Label
 
@@ -145,20 +150,44 @@ func _draw() -> void:
 	_paper.size = rect.size + Vector2(60, 130)
 	_title.position = rect.position + Vector2(0, -44)
 	_title.text = UITheme.fmt("MAP_TITLE", [tr(str(w.region_def(str(here.get("region_id", Content.DEFAULT_REGION))).get("display_key", "")))])
+	_later.clear()
 	for rid in shown:
 		var off := region_offset(w, rid)
 		var to_map := func(p: Vector2) -> Vector2: return rect.position + (p + off - bounds.position) * sc
 		_draw_region(w, rid, to_map, sc)
-	# Undiscovered places reachable by road: a hint at the road's end.
-	for rid2 in Content.region_ids():
-		var def2 := w.region_def(rid2)
-		if def2.has("map") and not (rid2 in shown):
-			var home := Content.DEFAULT_REGION
-			var hb: Array = w.region_def(home).get("bounds", [0, 0, 1600, 1100])
-			var at: Vector2 = rect.position + (region_offset(w, home) + Vector2(float(hb[2]) - 80.0, float(hb[3]) * 0.82) - bounds.position) * sc
-			_label(at + Vector2(-40, -14), tr("MAP_UNEXPLORED"), 13)
-			draw_line(at + Vector2(-10, 0), at + Vector2(30, 0), INK, 3.0)
-			draw_colored_polygon(PackedVector2Array([at + Vector2(30, -7), at + Vector2(44, 0), at + Vector2(30, 7)]), INK)
+	# The region you are in: outlined in red ink.
+	var hr := str(here.get("region_id", ""))
+	if hr in shown:
+		var hb2: Array = w.region_def(hr).get("bounds", [0, 0, 1600, 1100])
+		var h0: Vector2 = rect.position + (region_offset(w, hr) + Vector2(float(hb2[0]), float(hb2[1])) - bounds.position) * sc
+		draw_rect(Rect2(h0, Vector2(float(hb2[2]), float(hb2[3])) * sc).grow(-2.0), Color(ME, 0.85), false, 3.0)
+	# Road exits from discovered regions to places not discovered yet.
+	for ex in unexplored_exits(w, shown):
+		var at: Vector2 = rect.position + (region_offset(w, ex["region_id"]) + ex["position"] - bounds.position) * sc
+		var dir: Vector2 = ex["dir"]
+		draw_line(at - dir * 18.0, at + dir * 16.0, INK, 3.0)
+		draw_colored_polygon(PackedVector2Array([at + dir * 30.0, at + dir * 16.0 + dir.orthogonal() * 7.0, at + dir * 16.0 - dir.orthogonal() * 7.0]), INK)
+		_later.append([at + Vector2(0, -16), tr("MAP_UNEXPLORED"), 13])
+	# Night: the paper darkens; labels and markers below are drawn on top of it.
+	var night := 1.0 - EnvSim.daylight(w)
+	if night > 0.02:
+		draw_rect(rect.grow(10.0), Color(0.05, 0.07, 0.15, 0.5 * night))
+	for lb in _later:
+		_label(lb[0], lb[1], lb[2])
+	_later.clear()
+	# Vehicles: a small car mark (with a dot for each occupant).
+	for v in w.vehicles.values():
+		var vp := surface_point(w, v.region_id, v.position)
+		if vp.is_empty() or not (vp["region_id"] in shown):
+			continue
+		var cp: Vector2 = rect.position + (vp["position"] + region_offset(w, vp["region_id"]) - bounds.position) * sc
+		var fwd := Vector2.from_angle(v.rotation)
+		var body := PackedVector2Array([cp + fwd * 9 + fwd.orthogonal() * 4.5, cp + fwd * 9 - fwd.orthogonal() * 4.5,
+			cp - fwd * 9 - fwd.orthogonal() * 4.5, cp - fwd * 9 + fwd.orthogonal() * 4.5])
+		draw_colored_polygon(body, Color("#4C5E62"))
+		body.append(body[0])
+		draw_polyline(body, INK, 1.5)
+		_label(cp + Vector2(0, 18), tr("MAP_VEHICLE"), 11)
 	# Shelters.
 	for bid in w.bunkers:
 		var bk: BunkerState = w.bunkers[bid]
@@ -333,9 +362,9 @@ func _draw_region(w: WorldState, rid: String, to_map: Callable, sc: float) -> vo
 			_:
 				draw_circle(c, 3.5, INK)
 		if lm.has("label_key"):
-			_label(c + Vector2(0, r.size.y * 0.5 + 14), tr(str(lm["label_key"])).to_upper(), 11)
+			_label_later(c + Vector2(0, r.size.y * 0.5 + 14), tr(str(lm["label_key"])).to_upper(), 11)
 	if def.has("display_key"):
-		_label(rr.position + Vector2(rr.size.x * 0.5, 22), tr(str(def["display_key"])).to_upper(), 15)
+		_label_later(rr.position + Vector2(rr.size.x * 0.5, 22), tr(str(def["display_key"])).to_upper(), 15)
 	var surf := w.region(rid)
 	for eid in Content.entity_ids(surf.def_id):
 		var ed := surf.entity_def(eid)
@@ -350,6 +379,39 @@ func _draw_region(w: WorldState, rid: String, to_map: Callable, sc: float) -> vo
 		var o: Dictionary = surf.objects[oid]
 		if not Build.is_pile(o):
 			draw_rect(Rect2(to_map.call(Build.pos_of(o)) - Vector2(3, 3), Vector2(6, 6)), INK)
+
+
+func _label_later(at: Vector2, text: String, size: int) -> void:
+	_later.append([at, text, size])
+
+
+## Road exits (vehicle exits and road portals) of discovered regions whose
+## destination has not been discovered: [{region_id, position, dir}].
+static func unexplored_exits(w: WorldState, shown: Array) -> Array:
+	var out := []
+	for rid in shown:
+		var def := w.region_def(rid)
+		var b: Array = def.get("bounds", [0, 0, 1600, 1100])
+		var centre := Vector2(float(b[0]) + float(b[2]) * 0.5, float(b[1]) + float(b[3]) * 0.5)
+		var seen := {}
+		var exits := []
+		for ex in def.get("vehicle_exits", []):
+			var rr: Array = ex.get("rect", [0, 0, 0, 0])
+			exits.append([str(ex.get("target", {}).get("region", "")), Vector2(float(rr[0]) + float(rr[2]) * 0.5, float(rr[1]) + float(rr[3]) * 0.5)])
+		var reg := w.region(rid)
+		for eid in Content.entity_ids(reg.def_id):
+			var ed := reg.entity_def(eid)
+			if str(ed.get("type", "")) == "portal" and ed.get("target", {}).has("region"):
+				exits.append([str(ed["target"]["region"]), Content.entity_position(ed)])
+		for e in exits:
+			var to: String = e[0]
+			if to == "" or to in shown or seen.has(to) or not w.region_def(to).has("map"):
+				continue
+			seen[to] = true
+			var d: Vector2 = (e[1] as Vector2) - centre
+			var dir := Vector2(signf(d.x), 0) if absf(d.x) / maxf(1.0, float(b[2])) >= absf(d.y) / maxf(1.0, float(b[3])) else Vector2(0, signf(d.y))
+			out.append({"region_id": rid, "position": e[1], "dir": dir})
+	return out
 
 
 func _label(at: Vector2, text: String, size: int) -> void:

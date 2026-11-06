@@ -128,6 +128,26 @@ static func _shelter(world: WorldState, region: RegionState, eid: String, def: D
 	return _fail("ACTION_NOT_SUPPORTED")
 
 
+## Shelter sites authored as already built (the Ashgrove town house cellar)
+## get their bunker the first time a world runs with them. Idempotent; host only.
+static func ensure_prebuilt_shelters(world: WorldState) -> int:
+	var made := 0
+	for rid in Content.region_ids():
+		var region := world.region(rid)
+		if region == null:
+			continue
+		for eid in Content.entity_ids(region.def_id):
+			var def := region.entity_def(eid)
+			if str(def.get("type", "")) != "shelter_site" or world.bunker(eid) != null:
+				continue
+			if str(region.entity_state(eid).get("stage", "none")) == "built":
+				world.create_bunker(eid, rid, str(def.get("level_template", "bunker_earth")))
+				made += 1
+	if made > 0:
+		SessionLog.info("world", "prebuilt_shelters", {"count": made})
+	return made
+
+
 ## Called by Simulation when a construction's time is up.
 static func complete_construction(world: WorldState, region_id: String, eid: String) -> Dictionary:
 	var region := world.region(region_id)

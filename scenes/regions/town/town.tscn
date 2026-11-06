@@ -1,0 +1,847 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://src/presentation/world/region_view.gd" id="region"]
+[ext_resource type="Script" path="res://src/presentation/world/prop.gd" id="prop"]
+[ext_resource type="Script" path="res://src/presentation/world/ground_patch.gd" id="ground"]
+[ext_resource type="Script" path="res://src/presentation/world/scatter.gd" id="scatter"]
+[ext_resource type="Script" path="res://src/presentation/world/atmosphere.gd" id="atmo"]
+[ext_resource type="Script" path="res://src/presentation/world/portal_view.gd" id="portalv"]
+[ext_resource type="Script" path="res://src/presentation/world/machine_view.gd" id="machinev"]
+[ext_resource type="Script" path="res://src/presentation/world/door_view.gd" id="door"]
+
+[sub_resource type="RectangleShape2D" id="b0"]
+size = Vector2(3440, 40)
+
+[sub_resource type="RectangleShape2D" id="b1"]
+size = Vector2(3440, 40)
+
+[sub_resource type="RectangleShape2D" id="b2"]
+size = Vector2(40, 2040)
+
+[sub_resource type="RectangleShape2D" id="b3"]
+size = Vector2(40, 2040)
+
+[node name="Town" type="Node2D"]
+script = ExtResource("region")
+region_id = "town"
+ambience_id = "amb.cold_wind"
+
+[node name="Ground" type="Node2D" parent="."]
+z_index = -10
+
+[node name="Snow" type="Polygon2D" parent="Ground"]
+script = ExtResource("ground")
+polygon = PackedVector2Array(-400, -400, 3600, -400, 3600, 2400, -400, 2400)
+asset_id = "env.ground_snow"
+
+[node name="Road" type="Polygon2D" parent="Ground"]
+script = ExtResource("ground")
+polygon = PackedVector2Array(-400, 952, 0, 944, 400, 952, 800, 944, 1200, 952, 1600, 944, 2000, 952, 2400, 944, 2800, 952, 3200, 944, 3600, 952, 3600, 1082, 3200, 1076, 2800, 1082, 2400, 1076, 2000, 1082, 1600, 1076, 1200, 1082, 800, 1076, 400, 1082, 0, 1076, -400, 1082)
+asset_id = "env.ground_road_snow"
+
+[node name="SidewalkNorth" type="Polygon2D" parent="Ground"]
+script = ExtResource("ground")
+polygon = PackedVector2Array(240, 874, 2780, 874, 2780, 950, 240, 950)
+asset_id = "env.ground_frozen_mud"
+color = Color(1, 1, 1, 0.8)
+
+[node name="SidewalkSouth" type="Polygon2D" parent="Ground"]
+script = ExtResource("ground")
+polygon = PackedVector2Array(300, 1076, 2800, 1076, 2800, 1120, 300, 1120)
+asset_id = "env.ground_frozen_mud"
+color = Color(1, 1, 1, 0.75)
+
+[node name="GarageApron" type="Polygon2D" parent="Ground"]
+script = ExtResource("ground")
+polygon = PackedVector2Array(2280, 880, 2730, 880, 2760, 960, 2260, 960)
+asset_id = "env.ground_road_snow"
+color = Color(0.92, 0.9, 0.86, 1)
+
+[node name="BloodTrace" type="Node2D" parent="Ground"]
+script = ExtResource("prop")
+position = Vector2(1720, 1120)
+asset_id = "prop.blood_snow"
+
+[node name="Bounds" type="StaticBody2D" parent="."]
+
+[node name="Edge0" type="CollisionShape2D" parent="Bounds"]
+position = Vector2(1600, -20)
+shape = SubResource("b0")
+
+[node name="Edge1" type="CollisionShape2D" parent="Bounds"]
+position = Vector2(1600, 2020)
+shape = SubResource("b1")
+
+[node name="Edge2" type="CollisionShape2D" parent="Bounds"]
+position = Vector2(-20, 1000)
+shape = SubResource("b2")
+
+[node name="Edge3" type="CollisionShape2D" parent="Bounds"]
+position = Vector2(3220, 1000)
+shape = SubResource("b3")
+
+[node name="YSort" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="Grocery" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(520, 880)
+asset_id = "world.town_grocery"
+footprint = Vector2(420, 46)
+occlude = true
+
+[node name="Pharmacy" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(1000, 880)
+asset_id = "world.town_pharmacy"
+footprint = Vector2(420, 46)
+occlude = true
+
+[node name="Hardware" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(1480, 880)
+asset_id = "world.town_hardware"
+footprint = Vector2(420, 46)
+occlude = true
+
+[node name="Clothing" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(1960, 880)
+asset_id = "world.town_clothing"
+footprint = Vector2(420, 46)
+occlude = true
+
+[node name="Garage" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(2500, 900)
+asset_id = "world.town_garage"
+footprint = Vector2(420, 46)
+occlude = true
+
+[node name="TownSign" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(250, 1180)
+asset_id = "world.town_sign"
+footprint = Vector2(100, 10)
+occlude = true
+
+[node name="Lamp0" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(330, 938)
+asset_id = "world.town_streetlamp"
+footprint = Vector2(10, 8)
+occlude = true
+
+[node name="Lamp1" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(760, 938)
+asset_id = "world.town_streetlamp"
+footprint = Vector2(10, 8)
+occlude = true
+
+[node name="Lamp2" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(1240, 938)
+asset_id = "world.town_streetlamp"
+footprint = Vector2(10, 8)
+occlude = true
+
+[node name="Lamp3" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(1720, 938)
+asset_id = "world.town_streetlamp"
+footprint = Vector2(10, 8)
+occlude = true
+
+[node name="Lamp4" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(2200, 938)
+asset_id = "world.town_streetlamp"
+footprint = Vector2(10, 8)
+occlude = true
+
+[node name="Lamp5" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(2760, 938)
+asset_id = "world.town_streetlamp"
+footprint = Vector2(10, 8)
+occlude = true
+
+[node name="HouseA" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(520, 1460)
+asset_id = "world.house_a"
+footprint = Vector2(300, 40)
+occlude = true
+
+[node name="TownHouse" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(1240, 1460)
+asset_id = "world.house_b"
+footprint = Vector2(280, 36)
+occlude = true
+
+[node name="HouseC" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(1980, 1460)
+asset_id = "world.house_a"
+footprint = Vector2(300, 40)
+occlude = true
+flip_h = true
+
+[node name="Ruin" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(2620, 1440)
+asset_id = "world.house_collapsed"
+footprint = Vector2(240, 22)
+footprint_offset = Vector2(0, -22)
+occlude = true
+
+[node name="ParkedCar" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(820, 1140)
+asset_id = "prop.car_sedan"
+footprint = Vector2(200, 30)
+occlude = true
+
+[node name="TruckWreck" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(2280, 1150)
+asset_id = "prop.truck_wreck"
+footprint = Vector2(180, 30)
+occlude = true
+flip_h = true
+
+[node name="Roadblock" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(3080, 1100)
+asset_id = "world.town_roadblock"
+footprint = Vector2(480, 220)
+footprint_offset = Vector2(0, -100)
+occlude = true
+
+[node name="Barrel1" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(2330, 910)
+asset_id = "prop.barrel"
+footprint = Vector2(30, 12)
+occlude = true
+
+[node name="Barrel2" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(2370, 916)
+asset_id = "prop.barrel"
+footprint = Vector2(30, 12)
+occlude = true
+
+[node name="Sled" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(1500, 1490)
+asset_id = "prop.sled"
+
+[node name="Pine00" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(40, 201)
+asset_id = "env.pine_b"
+footprint = Vector2(30, 12)
+nav_block = false
+occlude = true
+sway = true
+
+[node name="Pine01" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(157, 235)
+asset_id = "env.pine_a"
+footprint = Vector2(30, 12)
+nav_block = false
+occlude = true
+sway = true
+flip_h = true
+
+[node name="Pine02" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(265, 309)
+asset_id = "env.pine_b"
+footprint = Vector2(30, 12)
+nav_block = false
+occlude = true
+sway = true
+
+[node name="Pine03" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(397, 427)
+asset_id = "env.pine_b"
+footprint = Vector2(30, 12)
+nav_block = false
+occlude = true
+sway = true
+flip_h = true
+
+[node name="Pine04" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(552, 204)
+asset_id = "env.pine_a"
+footprint = Vector2(30, 12)
+nav_block = false
+occlude = true
+sway = true
+
+[node name="Pine05" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(721, 171)
+asset_id = "env.pine_b"
+footprint = Vector2(30, 12)
+nav_block = false
+occlude = true
+sway = true
+flip_h = true
+
+[node name="Pine06" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(849, 97)
+asset_id = "env.pine_a"
+footprint = Vector2(30, 12)
+nav_block = false
+occlude = true
+sway = true
+
+[node name="Pine07" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(963, 80)
+asset_id = "env.pine_a"
+footprint = Vector2(30, 12)
+nav_block = false
+occlude = true
+sway = true
+flip_h = true
+
+[node name="Pine08" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(1109, 245)
+asset_id = "env.pine_a"
+footprint = Vector2(30, 12)
+nav_block = false
+occlude = true
+sway = true
+flip_h = true
+
+[node name="Pine09" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(1235, 333)
+asset_id = "env.pine_b"
+footprint = Vector2(30, 12)
+nav_block = false
+occlude = true
+sway = true
+
+[node name="Pine10" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(1339, 200)
+asset_id = "env.pine_b"
+footprint = Vector2(30, 12)
+nav_block = false
+occlude = true
+sway = true
+flip_h = true
+
+[node name="Pine11" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(1482, 465)
+asset_id = "env.pine_a"
+footprint = Vector2(30, 12)
+nav_block = false
+occlude = true
+sway = true
+flip_h = true
+
+[node name="Pine12" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(1592, 207)
+asset_id = "env.pine_b"
+footprint = Vector2(30, 12)
+nav_block = false
+occlude = true
+sway = true
+flip_h = true
+
+[node name="Pine13" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(1688, 353)
+asset_id = "env.pine_b"
+footprint = Vector2(30, 12)
+nav_block = false
+occlude = true
+sway = true
+flip_h = true
+
+[node name="Pine14" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(1817, 266)
+asset_id = "env.pine_b"
+footprint = Vector2(30, 12)
+nav_block = false
+occlude = true
+sway = true
+
+[node name="Pine15" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(1980, 405)
+asset_id = "env.pine_b"
+footprint = Vector2(30, 12)
+nav_block = false
+occlude = true
+sway = true
+
+[node name="Pine16" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(2140, 250)
+asset_id = "env.pine_a"
+footprint = Vector2(30, 12)
+nav_block = false
+occlude = true
+sway = true
+flip_h = true
+
+[node name="Pine17" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(2299, 185)
+asset_id = "env.pine_b"
+footprint = Vector2(30, 12)
+nav_block = false
+occlude = true
+sway = true
+flip_h = true
+
+[node name="Pine18" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(2439, 74)
+asset_id = "env.pine_a"
+footprint = Vector2(30, 12)
+nav_block = false
+occlude = true
+sway = true
+flip_h = true
+
+[node name="Pine19" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(2546, 152)
+asset_id = "env.pine_a"
+footprint = Vector2(30, 12)
+nav_block = false
+occlude = true
+sway = true
+
+[node name="Pine20" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(2645, 326)
+asset_id = "env.pine_b"
+footprint = Vector2(30, 12)
+nav_block = false
+occlude = true
+sway = true
+flip_h = true
+
+[node name="Pine21" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(2765, 400)
+asset_id = "env.pine_b"
+footprint = Vector2(30, 12)
+nav_block = false
+occlude = true
+sway = true
+
+[node name="Pine22" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(2924, 338)
+asset_id = "env.pine_a"
+footprint = Vector2(30, 12)
+nav_block = false
+occlude = true
+sway = true
+flip_h = true
+
+[node name="Pine23" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(3082, 425)
+asset_id = "env.pine_a"
+footprint = Vector2(30, 12)
+nav_block = false
+occlude = true
+sway = true
+
+[node name="Pine24" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(40, 1753)
+asset_id = "env.pine_b"
+footprint = Vector2(30, 12)
+nav_block = false
+occlude = true
+sway = true
+
+[node name="Pine25" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(197, 1835)
+asset_id = "env.pine_b"
+footprint = Vector2(30, 12)
+nav_block = false
+occlude = true
+sway = true
+
+[node name="Pine26" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(295, 1888)
+asset_id = "env.pine_a"
+footprint = Vector2(30, 12)
+nav_block = false
+occlude = true
+sway = true
+flip_h = true
+
+[node name="Pine27" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(462, 1725)
+asset_id = "env.pine_a"
+footprint = Vector2(30, 12)
+nav_block = false
+occlude = true
+sway = true
+flip_h = true
+
+[node name="Pine28" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(589, 1830)
+asset_id = "env.pine_b"
+footprint = Vector2(30, 12)
+nav_block = false
+occlude = true
+sway = true
+
+[node name="Pine29" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(703, 1926)
+asset_id = "env.pine_a"
+footprint = Vector2(30, 12)
+nav_block = false
+occlude = true
+sway = true
+flip_h = true
+
+[node name="Pine30" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(868, 1854)
+asset_id = "env.pine_b"
+footprint = Vector2(30, 12)
+nav_block = false
+occlude = true
+sway = true
+
+[node name="Pine31" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(981, 1709)
+asset_id = "env.pine_a"
+footprint = Vector2(30, 12)
+nav_block = false
+occlude = true
+sway = true
+
+[node name="Pine32" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(1098, 1753)
+asset_id = "env.pine_b"
+footprint = Vector2(30, 12)
+nav_block = false
+occlude = true
+sway = true
+
+[node name="Pine33" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(1267, 1807)
+asset_id = "env.pine_b"
+footprint = Vector2(30, 12)
+nav_block = false
+occlude = true
+sway = true
+flip_h = true
+
+[node name="Pine34" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(1366, 1815)
+asset_id = "env.pine_a"
+footprint = Vector2(30, 12)
+nav_block = false
+occlude = true
+sway = true
+
+[node name="Pine35" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(1486, 1872)
+asset_id = "env.pine_b"
+footprint = Vector2(30, 12)
+nav_block = false
+occlude = true
+sway = true
+flip_h = true
+
+[node name="Pine36" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(1586, 1752)
+asset_id = "env.pine_b"
+footprint = Vector2(30, 12)
+nav_block = false
+occlude = true
+sway = true
+
+[node name="Pine37" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(1703, 1906)
+asset_id = "env.pine_a"
+footprint = Vector2(30, 12)
+nav_block = false
+occlude = true
+sway = true
+flip_h = true
+
+[node name="Pine38" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(1842, 1793)
+asset_id = "env.pine_b"
+footprint = Vector2(30, 12)
+nav_block = false
+occlude = true
+sway = true
+flip_h = true
+
+[node name="Pine39" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(1998, 1872)
+asset_id = "env.pine_a"
+footprint = Vector2(30, 12)
+nav_block = false
+occlude = true
+sway = true
+
+[node name="Pine40" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(2101, 1757)
+asset_id = "env.pine_a"
+footprint = Vector2(30, 12)
+nav_block = false
+occlude = true
+sway = true
+
+[node name="Pine41" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(2216, 1966)
+asset_id = "env.pine_b"
+footprint = Vector2(30, 12)
+nav_block = false
+occlude = true
+sway = true
+
+[node name="Pine42" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(2314, 1906)
+asset_id = "env.pine_b"
+footprint = Vector2(30, 12)
+nav_block = false
+occlude = true
+sway = true
+
+[node name="Pine43" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(2411, 1868)
+asset_id = "env.pine_b"
+footprint = Vector2(30, 12)
+nav_block = false
+occlude = true
+sway = true
+flip_h = true
+
+[node name="Pine44" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(2510, 1895)
+asset_id = "env.pine_a"
+footprint = Vector2(30, 12)
+nav_block = false
+occlude = true
+sway = true
+flip_h = true
+
+[node name="Pine45" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(2637, 1830)
+asset_id = "env.pine_b"
+footprint = Vector2(30, 12)
+nav_block = false
+occlude = true
+sway = true
+
+[node name="Pine46" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(2757, 1925)
+asset_id = "env.pine_b"
+footprint = Vector2(30, 12)
+nav_block = false
+occlude = true
+sway = true
+flip_h = true
+
+[node name="Pine47" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(2860, 1736)
+asset_id = "env.pine_b"
+footprint = Vector2(30, 12)
+nav_block = false
+occlude = true
+sway = true
+
+[node name="Pine48" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(2967, 1735)
+asset_id = "env.pine_a"
+footprint = Vector2(30, 12)
+nav_block = false
+occlude = true
+sway = true
+
+[node name="Pine49" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(3068, 1813)
+asset_id = "env.pine_b"
+footprint = Vector2(30, 12)
+nav_block = false
+occlude = true
+sway = true
+
+[node name="Birch0" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(160, 620)
+asset_id = "env.birch_bare"
+footprint = Vector2(20, 10)
+nav_block = false
+occlude = true
+sway = true
+
+[node name="Birch1" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(2900, 640)
+asset_id = "env.birch_bare"
+footprint = Vector2(20, 10)
+nav_block = false
+occlude = true
+sway = true
+
+[node name="Birch2" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(3000, 1500)
+asset_id = "env.birch_bare"
+footprint = Vector2(20, 10)
+nav_block = false
+occlude = true
+sway = true
+
+[node name="Birch3" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(160, 1350)
+asset_id = "env.birch_bare"
+footprint = Vector2(20, 10)
+nav_block = false
+occlude = true
+sway = true
+
+[node name="Birch4" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(2860, 1300)
+asset_id = "env.birch_bare"
+footprint = Vector2(20, 10)
+nav_block = false
+occlude = true
+sway = true
+
+[node name="Loot_grocery_shelves" type="Node2D" parent="YSort"]
+script = ExtResource("machinev")
+entity_id = "town.grocery_shelves"
+
+[node name="Loot_grocery_storeroom" type="Node2D" parent="YSort"]
+script = ExtResource("machinev")
+entity_id = "town.grocery_storeroom"
+
+[node name="Loot_pharmacy_counter" type="Node2D" parent="YSort"]
+script = ExtResource("machinev")
+entity_id = "town.pharmacy_counter"
+
+[node name="Loot_pharmacy_dispensary" type="Node2D" parent="YSort"]
+script = ExtResource("machinev")
+entity_id = "town.pharmacy_dispensary"
+
+[node name="Loot_hardware_aisle" type="Node2D" parent="YSort"]
+script = ExtResource("machinev")
+entity_id = "town.hardware_aisle"
+
+[node name="Loot_hardware_case" type="Node2D" parent="YSort"]
+script = ExtResource("machinev")
+entity_id = "town.hardware_case"
+
+[node name="Loot_clothing_racks" type="Node2D" parent="YSort"]
+script = ExtResource("machinev")
+entity_id = "town.clothing_racks"
+
+[node name="Loot_clothing_stockroom" type="Node2D" parent="YSort"]
+script = ExtResource("machinev")
+entity_id = "town.clothing_stockroom"
+
+[node name="Loot_garage_bench" type="Node2D" parent="YSort"]
+script = ExtResource("machinev")
+entity_id = "town.garage_bench"
+
+[node name="Loot_garage_bay" type="Node2D" parent="YSort"]
+script = ExtResource("machinev")
+entity_id = "town.garage_bay"
+
+[node name="Loot_house_a_kitchen" type="Node2D" parent="YSort"]
+script = ExtResource("machinev")
+entity_id = "town.house_a_kitchen"
+
+[node name="Loot_house_c_bedroom" type="Node2D" parent="YSort"]
+script = ExtResource("machinev")
+entity_id = "town.house_c_bedroom"
+
+[node name="Loot_house_ruin" type="Node2D" parent="YSort"]
+script = ExtResource("machinev")
+entity_id = "town.house_ruin"
+
+[node name="Loot_car_glovebox" type="Node2D" parent="YSort"]
+script = ExtResource("machinev")
+entity_id = "town.car_glovebox"
+
+[node name="RoadWest" type="Node2D" parent="YSort"]
+script = ExtResource("portalv")
+entity_id = "town.road_west"
+
+[node name="TownHouseDoor" type="Node2D" parent="YSort"]
+script = ExtResource("door")
+position = Vector2(1240, 1456)
+entity_id = "town.house_door"
+closed_asset = "world.house_door_closed"
+open_asset = "world.house_door_open"
+blocker_size = Vector2(0, 0)
+sprite_offset = Vector2(0, -18)
+prompt_open_key = "PROMPT_OPEN_DOOR"
+prompt_close_key = "PROMPT_CLOSE_DOOR"
+
+[node name="TownHouseEntry" type="Node2D" parent="YSort"]
+script = ExtResource("portalv")
+entity_id = "town.house_entry"
+
+[node name="Grass" type="Node2D" parent="YSort"]
+script = ExtResource("scatter")
+area = Rect2(20, 480, 3160, 1200)
+avoid = Array[Rect2]([Rect2(-60, 860, 3320, 300), Rect2(200, 560, 2600, 360), Rect2(300, 1220, 2500, 280), Rect2(2840, 940, 400, 260)])
+asset_ids = Array[String](["env.dead_grass_a", "env.dead_grass_b", "env.dead_grass_c"])
+count = 110
+layout_seed = 47
+min_spacing = 60.0
+
+[node name="Atmosphere" type="Node2D" parent="."]
+script = ExtResource("atmo")
+area = Rect2(0, 0, 3200, 2000)

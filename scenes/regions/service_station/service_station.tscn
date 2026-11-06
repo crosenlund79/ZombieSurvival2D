@@ -281,6 +281,10 @@ entity_id = "service_station.house_wardrobe"
 script = ExtResource("portalv")
 entity_id = "service_station.road_west"
 
+[node name="RoadEast" type="Node2D" parent="YSort"]
+script = ExtResource("portalv")
+entity_id = "service_station.road_east"
+
 [node name="HouseA" type="Node2D" parent="YSort"]
 script = ExtResource("prop")
 position = Vector2(1000, 1050)

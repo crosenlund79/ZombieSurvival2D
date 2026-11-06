@@ -1657,6 +1657,94 @@ def scenario_winter_multi():
             i.kill()
 
 
+def _veh(state):
+    return {v["id"]: v for v in state.get("vehicles", [])}
+
+
+def scenario_vehicle_multi():
+    """Iteration 011 C: one station wagon shared by two players — seats, engine,
+    owner-predicted driving replicated to the passenger, the road exit moving the
+    car with both players and the trunk to Ashgrove, getting out, persistence."""
+    host = Instance("t_vhost"); c = Instance("t_vclient")
+    for i in (host, c):
+        i.wipe()
+    try:
+        host.start(); c.start()
+        host.cmd(f"host {PORT} new 140 Hosty"); host.cmd("tips off"); host.cmd("dev peaceful 1")
+        r = c.cmd(f"join 127.0.0.1 {PORT} Cleo"); c.cmd("tips off")
+        check("veh: client joins", r["ok"], r["error"])
+        check("veh: the client sees the station wagon", "wagon" in _veh(c.state()), list(_veh(c.state())))
+        for i in (host, c):
+            r = _to_settlement_on_foot(i)
+        check("veh: both walk to the settlement", player(host.state(), "Cleo")["region"] == "service_station"
+              and player(host.state(), "Hosty")["region"] == "service_station", "")
+        host.cmd("walk_to 1400 700 10"); c.cmd("walk_to 1430 760 10")
+        host.cmd("dev vehicle_here")
+        time.sleep(0.4)
+        v = _veh(host.state())["wagon"]
+        check("veh: the wagon is parked on the road", v["region"] == "service_station" and abs(v["y"] - 700) < 5, v)
+        c.cmd("dev grant scrap_metal:2")
+        host.cmd("dev grant scrap_metal:2")
+        r = host.cmd("vehicle wagon store scrap_metal")
+        time.sleep(0.3)
+        check("veh: something goes in the trunk", _veh(c.state())["wagon"]["cargo"]["items"].get("scrap_metal") == 2, _veh(c.state())["wagon"]["cargo"])
+        host.cmd("vehicle wagon enter"); c.cmd("vehicle wagon enter")
+        time.sleep(0.4)
+        sh, sc = host.state(), c.state()
+        hid, cid = player(sh, "Hosty")["id"], player(sh, "Cleo")["id"]
+        check("veh: host drives, client rides (host view)", _veh(sh)["wagon"]["seats"][:2] == [hid, cid], _veh(sh)["wagon"]["seats"])
+        check("veh: seats replicated to the client", _veh(sc)["wagon"]["seats"][:2] == [hid, cid], _veh(sc)["wagon"]["seats"])
+        r = c.cmd("vehicle wagon engine")
+        time.sleep(0.3)
+        check("veh: the passenger cannot start the engine", not _veh(host.state())["wagon"]["engine"], "")
+        host.cmd("press_key vehicle_engine")
+        time.sleep(0.3)
+        check("veh: the driver starts the engine (seen by the client)", _veh(c.state())["wagon"]["engine"], "")
+        x0 = _veh(host.state())["wagon"]["x"]
+        host.cmd("hold move_up 1.0")
+        sh, sc = host.state(), c.state()
+        vh, vc = _veh(sh)["wagon"], _veh(sc)["wagon"]
+        check("veh: driving moves the car on the host", vh["x"] > x0 + 100, (x0, vh["x"]))
+        check("veh: the passenger's replica follows", abs(vc["x"] - vh["x"]) < 120 and vc["region"] == vh["region"], (vc["x"], vh["x"]))
+        check("veh: the passenger is carried along", abs(player(sh, "Cleo")["x"] - vh["x"]) < 1.0, (player(sh, "Cleo")["x"], vh["x"]))
+        host.cmd("hold move_up 3.0")
+        time.sleep(1.0)
+        sh, sc = host.state(), c.state()
+        check("veh: the road exit takes the car to Ashgrove", _veh(sh)["wagon"]["region"] == "town", _veh(sh)["wagon"])
+        check("veh: driver and passenger arrive together (host)", player(sh, "Hosty")["region"] == "town" and player(sh, "Cleo")["region"] == "town",
+              (player(sh, "Hosty")["region"], player(sh, "Cleo")["region"]))
+        check("veh: the client is in Ashgrove too", sc.get("region") == "town", sc.get("region"))
+        check("veh: the trunk came along", _veh(sc)["wagon"]["cargo"]["items"].get("scrap_metal") == 2, _veh(sc)["wagon"]["cargo"])
+        check("veh: Ashgrove was discovered", "town" in sh["meta"].get("discoveries", {}), list(sh["meta"].get("discoveries", {})))
+        r = c.cmd("vehicle wagon exit")
+        check("veh: nobody jumps out while the car is still rolling", player(host.state(), "Cleo")["vehicle"] == "wagon", r["state"]["notices"][-1:])
+        host.cmd("hold move_down 1.2"); host.cmd("wait 0.6")
+        c.cmd("vehicle wagon exit")
+        time.sleep(0.4)
+        sh = host.state()
+        cp, vp = player(sh, "Cleo"), _veh(sh)["wagon"]
+        check("veh: the passenger gets out beside the car", cp["vehicle"] == "" and 40 < ((cp["x"] - vp["x"]) ** 2 + (cp["y"] - vp["y"]) ** 2) ** 0.5 < 160,
+              (cp["x"], cp["y"], vp["x"], vp["y"]))
+        r = c.cmd("walk_to %d %d 10" % (cp["x"] + 40, cp["y"] + 40))
+        check("veh: the client walks again after getting out", r["ok"], r["error"])
+        host.cmd("press_key vehicle_engine")
+        host.cmd("vehicle wagon exit")
+        time.sleep(0.3)
+        vx = _veh(host.state())["wagon"]
+        check("veh: everyone is out, engine off", vx["seats"] == ["", "", "", ""] and not vx["engine"], vx)
+        host.cmd("save")
+        c.cmd("leave"); host.cmd("leave")
+        host.cmd("single continue Hosty")
+        time.sleep(0.5)
+        v2 = _veh(host.state()).get("wagon", {})
+        check("veh: the wagon is still in Ashgrove after a restart", v2.get("region") == "town" and abs(v2.get("x", 0) - vx["x"]) < 1.0, v2)
+        check("veh: the trunk survived the restart", v2.get("cargo", {}).get("items", {}).get("scrap_metal") == 2, v2.get("cargo"))
+        check("veh: still exactly one wagon", len(host.state().get("vehicles", [])) == 1, len(host.state().get("vehicles", [])))
+    finally:
+        for i in (host, c):
+            i.kill()
+
+
 def scenario_perf_multi():
     """Two connected players, a horde plus extra groups active around them: measure host simulation cost."""
     host = Instance("t_phost"); c = Instance("t_pclient")
@@ -1684,7 +1772,7 @@ def scenario_perf_multi():
             i.kill()
 
 
-SCENARIOS = {"winter_multi": scenario_winter_multi, "red_thaw_multi": scenario_red_thaw_multi, "perf_multi": scenario_perf_multi, "slice": scenario_slice, "settlement_multi": scenario_settlement_multi, "world_multi": scenario_world_multi, "craft_multi": scenario_craft_multi, "build_multi": scenario_build_multi, "accept": scenario_accept, "infra_multi": scenario_infra_multi, "dig_multi": scenario_dig_multi, "danger_single": scenario_danger_single, "danger_multi": scenario_danger_multi, "settings": scenario_settings, "bunker_single": scenario_bunker_single, "bunker_multi": scenario_bunker_multi, "single": scenario_single, "multiplayer": scenario_multiplayer,
+SCENARIOS = {"vehicle_multi": scenario_vehicle_multi, "winter_multi": scenario_winter_multi, "red_thaw_multi": scenario_red_thaw_multi, "perf_multi": scenario_perf_multi, "slice": scenario_slice, "settlement_multi": scenario_settlement_multi, "world_multi": scenario_world_multi, "craft_multi": scenario_craft_multi, "build_multi": scenario_build_multi, "accept": scenario_accept, "infra_multi": scenario_infra_multi, "dig_multi": scenario_dig_multi, "danger_single": scenario_danger_single, "danger_multi": scenario_danger_multi, "settings": scenario_settings, "bunker_single": scenario_bunker_single, "bunker_multi": scenario_bunker_multi, "single": scenario_single, "multiplayer": scenario_multiplayer,
              "netfail": scenario_connection_failure, "assets": scenario_assets}
 
 if __name__ == "__main__":

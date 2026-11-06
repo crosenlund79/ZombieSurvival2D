@@ -398,6 +398,24 @@
 			"initial": {
 				"looted_at": -1
 			}
+		},
+		{
+			"id": "service_station.road_east",
+			"type": "portal",
+			"position": [
+				2140,
+				710
+			],
+			"interact_range": 80,
+			"priority": 2,
+			"target": {
+				"region": "town",
+				"position": [
+					150,
+					1010
+				]
+			},
+			"prompt_key": "PROMPT_ROAD_TOWN"
 		}
 	],
 	"discovery": "service_station",
@@ -522,6 +540,22 @@
 					1400
 				],
 				"rotation": 180
+			}
+		},
+		{
+			"rect": [
+				2160,
+				620,
+				40,
+				180
+			],
+			"target": {
+				"region": "town",
+				"position": [
+					220,
+					1010
+				],
+				"rotation": 0
 			}
 		}
 	]

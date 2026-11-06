@@ -195,6 +195,7 @@ func _begin() -> void:
 		EventSim.resume_after_load(world)
 		NpcSim.ensure(world)
 		VehicleSim.ensure(world)
+		WorldActions.ensure_prebuilt_shelters(world)
 		# Players who are not here cannot stay in a seat (they rejoin beside the car).
 		for po in world.players.values():
 			if not po.online and po.vehicle_id != "":
@@ -1035,6 +1036,20 @@ func _host_dev_command(peer_id: int, cmd: String, arg: Variant) -> void:
 				_send_action_result(peer_id, 0, false, res["reason"])
 		"save":
 			save_world()
+		"goto":
+			# Developer: walk into another region at its spawn point (records the discovery).
+			var pg: PlayerState = world.players.get(pid)
+			var rg := world.region(str(arg))
+			if pg != null and rg != null and pg.vehicle_id == "":
+				pg.region_id = rg.region_id
+				pg.position = Content.spawn_point(rg.def_id, 0)
+				var key := str(world.region_def(rg.region_id).get("discovery", ""))
+				if key != "" and WorldActions.discover(world, key):
+					_publish_result({"ok": true, "reason": "", "reason_args": [], "changes": [], "players": [], "bunkers": [],
+						"transition": {}, "notice": {}, "meta": true})
+				_move_track[pid] = Time.get_ticks_msec()
+				_send_correction(peer_id, pg.position, pg.region_id)
+				_broadcast_roster()
 		"vehicle_here":
 			# Developer: park the first vehicle beside the player (same region).
 			var pv: PlayerState = world.players.get(pid)

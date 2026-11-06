@@ -285,3 +285,239 @@ func test_bunker_counts_as_the_cabin_shelter() -> void:
 	var w := WorldState.create_new("w_grp", 85)
 	eq(SleepSim.shelter_group(w, "homestead.farmhouse"), "home", "the cabin")
 	eq(SleepSim.shelter_group(w, "homestead"), "", "the woods are not a shelter")
+
+
+# ---------------------------------------------------------------- milestone C: vehicles, town, cellar, map
+
+func _wagon_world(seed_value: int) -> WorldState:
+	var w := WorldState.create_new("w_car%d" % seed_value, seed_value)
+	VehicleSim.ensure(w)
+	return w
+
+
+func _wagon(w: WorldState) -> VehicleState:
+	return w.vehicles["wagon"]
+
+
+func test_vehicle_placed_once_with_key_in_ignition() -> void:
+	var w := _wagon_world(61)
+	eq(w.vehicles.size(), 1, "the station wagon exists in a new world")
+	var v := _wagon(w)
+	eq(v.region_id, "service_station", "parked at the service station")
+	eq(v.seats.size(), 4, "four seats")
+	eq(v.key, "ignition", "the key is in the ignition (no key quest)")
+	check(not v.locked and not v.engine_on, "unlocked, engine off")
+	eq(VehicleSim.ensure(w), 0, "ensure never duplicates")
+
+
+func test_enter_exit_seats_and_engine() -> void:
+	var w := _wagon_world(62)
+	var v := _wagon(w)
+	var a := _player(w, PID, "service_station", v.position + Vector2(400, 0))
+	var b := _player(w, PID2, "service_station", v.position + Vector2(0, 90))
+	eq(VehicleSim.request(w, PID, "wagon", "enter")["reason"], "ACTION_TOO_FAR", "too far to get in")
+	a.position = v.position + Vector2(-110, 30)
+	check(VehicleSim.request(w, PID, "wagon", "enter")["ok"], "first player gets in")
+	eq(v.driver(), PID, "first in takes the wheel")
+	eq(a.vehicle_id, "wagon", "player knows they are in it")
+	check(VehicleSim.request(w, PID2, "wagon", "enter")["ok"], "second player gets in")
+	eq(v.seat_of(PID2), 1, "as passenger")
+	eq(VehicleSim.request(w, PID2, "wagon", "enter")["reason"], "VEHICLE_ALREADY_INSIDE", "no double entry")
+	eq(VehicleSim.request(w, PID2, "wagon", "engine")["reason"], "VEHICLE_NOT_DRIVER", "only the driver starts it")
+	check(VehicleSim.request(w, PID, "wagon", "engine")["ok"] and v.engine_on, "driver starts the engine")
+	var r := VehicleSim.request(w, PID2, "wagon", "exit")
+	check(r["ok"], "passenger gets out")
+	eq(b.vehicle_id, "", "no longer in the car")
+	eq(v.seat_of(PID2), -1, "seat freed")
+	check(b.position.distance_to(v.position) > 40.0, "stands beside the car, not inside it")
+	eq(str(r["transition"].get("player_id", "")), PID2, "the exit position is sent to that player")
+
+
+func test_driver_poses_validated_and_occupants_follow() -> void:
+	var w := _wagon_world(63)
+	var v := _wagon(w)
+	_player(w, PID, "service_station", v.position)
+	var b := _player(w, PID2, "service_station", v.position)
+	VehicleSim.request(w, PID, "wagon", "enter")
+	VehicleSim.request(w, PID2, "wagon", "enter")
+	eq(VehicleSim.submit_pose(w, PID, "wagon", v.position + Vector2(60, 0), 0.0, 100.0, 0.0, 0.1)["reason"], "VEHICLE_POSE_REJECTED", "no driving with the engine off")
+	VehicleSim.request(w, PID, "wagon", "engine")
+	var start := v.position
+	check(VehicleSim.submit_pose(w, PID, "wagon", start + Vector2(30, 0), 0.0, 300.0, 0.0, 0.1)["ok"], "plausible pose accepted")
+	eq(b.position, v.position, "passengers ride along")
+	var bad := VehicleSim.submit_pose(w, PID, "wagon", start + Vector2(900, 0), 0.0, 300.0, 0.0, 0.1)
+	check(not bad["ok"] and bad.get("correct", false), "teleporting is rejected and corrected")
+	eq(VehicleSim.submit_pose(w, PID2, "wagon", start, 0.0, 0.0, 0.0, 0.1)["reason"], "VEHICLE_NOT_DRIVER", "passengers cannot steer")
+
+
+func test_road_exit_moves_car_occupants_and_trunk_together() -> void:
+	var w := _wagon_world(64)
+	var v := _wagon(w)
+	var a := _player(w, PID, "service_station", v.position)
+	var b := _player(w, PID2, "service_station", v.position)
+	var c := _player(w, "cccccccccccccccc", "service_station", Vector2(1000, 700))
+	a.carried["scrap_metal"] = 3
+	a.position = v.position + Vector2(0, 100)
+	check(VehicleSim.request(w, PID, "wagon", "store", "scrap_metal")["ok"], "trunk takes items from outside")
+	a.position = v.position
+	VehicleSim.request(w, PID, "wagon", "enter")
+	VehicleSim.request(w, PID2, "wagon", "enter")
+	eq(VehicleSim.request(w, PID, "wagon", "take", "scrap_metal")["reason"], "VEHICLE_FROM_OUTSIDE", "the trunk is reached from outside")
+	VehicleSim.request(w, PID, "wagon", "engine")
+	# drive up to the west exit in plausible steps
+	v.position = Vector2(140, 710)
+	v.rotation = PI
+	var r := VehicleSim.submit_pose(w, PID, "wagon", Vector2(120, 710), PI, -300.0, 0.0, 0.1)
+	check(r["ok"], "pose into the road exit accepted")
+	eq(v.region_id, "homestead", "the car arrives in the next region")
+	eq(a.region_id, "homestead", "the driver arrives with it")
+	eq(b.region_id, "homestead", "the passenger arrives with it")
+	eq(c.region_id, "service_station", "players outside the car are never moved")
+	eq((r.get("transitions", []) as Array).size(), 2, "one transition per occupant")
+	eq(int(v.cargo["items"].get("scrap_metal", 0)), 3, "the trunk travels with the car")
+	eq(v.seats.filter(func(s): return s != "").size(), 2, "nobody lost or duplicated")
+
+
+func test_vehicle_persists_and_seats_stay_consistent() -> void:
+	var w := _wagon_world(65)
+	var v := _wagon(w)
+	var a := _player(w, PID, "service_station", v.position)
+	VehicleSim.request(w, PID, "wagon", "enter")
+	VehicleSim.request(w, PID, "wagon", "engine")
+	v.cargo["items"]["fuel"] = 2
+	v.rotation = 1.25
+	var res := SaveCodec.decode(SaveCodec.encode(w))
+	check(res["ok"], "save round-trip")
+	var w2: WorldState = res["world"]
+	var v2: VehicleState = w2.vehicles["wagon"]
+	eq(v2.region_id, v.region_id, "region kept")
+	check(v2.position.distance_to(v.position) < 0.2, "position kept")
+	check(absf(v2.rotation - 1.25) < 0.01, "heading kept")
+	check(v2.engine_on, "engine state kept")
+	eq(int(v2.cargo["items"]["fuel"]), 2, "trunk kept")
+	eq(v2.driver(), PID, "seat kept")
+	eq((w2.players[PID] as PlayerState).vehicle_id, "wagon", "player still in the car")
+	# a seat whose player disagrees is cleared on load
+	var d := SaveCodec.encode(w)
+	d["players"][PID]["vehicle_id"] = ""
+	var w3: WorldState = SaveCodec.decode(d)["world"]
+	eq((w3.vehicles["wagon"] as VehicleState).driver(), "", "inconsistent seat cleared")
+	a.dead = true
+	var out := VehicleSim.step(w, 1)
+	eq(a.vehicle_id, "", "a downed driver slumps out of the car")
+	check(not out.is_empty(), "and that is published")
+
+
+func test_closed_car_hides_from_burnt_ones_but_engine_is_heard() -> void:
+	var w := _wagon_world(66)
+	var v := _wagon(w)
+	_player(w, PID, "service_station", v.position)
+	var z := ZombieSim.spawn(w, "service_station", v.position + Vector2(-120, 0), false)
+	z.facing = Vector2.RIGHT
+	VehicleSim.request(w, PID, "wagon", "enter")
+	w.threat.queue.clear()
+	for i in 10:
+		w.tick += 1
+		ZombieSim.step(w, 1)
+	eq(z.target_player, "", "nobody is seen inside a closed vehicle")
+	w.threat.queue.clear()
+	VehicleSim.request(w, PID, "wagon", "engine")
+	check(w.threat.queue.any(func(n): return n["category"] == "engine_start"), "starting the engine is loud")
+	w.threat.queue.clear()
+	for i in 40:
+		w.tick += 1
+		VehicleSim.step(w, 1)
+	check(w.threat.queue.any(func(n): return n["category"] == "engine"), "a running engine keeps making noise")
+
+
+func test_town_cellar_is_a_prebuilt_separate_base() -> void:
+	var w := WorldState.create_new("w_cellar", 67)
+	eq(WorldActions.ensure_prebuilt_shelters(w), 1, "the town house cellar exists from the start")
+	eq(WorldActions.ensure_prebuilt_shelters(w), 0, "never created twice")
+	var b := w.bunker("town.house.cellar")
+	check(b != null, "it is a bunker of its own")
+	eq(b.entrance_region, "town.house", "entered from the town house")
+	eq(str(b.levels[-1]), "town_cellar", "with the concrete cellar level")
+	check(w.region(b.level_region(-1)) != null, "its level region exists")
+	check(w.bunker("homestead.farmhouse.shelter") == null, "the cabin's shelter is unaffected")
+	eq(SleepSim.shelter_group(w, b.level_region(-1)), "town_house", "the cellar shares the house's shelter group")
+	var p := _player(w, PID, "town.house", Vector2(300, 480))
+	var hatch := w.region("town.house")
+	check(WorldActions.request_interact(w, PID, "town.house.cellar", hatch.rev("town.house.cellar"))["ok"], "the hatch opens")
+	var down := WorldActions.request_interact(w, PID, "town.house.cellar_ladder", -1)
+	check(down["ok"], "and leads down")
+	eq(p.region_id, b.level_region(-1), "into the cellar")
+
+
+func test_town_stores_have_typed_loot_and_some_are_empty() -> void:
+	var w := WorldState.create_new("w_town", 68)
+	var p := _player(w, PID, "town", Vector2.ZERO)
+	var town := w.region("town")
+	p.position = Content.entity_position(town.entity_def("town.hardware_case"))
+	var r := WorldActions.request_interact(w, PID, "town.hardware_case", -1)
+	check(r["ok"], "the hardware case can be forced")
+	check(p.gear.any(func(g): return g["item"] == "flashlight"), "it holds a flashlight")
+	eq(WorldActions.request_interact(w, PID, "town.hardware_case", -1)["reason"], "ACTION_LOOT_GONE", "one-of-a-kind")
+	p.position = Content.entity_position(town.entity_def("town.clothing_stockroom"))
+	WorldActions.request_interact(w, PID, "town.clothing_stockroom", -1)
+	check(p.gear.any(func(g): return g["item"] == "winter_coat"), "the clothing stockroom has a winter coat")
+	p.position = Content.entity_position(town.entity_def("town.pharmacy_counter"))
+	WorldActions.request_interact(w, PID, "town.pharmacy_counter", -1)
+	check(p.carrying("bandage") > 0, "the pharmacy has bandages")
+	for eid in ["town.grocery_storeroom", "town.pharmacy_dispensary", "town.garage_bay", "town.house_ruin"]:
+		p.position = Content.entity_position(town.entity_def(eid))
+		eq(WorldActions.request_interact(w, PID, eid, -1)["reason"], "ACTION_LOOT_GONE", eid + " was picked clean")
+
+
+func test_map_marks_unexplored_road_exits() -> void:
+	var w := WorldState.create_new("w_map", 69)
+	var shown := ["homestead", "service_station"]
+	var ex := MapPanel.unexplored_exits(w, shown)
+	eq(ex.size(), 1, "one road leads somewhere unexplored")
+	eq(str(ex[0]["region_id"]), "service_station", "it leaves the settlement")
+	eq(ex[0]["dir"], Vector2.RIGHT, "heading east")
+	eq(MapPanel.unexplored_exits(w, ["homestead", "service_station", "town"]).size(), 0, "nothing once the town is found")
+
+
+# ---------------------------------------------------------------- milestone D: wildlife, flashlight
+
+func test_wildlife_roams_notices_and_backs_off_never_attacks() -> void:
+	var w := WorldState.create_new("w_wild", 71)
+	var n := WildlifeSim.ensure(w)
+	check(n >= 4, "wolves and bears are placed from content")
+	eq(WildlifeSim.ensure(w), 0, "never duplicated")
+	var wolf: AnimalState = null
+	for a in w.animals.values():
+		if a.species == "wolf" and a.region_id == "homestead":
+			wolf = a
+			break
+	check(wolf != null, "a wolf lives in the woods north of the cabin")
+	var start := wolf.position
+	# alone: it idles and wanders within its home area
+	for i in 400:
+		w.tick += 1
+		WildlifeSim.step(w, 1)
+	check(wolf.position.distance_to(start) > 5.0, "it roams on its own")
+	check(wolf.home.grow(600).has_point(wolf.position), "and stays near home")
+	# a player approaching: it stops to watch, then bolts when too close
+	var p := _player(w, PID, "homestead", wolf.position + Vector2(420, 0))
+	var hp := p.health
+	WildlifeSim.step(w, 1)
+	eq(wolf.activity, "alert", "it notices the player and watches")
+	p.position = wolf.position + Vector2(150, 0)
+	var res := WildlifeSim.step(w, 1)
+	eq(wolf.activity, "flee", "too close: it runs")
+	check(res.size() == 1 and (res[0]["events"] as Array).any(func(e): return e["kind"] == "animal_call"), "with an alarm call")
+	var d0 := wolf.position.distance_to(p.position)
+	for i in 20:
+		w.tick += 1
+		WildlifeSim.step(w, 1)
+	check(wolf.position.distance_to(p.position) > d0, "away from the player")
+	eq(p.health, hp, "it never attacks")
+	var rows := WildlifeSim.rows(w)
+	var w2 := WorldState.new()
+	WildlifeSim.apply_rows(w2, rows)
+	eq(w2.animals.size(), w.animals.size(), "clients mirror every animal")
+	check((w2.animals[wolf.animal_id] as AnimalState).position.distance_to(wolf.position) < 0.2, "at the host's position")
+	WildlifeSim.apply_rows(w2, [])
+	eq(w2.animals.size(), 0, "and drop the ones the host no longer has")

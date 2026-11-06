@@ -17,6 +17,8 @@ extends RefCounted
 
 const PATH := "res://content/vehicles.json"
 const POSE_SLACK := 60.0
+## Nobody gets out of a car moving faster than this (px/s).
+const STOP_SPEED := 45.0
 static var _data: Dictionary = {}
 
 
@@ -150,6 +152,8 @@ static func request(world: WorldState, player_id: String, vehicle_id: String, ac
 		"exit":
 			if not inside:
 				return WorldActions._fail("VEHICLE_NOT_INSIDE")
+			if absf(v.speed) > STOP_SPEED:
+				return WorldActions._fail("VEHICLE_STOP_FIRST")
 			var r2 := eject(world, p)
 			return r2
 		"engine":

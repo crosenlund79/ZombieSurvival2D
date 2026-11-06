@@ -1596,8 +1596,8 @@
 		"en": "Pumps"
 	},
 	"MAP_UNEXPLORED": {
-		"da": "Vejen mod øst — uudforsket",
-		"en": "Road east — unexplored"
+		"en": "Unexplored road",
+		"da": "Uudforsket vej"
 	},
 	"DISCOVERED_REGION": {
 		"da": "Opdaget: %s",
@@ -2430,5 +2430,97 @@
 	"HUD_VEHICLE_PASSENGER": {
 		"en": "Riding along — %s get out",
 		"da": "Du kører med — %s stig ud"
+	},
+	"REGION_TOWN": {
+		"en": "Ashgrove",
+		"da": "Ashgrove"
+	},
+	"REGION_TOWN_HOUSE": {
+		"en": "The House on Main Street",
+		"da": "Huset på Hovedgaden"
+	},
+	"REGION_TOWN_CELLAR": {
+		"en": "Main Street Cellar",
+		"da": "Kælderen på Hovedgaden"
+	},
+	"PROMPT_ROAD_STATION": {
+		"en": "Follow the road west to the abandoned settlement",
+		"da": "Følg vejen vest til den forladte bebyggelse"
+	},
+	"PROMPT_ROAD_TOWN": {
+		"en": "Follow the road east toward town",
+		"da": "Følg vejen øst mod byen"
+	},
+	"PROMPT_SEARCH_GROCERY": {
+		"en": "Search the grocery shelves",
+		"da": "Gennemsøg købmandens hylder"
+	},
+	"PROMPT_SEARCH_PHARMACY": {
+		"en": "Search behind the pharmacy counter",
+		"da": "Gennemsøg bag apotekets disk"
+	},
+	"PROMPT_SEARCH_DISPENSARY": {
+		"en": "Search the dispensary",
+		"da": "Gennemsøg medicinrummet"
+	},
+	"PROMPT_SEARCH_HARDWARE": {
+		"en": "Search the hardware aisles",
+		"da": "Gennemsøg isenkræmmerens reoler"
+	},
+	"PROMPT_FORCE_CASE": {
+		"en": "Force the locked display case",
+		"da": "Bryd den låste montre op"
+	},
+	"PROMPT_SEARCH_CLOTHING": {
+		"en": "Search the clothing racks",
+		"da": "Gennemsøg tøjstativerne"
+	},
+	"PROMPT_SEARCH_STOCKROOM": {
+		"en": "Search the stockroom",
+		"da": "Gennemsøg baglokalet"
+	},
+	"PROMPT_SEARCH_GARAGE_BAY": {
+		"en": "Search the service bay",
+		"da": "Gennemsøg værkstedsporten"
+	},
+	"PROMPT_SEARCH_RUIN": {
+		"en": "Search the collapsed house",
+		"da": "Gennemsøg det sammenstyrtede hus"
+	},
+	"MAP_GROCERY": {
+		"en": "Grocery",
+		"da": "Købmand"
+	},
+	"MAP_PHARMACY": {
+		"en": "Pharmacy",
+		"da": "Apotek"
+	},
+	"MAP_HARDWARE": {
+		"en": "Hardware",
+		"da": "Isenkræmmer"
+	},
+	"MAP_CLOTHING": {
+		"en": "Clothing",
+		"da": "Tøjbutik"
+	},
+	"MAP_GARAGE": {
+		"en": "Garage",
+		"da": "Værksted"
+	},
+	"MAP_TOWN_HOUSE": {
+		"en": "House with cellar",
+		"da": "Hus med kælder"
+	},
+	"MAP_ROAD_BLOCKED": {
+		"en": "Road blocked",
+		"da": "Vejen spærret"
+	},
+	"MAP_VEHICLE": {
+		"en": "Station wagon",
+		"da": "Stationcar"
+	},
+	"VEHICLE_STOP_FIRST": {
+		"en": "Stop the car first.",
+		"da": "Stands bilen først."
 	}
 }

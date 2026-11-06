@@ -1,0 +1,140 @@
+{
+	"region_id": "town.house",
+	"display_key": "REGION_TOWN_HOUSE",
+	"scene": "res://scenes/regions/town/town_house_interior.tscn",
+	"bounds": [
+		0,
+		0,
+		960,
+		680
+	],
+	"surface": {
+		"region": "town",
+		"position": [
+			1240,
+			1456
+		]
+	},
+	"spawn_points": [
+		[
+			480,
+			560
+		]
+	],
+	"warmth": 1.0,
+	"shelter_group": "town_house",
+	"entities": [
+		{
+			"id": "town.house.exit",
+			"type": "portal",
+			"position": [
+				480,
+				622
+			],
+			"interact_range": 56,
+			"priority": 2,
+			"target": {
+				"region": "town",
+				"position": [
+					1240,
+					1510
+				]
+			},
+			"prompt_key": "PROMPT_EXIT_HOUSE"
+		},
+		{
+			"id": "town.house.cellar",
+			"type": "shelter_site",
+			"position": [
+				300,
+				440
+			],
+			"interact_range": 84,
+			"build_seconds": 8,
+			"level_template": "town_cellar",
+			"initial": {
+				"stage": "built",
+				"open": false,
+				"tier": "wood"
+			},
+			"upgrades": {
+				"wood": {
+					"to": "steel",
+					"cost": {
+						"scrap_metal": 4,
+						"cement": 1
+					}
+				}
+			}
+		},
+		{
+			"id": "town.house.cellar_ladder",
+			"type": "portal",
+			"position": [
+				300,
+				440
+			],
+			"interact_range": 34,
+			"priority": 2,
+			"requires_open": "town.house.cellar",
+			"target": {
+				"bunker_of": "town.house.cellar",
+				"depth": -1
+			},
+			"prompt_key": "PROMPT_CLIMB_DOWN"
+		},
+		{
+			"id": "town.house.timber",
+			"type": "stockpile",
+			"position": [
+				470,
+				330
+			],
+			"interact_range": 80,
+			"bunker_of": "town.house.cellar",
+			"prompt_key": "PROMPT_DEPOSIT_WOOD"
+		},
+		{
+			"id": "town.house.pantry",
+			"type": "loot",
+			"position": [
+				186,
+				300
+			],
+			"interact_range": 75,
+			"prompt_key": "PROMPT_SEARCH_PANTRY",
+			"loot": {},
+			"unique": true,
+			"initial": {
+				"looted_at": 0
+			}
+		},
+		{
+			"id": "town.house.linen",
+			"type": "loot",
+			"position": [
+				728,
+				350
+			],
+			"interact_range": 75,
+			"prompt_key": "PROMPT_SEARCH_LINEN",
+			"loot": {
+				"cloth": 2
+			},
+			"restock_minutes": 60,
+			"initial": {
+				"looted_at": -1
+			}
+		},
+		{
+			"id": "town.house.bed",
+			"type": "bed",
+			"position": [
+				640,
+				352
+			],
+			"interact_range": 75,
+			"prompt_key": "PROMPT_SLEEP"
+		}
+	]
+}

@@ -1,0 +1,154 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://src/presentation/world/bed_view.gd" id="bedv"]
+[ext_resource type="Script" path="res://src/presentation/world/machine_view.gd" id="machinev"]
+[ext_resource type="Script" path="res://src/presentation/world/region_view.gd" id="region"]
+[ext_resource type="Script" path="res://src/presentation/world/prop.gd" id="prop"]
+[ext_resource type="Script" path="res://src/presentation/world/ground_patch.gd" id="ground"]
+[ext_resource type="Script" path="res://src/presentation/world/atmosphere.gd" id="atmo"]
+[ext_resource type="Script" path="res://src/presentation/world/portal_view.gd" id="portal"]
+[ext_resource type="Script" path="res://src/presentation/world/shelter_site_view.gd" id="site"]
+[ext_resource type="Script" path="res://src/presentation/world/stockpile_view.gd" id="stock"]
+[ext_resource type="Script" path="res://src/presentation/world/support_view.gd" id="support"]
+[ext_resource type="Script" path="res://src/presentation/world/light_spot.gd" id="light"]
+
+[node name="TownHouseInterior" type="Node2D"]
+script = ExtResource("region")
+region_id = "town.house"
+ambience_id = "amb.wind_muffled"
+camera_limits = false
+
+[node name="Ground" type="Node2D" parent="."]
+z_index = -10
+
+[node name="Darkness" type="Polygon2D" parent="Ground"]
+color = Color(0.07, 0.06, 0.05, 1)
+polygon = PackedVector2Array(-2000, -2000, 4000, -2000, 4000, 4000, -2000, 4000)
+
+[node name="Floor" type="Polygon2D" parent="Ground"]
+script = ExtResource("ground")
+polygon = PackedVector2Array(110, 236, 850, 236, 850, 650, 110, 650)
+asset_id = "world.interior_floor"
+
+[node name="SideWallLeft" type="Polygon2D" parent="Ground"]
+color = Color(0.24, 0.17, 0.11, 1)
+polygon = PackedVector2Array(86, 20, 110, 20, 110, 666, 86, 666)
+
+[node name="SideWallRight" type="Polygon2D" parent="Ground"]
+color = Color(0.24, 0.17, 0.11, 1)
+polygon = PackedVector2Array(850, 20, 874, 20, 874, 666, 850, 666)
+
+[node name="FrontWallLeft" type="Polygon2D" parent="Ground"]
+color = Color(0.20, 0.14, 0.09, 1)
+polygon = PackedVector2Array(86, 650, 425, 650, 425, 668, 86, 668)
+
+[node name="FrontWallRight" type="Polygon2D" parent="Ground"]
+color = Color(0.20, 0.14, 0.09, 1)
+polygon = PackedVector2Array(535, 650, 874, 650, 874, 668, 535, 668)
+
+[node name="Rug" type="Node2D" parent="Ground"]
+script = ExtResource("prop")
+position = Vector2(520, 470)
+asset_id = "world.furniture_rug"
+
+[node name="Walls" type="StaticBody2D" parent="."]
+
+[node name="Edge" type="CollisionPolygon2D" parent="Walls"]
+build_mode = 1
+polygon = PackedVector2Array(110, 240, 850, 240, 850, 642, 110, 642, 110, 240)
+
+[node name="YSort" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="BackWall" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(480, 240)
+asset_id = "world.interior_wall"
+
+[node name="Cupboard" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(186, 262)
+asset_id = "world.furniture_cupboard"
+footprint = Vector2(100, 26)
+
+[node name="Bed" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(728, 318)
+asset_id = "world.furniture_bed"
+footprint = Vector2(190, 70)
+occlude = true
+
+[node name="Table" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(660, 500)
+asset_id = "world.furniture_table"
+footprint = Vector2(140, 40)
+occlude = true
+
+[node name="Stove" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(800, 600)
+asset_id = "world.furniture_stove"
+footprint = Vector2(80, 28)
+occlude = true
+
+[node name="Pantry" type="Node2D" parent="YSort"]
+script = ExtResource("machinev")
+entity_id = "town.house.pantry"
+
+[node name="Linen" type="Node2D" parent="YSort"]
+script = ExtResource("machinev")
+entity_id = "town.house.linen"
+
+[node name="Exit" type="Node2D" parent="YSort"]
+script = ExtResource("portal")
+entity_id = "town.house.exit"
+art_asset = "world.exit_mat"
+hide_when_unavailable = false
+floor_art = true
+
+[node name="ShelterSite" type="Node2D" parent="YSort"]
+script = ExtResource("site")
+entity_id = "town.house.cellar"
+floor_art = true
+
+[node name="HatchLadder" type="Node2D" parent="YSort"]
+script = ExtResource("portal")
+entity_id = "town.house.cellar_ladder"
+
+[node name="TimberPile" type="Node2D" parent="YSort"]
+script = ExtResource("stock")
+entity_id = "town.house.timber"
+
+[node name="WindowLightLeft" type="PointLight2D" parent="."]
+script = ExtResource("light")
+position = Vector2(395, 330)
+color = Color(1, 0.95, 0.82, 1)
+texture_scale = 3.2
+energy = 0.45
+
+[node name="WindowLightRight" type="PointLight2D" parent="."]
+script = ExtResource("light")
+position = Vector2(805, 330)
+color = Color(1, 0.95, 0.82, 1)
+texture_scale = 3.2
+energy = 0.45
+
+[node name="DoorLight" type="PointLight2D" parent="."]
+script = ExtResource("light")
+position = Vector2(480, 640)
+color = Color(1, 0.93, 0.78, 1)
+texture_scale = 2.2
+energy = 0.5
+
+[node name="Atmosphere" type="Node2D" parent="."]
+script = ExtResource("atmo")
+tint = Color(0.62, 0.62, 0.62, 1)
+saturation = 0.85
+drift_amount = 0
+vignette_strength = 0.4
+area = Rect2(110, 236, 740, 414)
+
+[node name="SleepSpot" type="Node2D" parent="YSort"]
+script = ExtResource("bedv")
+entity_id = "town.house.bed"

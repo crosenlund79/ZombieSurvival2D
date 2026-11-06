@@ -101,8 +101,72 @@ def car_door():
     save("template_car_door.wav", x, "sfx.car_door", "Car door opens/closes (thunk and latch)", "SFX", -6.0)
 
 
+def formant_voice(f0, seconds, formants, breath=0.2, vib=0.0):
+    """Harmonic source through formant resonances (cheap additive synthesis)."""
+    n = int(SR * seconds)
+    t = np.arange(n) / SR
+    f = f0(np.linspace(0, 1, n)) * (1 + vib * np.sin(2 * math.pi * 5.2 * t))
+    ph = 2 * math.pi * np.cumsum(f) / SR
+    x = np.zeros(n)
+    for h in range(1, 18):
+        fh = f * h
+        g = np.zeros(n)
+        for fc, bw in formants:
+            g += np.exp(-((fh - fc) ** 2) / (2 * bw * bw))
+        x += g * np.sin(h * ph) / h ** 0.4
+    x += lowpass(RNG.standard_normal(n), 2500) * breath
+    return x
+
+
+def wolf_howl():
+    secs = 3.4
+    env = lambda u: np.clip(np.minimum(u / 0.12, 1) * np.minimum((1 - u) / 0.3, 1), 0, 1)
+    f0 = lambda u: 340 + 230 * np.sin(np.minimum(u / 0.35, 1) * math.pi / 2) - 120 * np.clip((u - 0.65) / 0.35, 0, 1) ** 2
+    x = formant_voice(f0, secs, [(700, 160), (1150, 200)], breath=0.05, vib=0.012)
+    x *= env(np.linspace(0, 1, len(x)))
+    tail = np.zeros(int(SR * 1.2))
+    x = np.concatenate([x, tail])
+    for d, g in ((0.23, 0.35), (0.51, 0.22), (0.83, 0.12)):  # distant forest echo
+        k = int(SR * d)
+        x[k:] += x[:-k] * g
+    save("template_wolf_howl.wav", lowpass(x, 3000), "sfx.wolf_howl", "Wolf howl (distant, echoing through the pines)", "SFX", -10.0)
+
+
+def wolf_huff():
+    secs = 0.5
+    n = int(SR * secs)
+    t = np.arange(n) / SR
+    x = lowpass(RNG.standard_normal(n), 1400) * np.exp(-t * 9) * 0.8
+    x += formant_voice(lambda u: 220 - 60 * u, secs, [(600, 150), (1000, 200)], breath=0.3) * np.exp(-t * 12) * 0.5
+    save("template_wolf_huff.wav", x, "sfx.wolf_huff", "Wolf huff / short warning bark", "SFX", -8.0)
+
+
+def bear_grunt():
+    secs = 1.3
+    n = int(SR * secs)
+    u = np.linspace(0, 1, n)
+    x = formant_voice(lambda u: 95 - 25 * u, secs, [(380, 120), (800, 180)], breath=0.45, vib=0.04)
+    x *= np.clip(np.minimum(u / 0.08, 1) * np.minimum((1 - u) / 0.4, 1), 0, 1)
+    rough = 1 + 0.6 * np.sign(np.sin(2 * math.pi * 23 * np.arange(n) / SR))
+    save("template_bear_grunt.wav", lowpass(x * rough, 1500), "sfx.bear_grunt", "Bear grunt / low growl", "SFX", -6.0)
+
+
+def bear_huff():
+    secs = 0.9
+    n = int(SR * secs)
+    t = np.arange(n) / SR
+    x = np.zeros(n)
+    for st in (0.0, 0.32):
+        k = int(SR * st)
+        m = n - k
+        tt = np.arange(m) / SR
+        x[k:] += lowpass(RNG.standard_normal(m), 900) * np.exp(-tt * 11)
+    save("template_bear_huff.wav", x, "sfx.bear_huff", "Bear huffing (alarmed, backing off)", "SFX", -6.0)
+
+
 if __name__ == "__main__":
     engine_loop(); engine_start(); engine_stop(); car_door()
+    wolf_howl(); wolf_huff(); bear_grunt(); bear_huff()
     with open(os.path.join(ROOT, "assets", "manifest", "audio_awakens.json"), "w") as f:
         json.dump({"kind": "audio", "category": "awakens", "assets": ENTRIES}, f, indent="\t"); f.write("\n")
     print("world awakens audio generated:", len(ENTRIES))
