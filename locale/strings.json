@@ -2542,5 +2542,25 @@
 	"ACTION_FLASHLIGHT": {
 		"en": "Flashlight on / off",
 		"da": "Lommelygte til / fra"
+	},
+	"SETTINGS_CUSTOM_GRAPHICS": {
+		"en": "Use custom graphics",
+		"da": "Brug egen grafik"
+	},
+	"SETTINGS_CUSTOM_GRAPHICS_HINT": {
+		"en": "ON uses your replacement images from the overrides folders. OFF shows the original art without changing or deleting any files; switching applies immediately and only on this computer.",
+		"da": "TIL bruger dine erstatningsbilleder fra override-mapperne. FRA viser den originale grafik uden at ændre eller slette filer; skiftet gælder med det samme og kun på denne computer."
+	},
+	"SETTINGS_ON": {
+		"en": "ON",
+		"da": "TIL"
+	},
+	"SETTINGS_OFF": {
+		"en": "OFF",
+		"da": "FRA"
+	},
+	"SETTINGS_HIGHLIGHT": {
+		"en": "Highlight what you can use",
+		"da": "Fremhæv det, du kan bruge"
 	}
 }

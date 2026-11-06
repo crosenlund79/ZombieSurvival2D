@@ -51,6 +51,10 @@ func _ready() -> void:
 		Settings.set_value("display", "fullscreen", on)
 		Settings.apply_display())
 	_row(v, "SETTINGS_FULLSCREEN", fs)
+	var hl := CheckBox.new()
+	hl.button_pressed = bool(Settings.get_value("display", "highlight_interactables", true))
+	hl.toggled.connect(func(on: bool) -> void: Settings.set_value("display", "highlight_interactables", on))
+	_row(v, "SETTINGS_HIGHLIGHT", hl)
 	var res := OptionButton.new()
 	var current := Settings.window_size()
 	for i in SettingsService.RESOLUTIONS.size():
@@ -100,6 +104,18 @@ func _ready() -> void:
 	info.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	info.custom_minimum_size = Vector2(560, 0)
 	v.add_child(info)
+	var cg := CheckBox.new()
+	cg.name = "UseCustomGraphics"
+	cg.button_pressed = Assets.custom_graphics
+	cg.text = "SETTINGS_ON" if Assets.custom_graphics else "SETTINGS_OFF"
+	cg.toggled.connect(func(on: bool) -> void:
+		cg.text = "SETTINGS_ON" if on else "SETTINGS_OFF"
+		Assets.set_custom_graphics(on))
+	_row(v, "SETTINGS_CUSTOM_GRAPHICS", cg)
+	var cg_hint := UITheme.small("SETTINGS_CUSTOM_GRAPHICS_HINT", 12)
+	cg_hint.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	cg_hint.custom_minimum_size = Vector2(560, 0)
+	v.add_child(cg_hint)
 	var h := HBoxContainer.new()
 	var open_dir := Button.new()
 	open_dir.text = "SETTINGS_OPEN_OVERRIDES"

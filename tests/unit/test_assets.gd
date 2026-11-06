@@ -82,3 +82,31 @@ func test_sprite_fit_keeps_display_box() -> void:
 	check(absf(s.position.y + box.y * piv.y) < 0.01, "manifest pivot (feet) at the node origin")
 	s.free()
 	r.free()
+
+
+## Iteration 011: "Use custom graphics" OFF ignores image overrides (files untouched),
+## falls back per sprite, never affects sounds; ON uses them again.
+func test_custom_graphics_toggle() -> void:
+	_clean()
+	_copy(FIX + "characters/player/survivor_down.png", DST)
+	_copy(FIX + "audio/world/door_open.wav", SND_DST)
+	var r := AssetResolver.new()
+	r.texture("char.player")
+	eq(r.source_of("char.player"), "external", "ON: the replacement image is used")
+	r.custom_graphics = false
+	r._textures.clear()
+	r.source.clear()
+	r.texture("char.player")
+	eq(r.source_of("char.player"), "template", "OFF: the original art is shown")
+	check(FileAccess.file_exists(DST), "OFF never touches the replacement file")
+	r.texture("char.player_up")
+	eq(r.source_of("char.player_up"), "template", "assets without a replacement are unaffected")
+	r.audio_stream("sfx.door_open")
+	eq(r.source_of("sfx.door_open"), "external", "custom sounds are not part of the graphics switch")
+	r.custom_graphics = true
+	r._textures.clear()
+	r.source.clear()
+	r.texture("char.player")
+	eq(r.source_of("char.player"), "external", "ON again: the replacement returns")
+	_clean()
+	r.free()

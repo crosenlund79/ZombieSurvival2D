@@ -95,6 +95,9 @@ func _run(line: String) -> void:
 			await get_tree().create_timer(float(a[2])).timeout
 			Input.action_release(a[0])
 			Input.action_release(a[1])
+		"custom_graphics":
+			Assets.set_custom_graphics(a[0] == "on")
+			await get_tree().process_frame
 		"equip_item":
 			# equip_item <item>: equip the first gear item of that kind (e.g. club)
 			var mei := Session.local_player()

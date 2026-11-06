@@ -335,6 +335,8 @@ func show_notice(key: String, args: Array) -> void:
 	l.add_theme_constant_override("outline_size", 5)
 	if key.begins_with("ACTION_") or key.ends_with("FAILED") or key == "DEV_HOST_ONLY":
 		l.add_theme_color_override("font_color", UITheme.WARN)
+	if key.begins_with("ACTION_") or (key.begins_with("VEHICLE_") and key != "VEHICLE_STATION_WAGON") or key in ["FLASHLIGHT_NONE", "SLEEP_DECLINED", "SLEEP_NOT_HERE"]:
+		Audio.play("ui.error")  # refused action (audio inbox clip)
 	_notices.add_child(l)
 	while _notices.get_child_count() > 5:
 		var oldest := _notices.get_child(0)

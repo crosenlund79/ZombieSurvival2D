@@ -236,6 +236,9 @@ func _on_combat_event(ev: Dictionary) -> void:
 			if v != null:
 				v.hit_flash()
 				Audio.play("sfx.burnt_death" if ev["killed"] else "sfx.burnt_hit", v.global_position)
+				if ev["killed"]:  # the body hits the snow a moment later (audio inbox clip)
+					var at_body := v.global_position
+					get_tree().create_timer(0.45).timeout.connect(func() -> void: Audio.play("sfx.body_drop", at_body))
 		"screech":
 			if str(ev.get("region_id", "")) != region_id:
 				return
@@ -244,6 +247,10 @@ func _on_combat_event(ev: Dictionary) -> void:
 			Audio.play(["sfx.burnt_screech", "sfx.burnt_screech_b", "sfx.burnt_screech_c"][randi() % 3], sv2.global_position if sv2 != null else at2)
 			if sv2 != null:
 				sv2.screech()
+		"npc_met":
+			var nv: Node2D = _npcs.get(str(ev.get("npc_id", "")))
+			if nv != null and is_instance_valid(nv):
+				Audio.play("sfx.voice_trust", nv.global_position)  # the first frightened whisper
 		"animal_call":
 			if str(ev.get("region_id", "")) == region_id and str(ev.get("sound", "")) != "":
 				Audio.play(str(ev["sound"]), Vector2(float(ev.get("x", 0)), float(ev.get("y", 0))))

@@ -25,15 +25,31 @@ var _textures := {}  # id -> Texture2D
 var _streams := {}   # id -> AudioStream (or null when missing)
 var source := {}     # id -> "external" | "bundled" | "template" | "fallback"
 var _fallback_tex: Texture2D
+## Iteration 011: client-local "Use custom graphics". OFF ignores creator image
+## overrides (bundled and external) without touching any file; templates are
+## used instead. Audio overrides are unaffected. Never changes gameplay.
+var custom_graphics := true
 
 
 func _ready() -> void:
+	custom_graphics = bool(Settings.get_value("assets", "use_custom_graphics", true))
 	AssetCatalog.reload()
 	for p in AssetCatalog.problems:
 		SessionLog.error("assets", "manifest_problem", {"detail": p})
 	Paths.overrides_dir()
 	SessionLog.info("assets", "catalog_loaded", {"count": AssetCatalog.ids().size(),
-		"external_dir": ProjectSettings.globalize_path(AssetCatalog.EXTERNAL_ROOT)})
+		"external_dir": ProjectSettings.globalize_path(AssetCatalog.EXTERNAL_ROOT), "custom_graphics": custom_graphics})
+
+
+## Turns creator image overrides on/off for this player (saved in settings) and
+## re-resolves every texture at once (all views listen to `reloaded`).
+func set_custom_graphics(on: bool) -> void:
+	Settings.set_value("assets", "use_custom_graphics", on)
+	if on == custom_graphics:
+		return
+	custom_graphics = on
+	SessionLog.info("assets", "custom_graphics", {"on": on})
+	reload()
 
 
 func reload() -> void:
@@ -84,14 +100,14 @@ func _resolve_texture(id: String) -> Texture2D:
 		SessionLog.error("assets", "unknown_asset_id", {"id": id})
 		source[id] = "fallback"
 		return _fallback()
-	for path in AssetCatalog.external_candidates(id):
+	for path in (AssetCatalog.external_candidates(id) if custom_graphics else []):
 		if FileAccess.file_exists(path):
 			var t := _load_external_image(id, path)
 			if t != null:
 				source[id] = "external"
 				SessionLog.info("assets", "override_used", {"id": id, "path": path})
 				return t
-	for path in AssetCatalog.bundled_candidates(id):
+	for path in (AssetCatalog.bundled_candidates(id) if custom_graphics else []):
 		var t := _load_project_texture(id, path, true)
 		if t != null:
 			source[id] = "bundled"

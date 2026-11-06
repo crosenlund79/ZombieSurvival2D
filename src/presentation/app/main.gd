@@ -71,6 +71,7 @@ func _ready() -> void:
 	ui.add_child(build_label)
 	Session.world_started.connect(_on_world_started)
 	Session.world_ended.connect(_on_world_ended)
+	Audio.play_loop("music", "music.theme", 2.0)  # main-menu theme (audio inbox)
 	Session.local_region_changed.connect(_on_local_region_changed)
 	if Paths.has_arg("autotest"):
 		var driver := AutotestDriver.new()
@@ -119,6 +120,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _on_world_started() -> void:
+	Audio.stop_loop("music", 2.0)
 	menu.hide()
 	pause_menu.hide()
 	build_region_view()
@@ -132,6 +134,7 @@ func _on_world_ended(reason_key: String) -> void:
 	pause_menu.hide()
 	map_panel.hide()
 	Audio.stop_all_loops()
+	Audio.play_loop("music", "music.theme", 2.0)
 	menu.show()
 	menu.on_session_ended(reason_key)
 

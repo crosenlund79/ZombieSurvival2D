@@ -1788,6 +1788,48 @@ def scenario_wild_multi():
             i.kill()
 
 
+def scenario_custom_graphics():
+    """Iteration 011 E: the client-local "Use custom graphics" switch. Both instances share
+    the same replacement files; the host turns them OFF, the client keeps them ON; the
+    choice survives a restart; ON restores them; gameplay is unaffected."""
+    over = os.path.join(USER_DIR, "overrides")
+    fix = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "tests", "fixtures", "overrides")
+    img_dst = os.path.join(over, "characters", "player", "survivor_down.png")
+    host = Instance("t_cghost"); c = Instance("t_cgclient")
+    for i in (host, c):
+        i.wipe()
+    os.makedirs(os.path.dirname(img_dst), exist_ok=True)
+    shutil.copy(os.path.join(fix, "characters", "player", "survivor_down.png"), img_dst)
+    try:
+        host.start(); c.start()
+        check("cg: the menu theme plays on the main menu", host.state()["loops"].get("music") == "music.theme", host.state()["loops"])
+        host.cmd(f"host {PORT} new 160 Hosty"); host.cmd("tips off"); host.cmd("dev peaceful 1")
+        r = c.cmd(f"join 127.0.0.1 {PORT} Cleo"); c.cmd("tips off")
+        check("cg: client joins", r["ok"], r["error"])
+        check("cg: the music stops in the world", "music" not in host.state()["loops"], host.state()["loops"])
+        check("cg: replacements are used by default (both)", host.state()["asset_sources"].get("char.player") == "external"
+              and c.state()["asset_sources"].get("char.player") == "external", "")
+        host.cmd("custom_graphics off"); host.cmd("rebuild_view")
+        sh, sc = host.state(), c.state()
+        check("cg: OFF on the host shows the original art there", sh["asset_sources"].get("char.player") == "template", sh["asset_sources"].get("char.player"))
+        check("cg: the client keeps its own choice (ON)", sc["asset_sources"].get("char.player") == "external", sc["asset_sources"].get("char.player"))
+        check("cg: the replacement file is untouched", os.path.exists(img_dst), "")
+        r = c.cmd(f"walk_to {GATE_STAND}"); c.cmd("press_interact")
+        time.sleep(0.4)
+        check("cg: gameplay is the same for both (the client opens the gate, the host sees it)", gate(host.state())["state"]["open"] is True, "")
+        c.cmd("leave"); host.cmd("leave")
+        host.kill(); host = Instance("t_cghost"); host.start()
+        host.cmd("single new 161 Hosty")
+        check("cg: OFF is remembered after a restart", host.state()["asset_sources"].get("char.player") == "template", host.state()["asset_sources"].get("char.player"))
+        host.cmd("custom_graphics on"); host.cmd("rebuild_view")
+        check("cg: ON brings the replacement back immediately", host.state()["asset_sources"].get("char.player") == "external", host.state()["asset_sources"].get("char.player"))
+    finally:
+        for i in (host, c):
+            i.kill()
+        if os.path.exists(img_dst):
+            os.remove(img_dst)
+
+
 def scenario_perf_multi():
     """Two connected players, a horde plus extra groups active around them: measure host simulation cost."""
     host = Instance("t_phost"); c = Instance("t_pclient")
@@ -1815,7 +1857,7 @@ def scenario_perf_multi():
             i.kill()
 
 
-SCENARIOS = {"wild_multi": scenario_wild_multi, "vehicle_multi": scenario_vehicle_multi, "winter_multi": scenario_winter_multi, "red_thaw_multi": scenario_red_thaw_multi, "perf_multi": scenario_perf_multi, "slice": scenario_slice, "settlement_multi": scenario_settlement_multi, "world_multi": scenario_world_multi, "craft_multi": scenario_craft_multi, "build_multi": scenario_build_multi, "accept": scenario_accept, "infra_multi": scenario_infra_multi, "dig_multi": scenario_dig_multi, "danger_single": scenario_danger_single, "danger_multi": scenario_danger_multi, "settings": scenario_settings, "bunker_single": scenario_bunker_single, "bunker_multi": scenario_bunker_multi, "single": scenario_single, "multiplayer": scenario_multiplayer,
+SCENARIOS = {"custom_graphics": scenario_custom_graphics, "wild_multi": scenario_wild_multi, "vehicle_multi": scenario_vehicle_multi, "winter_multi": scenario_winter_multi, "red_thaw_multi": scenario_red_thaw_multi, "perf_multi": scenario_perf_multi, "slice": scenario_slice, "settlement_multi": scenario_settlement_multi, "world_multi": scenario_world_multi, "craft_multi": scenario_craft_multi, "build_multi": scenario_build_multi, "accept": scenario_accept, "infra_multi": scenario_infra_multi, "dig_multi": scenario_dig_multi, "danger_single": scenario_danger_single, "danger_multi": scenario_danger_multi, "settings": scenario_settings, "bunker_single": scenario_bunker_single, "bunker_multi": scenario_bunker_multi, "single": scenario_single, "multiplayer": scenario_multiplayer,
              "netfail": scenario_connection_failure, "assets": scenario_assets}
 
 if __name__ == "__main__":
