@@ -216,4 +216,7 @@
 
 ## 10. Full regression
 
-_Filled in at the end of milestone E._
+**493 of 493 checks passed** across every scenario in `tools/mp_test.py` (all iterations 001–013, two real
+game processes where multiplayer is involved), in one uninterrupted run on the final code. The host simulation
+peaked at 1.08 ms per frame with 30 Burnt Ones and two players (budget 8 ms). Unit tests: 147/147, content check
+PASS, script guides EN + DA 120/120.
