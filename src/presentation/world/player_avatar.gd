@@ -377,6 +377,10 @@ func _unhandled_input(event: InputEvent) -> void:
 		Session.request_inventory("flashlight", "")
 		get_viewport().set_input_as_handled()
 		return
+	if event.is_action_pressed("reload"):  # iteration 014: firearms
+		Session.request_inventory("reload", "")
+		get_viewport().set_input_as_handled()
+		return
 	if event.is_action_pressed("attack") and not _downed and BuildMode.placing == "":
 		var aim := _facing_vector()
 		if event is InputEventMouseButton:

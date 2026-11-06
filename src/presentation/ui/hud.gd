@@ -107,6 +107,8 @@ func _process(_delta: float) -> void:
 		tr("MODE_" + Session.mode_name()), region_label(me.region_id),
 		tr("HUD_PLAYERS"), w.online_players().size(), UITheme.fmt("HUD_CLOCK", [EnvSim.day_number(w), EnvSim.clock_text(w)]),
 		weather_label(w)]
+	if not is_equal_approx(Session.time_scale, 1.0) and Session.mode == Session.Mode.SINGLE:
+		_status.text += "  ·  " + (tr("HUD_TIME_PAUSED") if Session.time_scale <= 0.0 else UITheme.fmt("HUD_TIME_SCALE", ["%.0f" % Session.time_scale]))
 	_resources.text = _resource_line(me)
 	_vitals.queue_redraw()
 	_threat.text = threat_label(me)
@@ -312,6 +314,8 @@ func _resource_line(me: PlayerState) -> String:
 		var info := Items.info(str(hand["item"]))
 		parts.append(UITheme.fmt("HUD_HOLDING", [UITheme.fmt("INV_GEAR_COND", [tr(Items.name_key(str(hand["item"]))),
 			roundi(float(hand.get("cond", 0)) / maxf(1.0, float(info.get("durability", 1))) * 100.0)])]))
+		if Firearms.is_firearm(str(hand["item"])):  # iteration 014: rounds in the weapon / spare
+			parts.append(UITheme.fmt("HUD_AMMO", [Firearms.loaded(hand), int(Firearms.spec(str(hand["item"])).get("capacity", 0)), Firearms.spare(me, hand)]))
 	var b := Session.world.bunker_for_region(me.region_id)
 	if b == null and Session.world.bunkers.size() == 1:
 		b = Session.world.bunkers.values()[0]

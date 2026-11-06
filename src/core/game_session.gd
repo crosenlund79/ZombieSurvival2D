@@ -60,6 +60,11 @@ var sim_ms := 0.0
 var _peer_to_player := {}      # host: peer id -> player id
 var _move_track := {}          # host: player id -> last accepted msec
 var _tick_accum := 0.0
+## Iteration 014: developer world-time speed (0 = paused, 1 = normal, up to 10×).
+## Single player only: the shared clock of a hosted game always runs at 1×, and a
+## client never touches it. Runtime only (back to 1× on every start).
+var time_scale := 1.0
+const TIME_SCALES: Array[float] = [0.0, 1.0, 2.0, 5.0, 10.0]
 var _snapshot_accum := 0.0
 var _autosave_accum := 0.0
 var _pending_join := {}        # client: {"token", "name"} until welcomed
@@ -207,6 +212,7 @@ func _begin() -> void:
 	_tick_accum = 0.0
 	_snapshot_accum = 0.0
 	_autosave_accum = 0.0
+	time_scale = 1.0
 	SessionLog.info("session", "started", {"mode": mode_name(), "world_id": world.world_id,
 		"seed": world.world_seed, "tick": world.tick, "player": local_player_id})
 	world_started.emit()
@@ -261,7 +267,7 @@ func _physics_process(delta: float) -> void:
 		return
 	if not is_authority() or world == null:
 		return
-	_tick_accum += delta
+	_tick_accum += delta * (time_scale if mode == Mode.SINGLE else 1.0)
 	var step := 1.0 / Simulation.TICK_RATE
 	var ticks := 0
 	while _tick_accum >= step:
@@ -1009,6 +1015,15 @@ func _host_dev_command(peer_id: int, cmd: String, arg: Variant) -> void:
 						var de := Build.damage_entity(world, reg9, eid, float(arg) if arg != null else 40.0)
 						out["changes"].append_array(de["changes"])
 				_publish_result(out)
+		"time_scale":
+			# Iteration 014: single player only (refused in a hosted game, for host and clients).
+			if mode != Mode.SINGLE:
+				_send_action_result(peer_id, 0, false, "DEV_SINGLE_PLAYER_ONLY")
+				return
+			time_scale = clampf(float(str(arg).to_float()) if arg != null else 1.0, 0.0, 10.0)
+			_tick_accum = 0.0
+			SessionLog.info("dev", "time_scale", {"value": time_scale})
+			notice.emit("DEV_TIME_SCALE", [("%.0f" % time_scale) if time_scale > 0.0 else "0"])
 		"xp_multiplier":
 			world.meta["xp_multiplier"] = SkillSim.clamp_multiplier(str(arg).to_float() if arg != null else 1.0)
 			SessionLog.info("dev", "xp_multiplier", {"value": world.meta["xp_multiplier"]})

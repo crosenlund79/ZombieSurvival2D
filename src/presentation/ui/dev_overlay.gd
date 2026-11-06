@@ -52,6 +52,10 @@ func _ready() -> void:
 	_btn(world_tab, "DEV_CLOCK", func() -> void: Session.request_dev_command("advance_clock", 3600.0))
 	_btn(world_tab, "DEV_NIGHT", func() -> void: Session.request_dev_command("time", 22.0))
 	_btn(world_tab, "DEV_DAY", func() -> void: Session.request_dev_command("time", 9.0))
+	# Iteration 014: world-time speed (single player only)
+	for ts in [0.0, 1.0, 2.0, 5.0, 10.0]:
+		var tv: float = ts
+		_btn(world_tab, tr("DEV_TIME_PAUSE") if tv == 0.0 else (tr("DEV_TIME_X") % int(tv)), func() -> void: Session.request_dev_command("time_scale", tv))
 	_btn(world_tab, "DEV_RAIN", func() -> void:
 		# cycle through every weather kind
 		var ks := EnvSim.KINDS

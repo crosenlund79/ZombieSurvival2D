@@ -220,6 +220,172 @@
 			"name_key": "ITEM_STOVEPIPE",
 			"desc_key": "ITEM_STOVEPIPE_DESC",
 			"cat": "part"
+		},
+		"handgun": {
+			"name_key": "ITEM_HANDGUN",
+			"desc_key": "ITEM_HANDGUN_DESC",
+			"cat": "weapon",
+			"stack": false,
+			"slot": "hand",
+			"damage": 14,
+			"range": 54,
+			"cooldown_ticks": 6,
+			"durability": 300,
+			"repair": {
+				"weapon_parts": 1
+			},
+			"firearm": {
+				"ammo": "ammo_pistol",
+				"capacity": 8,
+				"damage": 70,
+				"range": 640,
+				"cone": 0.985,
+				"pellets": 1,
+				"cooldown_ticks": 5,
+				"reload_ticks": 16,
+				"noise": "gunshot",
+				"sound": "sfx.gun_pistol",
+				"wear": 0.5,
+				"magazine": "loaded_magazine"
+			}
+		},
+		"revolver": {
+			"name_key": "ITEM_REVOLVER",
+			"desc_key": "ITEM_REVOLVER_DESC",
+			"cat": "weapon",
+			"stack": false,
+			"slot": "hand",
+			"damage": 14,
+			"range": 54,
+			"cooldown_ticks": 6,
+			"durability": 300,
+			"repair": {
+				"weapon_parts": 1
+			},
+			"firearm": {
+				"ammo": "ammo_revolver",
+				"capacity": 6,
+				"damage": 95,
+				"range": 620,
+				"cone": 0.988,
+				"pellets": 1,
+				"cooldown_ticks": 7,
+				"reload_ticks": 30,
+				"noise": "gunshot",
+				"sound": "sfx.gun_revolver",
+				"wear": 0.5
+			}
+		},
+		"shotgun": {
+			"name_key": "ITEM_SHOTGUN",
+			"desc_key": "ITEM_SHOTGUN_DESC",
+			"cat": "weapon",
+			"stack": false,
+			"slot": "hand",
+			"damage": 14,
+			"range": 54,
+			"cooldown_ticks": 6,
+			"durability": 260,
+			"repair": {
+				"weapon_parts": 1
+			},
+			"firearm": {
+				"ammo": "shotgun_shells",
+				"capacity": 4,
+				"damage": 150,
+				"range": 380,
+				"cone": 0.93,
+				"pellets": 3,
+				"cooldown_ticks": 10,
+				"reload_ticks": 34,
+				"noise": "gunshot_heavy",
+				"sound": "sfx.gun_shotgun",
+				"wear": 0.8
+			}
+		},
+		"hunting_rifle": {
+			"name_key": "ITEM_HUNTING_RIFLE",
+			"desc_key": "ITEM_HUNTING_RIFLE_DESC",
+			"cat": "weapon",
+			"stack": false,
+			"slot": "hand",
+			"damage": 14,
+			"range": 54,
+			"cooldown_ticks": 6,
+			"durability": 320,
+			"repair": {
+				"weapon_parts": 1
+			},
+			"firearm": {
+				"ammo": "rifle_rounds",
+				"capacity": 5,
+				"damage": 160,
+				"range": 1000,
+				"cone": 0.992,
+				"pellets": 1,
+				"cooldown_ticks": 14,
+				"reload_ticks": 34,
+				"noise": "gunshot_heavy",
+				"sound": "sfx.gun_rifle",
+				"wear": 0.5
+			}
+		},
+		"military_rifle": {
+			"name_key": "ITEM_MILITARY_RIFLE",
+			"desc_key": "ITEM_MILITARY_RIFLE_DESC",
+			"cat": "weapon",
+			"stack": false,
+			"slot": "hand",
+			"damage": 14,
+			"range": 54,
+			"cooldown_ticks": 6,
+			"durability": 360,
+			"repair": {
+				"weapon_parts": 1
+			},
+			"firearm": {
+				"ammo": "rifle_rounds",
+				"capacity": 20,
+				"damage": 85,
+				"range": 900,
+				"cone": 0.988,
+				"pellets": 1,
+				"cooldown_ticks": 3,
+				"reload_ticks": 24,
+				"noise": "gunshot_heavy",
+				"sound": "sfx.gun_rifle",
+				"wear": 0.4
+			}
+		},
+		"ammo_pistol": {
+			"name_key": "ITEM_AMMO_PISTOL",
+			"desc_key": "ITEM_AMMO_PISTOL_DESC",
+			"cat": "ammo"
+		},
+		"ammo_revolver": {
+			"name_key": "ITEM_AMMO_REVOLVER",
+			"desc_key": "ITEM_AMMO_REVOLVER_DESC",
+			"cat": "ammo"
+		},
+		"shotgun_shells": {
+			"name_key": "ITEM_SHOTGUN_SHELLS",
+			"desc_key": "ITEM_SHOTGUN_SHELLS_DESC",
+			"cat": "ammo"
+		},
+		"rifle_rounds": {
+			"name_key": "ITEM_RIFLE_ROUNDS",
+			"desc_key": "ITEM_RIFLE_ROUNDS_DESC",
+			"cat": "ammo"
+		},
+		"loaded_magazine": {
+			"name_key": "ITEM_LOADED_MAGAZINE",
+			"desc_key": "ITEM_LOADED_MAGAZINE_DESC",
+			"cat": "ammo"
+		},
+		"weapon_parts": {
+			"name_key": "ITEM_WEAPON_PARTS",
+			"desc_key": "ITEM_WEAPON_PARTS_DESC",
+			"cat": "part"
 		}
 	},
 	"bare_hands": {

@@ -527,7 +527,13 @@ def stillwater_interiors(rid, display, x, base, town):
     if rid == "stillwater.house":
         return house(rid, display, town, x, base, pool_prefix="home")
     if rid == "stillwater.quiet_house":
-        return house(rid, display, town, x, base, wall_a="side.wall_house_b", pool_prefix="home")
+        def hideout(s):
+            # An ordinary house. Two disturbed survivors hide here (an approved situational
+            # hunt trigger): upstairs behind the boxes, downstairs behind the sofa.
+            s.entity({"id": "hideout", "type": "hideout", "threshold": 0.9,
+                      "lairs": [[s.x(13.4), s.y(1)], [s.x(12.2), s.y(0)]],
+                      "initial": {"disturbance": 0.0, "triggered": False, "cleared": False, "zombies": []}}, 8.0, 0)
+        return house(rid, display, town, x, base, wall_a="side.wall_house_b", pool_prefix="home", extra=hideout)
     return civic_hall(rid, display, x, base, town)
 
 

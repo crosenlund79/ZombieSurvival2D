@@ -110,7 +110,10 @@ static func from_dict(id: String, d: Dictionary) -> PlayerState:
 	p.skills = SkillSim.sanitize(d.get("skills", {}))
 	for g in d.get("gear", []):
 		if g is Dictionary and Items.exists(str(g.get("item", ""))) and str(g.get("uid", "")) != "":
-			p.gear.append({"uid": str(g["uid"]), "item": str(g["item"]), "cond": float(g.get("cond", 100.0))})
+			var gd := {"uid": str(g["uid"]), "item": str(g["item"]), "cond": float(g.get("cond", 100.0))}
+			if g.has("loaded"):
+				gd["loaded"] = maxi(0, int(g["loaded"]))  # iteration 014: rounds in a firearm
+			p.gear.append(gd)
 	var eq: Dictionary = d.get("equipped", {})
 	for slot in eq:
 		if p.find_gear(str(eq[slot])) >= 0:

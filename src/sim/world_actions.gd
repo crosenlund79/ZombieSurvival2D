@@ -642,6 +642,9 @@ static func request_attack(world: WorldState, player_id: String, aim: Vector2) -
 	var p: PlayerState = world.players.get(player_id, null)
 	if p == null or not p.online or p.dead:
 		return _fail("ACTION_DEAD")
+	var gun := Firearms.held(p)
+	if not gun.is_empty():
+		return Firearms.fire(world, p, gun, aim)  # iteration 014: firearms
 	var w: Dictionary = weapon_stats(p)
 	var key := player_id + ":attack"
 	if world.tick - int(world.cooldowns.get(key, -1000)) < int(w["cooldown_ticks"]):

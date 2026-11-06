@@ -272,3 +272,55 @@ static func walk(world: WorldState, region: RegionState, from: Vector2, dx: floa
 			if dr == 0 and run.y > here.y:
 				return Vector2(to_x, from.y)
 	return from
+
+
+
+# ------------------------------------------------------------------ iteration 014: Burnt Ones indoors
+
+## Stair flights (and ladders) of a side region: [bottom (plan), top y].
+static func flights(region: RegionState) -> Array:
+	var out := []
+	for eid in Content.entity_ids(region.def_id):
+		var d := region.entity_def(eid)
+		if str(d.get("type", "")) == "stairs":
+			out.append([Content.entity_position(d), float(d.get("top", 0.0))])
+	return out
+
+
+## Same floor (within a little over one row)?
+static func same_floor(region: RegionState, a: Vector2, b: Vector2) -> bool:
+	return absf(a.y - b.y) < row_h(region) * 1.2
+
+
+## One step of a walker that follows floors and takes the stairs toward `goal`
+## (host AI inside buildings). `step` = pixels this tick. Returns the new position.
+static func chase_step(world: WorldState, region: RegionState, from: Vector2, goal: Vector2, step: float) -> Vector2:
+	if same_floor(region, from, goal):
+		return _toward_x(world, region, from, goal.x, step)
+	var up := goal.y < from.y
+	# on a flight that leads the right way: climb
+	for f in flights(region):
+		var bottom: Vector2 = f[0]
+		var top_y: float = f[1]
+		if absf(from.x - bottom.x) <= row_h(region) * 0.45 and from.y <= bottom.y + 8.0 and from.y >= top_y - 8.0:
+			if (up and from.y > top_y + 0.5) or (not up and from.y < bottom.y - 0.5):
+				return Vector2(bottom.x, move_toward(from.y, top_y if up else bottom.y, step))
+	# else walk to the nearest flight that starts (going up) or ends (going down) on this floor
+	var best := INF
+	var best_x := goal.x
+	for f in flights(region):
+		var bottom2: Vector2 = f[0]
+		var top2: float = f[1]
+		var here_y := bottom2.y if up else top2
+		if absf(here_y - from.y) < row_h(region) * 1.2 and absf(bottom2.x - from.x) < best:
+			best = absf(bottom2.x - from.x)
+			best_x = bottom2.x
+	return _toward_x(world, region, from, best_x, step)
+
+
+static func _toward_x(world: WorldState, region: RegionState, from: Vector2, x: float, step: float) -> Vector2:
+	if absf(x - from.x) < 1.0:
+		return from
+	var p := walk(world, region, from, signf(x - from.x) * minf(step, absf(x - from.x)))
+	p.y = floor_y(region, p.x, p.y - 4.0)
+	return p

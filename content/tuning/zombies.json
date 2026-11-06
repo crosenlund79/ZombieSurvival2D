@@ -100,6 +100,14 @@
 		"search_loud": {
 			"radius": 380,
 			"attention": 0.5
+		},
+		"gunshot": {
+			"radius": 1300,
+			"attention": 2.5
+		},
+		"gunshot_heavy": {
+			"radius": 1700,
+			"attention": 3.2
 		}
 	},
 	"hunt_seconds": 240,

@@ -1,0 +1,116 @@
+{
+	"kind": "visual",
+	"category": "firearms",
+	"assets": [
+		{
+			"id": "item.handgun",
+			"name": "Handgun (held)",
+			"template": "res://assets/templates/items/template_handgun.png",
+			"display_size": [
+				20,
+				60
+			],
+			"source_size": [
+				40,
+				120
+			],
+			"pivot": [
+				0.5,
+				0.9
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_firearms.py) - replace with tablet art."
+		},
+		{
+			"id": "item.revolver",
+			"name": "Revolver (held)",
+			"template": "res://assets/templates/items/template_revolver.png",
+			"display_size": [
+				20,
+				60
+			],
+			"source_size": [
+				40,
+				120
+			],
+			"pivot": [
+				0.5,
+				0.9
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_firearms.py) - replace with tablet art."
+		},
+		{
+			"id": "item.shotgun",
+			"name": "Shotgun (held)",
+			"template": "res://assets/templates/items/template_shotgun.png",
+			"display_size": [
+				20,
+				60
+			],
+			"source_size": [
+				40,
+				120
+			],
+			"pivot": [
+				0.5,
+				0.9
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_firearms.py) - replace with tablet art."
+		},
+		{
+			"id": "item.hunting_rifle",
+			"name": "Hunting rifle (held)",
+			"template": "res://assets/templates/items/template_hunting_rifle.png",
+			"display_size": [
+				20,
+				60
+			],
+			"source_size": [
+				40,
+				120
+			],
+			"pivot": [
+				0.5,
+				0.9
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_firearms.py) - replace with tablet art."
+		},
+		{
+			"id": "item.military_rifle",
+			"name": "Military rifle (held)",
+			"template": "res://assets/templates/items/template_military_rifle.png",
+			"display_size": [
+				20,
+				60
+			],
+			"source_size": [
+				40,
+				120
+			],
+			"pivot": [
+				0.5,
+				0.9
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_firearms.py) - replace with tablet art."
+		}
+	]
+}

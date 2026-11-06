@@ -70,7 +70,10 @@ static func uses_storage(p: PlayerState, cost: Dictionary) -> bool:
 
 
 static func new_gear(world: WorldState, item: String) -> Dictionary:
-	return {"uid": world.new_uid("g"), "item": item, "cond": float(Items.info(item).get("durability", 100))}
+	var g := {"uid": world.new_uid("g"), "item": item, "cond": float(Items.info(item).get("durability", 100))}
+	if Firearms.is_firearm(item):
+		g["loaded"] = 0  # found empty; loot may put a few rounds in (LootSim)
+	return g
 
 
 ## Gives stackable items to a player; whatever does not fit lands in a ground
@@ -192,6 +195,8 @@ static func request(world: WorldState, player_id: String, action: String, arg: S
 			return _use(world, p, arg, res)
 		"flashlight":
 			return toggle_flashlight(p, res)
+		"reload":
+			return Firearms.reload_held(world, p)
 		_:
 			return WorldActions._fail("ACTION_NOT_SUPPORTED")
 	return res

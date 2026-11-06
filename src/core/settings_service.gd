@@ -37,6 +37,7 @@ const DEFAULT_BINDINGS := {
 	"repair": [KEY_R],
 	"vehicle_engine": [KEY_G],
 	"flashlight": [KEY_L],
+	"reload": [KEY_T],
 	"bunker_view": [KEY_F7],
 	"pause_menu": [KEY_ESCAPE],
 	"quick_save": [KEY_F5],
@@ -47,7 +48,7 @@ const DEFAULT_BINDINGS := {
 }
 ## Actions shown in the controls list (dev/debug keys are listed but grouped last).
 const REMAPPABLE: Array[String] = ["move_up", "move_down", "move_left", "move_right",
-	"interact", "attack", "sprint", "drink", "eat", "build_menu", "repair", "vehicle_engine", "flashlight", "inventory", "guide", "settlement", "skills", "world_map", "pause_menu", "quick_save", "zoom_in", "zoom_out", "dev_overlay", "bunker_view", "screenshot"]
+	"interact", "attack", "sprint", "drink", "eat", "build_menu", "repair", "vehicle_engine", "flashlight", "reload", "inventory", "guide", "settlement", "skills", "world_map", "pause_menu", "quick_save", "zoom_in", "zoom_out", "dev_overlay", "bunker_view", "screenshot"]
 
 var _cfg := ConfigFile.new()
 var _path := ""

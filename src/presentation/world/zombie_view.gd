@@ -53,6 +53,14 @@ static var _tracks: Array = []   # recent track decals (shared cap across all vi
 const MAX_TRACKS := 60
 
 
+## Iteration 014: Burnt Ones inside a side-view building are drawn in its cross-section.
+func _screen(z: ZombieState) -> Vector2:
+	var view := RegionView.find_for(self)
+	if view != null and view.side and Session.world != null:
+		return SideSection.to_screen(Session.world.region(z.region_id), z.position)
+	return z.position
+
+
 func setup(z: ZombieState) -> void:
 	zombie_id = z.zombie_id
 	position = z.position
@@ -94,7 +102,7 @@ func _process(delta: float) -> void:
 	var z := _state()
 	if z == null:
 		return
-	_target = z.position
+	_target = _screen(z)
 	if position.distance_to(_target) > 200.0:
 		position = _target
 	var before := position

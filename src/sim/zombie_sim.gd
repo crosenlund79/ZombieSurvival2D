@@ -28,6 +28,7 @@ static func c(key: String, fallback: Variant) -> Variant:
 ## Queues a noise event of a configured category at a world position.
 static func make_noise(world: WorldState, region_id: String, pos: Vector2, category: String, scale: float = 1.0) -> void:
 	var n: Dictionary = c("noise", {}).get(category, {"radius": 200, "attention": 0.2})
+	HideoutSim.noted(world, region_id, float(n["attention"]) * scale)  # iteration 014: a disturbed hideout
 	if region_cfg(region_id, world).is_empty():
 		# Nobody hears it in here, but part of the sound reaches the surface
 		# (through the hatch for bunker levels; a steel hatch keeps most in).
@@ -408,6 +409,11 @@ static func _update(world: WorldState, z: ZombieState, grid: NavGrid, dyn: Dicti
 			if z.timer <= 0.0:
 				z.ai = ZombieState.AI.CHASE
 			return
+	# Iteration 014: inside a building, a Burnt One whose quarry fled to the street
+	# makes for the door (HideoutSim.follow_out carries it through).
+	if z.ai == ZombieState.AI.CHASE and HideoutSim.door_goal(world, z):
+		_move(world, z, grid, dyn, float(c("speed_chase", 92)) * _pace(z), budget)
+		return
 	# Senses: sight (cone + short all-round range, needs line of sight).
 	var seen := _look(world, z, grid, dyn)
 	if seen != null and z.ai == ZombieState.AI.CHASE and z.target_player == seen.player_id:
@@ -610,10 +616,16 @@ static func _look(world: WorldState, z: ZombieState, grid: NavGrid, dyn: Diction
 		var d: float = to.length()
 		if d > sight:
 			continue
-		if d > omni and z.facing.dot(to / maxf(d, 0.001)) < cos_half:
-			continue
-		if not grid.clear_line(z.position, p.position, dyn):
-			continue
+		var region := world.region(z.region_id)
+		if SideSection.always_side(region):
+			# Indoors (side view): anyone on the same floor is seen; floors and slabs hide.
+			if not SideSection.same_floor(region, z.position, p.position):
+				continue
+		else:
+			if d > omni and z.facing.dot(to / maxf(d, 0.001)) < cos_half:
+				continue
+			if not grid.clear_line(z.position, p.position, dyn):
+				continue
 		# Prefer the current target unless another player is much closer.
 		var score: float = d * (0.6 if p.player_id == z.target_player else 1.0)
 		if score < best_d:
@@ -623,6 +635,14 @@ static func _look(world: WorldState, z: ZombieState, grid: NavGrid, dyn: Diction
 
 
 static func _move(world: WorldState, z: ZombieState, grid: NavGrid, dyn: Dictionary, speed: float, budget: Array) -> void:
+	var sreg := world.region(z.region_id)
+	if SideSection.always_side(sreg):
+		# Iteration 014: inside a building — along the floors, up and down the stairs.
+		var before := z.position
+		z.position = SideSection.chase_step(world, sreg, z.position, z.goal, speed * DT)
+		if z.position.distance_to(before) > 0.01:
+			z.facing = (z.position - before).normalized()
+		return
 	var dest := z.goal
 	if grid.clear_line(z.position, z.goal, dyn):
 		z.path.clear()

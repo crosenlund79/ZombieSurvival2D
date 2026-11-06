@@ -17,7 +17,7 @@ const LEVEL_PREFIX := "level:"
 const DEFAULT_REGION := "homestead"
 ## Entity types the rules in WorldActions understand.
 const ENTITY_TYPES: Array[String] = ["door", "portal", "shelter_site", "tree", "stockpile", "support_site", "weapon_rack", "starter_bag", "bed",
-	"storage", "generator", "purifier", "lamp", "loot", "container", "stairs"]
+	"storage", "generator", "purifier", "lamp", "loot", "container", "stairs", "hideout"]
 
 static var _defs: Dictionary = {}       # def_id -> def
 static var _region_ids: Array = []      # static regions only

@@ -267,6 +267,29 @@ func _on_combat_event(ev: Dictionary) -> void:
 				EnvSim.sound_mask_db(Session.world))
 			if sv2 != null:
 				sv2.screech()
+		"shot", "dry_fire", "reload":
+			# Iteration 014: firearms — sound, a muzzle flash and a faint tracer.
+			if str(ev.get("region_id", "")) != region_id:
+				return
+			var at5 := Vector2(float(ev.get("x", 0)), float(ev.get("y", 0)))
+			if side:
+				at5 = SideSection.to_screen(region_state(), at5) + Vector2(0, -44)
+			match str(ev["kind"]):
+				"shot":
+					var snd := str(Firearms.spec(str(ev.get("item", ""))).get("sound", "sfx.gun_pistol"))
+					Audio.play(snd, at5)
+					var to5 := Vector2(float(ev.get("tx", at5.x)), float(ev.get("ty", at5.y)))
+					if side:
+						to5 = Vector2(to5.x, at5.y)
+					_muzzle(at5, to5)
+				"dry_fire":
+					Audio.play("sfx.gun_dry", at5)
+				"reload":
+					Audio.play("sfx.gun_mag_out", at5)
+					get_tree().create_timer(0.5).timeout.connect(func() -> void: Audio.play("sfx.gun_mag_in", at5))
+		"zombie_through_door":
+			if str(ev.get("region_id", "")) == region_id:
+				Audio.play("sfx.door_open", Vector2(float(ev.get("x", 0)), float(ev.get("y", 0))))
 		"npc_met":
 			var nv: Node2D = _npcs.get(str(ev.get("npc_id", "")))
 			if nv != null and is_instance_valid(nv):
@@ -323,3 +346,27 @@ func _on_combat_event(ev: Dictionary) -> void:
 
 func avatar_count() -> int:
 	return _avatars.size()
+
+
+
+## A muzzle flash (a short, hard light) and a faint tracer line. Presentation only.
+func _muzzle(from: Vector2, to: Vector2) -> void:
+	var l := PointLight2D.new()
+	l.set_script(LightSpot)
+	l.color = Color(1.0, 0.86, 0.6)
+	l.energy = 1.6
+	l.texture_scale = 2.0
+	l.position = from
+	add_child(l)
+	var line := Line2D.new()
+	line.points = PackedVector2Array([from + (to - from).normalized() * 30.0, to])
+	line.width = 1.5
+	line.default_color = Color(1.0, 0.92, 0.75, 0.55)
+	line.z_index = 20
+	add_child(line)
+	var tw := create_tween()
+	tw.tween_property(l, "energy", 0.0, 0.09)
+	tw.parallel().tween_property(line, "modulate:a", 0.0, 0.12)
+	tw.tween_callback(func() -> void:
+		l.queue_free()
+		line.queue_free())

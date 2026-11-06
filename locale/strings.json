@@ -3206,5 +3206,149 @@
 	"SIDE_RECORDS": {
 		"en": "Records",
 		"da": "Arkiv"
+	},
+	"ITEM_HANDGUN": {
+		"en": "Handgun",
+		"da": "Pistol"
+	},
+	"ITEM_HANDGUN_DESC": {
+		"en": "A 9 mm service pistol. 8 rounds. Loud — everything nearby will hear it.",
+		"da": "En 9 mm tjenestepistol. 8 skud. Høj — alt i nærheden vil høre den."
+	},
+	"ITEM_REVOLVER": {
+		"en": "Revolver",
+		"da": "Revolver"
+	},
+	"ITEM_REVOLVER_DESC": {
+		"en": "Six heavy rounds, slow to reload.",
+		"da": "Seks tunge skud, langsom at lade."
+	},
+	"ITEM_SHOTGUN": {
+		"en": "Shotgun",
+		"da": "Haglgevær"
+	},
+	"ITEM_SHOTGUN_DESC": {
+		"en": "Pump action, four shells. Devastating up close, deafening.",
+		"da": "Pumpegevær, fire patroner. Ødelæggende tæt på, øredøvende."
+	},
+	"ITEM_HUNTING_RIFLE": {
+		"en": "Hunting rifle",
+		"da": "Jagtriffel"
+	},
+	"ITEM_HUNTING_RIFLE_DESC": {
+		"en": "Bolt action, five rounds, long reach.",
+		"da": "Boltaktion, fem skud, lang rækkevidde."
+	},
+	"ITEM_MILITARY_RIFLE": {
+		"en": "Military rifle",
+		"da": "Militærriffel"
+	},
+	"ITEM_MILITARY_RIFLE_DESC": {
+		"en": "A twenty-round magazine and a sound that carries for miles.",
+		"da": "Et magasin med tyve skud og en lyd der bærer milevidt."
+	},
+	"ITEM_AMMO_PISTOL": {
+		"en": "Pistol rounds",
+		"da": "Pistolpatroner"
+	},
+	"ITEM_AMMO_PISTOL_DESC": {
+		"en": "9 mm rounds for the handgun.",
+		"da": "9 mm patroner til pistolen."
+	},
+	"ITEM_AMMO_REVOLVER": {
+		"en": "Revolver rounds",
+		"da": "Revolverpatroner"
+	},
+	"ITEM_AMMO_REVOLVER_DESC": {
+		"en": "Heavy rounds for the revolver.",
+		"da": "Tunge patroner til revolveren."
+	},
+	"ITEM_SHOTGUN_SHELLS": {
+		"en": "Shotgun shells",
+		"da": "Haglpatroner"
+	},
+	"ITEM_SHOTGUN_SHELLS_DESC": {
+		"en": "Twelve-gauge shells.",
+		"da": "Patroner, kaliber 12."
+	},
+	"ITEM_RIFLE_ROUNDS": {
+		"en": "Rifle rounds",
+		"da": "Riffelpatroner"
+	},
+	"ITEM_RIFLE_ROUNDS_DESC": {
+		"en": "For the hunting rifle and the military rifle.",
+		"da": "Til jagtriflen og militærriflen."
+	},
+	"ITEM_LOADED_MAGAZINE": {
+		"en": "Loaded magazine",
+		"da": "Ladt magasin"
+	},
+	"ITEM_LOADED_MAGAZINE_DESC": {
+		"en": "A full handgun magazine: reloads in one go.",
+		"da": "Et fuldt pistolmagasin: lader på én gang."
+	},
+	"ITEM_WEAPON_PARTS": {
+		"en": "Replacement weapon parts",
+		"da": "Reservedele til våben"
+	},
+	"ITEM_WEAPON_PARTS_DESC": {
+		"en": "Springs, pins and a firing pin. Repairs a firearm at the workbench.",
+		"da": "Fjedre, stifter og en slagstift. Reparerer et skydevåben ved arbejdsbænken."
+	},
+	"ACTION_RELOAD": {
+		"en": "Reload",
+		"da": "Lad våbnet"
+	},
+	"ACTION_GUN_JAMMED": {
+		"en": "The gun is jammed — it needs repairing.",
+		"da": "Våbnet klikker — det skal repareres."
+	},
+	"ACTION_NO_FIREARM": {
+		"en": "You are not holding a firearm.",
+		"da": "Du holder ikke et skydevåben."
+	},
+	"ACTION_GUN_FULL": {
+		"en": "Already loaded.",
+		"da": "Allerede ladt."
+	},
+	"ACTION_NO_AMMO": {
+		"en": "No %s left.",
+		"da": "Ingen %s tilbage."
+	},
+	"GUN_EMPTY": {
+		"en": "Click. Empty. (T to reload)",
+		"da": "Klik. Tom. (T for at lade)"
+	},
+	"HUD_AMMO": {
+		"en": "Rounds %s/%s (+%s)",
+		"da": "Skud %s/%s (+%s)"
+	},
+	"HIDEOUT_DISTURBED": {
+		"en": "Something moves in the house.",
+		"da": "Noget bevæger sig i huset."
+	},
+	"DEV_TIME_PAUSE": {
+		"en": "Pause time",
+		"da": "Stop tiden"
+	},
+	"DEV_TIME_X": {
+		"en": "Time %d×",
+		"da": "Tid %d×"
+	},
+	"DEV_TIME_SCALE": {
+		"en": "World time ×%s (single player)",
+		"da": "Verdenstid ×%s (én spiller)"
+	},
+	"DEV_SINGLE_PLAYER_ONLY": {
+		"en": "Only in single player.",
+		"da": "Kun i spil for én spiller."
+	},
+	"HUD_TIME_PAUSED": {
+		"en": "TIME PAUSED (dev)",
+		"da": "TIDEN STÅR STILLE (dev)"
+	},
+	"HUD_TIME_SCALE": {
+		"en": "Time ×%s (dev)",
+		"da": "Tid ×%s (dev)"
 	}
 }

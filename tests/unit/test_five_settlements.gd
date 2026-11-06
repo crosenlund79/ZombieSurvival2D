@@ -262,3 +262,126 @@ func test_the_mine_has_three_levels_and_a_way_out() -> void:
 	check(Terrain.is_permanent(m, Vector2i(10, 10)), "the rock is fixed (no arbitrary digging)")
 	p.position = Content.entity_position(m.entity_def("greyhollow.mine.exit"))
 	check(WorldActions.request_interact(w, PID, "greyhollow.mine.exit", -1)["ok"] and p.region_id == "greyhollow", "and back out")
+
+
+# ---------------------------------------------------------------- D: firearms, hideout
+
+func _armed(w: WorldState, region: String, pos: Vector2, gun := "handgun") -> PlayerState:
+	var p := _player(w, PID, region, pos)
+	var g := Inv.new_gear(w, gun)
+	p.gear.append(g)
+	p.equipped["hand"] = g["uid"]
+	return p
+
+
+func test_handgun_reload_fire_ammo_and_noise() -> void:
+	var w := WorldState.create_new("w_d1", 431)
+	w.threat.enabled = true
+	var p := _armed(w, "homestead", Vector2(1200, 1200))
+	var g := Firearms.held(p)
+	check(not g.is_empty(), "holding a handgun")
+	eq(Firearms.loaded(g), 0, "found empty")
+	var r := WorldActions.request_attack(w, PID, Vector2.RIGHT)
+	eq(r["events"][0]["kind"], "dry_fire", "an empty gun clicks")
+	eq(Inv.request(w, PID, "reload", "")["reason"], "ACTION_NO_AMMO", "no rounds, no reload")
+	p.carried["ammo_pistol"] = 12
+	check(Inv.request(w, PID, "reload", "")["ok"], "reload")
+	eq(Firearms.loaded(g), 8, "eight in the magazine")
+	eq(p.carrying("ammo_pistol"), 4, "four left in the pocket")
+	w.tick += 40
+	var z := ZombieSim.spawn(w, "homestead", Vector2(1500, 1200), false)
+	var hp := z.health
+	w.threat.queue.clear()
+	r = WorldActions.request_attack(w, PID, Vector2.RIGHT)
+	check(r["ok"], "fire")
+	eq(Firearms.loaded(g), 7, "one round used")
+	check(z.health < hp, "the Burnt One in the line of fire is hit (%d -> %d)" % [hp, z.health])
+	var loud := false
+	for n in w.threat.queue:
+		loud = loud or str(n.get("category", "")) == "gunshot" and float(n.get("radius", 0)) >= 1000.0
+	check(loud, "a gunshot is heard far away")
+	eq(WorldActions.request_attack(w, PID, Vector2.RIGHT)["reason"], "ACTION_TOO_FAST", "the trigger needs a moment")
+	w.tick += 10
+	var miss := WorldActions.request_attack(w, PID, Vector2.LEFT)
+	check(miss["ok"] and Firearms.loaded(g) == 6, "a miss still spends a round")
+	p.carried["loaded_magazine"] = 1
+	w.tick += 20
+	check(Inv.request(w, PID, "reload", "")["ok"], "swap in a loaded magazine")
+	eq(Firearms.loaded(g), 8, "full again")
+	eq(p.carrying("ammo_pistol"), 10, "the six left over went back to the pocket")
+	var data := SaveCodec.encode(w)
+	var w2: WorldState = SaveCodec.decode(JSON.parse_string(JSON.stringify(data)))["world"]
+	eq(Firearms.loaded(Firearms.held(w2.players[PID])), 8, "rounds in the gun survive a save")
+
+
+func test_shotgun_hits_several_and_rifle_reaches_far() -> void:
+	var w := WorldState.create_new("w_d2", 432)
+	var p := _armed(w, "homestead", Vector2(1200, 1200), "shotgun")
+	p.carried["shotgun_shells"] = 4
+	Inv.request(w, PID, "reload", "")
+	w.tick += 60
+	var a := ZombieSim.spawn(w, "homestead", Vector2(1400, 1190), false)
+	var b := ZombieSim.spawn(w, "homestead", Vector2(1420, 1215), false)
+	var ha := a.health
+	var hb := b.health
+	WorldActions.request_attack(w, PID, Vector2.RIGHT)
+	check(a.health < ha and b.health < hb, "one blast, two hit")
+	var q := _armed(w, "harbor", Vector2(300, 900), "hunting_rifle")  # the open coast road
+	q.carried["rifle_rounds"] = 5
+	Inv.request(w, PID, "reload", "")
+	w.tick += 60
+	var far := ZombieSim.spawn(w, "harbor", Vector2(1150, 900), false)
+	var hf := far.health
+	WorldActions.request_attack(w, PID, Vector2.RIGHT)
+	check(far.health < hf, "the rifle reaches 850 px")
+
+
+func test_hideout_wakes_once_and_follows_you_outside() -> void:
+	var w := WorldState.create_new("w_d3", 433)
+	w.threat.enabled = true
+	var house := w.region("stillwater.quiet_house")
+	var hid := "stillwater.quiet_house.hideout"
+	check(house.has_entity(hid), "the quiet house hides something")
+	var p := _player(w, PID, "stillwater.quiet_house", Content.spawn_point(house.def_id, 0))
+	p.position = SideSection.rest(house, p.position)
+	var before := w.zombies.size()
+	ZombieSim.make_noise(w, house.region_id, p.position, "search")  # a quiet search: not enough
+	HideoutSim.step(w, 1)
+	eq(w.zombies.size(), before, "a little noise is not enough")
+	ZombieSim.make_noise(w, house.region_id, p.position, "search_loud")
+	ZombieSim.make_noise(w, house.region_id, p.position, "search_loud")
+	var out := HideoutSim.step(w, 1)
+	eq(w.zombies.size(), before + 2, "two Burnt Ones emerge")
+	check(bool(house.entity_state(hid).get("triggered", false)), "triggered")
+	var ids: Array = house.entity_state(hid).get("zombies", [])
+	for zid in ids:
+		var z: ZombieState = w.zombies[zid]
+		eq(z.region_id, "stillwater.quiet_house", "inside the house")
+		eq(z.target_player, PID, "hunting the player")
+		check(z.persistent, "saved with the world")
+	ZombieSim.make_noise(w, house.region_id, p.position, "gunshot")
+	HideoutSim.step(w, 1)
+	eq(w.zombies.size(), before + 2, "never more than once")
+	# flee outside: they make for the door and follow
+	var exit := Content.entity_position(house.entity_def("stillwater.quiet_house.exit"))
+	p.position = exit
+	WorldActions.request_interact(w, PID, "stillwater.quiet_house.exit", -1)
+	eq(p.region_id, "stillwater", "the player is outside")
+	var followed := 0
+	for i in 600:
+		Simulation.advance(w, 1)
+		followed = 0
+		for zid in ids:
+			if w.zombies.has(zid) and (w.zombies[zid] as ZombieState).region_id == "stillwater":
+				followed += 1
+		if followed == ids.size():
+			break
+	check(followed >= 1, "they follow through the door (%d of %d)" % [followed, ids.size()])
+	for zid in ids:
+		if w.zombies.has(zid):
+			(w.zombies[zid] as ZombieState).health = 0.0
+	Simulation.advance(w, 1)
+	HideoutSim.step(w, 1)
+	var data := SaveCodec.encode(w)
+	var w2: WorldState = SaveCodec.decode(JSON.parse_string(JSON.stringify(data)))["world"]
+	check(bool(w2.region("stillwater.quiet_house").entity_state(hid).get("triggered", false)), "the hideout stays triggered after a save")
