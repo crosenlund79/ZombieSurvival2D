@@ -127,6 +127,13 @@ and the playtest guide. Developer shortcuts (F3 console commands, host or single
 `dev warmth 20`, `dev hunt`. Two players on one computer can share the car: the second player presses
 **E** at the car after the first one got in.
 
+## 3f. Shadows & Depth (iteration 012)
+
+Report: [`../iterations/012_shadows_and_depth.md`](../iterations/012_shadows_and_depth.md). Bunker levels open in the
+experimental **side view**; **F7** (or F3 → "Bunker view") switches you to the original top-down bunker and back
+(saved per player, other players unaffected). Developer helpers: `dev heat` (a temporary heat source where you
+stand, `dev heat off` clears), `dev blood` (one mark beside you), `dev create_level` (more bunker levels).
+
 ## 4. Saves
 
 Only the host (or single player) saves. Locations (Windows):
@@ -164,6 +171,8 @@ xvfb-run -a -s "-screen 0 1700x1000x24" python3 tools/shots_red_thaw.py   # 010 
 python3 tools/mp_test.py accept                           # the 25-step survival-slice acceptance run
 python3 tools/mp_test.py infra_multi dig_multi danger_multi   # iteration 003 two-process scenarios
 python3 tools/mp_test.py winter_multi vehicle_multi wild_multi custom_graphics   # iteration 011 two-process scenarios
+python3 tools/mp_test.py side_multi blood_multi           # iteration 012: side-view bunker with two instances, thawed blood
+xvfb-run -a -s "-screen 0 1700x1000x24" python3 tools/shots_shadows_depth.py   # iteration 012 screenshots + CHECK lines
 xvfb-run -a -s "-screen 0 1700x1000x24" python3 tools/shots_world_awakens.py   # iteration 011 screenshots + CHECK lines
 xvfb-run -a -s "-screen 0 1700x1000x24" python3 tools/shots_003.py   # iteration 003 screenshots
 ```

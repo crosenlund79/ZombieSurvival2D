@@ -24,6 +24,7 @@ Open the manifest for its category in `assets/manifest/`:
 | `visual_awakens.json` | **Iteration 011**: the station wagon in 16 headings (`vehicle.wagon_00` … `_15`, heading = number × 22.5° clockwise from east), the Ashgrove storefronts (`world.town_grocery`, `_pharmacy`, `_hardware`, `_clothing`, `_garage`), street lamp, town sign, road block, wolves and bears (`char.wolf_*`, `char.bear_*`: side walk frames 0/1 facing right, front, back), the flashlight in the hand (`item.flashlight`) and the light beam shape (`fx.flashlight_cone`, white = lit, pointing right from the centre; also used for headlights) |
 | `audio_awakens.json` | **Iteration 011**: engine loop (pitch follows speed), engine start / stop, car door, wolf howl / huff, bear grunt / huff |
 | `audio_inbox.json` | **Iteration 011**: clips selected from your `assets/audio inbox/` (see §8) |
+| `visual_depth.json` | **Iteration 012**: thawed-blood marks (`fx.blood_drop_a/b/c`, keep them small) and the **side-view bunker** set in `side/`: tiles (earth strata, bedrock, dug back wall, concrete wall), strips (floorboards, ceiling beam, concrete slab), ladder, floor hatch, scaffolding (marked / building / done), storage locker, generator and purifier (off / on), hanging lamp (off / on), bedroll, timber piles, wood / metal / concrete walls, door, crate, workbench, planter. Side-view pictures are drawn in elevation (from the front); keep the same pivots (feet on the floor, lamps hang from the top) |
 
 The older zombie, farmhouse, oak and grass entries are still listed in their manifests but are no longer
 used by the scenes. They stay so nothing breaks if you have already drawn them.
@@ -112,6 +113,10 @@ Special cases:
 WAV (16-bit PCM) or OGG Vorbis. Same naming rule; either extension is accepted:
 `assets/templates/audio/world/template_door_open.wav` → `overrides/audio/world/door_open.ogg` (or `.wav`).
 Loops (ambience) loop automatically. Volume and bus come from the manifest.
+
+**Burnt Ones are drawn as silhouettes (iteration 012).** Your Burnt One art is still used, but in ordinary play
+it is shown as a dark inked shape (only its outline and a hint of its form). Developer F3 → AI labels shows the
+full picture so you can check your drawing.
 
 ## 5. Seeing your change
 

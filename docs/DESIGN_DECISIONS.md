@@ -85,7 +85,26 @@ Update this file whenever an iteration adds or settles a decision.
 | WD-08 | Non-aggressive wolves and bears; interactable highlighting; corrected held-weapon alignment; a toggleable flashlight without batteries | World Awakens commission (D) |
 | WD-09 | Selected clips from the creator's audio inbox are used through the replacement system; a client-local "Use custom graphics" switch | World Awakens commission (E) |
 
+### Shadows & Depth (iteration 012)
+
+| ID | Decision | Source |
+|---|---|---|
+| SD-01 | Burnt Ones remain unidentified silhouettes in ordinary play: light may reveal outline, posture and movement, never their full appearance; distinct silhouettes per variation; no enemy indicators; full reveal only in developer debug | Shadows & Depth commission (1) |
+| SD-02 | Frozen blood in Burnt Ones' clothing thaws near real warmth and occasionally drips into small refreezing marks; weather fades, buries and washes them and limits how readable they are; no HUD warnings | Shadows & Depth commission (2) |
+| SD-03 | The surface stays top-down; bunker areas use a 2D side view / cross-section on this experimental branch, consuming the same authoritative state, with the original top-down bunker kept and comparable (reversible) | Shadows & Depth commission (3) |
+
 ## EXPLORING (prototype choices awaiting a creator decision)
+
+### Shadows & Depth (iteration 012)
+
+| ID | Topic | Current prototype | Where to tune |
+|---|---|---|---|
+| WX-11 | **Bunker perspective** | Side view is the default on this branch; F7 (developer) switches to the original top-down. Final choice open | `SettingsService.bunker_view()`, `[dev] bunker_view` |
+| WX-12 | Silhouette look | Form 0.12, outline 3 px (0.14 in the dark, +0.6 under light); archetypes gaunt / hunched / heavy / limping (±12 %) | `silhouette.gdshader`, `ZombieView.ARCHETYPES` |
+| WX-13 | Thaw numbers | Full thaw in 20 s at full warmth, refreeze 55 s; drips above 0.3, ≤ 1 per 5 s, 0.35 × thaw per second; 120 marks max; cabin stove radius 330, engine 170 | `content/tuning/blood.json`, homestead `heat_sources` |
+| WX-14 | Weather on marks | Erase per minute: clear/fog 0.07 (fade), snow 0.28, blizzard 0.6 (cover), rain/storm 0.8 (wash); readable range clear 1400, fog 380, blizzard 300 px; sound masking −1 … −9 dB | `content/tuning/blood.json`, `environment.json` (`sound_mask_db`) |
+| WX-15 | Side-view movement | Walk 220/320 px/s, one-row steps, step off any ledge, climb ladders and reinforced supports at 150 px/s, rows drawn at 62.5 % height | `SideSection`, `PlayerAvatar` |
+
 
 ### The World Awakens (iteration 011) — numbers and open choices
 
@@ -170,3 +189,4 @@ Update this file whenever an iteration adds or settles a decision.
 | WF-01 | Vehicle fuel, damage, repair, keys and locks; more vehicles | One wagon with the key in the ignition (fields reserved) |
 | WF-02 | Store interiors in Ashgrove | Stores are searched from the street |
 | WF-03 | Hunting, dangerous or persistent wildlife | Wildlife is atmospheric and transient |
+| WF-04 | Player-facing "dig down to a new level"; separate floor/ceiling building actions | Levels still come from the developer command (GD-05); floors and ceilings are drawn from the level type |

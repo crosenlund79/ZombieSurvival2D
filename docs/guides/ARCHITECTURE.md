@@ -460,7 +460,31 @@ overrides when OFF; `set_custom_graphics()` saves the choice and reloads, so eve
 through `Assets.reloaded`. The focus highlight is a shared ShaderMaterial put on the focused target's
 own sprites by `Interactable._highlight`.
 
-## 19. Dependency direction
+## 19. Shadows & Depth (iteration 012)
+
+- **Silhouettes (presentation only).** `ZombieView` puts a `ShaderMaterial` (`silhouette.gdshader`) on
+  every Burnt One. Its `light()` function adds 2D light only to the outline band, so lights cannot
+  reveal the interior. Archetypes come from the creature's id. The developer AI labels remove the
+  material.
+- **Thawed blood.** `BloodSim` is host-side and runs after `WildlifeSim` in `Simulation.advance`.
+  - Heat sources: region `heat_sources`, running vehicles and `WorldState.dev_heat`.
+  - `ZombieState.thaw` and `drip_cd` are transient; marks live in `WorldState.blood`, which is saved.
+  - Results carry `blood`, and `GameSession` replicates the whole list with `_rpc_blood` (reliable).
+  - `BloodView` draws the marks, judging readability from the local player's viewpoint.
+- **Side-view bunker (experimental).** `SideSection` (in `src/sim`) is the shared cross-section
+  reading of a level. `main.gd` builds a `SideBunkerView` (a `RegionView` with `side = true`) instead
+  of the level scene when the client's bunker view is "side".
+  - The ordinary entity, structure and NPC views and `PlayerAvatar` check `RegionView.side` to place
+    themselves in the cross-section, using `SideArt` for side pictures.
+  - `SideTerrain` draws the level and handles side-view digging.
+  - `PlayerState.bunker_view` (runtime) is set by `request_bunker_view` / `_rpc_request_bunker_view`.
+    The host uses it to put feet on the floor on arrival and to validate side-view moves.
+  - Bunker reach (`SideSection.in_reach`) also accepts "horizontally close within the same open space"
+    for interactions, entity actions, digging, supports, building, built objects and talking to
+    survivors.
+  - No data is converted: both views read plan coordinates.
+
+## 20. Dependency direction
 
 ```
 presentation (main, ui, world views) ──reads/requests──▶ Session ──▶ WorldActions / Simulation ──▶ state

@@ -1,4 +1,4 @@
-# Red Thaw — Playtest Guide (iteration 011; earlier systems from 001–010)
+# Red Thaw — Playtest Guide (iteration 012; earlier systems from 001–011)
 
 This guide is for playing the game and reporting problems. Technical details are in
 [`guides/TESTING_AND_LAUNCH.md`](guides/TESTING_AND_LAUNCH.md). Every number in the game is a prototype
@@ -41,6 +41,8 @@ Two pieces of on-screen help:
 | G | Engine on / off (in the driver's seat) |
 | E (in a car) | Get out (stop first) · **R** beside the car opens the trunk |
 | L | Flashlight on / off (when you carry one) |
+| W / S (bunker, side view) | Climb ladders and timber scaffolding; with W/S held, E digs the ceiling / floor |
+| F7 | Developer: bunker view side / top-down (comparison) |
 
 ## 3. What to try (Red Thaw)
 
@@ -104,6 +106,23 @@ back away; they never attack.
 
 **Custom graphics.** Settings → Assets → **Use custom graphics** switches your replacement pictures off
 and on instantly, without touching your files.
+
+## 3c. What to try (Shadows & Depth, iteration 012)
+
+**Shapes in the dark.** Start a Burnt One hunt (F3) and look at them by day, with your flashlight, in a car's
+headlights and in a lightning flash: you see dark human shapes — tall, hunched, heavy, limping — never faces or
+clothes. They crouch, crawl and scramble as before.
+
+**Red specks.** Burnt Ones that linger near warmth (the cabin, an idling car) thaw: a few small red drops may
+mark where they stood. On a calm day you can notice them and choose another way; fog, blowing snow, falling snow
+and rain hide or erase them. Their screeches are harder to hear in bad weather.
+
+**The bunker from the side.** Climb down the hatch: the shelter is now a cross-section — earth layers, rooms,
+floorboards, ceiling beams, the ladder up the shaft. Walk with A/D; climb ladders and timber supports with W/S.
+Face a wall (or hold W/S for ceiling/floor) and press E to dig; place a timber support where the earth is too
+unstable, then climb it to reach a ledge. Build with B — the object goes on the floor of the column you point at.
+Storage, generator, purifier, lamps, the workbench and the bedroll all work. Try the Ashgrove cellar too. Press
+**F7** to compare with the original top-down bunker.
 
 ## 4. Two players
 
