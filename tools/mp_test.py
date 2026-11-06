@@ -1859,6 +1859,83 @@ def scenario_blood_multi():
             i.kill()
 
 
+def _build_shelter_and_descend(i):
+    """Surface -> cabin -> build the hatch (if needed) -> open it -> climb down."""
+    r = _into_cabin(i)
+    i.cmd("walk_to 300 470 6")
+    st = i.state()["entities"][SITE]["state"]
+    if st.get("stage", "none") == "none":
+        i.cmd("interact " + SITE); i.cmd("wait 9")
+    if not i.state()["entities"][SITE]["state"].get("open", False):
+        i.cmd("interact " + SITE)
+    i.cmd("walk_to 300 452 4"); i.cmd("interact homestead.farmhouse.hatch_ladder"); i.cmd("wait 1.2")
+    return i.state()
+
+
+def scenario_side_multi():
+    """Iteration 012 C/D: the experimental side-view bunker with two real game instances —
+    players in different places and perspectives, digging and building in the side view,
+    one shared state, save/restart and a reconnect."""
+    host = Instance("t_shost"); c = Instance("t_sclient")
+    for i in (host, c):
+        i.wipe()
+    try:
+        host.start(); c.start()
+        host.cmd(f"host {PORT} new 180 Hosty"); host.cmd("tips off"); host.cmd("dev peaceful 1")
+        r = c.cmd(f"join 127.0.0.1 {PORT} Cleo"); c.cmd("tips off")
+        check("side: client joins", r["ok"], r["error"])
+        st = _build_shelter_and_descend(c)
+        check("side: the client climbs down into the bunker", st["region"] == L1, st["region"])
+        check("side: and sees it in the side view (default)", st["view"].get("side") is True, st["view"].get("side"))
+        cp = player(host.state(), "Cleo")
+        floor = 701.0
+        check("side: the host keeps the client's feet on the floor", abs(cp["y"] - floor) < 2.0, cp["y"])
+        hs = host.state()
+        check("side: the host is still on the surface, top-down", hs["region"] == "homestead" and not hs["view"].get("side", False), (hs["region"], hs["view"].get("side")))
+        c.cmd("walk_to 300 0 8")
+        cp2 = player(host.state(), "Cleo")
+        check("side: walking along the floor moves the client on the host", cp2["x"] < cp["x"] - 100 and abs(cp2["y"] - floor) < 2.0, (cp2["x"], cp2["y"]))
+        st = _build_shelter_and_descend(host)
+        check("side: the host joins below", st["region"] == L1, st["region"])
+        host.cmd("press_key bunker_view"); host.cmd("wait 1.0")
+        hs = host.state()
+        check("side: the host switches to the original top-down view (F7)", hs["view"].get("side") is False and hs["region"] == L1, hs["view"].get("side"))
+        check("side: the client keeps the side view", c.state()["view"].get("side") is True, "")
+        d0 = host.state()["terrain_dug"]
+        c.cmd("walk_to 960 0 8")
+        c.cmd("terrain dig 27 16"); c.cmd("wait 2.6")
+        check("side: the client digs in the side view (host-validated)", host.state()["terrain_dug"] == d0 + 1, (d0, host.state()["terrain_dug"]))
+        check("side: the dug cell reaches the client too", c.state()["terrain_dug"] == d0 + 1, c.state()["terrain_dug"])
+        objs0 = len(host.state()["objects_here"]) if "objects_here" in host.state() else host.state()["view"].get("objects", 0)
+        c.cmd("dev grant wood:6")
+        c.cmd("walk_to 700 0 8")
+        c.cmd("build crate 800 701"); c.cmd("wait 2.5")
+        o1 = host.state()["view"].get("objects", 0)
+        check("side: the client builds a crate on the floor (seen by the top-down host)", o1 == objs0 + 1, (objs0, o1))
+        check("side: and in its own side view", c.state()["view"].get("objects", 0) == o1, c.state()["view"].get("objects", 0))
+        host.cmd("walk_to 160 672 8")
+        hd = host.state()["terrain_dug"]
+        host.cmd("terrain dig 12 16"); host.cmd("wait 2.6")
+        check("side: the top-down host digs the same grid", c.state()["terrain_dug"] == hd + 1, (hd, c.state()["terrain_dug"]))
+        c.cmd("leave"); time.sleep(0.5)
+        r = c.cmd(f"join 127.0.0.1 {PORT} Cleo"); c.cmd("wait 1.0")
+        cs = c.state()
+        check("side: a reconnecting client returns to the bunker level", cs["region"] == L1 and cs["view"].get("side") is True, (cs["region"], cs["view"].get("side")))
+        cp3 = player(host.state(), "Cleo")
+        check("side: standing where it left (on the floor)", abs(cp3["y"] - floor) < 2.0 and abs(cp3["x"] - 700) < 40, (cp3["x"], cp3["y"]))
+        host.cmd("save"); dug_saved = host.state()["terrain_dug"]
+        c.cmd("leave"); host.cmd("leave")
+        host.cmd(f"host {PORT} continue Hosty")
+        r = c.cmd(f"join 127.0.0.1 {PORT} Cleo"); c.cmd("wait 1.0")
+        cs = c.state()
+        check("side: after a restart the client is back in the bunker", cs["region"] == L1, cs["region"])
+        check("side: the dug cells survived", c.state()["terrain_dug"] == dug_saved, (dug_saved, c.state()["terrain_dug"]))
+        check("side: the crate survived", c.state()["view"].get("objects", 0) >= o1, c.state()["view"].get("objects", 0))
+    finally:
+        for i in (host, c):
+            i.kill()
+
+
 def scenario_perf_multi():
     """Two connected players, a horde plus extra groups active around them: measure host simulation cost."""
     host = Instance("t_phost"); c = Instance("t_pclient")
@@ -1886,7 +1963,7 @@ def scenario_perf_multi():
             i.kill()
 
 
-SCENARIOS = {"blood_multi": scenario_blood_multi, "custom_graphics": scenario_custom_graphics, "wild_multi": scenario_wild_multi, "vehicle_multi": scenario_vehicle_multi, "winter_multi": scenario_winter_multi, "red_thaw_multi": scenario_red_thaw_multi, "perf_multi": scenario_perf_multi, "slice": scenario_slice, "settlement_multi": scenario_settlement_multi, "world_multi": scenario_world_multi, "craft_multi": scenario_craft_multi, "build_multi": scenario_build_multi, "accept": scenario_accept, "infra_multi": scenario_infra_multi, "dig_multi": scenario_dig_multi, "danger_single": scenario_danger_single, "danger_multi": scenario_danger_multi, "settings": scenario_settings, "bunker_single": scenario_bunker_single, "bunker_multi": scenario_bunker_multi, "single": scenario_single, "multiplayer": scenario_multiplayer,
+SCENARIOS = {"side_multi": scenario_side_multi, "blood_multi": scenario_blood_multi, "custom_graphics": scenario_custom_graphics, "wild_multi": scenario_wild_multi, "vehicle_multi": scenario_vehicle_multi, "winter_multi": scenario_winter_multi, "red_thaw_multi": scenario_red_thaw_multi, "perf_multi": scenario_perf_multi, "slice": scenario_slice, "settlement_multi": scenario_settlement_multi, "world_multi": scenario_world_multi, "craft_multi": scenario_craft_multi, "build_multi": scenario_build_multi, "accept": scenario_accept, "infra_multi": scenario_infra_multi, "dig_multi": scenario_dig_multi, "danger_single": scenario_danger_single, "danger_multi": scenario_danger_multi, "settings": scenario_settings, "bunker_single": scenario_bunker_single, "bunker_multi": scenario_bunker_multi, "single": scenario_single, "multiplayer": scenario_multiplayer,
              "netfail": scenario_connection_failure, "assets": scenario_assets}
 
 if __name__ == "__main__":
