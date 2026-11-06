@@ -193,6 +193,20 @@ A container shows its first picture until it has been searched, then its `_open`
 pairs are listed per container in the region files, `art` / `art_searched`). Collision comes from the region
 data, so a new picture never changes where you can walk.
 
+## 10. Five Settlements art (iteration 014)
+
+All generated placeholders; replace with a file of the same name without `template_` under `overrides/`.
+
+| Folder | Pictures | Generator / manifest |
+|---|---|---|
+| `side/` | side-view walls (`wall_cabin`, `wall_house`, `wall_house_b`, `wall_shop`, `wall_brick_in`, `wall_office`, `wall_mine`), exteriors (`ext_logs`, `ext_siding`, `ext_brick`, `ext_concrete`), `floor_linoleum`, `floor_concrete`, `ceiling`, `rail`, `window`, `window_boarded`, `door_ext`, `stairs`, `trapdoor_*`, mine dressing (`mine_cart`, `mine_beam`, `rubble`, `ore`, `mine_lamp`) | `tools/art/gen_side_interiors.py` / `visual_side_interiors.json` |
+| `world/settlements/` | 26 building facades, landmarks (lighthouse, crane, trawler, containers, headframe, adit, hopper, slag, water tower, fuel tanks, substation, memorial), icebergs and floes, water / sea-ice / pier / rail tiles | `tools/art/gen_five_settlements.py` / `visual_settlements.json` |
+| `items/` | held firearms (`handgun`, `revolver`, `shotgun`, `hunting_rifle`, `military_rifle`) and new melee weapons (`kitchen_knife`, `hunting_knife`, `baseball_bat`, `crowbar`, `hammer`, `fire_axe`, `shovel`, `pickaxe`, `sharpened_stick`, `metal_pipe`, `ice_pick`) — 40 × 120, grip at the bottom (pivot 0.5, 0.9) | `gen_firearms.py`, `gen_item_icons.py` / `visual_firearms.json`, `visual_melee_014.json` |
+| `ui/icons/` | one inventory icon per item, `<item id>.png`, 64 × 64 transparent (shown at 32 × 32) | `tools/art/gen_item_icons.py` / `visual_item_icons.json` |
+| `audio/five/` | `harbor_ice`, `mine_drip` ambience loops | `tools/art/gen_five_audio.py` / `audio_five.json` |
+
+The gun sounds (`sfx.gun_*`) come from the creator's audio inbox (§8) and are not generated.
+
 ## Verified status (iteration 011)
 
 | Check | Result |

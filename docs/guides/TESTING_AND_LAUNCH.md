@@ -142,6 +142,19 @@ Report: [`../iterations/013_scavengers_circuit.md`](../iterations/013_scavengers
 `town.house_west`, `town.house_east`), `dev vehicle_here [heading]`. Interiors are regenerated with
 `python3 tools/build_interiors.py`; container contents and positions are in its layout specs.
 
+## 3h. The Five Settlements (iteration 014)
+
+Report: [`../iterations/014_five_settlements.md`](../iterations/014_five_settlements.md); item audit:
+[`../iterations/014_item_audit.md`](../iterations/014_item_audit.md). Developer helpers: `dev goto junction`
+(or `greyhollow`, `greyhollow.mine`, `stillwater`, `stillwater.civic_hall`, `stillwater.quiet_house`, `harbor`,
+`harbor.cannery`, …), `dev grant handgun`, `dev grant ammo_pistol:16`, `dev noise 3` (wake the hideout),
+`dev time_scale 0|1|2|5|10` (single player only). Generators (re-run after editing):
+`python3 tools/build_side_interiors.py` (Ashgrove interiors + cabin), `python3 tools/build_settlements.py`
+(the four new settlements, their interiors, the mine and civic hall), `python3 tools/build_catalogue.py`
+(items + strings), `python3 tools/build_loot_pools.py` (loot pools), `python3 tools/item_audit.py`
+(the audit), `python3 tools/art/gen_item_icons.py` (icons + held melee art). The iteration 013 generator
+`tools/build_interiors.py` was replaced by `tools/build_side_interiors.py`.
+
 ## 4. Saves
 
 Only the host (or single player) saves. Locations (Windows):
@@ -182,6 +195,8 @@ python3 tools/mp_test.py winter_multi vehicle_multi wild_multi custom_graphics  
 python3 tools/mp_test.py side_multi blood_multi           # iteration 012: side-view bunker with two instances, thawed blood
 python3 tools/mp_test.py circuit_multi progression_multi expedition_multi   # iteration 013: interiors + containers, progression + dev tools, the full expedition loop
 xvfb-run -a -s "-screen 0 1600x900x24" python3 tools/shots_scavengers_circuit.py   # iteration 013 screenshots + CHECK lines
+python3 tools/mp_test.py five_multi                       # iteration 014: pooled search, handgun, refused time scale, mine, hideout, restart
+xvfb-run -a -s "-screen 0 1600x900x24" python3 tools/shots_five_settlements.py   # iteration 014 screenshots + CHECK lines
 xvfb-run -a -s "-screen 0 1700x1000x24" python3 tools/shots_shadows_depth.py   # iteration 012 screenshots + CHECK lines
 xvfb-run -a -s "-screen 0 1700x1000x24" python3 tools/shots_world_awakens.py   # iteration 011 screenshots + CHECK lines
 xvfb-run -a -s "-screen 0 1700x1000x24" python3 tools/shots_003.py   # iteration 003 screenshots

@@ -1,4 +1,4 @@
-# Red Thaw — Playtest Guide (iteration 013; earlier systems from 001–012)
+# Red Thaw — Playtest Guide (iteration 014; earlier systems from 001–013)
 
 This guide is for playing the game and reporting problems. Technical details are in
 [`guides/TESTING_AND_LAUNCH.md`](guides/TESTING_AND_LAUNCH.md). Every number in the game is a prototype
@@ -125,6 +125,35 @@ Face a wall (or hold W/S for ceiling/floor) and press E to dig; place a timber s
 unstable, then climb it to reach a ledge. Build with B — the object goes on the floor of the column you point at.
 Storage, generator, purifier, lamps, the workbench and the bedroll all work. Try the Ashgrove cellar too. Press
 **F7** to compare with the original top-down bunker.
+
+## 3e. What to try (The Five Settlements, iteration 014)
+
+**Inside is side view now.** Walk into the cabin, any shop or house: you see the building as a cross-section,
+with floors, ceilings, windows and furniture. Walk left and right with A/D; at stairs hold **W** / **S** to go up
+or down. Outside is still top-down. Watch a build's progress bar: it sits right above the thing being built.
+
+**The road east.** Leave Ashgrove by its east road (the roadblock has been pushed aside) on foot or by car:
+- **Corran Junction**, the crossroads: machine shop, warehouse, power & water building, a fuel depot.
+- North to **Greyhollow**, the mining town. Go into **the mine** (Adit No. 3) with a light: down the ladder shaft
+  to the haulage drift, down the winze to the deep workings. Two passages have collapsed.
+- East to **Stillwater**, the larger town: market, outfitters, clinic, police station, apartments — and the
+  **Civic Hall**, from the boiler room to the attic by three flights of stairs.
+- Further east to **Port Halden**, the frozen harbour: piers, the cannery, the harbour master's office — and
+  icebergs drifting in the open channels.
+The map (**M**) fills in as you arrive.
+
+**A quiet house.** One ordinary-looking house in Stillwater is not empty. Make enough noise in it and you will
+find out. Running is an option — they will follow you out of the door.
+
+**Guns.** Rare. If you find a handgun: equip it (**I**), load it with **T** (it needs the matching rounds), aim with
+the mouse and fire with the attack button. Every shot is heard from far away. Gun oil keeps it working.
+
+**Everything has a use, or a story.** 175 items, each with an icon and a tooltip (hover in the inventory). Stacks
+share slots (30 rounds in one), a backpack adds 10 slots, and clothes layer for warmth: hat, scarf, gloves,
+boots, thermal underwear, coat. Heat packs, a thermal blanket or a portable stove warm you; glow sticks and
+flares light the dark for a while. Every building holds what you would expect there — and some hold nothing.
+
+**Time controls (single player, F3 → World).** Pause, 1×, 2×, 5×, 10×. Not available in a hosted game.
 
 ## 3d. What to try (The Scavenger's Circuit, iteration 013)
 

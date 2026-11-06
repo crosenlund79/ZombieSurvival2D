@@ -103,7 +103,32 @@ Update this file whenever an iteration adds or settles a decision.
 | SC-04 | Developer menu in World / Player / Progression categories with a skill XP multiplier (default 1×, 0–25×, applies to new XP for all skills, host only, unavailable in release builds) and grant / set / reset | Scavenger's Circuit commission (C) |
 | SC-05 | The trunk is a usable cargo hold (12 slots); at least one shelter improvement needs scavenged materials (wood stove: improved heating) | Scavenger's Circuit commission (C/D) |
 
+### The Five Settlements (iteration 014)
+
+| ID | Decision | Source |
+|---|---|---|
+| FS-01 | Outdoors stays top-down; every building interior, bunker, cellar and the mine is a side-view cross-section on one shared grid model, with no duplicated world state | Five Settlements commission (A) |
+| FS-02 | Construction progress bars are anchored to the object being built, in both views, never duplicated | Five Settlements commission (A) |
+| FS-03 | Five settlements on one road network (Ashgrove, Corran Junction, Greyhollow, Stillwater, Port Halden) with real interiors, contextual loot, landmarks and audio; no fast travel; map discovery | Five Settlements commission (B) |
+| FS-04 | An explorable, handcrafted mine (no depth limit in the rules) and a four-level building (basement + three floors) | Five Settlements commission (C) |
+| FS-05 | The disturbed Burnt One hideout is an approved situational hunt trigger: an ordinary house, 1–2 Burnt Ones, once, persistent, following outside; the cabin and bunker stay safe | Five Settlements commission (D) |
+| FS-06 | Firearms through one shared host-authoritative framework (handgun first): rare, ammunition and reloading, loud | Five Settlements commission (D) |
+| FS-07 | Time acceleration (pause/1/2/5/10×) is a single-player developer tool only; clients and hosted games can never alter shared time | Five Settlements commission (D) |
+| FS-08 | One complete item catalogue (shared ids, no duplicates) and contextual weighted loot pools; firearms rare; some containers empty or junk-only; every item obtainable | Five Settlements commission (E/F) |
+
 ## EXPLORING (prototype choices awaiting a creator decision)
+
+### The Five Settlements (iteration 014)
+
+| ID | Topic | Current prototype | Where to tune |
+|---|---|---|---|
+| WX-21 | Hideout threshold | Disturbance ≥ 0.9 (noise attention adds up; a gunshot is 2.5) | `stillwater.quiet_house.hideout` (`tools/build_settlements.py`) |
+| WX-22 | Firearm numbers | Handgun 70 dmg / 8 rds / 640 px; revolver 95 / 6; shotgun 150 over 3 pellets / 4; hunting rifle 160 / 5 / 1000 px; military rifle 85 / 20; falloff 40 % at full range | `content/items.json` (`firearm`), `tools/build_catalogue.py` |
+| WX-23 | Gunshot noise | `gunshot` radius 1300, attention 2.5; `gunshot_heavy` 1700, 3.2 | `content/tuning/zombies.json` |
+| WX-24 | Stack limits and carrying | 30 base slots, backpack +10; stack limits per item (ammo 20–30, most bulky things 1); weight shown only | `content/items.json` (`stack_limit`, `carry`) |
+| WX-25 | Loot weights | 69 pools; empty 5–45 %, junk-only 0–45 %; firearms weights 0.15–3 (armory) | `tools/build_loot_pools.py` |
+| WX-26 | Insulation | Sum of everything worn, capped at 0.85 (coat 0.6, padded jacket 0.35, layers 0.02–0.12) | `content/items.json` (`insulation`) |
+| WX-27 | Lights | Glow stick 10 min, flare 4 min (used up); lamps never run out | `content/items.json` (`burn_seconds`) |
 
 ### The Scavenger's Circuit (iteration 013)
 
