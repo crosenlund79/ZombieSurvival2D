@@ -138,10 +138,12 @@ func test_day_night_and_weather_are_shared_and_seeded() -> void:
 		seq2.append([EnvSim.weather(w2), w2.env["until"]])
 		seq3.append([EnvSim.weather(w3), w3.env["until"]])
 	eq(seq2, seq3, "same world, same weather history")
-	EnvSim.set_weather(w, "rain")
+	EnvSim.set_weather(w, "heavy_rain")
 	check(EnvSim.hearing_scale(w) < 1.0, "rain masks noise")
 	var res := SaveCodec.decode(JSON.parse_string(JSON.stringify(SaveCodec.encode(w))))
-	eq(EnvSim.weather(res["world"]), "rain", "weather persists")
+	eq(EnvSim.weather(res["world"]), "heavy_rain", "weather persists")
+	w.env["weather"] = "rain"  # a pre-011 save (rain was shown as snowfall)
+	eq(EnvSim.weather(w), "snow", "legacy rain reads as snow")
 
 
 func test_rain_fills_collectors_faster() -> void:

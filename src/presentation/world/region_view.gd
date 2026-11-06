@@ -10,6 +10,8 @@ extends Node2D
 
 @export var region_id := "homestead"
 @export var ambience_id := ""
+## A second ambience loop (iteration 011), e.g. the cabin's stove under the wind.
+@export var ambience2_id := ""
 ## Kept for scene compatibility; the camera always frames the region bounds
 ## (rooms smaller than the view stay centred, larger maps are followed).
 @export var camera_limits := true
@@ -55,6 +57,10 @@ func _ready() -> void:
 		add_child(OmenView.create(region_id, _actors))
 	if ambience_id != "":
 		Audio.play_loop("ambience", ambience_id)
+	if ambience2_id != "":
+		Audio.play_loop("ambience2", ambience2_id)
+	else:
+		Audio.stop_loop("ambience2", 1.0)
 	SessionLog.info("view", "region_view_built", {"region": region_id, "def": def_id})
 
 

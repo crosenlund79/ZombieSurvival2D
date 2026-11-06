@@ -15,6 +15,12 @@ var equipped := {}       # slot ("hand", "body") -> gear uid
 var hunger := 100.0      # 100 = fed, 0 = starving
 var health := 100.0
 var hydration := 100.0
+## Iteration 011: body warmth, 100 = warm, 0 = freezing (cold exposure, SurvivalSim).
+var warmth := 100.0
+## Iteration 011: id of the vehicle this player sits in ("" = on foot). Saved.
+var vehicle_id := ""
+## Iteration 011: flashlight switched on (replicated presentation state).
+var flashlight := false
 var dead := false
 ## Item id of the usable tool/weapon in the hand ("" = bare hands). Derived from
 ## the equipped gear (a broken item counts as bare hands); read-only.
@@ -64,7 +70,8 @@ func to_dict() -> Dictionary:
 		"position": [snappedf(position.x, 0.01), snappedf(position.y, 0.01)],
 		"facing": facing, "last_seen_unix": last_seen_unix, "carried": carried.duplicate(),
 		"health": snappedf(health, 0.1), "hydration": snappedf(hydration, 0.1),
-		"hunger": snappedf(hunger, 0.1), "gear": gear.duplicate(true), "equipped": equipped.duplicate()}
+		"hunger": snappedf(hunger, 0.1), "gear": gear.duplicate(true), "equipped": equipped.duplicate(),
+		"warmth": snappedf(warmth, 0.1), "vehicle_id": vehicle_id}
 
 
 static func from_dict(id: String, d: Dictionary) -> PlayerState:
@@ -80,6 +87,8 @@ static func from_dict(id: String, d: Dictionary) -> PlayerState:
 	p.health = clampf(float(d.get("health", 100.0)), 1.0, 100.0)
 	p.hydration = clampf(float(d.get("hydration", 100.0)), 0.0, 100.0)
 	p.hunger = clampf(float(d.get("hunger", 100.0)), 0.0, 100.0)
+	p.warmth = clampf(float(d.get("warmth", 100.0)), 0.0, 100.0)
+	p.vehicle_id = str(d.get("vehicle_id", ""))
 	for g in d.get("gear", []):
 		if g is Dictionary and Items.exists(str(g.get("item", ""))) and str(g.get("uid", "")) != "":
 			p.gear.append({"uid": str(g["uid"]), "item": str(g["item"]), "cond": float(g.get("cond", 100.0))})

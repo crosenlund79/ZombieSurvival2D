@@ -171,6 +171,16 @@
 			"loop": false,
 			"status": "READY",
 			"notes": "Generated placeholder (tools/art/gen_red_thaw_audio.py). WAV or OGG override accepted."
+		},
+		{
+			"id": "amb.blizzard",
+			"name": "Blizzard gale (weather loop)",
+			"template": "res://assets/templates/audio/red_thaw/template_blizzard.wav",
+			"bus": "Ambience",
+			"volume_db": -6.0,
+			"loop": true,
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_red_thaw_audio.py). WAV or OGG override accepted."
 		}
 	]
 }

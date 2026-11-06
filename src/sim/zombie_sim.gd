@@ -600,7 +600,7 @@ static func _target(world: WorldState, z: ZombieState) -> PlayerState:
 static func _look(world: WorldState, z: ZombieState, grid: NavGrid, dyn: Dictionary) -> PlayerState:
 	var best: PlayerState = null
 	var best_d := INF
-	var sight := float(c("sight_range", 300)) * EnvSim.sight_scale(world)
+	var sight := float(c("sight_range", 300)) * EnvSim.sight_scale(world, z.region_id)
 	var omni := float(c("omni_sense_range", 110))
 	var cos_half := cos(deg_to_rad(float(c("sight_cone_degrees", 140)) * 0.5))
 	for p in world.online_players():

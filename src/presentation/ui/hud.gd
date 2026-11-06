@@ -11,6 +11,10 @@ var _vitals: Control
 var _threat: Label
 var _down: Label
 var _banner: Label
+var _vote: PanelContainer
+var _vote_label: Label
+var _vote_id := -1
+var _vote_answered := -1
 
 
 func _ready() -> void:
@@ -53,12 +57,12 @@ func _ready() -> void:
 	add_child(_resources)
 	_vitals = Control.new()
 	_vitals.position = Vector2(14, 34)
-	_vitals.size = Vector2(220, 58)
+	_vitals.size = Vector2(220, 76)
 	_vitals.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_vitals.draw.connect(_draw_vitals)
 	add_child(_vitals)
 	_threat = UITheme.small("", 15)
-	_threat.position = Vector2(14, 94)
+	_threat.position = Vector2(14, 112)
 	_threat.add_theme_color_override("font_outline_color", Color(0, 0, 0, 0.85))
 	_threat.add_theme_constant_override("outline_size", 4)
 	add_child(_threat)
@@ -102,7 +106,7 @@ func _process(_delta: float) -> void:
 	_status.text = "%s · %s · %s %d · %s %s" % [
 		tr("MODE_" + Session.mode_name()), region_label(me.region_id),
 		tr("HUD_PLAYERS"), w.online_players().size(), UITheme.fmt("HUD_CLOCK", [EnvSim.day_number(w), EnvSim.clock_text(w)]),
-		tr("HUD_WEATHER_RAIN") if EnvSim.is_raining(w) else (tr("HUD_NIGHT") if EnvSim.is_night(w) else tr("HUD_WEATHER_CLEAR"))]
+		weather_label(w)]
 	_resources.text = _resource_line(me)
 	_vitals.queue_redraw()
 	_threat.text = threat_label(me)
@@ -112,6 +116,7 @@ func _process(_delta: float) -> void:
 	if bool(w.meta.get("dev_world", false)) and _banner.text == "":
 		_banner.text = tr("HUD_DEV_WORLD")
 	_down.text = tr("HUD_DOWNED") if me.dead else ""
+	_update_vote(w, me)
 	var sensor := get_tree().get_first_node_in_group("local_sensor") as InteractionSensor
 	_prompt.text = sensor.focused.prompt_text() if sensor != null and sensor.focused != null and not PlayerAvatar.input_blocked else ""
 	var main := get_tree().root.get_node_or_null("Main")
@@ -133,7 +138,7 @@ static func siege_text(w: WorldState) -> String:
 func _on_world_event(ev: Dictionary) -> void:
 	match str(ev.get("kind", "")):
 		"weather":
-			show_notice("WEATHER_STARTS_RAIN" if str(ev.get("weather", "")) == "rain" else "WEATHER_STARTS_CLEAR", [])
+			show_notice("WEATHER_STARTS_" + str(ev.get("weather", "clear")).to_upper(), [])
 		"siege_warning":
 			show_notice("SIEGE_WARNING", [])
 			Audio.play("sfx.horde_warning")
@@ -176,6 +181,55 @@ static func threat_label(me: PlayerState) -> String:
 	return TranslationServer.translate(key)
 
 
+## "Snow", "Fog", "Blizzard"… (night is shown when the sky is clear).
+static func weather_label(w: WorldState) -> String:
+	var k := EnvSim.weather(w)
+	if k == "clear":
+		return TranslationServer.translate("HUD_NIGHT") if EnvSim.is_night(w) else TranslationServer.translate("HUD_WEATHER_CLEAR")
+	return TranslationServer.translate("HUD_WEATHER_" + k.to_upper())
+
+
+## The communal sleep vote: a small panel with readiness and Yes / No.
+func _update_vote(w: WorldState, me: PlayerState) -> void:
+	var v := SleepSim.vote(w)
+	if _vote == null:
+		_vote = PanelContainer.new()
+		_vote.set_anchors_preset(Control.PRESET_CENTER)
+		_vote.offset_left = -220
+		_vote.offset_right = 220
+		_vote.offset_top = 120
+		var box := VBoxContainer.new()
+		_vote.add_child(box)
+		_vote_label = UITheme.small("", 15)
+		_vote_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		_vote_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		box.add_child(_vote_label)
+		var row := HBoxContainer.new()
+		row.alignment = BoxContainer.ALIGNMENT_CENTER
+		box.add_child(row)
+		for pair in [["SLEEP_YES", true], ["SLEEP_NO", false]]:
+			var b := Button.new()
+			b.text = tr(pair[0])
+			var yes: bool = pair[1]
+			b.pressed.connect(func() -> void:
+				Audio.play("ui.click")
+				_vote_answered = _vote_id
+				Session.request_sleep_vote(yes))
+			row.add_child(b)
+		add_child(_vote)
+	if v.is_empty():
+		_vote.hide()
+		return
+	_vote_id = int(v["id"])
+	var ready: Array = v.get("yes", [])
+	var total := w.online_players().size()
+	var mine := ready.has(me.player_id) or _vote_answered == _vote_id
+	_vote_label.text = UITheme.fmt("SLEEP_VOTE_PANEL", [str(v.get("by_name", "")), ready.size(), total]) + ("\n" + tr("SLEEP_WAITING") if mine else "")
+	(_vote.get_child(0).get_child(1) as HBoxContainer).visible = not mine
+	_vote.mouse_filter = Control.MOUSE_FILTER_STOP
+	_vote.show()
+
+
 func _draw_vitals() -> void:
 	var me := Session.local_player() if Session.in_world() else null
 	if me == null:
@@ -183,6 +237,8 @@ func _draw_vitals() -> void:
 	_bar(Vector2(0, 0), me.health / 100.0, Color("#B5543A"), tr("HUD_HEALTH"))
 	_bar(Vector2(0, 18), me.hydration / 100.0, Color("#4F8C9A"), tr("HUD_HYDRATION"))
 	_bar(Vector2(0, 36), me.hunger / 100.0, Color("#C9A23A"), tr("HUD_HUNGER"))
+	var wcol := Color("#9FC3D6") if not SurvivalSim.is_chilled(me) else (Color("#D9E8F2") if not SurvivalSim.is_freezing(me) else Color("#F2F6FA"))
+	_bar(Vector2(0, 54), me.warmth / 100.0, wcol, tr("HUD_WARMTH"))
 
 
 func _bar(at: Vector2, frac: float, col: Color, label: String) -> void:

@@ -1,5 +1,6 @@
 [gd_scene format=3]
 
+[ext_resource type="Script" path="res://src/presentation/world/bed_view.gd" id="bedv"]
 [ext_resource type="Script" path="res://src/presentation/world/region_view.gd" id="region"]
 [ext_resource type="Script" path="res://src/presentation/world/prop.gd" id="prop"]
 [ext_resource type="Script" path="res://src/presentation/world/ground_patch.gd" id="ground"]
@@ -148,3 +149,7 @@ saturation = 0.85
 vignette_strength = 0.5
 grain_strength = 0.09
 area = Rect2(-704, -384, 2560, 1920)
+
+[node name="SleepSpot" type="Node2D" parent="YSort"]
+script = ExtResource("bedv")
+entity_id = "bedroll"

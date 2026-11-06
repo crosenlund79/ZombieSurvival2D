@@ -145,6 +145,9 @@ func _run(line: String) -> void:
 		"inv":
 			Session.request_inventory(a[0], a[1] if a.size() > 1 else "")
 			await get_tree().create_timer(0.4).timeout
+		"sleep_vote":
+			Session.request_sleep_vote(a[0] == "yes")
+			await get_tree().create_timer(0.4).timeout
 		"eat":
 			Session.request_eat()
 			await get_tree().create_timer(0.4).timeout
@@ -319,7 +322,7 @@ func _state() -> Dictionary:
 		var players := []
 		for pid in w.players:
 			var p: PlayerState = w.players[pid]
-			players.append({"gear": p.gear.map(func(g): return g["item"]), "hunger": p.hunger, "id": pid, "name": p.display_name, "online": p.online,
+			players.append({"gear": p.gear.map(func(g): return g["item"]), "hunger": p.hunger, "warmth": p.warmth, "vehicle": p.vehicle_id, "id": pid, "name": p.display_name, "online": p.online,
 				"x": p.position.x, "y": p.position.y, "region": p.region_id, "carried": p.carried,
 				"health": p.health, "dead": p.dead, "hydration": p.hydration})
 		s["players"] = players

@@ -24,6 +24,11 @@ extends Node2D
 var _outdoor := false
 var _rain: Control
 var _rain_on := false
+var _weather := ""
+var _fog_now := 0.0
+var _flash := 0.0
+var _bolt_done := -1
+var _frost_now := 0.0
 @export var area := Rect2(0, 0, 2400, 1700)
 
 const OVERLAY_SHADER := """
@@ -39,6 +44,8 @@ uniform float vignette_strength = 0.3;
 uniform float contrast = 1.08;
 uniform float saturation = 0.7;
 uniform float fog_strength = 0.0;
+uniform float flash = 0.0;            // lightning (0..1), iteration 011
+uniform float frost = 0.0;            // local player's cold (0..1): frost creeping in from the edges
 uniform vec3 shadow_tone = vec3(0.84, 0.9, 0.98);
 uniform vec3 highlight_tone = vec3(0.98, 1.0, 1.04);
 uniform vec3 vignette_tone = vec3(0.42, 0.45, 0.5);
@@ -63,6 +70,11 @@ void fragment() {
 	vec2 d = uv - 0.5;
 	float v = smoothstep(0.32, 0.85, length(d * vec2(1.0, 0.8)));
 	c = mix(c, c * vignette_tone, clamp(v * vignette_strength * 1.8, 0.0, 1.0));
+	if (frost > 0.0) {
+		float fe = smoothstep(0.55 - 0.25 * frost, 0.95, length(d * vec2(1.0, 0.75)) + (g - 0.5) * 0.12);
+		c = mix(c, vec3(0.86, 0.92, 0.97), clamp(fe * frost * 0.85, 0.0, 0.85));
+	}
+	c = c + vec3(0.75, 0.82, 0.95) * flash * (0.35 + 0.65 * l);
 	c *= 1.0 + (g - 0.5) * grain_strength * 2.0;
 	COLOR = vec4(clamp(c, 0.0, 1.0), 1.0);
 }
@@ -149,12 +161,60 @@ func _add_rain() -> void:
 func _draw_rain() -> void:
 	var sz := _rain.size
 	var t := Time.get_ticks_msec() / 1000.0
-	# Snowfall (the one weather condition; mechanically it is the old rain spell).
-	for i in 220:
-		var depth := 0.5 + float(i % 5) * 0.25
-		var x := fmod(float(i) * 97.3 + t * 26.0 * depth + sin(t * 0.7 + float(i)) * 14.0, sz.x + 60.0) - 30.0
-		var y := fmod(float(i) * 61.7 + t * (55.0 + float(i % 7) * 9.0) * depth, sz.y + 40.0) - 20.0
-		_rain.draw_circle(Vector2(x, y), 1.0 + depth * 0.9, Color(0.93, 0.95, 0.97, 0.35 + depth * 0.25))
+	match _weather:
+		"heavy_rain", "thunderstorm":
+			# Long, fast, slightly slanted streaks.
+			var n := 300 if _weather == "heavy_rain" else 240
+			for i in n:
+				var depth := 0.5 + float(i % 5) * 0.25
+				var x := fmod(float(i) * 97.3 + t * 120.0 * depth, sz.x + 80.0) - 40.0
+				var y := fmod(float(i) * 61.7 + t * (720.0 + float(i % 7) * 40.0) * depth, sz.y + 60.0) - 30.0
+				_rain.draw_line(Vector2(x, y), Vector2(x - 4.0 * depth, y + 16.0 * depth), Color(0.74, 0.8, 0.86, 0.22 + depth * 0.18), 1.0 + depth * 0.4)
+		"blizzard":
+			# Dense, wind-driven snow almost sideways.
+			for i in 460:
+				var depth := 0.5 + float(i % 5) * 0.3
+				var x := fmod(float(i) * 97.3 + t * 260.0 * depth + sin(t * 1.3 + float(i)) * 20.0, sz.x + 120.0) - 60.0
+				var y := fmod(float(i) * 61.7 + t * (110.0 + float(i % 7) * 14.0) * depth, sz.y + 40.0) - 20.0
+				_rain.draw_line(Vector2(x, y), Vector2(x - 7.0 * depth, y - 1.5 * depth), Color(0.93, 0.95, 0.97, 0.3 + depth * 0.25), 1.4 + depth)
+		_:
+			# Snowfall.
+			for i in 220:
+				var depth := 0.5 + float(i % 5) * 0.25
+				var x := fmod(float(i) * 97.3 + t * 26.0 * depth + sin(t * 0.7 + float(i)) * 14.0, sz.x + 60.0) - 30.0
+				var y := fmod(float(i) * 61.7 + t * (55.0 + float(i % 7) * 9.0) * depth, sz.y + 40.0) - 20.0
+				_rain.draw_circle(Vector2(x, y), 1.0 + depth * 0.9, Color(0.93, 0.95, 0.97, 0.35 + depth * 0.25))
+
+
+const WEATHER_LOOPS := {"snow": "amb.snow_wind", "blizzard": "amb.blizzard", "heavy_rain": "amb.heavy_rain", "thunderstorm": "amb.thunderstorm"}
+
+
+## Lightning (pure function of seed + clock, so every peer flashes together).
+func _lightning(delta: float) -> void:
+	_flash = maxf(0.0, _flash - delta * 3.5)
+	if Session.world == null or EnvSim.weather(Session.world) != "thunderstorm":
+		return
+	var w := Session.world
+	var slot := w.tick / EnvSim.lightning_slot_ticks()
+	for s in [slot - 1, slot]:
+		if s <= _bolt_done:
+			continue
+		var b := EnvSim.lightning(w, s)
+		if b.is_empty():
+			if s < slot:
+				_bolt_done = s
+			continue
+		if w.tick < int(b["tick"]):
+			continue
+		_bolt_done = s
+		if w.tick - int(b["tick"]) > 2 * Simulation.TICK_RATE:
+			continue
+		_flash = float(b["strength"])
+		var near: bool = b["near"]
+		get_tree().create_timer(float(b["thunder_delay"])).timeout.connect(func() -> void:
+			if is_inside_tree():
+				Audio.play("sfx.thunder_near" if near else "sfx.thunder_far"))
+		SessionLog.info("weather", "lightning", {"slot": s, "near": near})
 
 
 func _exit_tree() -> void:
@@ -168,20 +228,46 @@ func _process(delta: float) -> void:
 	var ct := get_viewport().get_canvas_transform()
 	mat.set_shader_parameter("world_origin", ct.origin)
 	mat.set_shader_parameter("world_scale", ct.x.x)
-	mat.set_shader_parameter("fog_strength", fog_strength if _outdoor else 0.0)
+	# Fog: the region's base, thicker in fog / blizzard, denser in forested regions.
+	var fog_target := 0.0
 	if _outdoor and Session.world != null:
+		var view := RegionView.find_for(self)
+		var regional := float(EnvSim.climate(Session.world, view.region_id).get("fog", 1.0)) if view != null else 1.0
+		fog_target = (fog_strength + float(EnvSim.wcfg(EnvSim.weather(Session.world)).get("fog", 0.0))) * regional
+	_fog_now = lerpf(_fog_now, fog_target, 1.0 - exp(-0.6 * delta))
+	mat.set_shader_parameter("fog_strength", minf(_fog_now, 0.85))
+	# Frost creeping in when the local player is cold (local presentation only).
+	var me := Session.local_player()
+	var frost_target := 0.0
+	if me != null:
+		frost_target = clampf((float(SurvivalSim.ec("chilled_below", 40)) - me.warmth) / float(SurvivalSim.ec("chilled_below", 40)), 0.0, 1.0)
+	_frost_now = lerpf(_frost_now, frost_target, 1.0 - exp(-1.0 * delta))
+	mat.set_shader_parameter("frost", _frost_now)
+	if _outdoor and Session.world != null:
+		_lightning(delta)
+		mat.set_shader_parameter("flash", _flash)
 		var col := night_tint.lerp(tint, EnvSim.daylight(Session.world))
-		var raining := EnvSim.is_raining(Session.world)
-		if raining:
-			col *= Color(0.8, 0.84, 0.9)
-		_cm.color = _cm.color.lerp(col, 1.0 - exp(-1.5 * delta))
-		if raining != _rain_on:
-			_rain_on = raining
-			_rain.visible = raining
-			if raining:
-				Audio.play_loop("weather", "amb.snow_wind", 1.5)
+		var wk := EnvSim.weather(Session.world)
+		match wk:
+			"snow":
+				col *= Color(0.86, 0.89, 0.94)
+			"heavy_rain", "thunderstorm":
+				col *= Color(0.72, 0.76, 0.82)
+			"blizzard":
+				col *= Color(0.84, 0.87, 0.92)
+			"fog":
+				col *= Color(0.9, 0.92, 0.94)
+		col = col.lerp(Color(1.4, 1.45, 1.6), _flash * 0.5)
+		_cm.color = _cm.color.lerp(col, 1.0 - exp(-(9.0 if _flash > 0.05 else 1.5) * delta))
+		var falling := EnvSim.is_raining(Session.world)
+		if wk != _weather:
+			_weather = wk
+			_rain.visible = falling
+			_rain_on = falling
+			if WEATHER_LOOPS.has(wk):
+				Audio.play_loop("weather", WEATHER_LOOPS[wk], 2.0)
 			else:
-				Audio.stop_loop("weather", 2.0)
+				Audio.stop_loop("weather", 2.5)
 		if _rain_on:
 			_rain.queue_redraw()
 	if powered_tint.a > 0.0 and Session.world != null:

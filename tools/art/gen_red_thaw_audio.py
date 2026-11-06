@@ -253,8 +253,19 @@ def burnt_screech():
              "sfx.burnt_screech" if k == 0 else f"sfx.burnt_screech_{'abc'[k]}", "Burnt One — screech" + ("" if k == 0 else f" (variation {k + 1})"), "SFX", -3.0)
 
 
+def blizzard():
+    """A howling gale with driven snow hiss: stronger, faster gusts than the snow wind."""
+    n = int(28 * SR)
+    hiss = shaped_noise(n, lambda f: np.exp(-0.5 * ((f - 4200) / 2600) ** 2))
+    gust = 0.35 + smooth(n, 40, 1.0)
+    x = wind(28, 1.6, 520, True) * 1.2 + hiss / np.max(np.abs(hiss)) * 0.45 * gust
+    howl_f = 380 + 300 * smooth(n, 14, 1.0)
+    howl = np.sin(np.cumsum(2 * math.pi * howl_f / SR)) * np.clip(smooth(n, 10, 1.0) - 0.4, 0, 1) * 0.2
+    save("template_blizzard.wav", loopify(x + howl, 3), "amb.blizzard", "Blizzard gale (weather loop)", "Ambience", -6.0, True)
+
+
 if __name__ == "__main__":
-    ambience(); laughter(); mutter(); burnt(); burnt_screech()
+    ambience(); laughter(); mutter(); burnt(); burnt_screech(); blizzard()
     with open(os.path.join(ROOT, "assets", "manifest", "audio_red_thaw.json"), "w") as f:
         json.dump({"kind": "audio", "category": "red_thaw", "assets": ENTRIES}, f, indent="\t"); f.write("\n")
     print("red thaw audio generated:", len(ENTRIES))

@@ -165,7 +165,8 @@
 			"durability": 150,
 			"repair": {
 				"cloth": 1
-			}
+			},
+			"insulation": 0.35
 		},
 		"carburetor": {
 			"name_key": "ITEM_CARBURETOR",
@@ -192,6 +193,28 @@
 			"stack": false,
 			"unique": true,
 			"use": "map"
+		},
+		"winter_coat": {
+			"name_key": "ITEM_WINTER_COAT",
+			"desc_key": "ITEM_WINTER_COAT_DESC",
+			"cat": "gear",
+			"stack": false,
+			"slot": "body",
+			"armor": 0.15,
+			"insulation": 0.6,
+			"durability": 200,
+			"repair": {
+				"cloth": 1
+			}
+		},
+		"flashlight": {
+			"name_key": "ITEM_FLASHLIGHT",
+			"desc_key": "ITEM_FLASHLIGHT_DESC",
+			"cat": "gear",
+			"stack": false,
+			"slot": "",
+			"unique": false,
+			"use": "flashlight"
 		}
 	},
 	"bare_hands": {

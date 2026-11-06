@@ -25,12 +25,13 @@
 		{
 			"id": "ui.click",
 			"name": "Menu click",
-			"template": "res://assets/templates/audio/ui/template_click.wav",
+			"template": "res://assets/templates/audio/inbox/template_ui_click.wav",
 			"bus": "UI",
-			"volume_db": -8.0,
+			"volume_db": -10.0,
 			"loop": false,
 			"status": "READY",
-			"notes": "Generated technical placeholder."
+			"notes": "From the creator's audio inbox: 'UI sounds/Simple Click Sound 11.wav' (copied, processed: atrim=0:0.25,afade=t=out:st=0.18:d=0.07 by tools/art/import_audio_inbox.py).",
+			"replaced_template": "res://assets/templates/audio/ui/template_click.wav"
 		},
 		{
 			"id": "amb.countryside",
@@ -195,12 +196,13 @@
 		{
 			"id": "sfx.swing",
 			"name": "Melee swing",
-			"template": "res://assets/templates/audio/combat/template_swing.wav",
+			"template": "res://assets/templates/audio/inbox/template_swing.wav",
 			"bus": "SFX",
 			"volume_db": -6.0,
 			"loop": false,
 			"status": "READY",
-			"notes": "Generated placeholder (tools/art/gen_survival_audio.py)."
+			"notes": "From the creator's audio inbox: 'Movement/Swing 3.wav' (copied, processed: atrim=0:0.7,afade=t=out:st=0.5:d=0.2 by tools/art/import_audio_inbox.py).",
+			"replaced_template": "res://assets/templates/audio/combat/template_swing.wav"
 		},
 		{
 			"id": "sfx.player_hurt",

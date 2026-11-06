@@ -632,7 +632,7 @@ func _host_handle_attack(peer_id: int, aim: Vector2) -> void:
 
 
 static func _vitals_row(p: PlayerState) -> Array:
-	return [snappedf(p.health, 0.1), snappedf(p.hydration, 0.1), p.dead, p.weapon, snappedf(p.hunger, 0.1)]
+	return [snappedf(p.health, 0.1), snappedf(p.hydration, 0.1), p.dead, p.weapon, snappedf(p.hunger, 0.1), snappedf(p.warmth, 0.1)]
 
 
 ## Sends everything a WorldActions result changed to all peers, in an order
@@ -694,6 +694,18 @@ func _publish_result(res: Dictionary) -> void:
 			combat_event.emit(ev)
 		if mode == Mode.HOST and not multiplayer.get_peers().is_empty():
 			_rpc_events.rpc(events)
+	var bn: Dictionary = res.get("broadcast_notice", {})
+	if not bn.is_empty():
+		notice.emit(str(bn["key"]), bn.get("args", []))
+		if mode == Mode.HOST and not multiplayer.get_peers().is_empty():
+			_rpc_notice.rpc(str(bn["key"]), bn.get("args", []))
+	var pn: Dictionary = res.get("private_notice", {})
+	if not pn.is_empty():
+		var peer := _peer_of(str(pn["player_id"]))
+		if peer != 0:
+			_send_notice(peer, str(pn["key"]), pn.get("args", []))
+	if int(res.get("sleep_ticks", 0)) > 0 and is_authority() and not _sleeping:
+		_sleep(int(res["sleep_ticks"]), str(res.get("sleep_group", "")))
 	var t: Dictionary = res["transition"]
 	if not t.is_empty():
 		var pid2: String = t["player_id"]
@@ -701,6 +713,51 @@ func _publish_result(res: Dictionary) -> void:
 		SessionLog.info("session", "region_changed", {"player": pid2.substr(0, 6), "region": t["region_id"]})
 		_send_correction(_peer_of(pid2), t["position"], t["region_id"])
 		_broadcast_roster()
+
+
+## Host: sleep advances the real shared simulation to morning in 50 s chunks
+## (each chunk runs every system once with exact elapsed time; nothing is
+## simulated per rendered frame and nothing is produced or paid twice).
+var _sleeping := false
+func _sleep(ticks: int, group: String) -> void:
+	_sleeping = true
+	var chunk := 50 * Simulation.TICK_RATE
+	var left := ticks
+	while left > 0:
+		var n := mini(chunk, left)
+		_advance(n)
+		left -= n
+	_sleeping = false
+	_publish_result(SleepSim.wake(world, group))
+	for p in world.online_players():
+		_publish_result({"ok": true, "reason": "", "reason_args": [], "changes": [], "players": [p.player_id], "bunkers": [],
+			"transition": {}, "notice": {}, "vitals": [p.player_id]})
+	_broadcast_snapshot()
+	SessionLog.info("sleep", "woke", {"group": group, "hour": snappedf(EnvSim.hour(world), 0.01), "tick": world.tick})
+
+
+## Local player answers the sleep vote.
+func request_sleep_vote(yes: bool) -> void:
+	if not in_world():
+		return
+	if is_authority():
+		_host_handle_sleep_vote(1, yes)
+	else:
+		_rpc_request_sleep_vote.rpc_id(1, yes)
+
+
+func _host_handle_sleep_vote(peer_id: int, yes: bool) -> void:
+	var pid: String = _peer_to_player.get(peer_id, "")
+	var res := SleepSim.answer(world, pid, yes)
+	if res["ok"]:
+		_publish_result(res)
+	_send_action_result(peer_id, 0, res["ok"], res["reason"], res["reason_args"])
+
+
+@rpc("any_peer", "call_remote", "reliable")
+func _rpc_request_sleep_vote(yes: bool) -> void:
+	if mode == Mode.HOST:
+		_host_handle_sleep_vote(multiplayer.get_remote_sender_id(), yes)
 
 
 func _peer_of(player_id: String) -> int:
@@ -834,9 +891,13 @@ func _host_dev_command(peer_id: int, cmd: String, arg: Variant) -> void:
 			var target := fmod(float(arg) if arg != null else 22.0, 24.0)
 			var now := EnvSim.hour(world)
 			var hours := fmod(target - now + 24.0, 24.0)
-			_advance(int(hours / 24.0 * float(EnvSim.c("day_seconds", 1440)) * Simulation.TICK_RATE))
+			var left := int(hours / 24.0 * float(EnvSim.c("day_seconds", 1440)) * Simulation.TICK_RATE)
+			while left > 0:  # chunked like sleep, so every system sees realistic steps
+				var n := mini(50 * Simulation.TICK_RATE, left)
+				_advance(n)
+				left -= n
 		"weather":
-			EnvSim.set_weather(world, "rain" if str(arg) == "rain" else "clear")
+			EnvSim.set_weather(world, str(arg) if arg != null else "clear")
 			var wr := WorldActions._ok()
 			wr["env"] = true
 			_publish_result(wr)
@@ -851,6 +912,13 @@ func _host_dev_command(peer_id: int, cmd: String, arg: Variant) -> void:
 			if world.threat.ambient:
 				ZombieSim.ensure_population(world)
 			SessionLog.info("dev", "ambient_threat", {"on": world.threat.ambient})
+		"warmth":
+			if pid != "":
+				var pw: PlayerState = world.players[pid]
+				pw.warmth = clampf(float(arg) if arg != null else 30.0, 0.0, 100.0)
+				var wr2 := WorldActions._ok()
+				wr2["vitals"] = [pid]
+				_publish_result(wr2)
 		"hunt":
 			# Developer-only Burnt One hunt against the caller (or a player id prefix in arg).
 			var target := pid
@@ -1180,6 +1248,8 @@ static func _apply_vitals(p: PlayerState, row: Array) -> void:
 	p.dead = bool(row[2])
 	if row.size() > 4:
 		p.hunger = float(row[4])
+	if row.size() > 5:
+		p.warmth = float(row[5])
 
 
 @rpc("authority", "call_remote", "reliable")

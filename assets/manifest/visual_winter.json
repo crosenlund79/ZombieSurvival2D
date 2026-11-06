@@ -421,6 +421,28 @@
 			"notes": "Generated placeholder (tools/art/gen_winter.py) - replace with tablet art."
 		},
 		{
+			"id": "world.bedroll",
+			"name": "Bedroll on a pallet (sleeping spot)",
+			"template": "res://assets/templates/world/interior/template_bedroll.png",
+			"display_size": [
+				120,
+				60
+			],
+			"source_size": [
+				240,
+				120
+			],
+			"pivot": [
+				0.5,
+				0.9
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_winter.py) - replace with tablet art."
+		},
+		{
 			"id": "prop.sled",
 			"name": "Child's sled left in the snow",
 			"template": "res://assets/templates/props/clutter/template_sled.png",

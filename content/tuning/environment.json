@@ -1,11 +1,108 @@
 {
-	"_comment": "Day/night and weather (iteration 008). EXPLORING prototype values. A day lasts day_seconds of game time; the world starts at start_hour. Weather alternates clear and rain spells with seeded, reproducible lengths (minutes of game time).",
+	"_comment": "Day/night, weather and cold (iterations 008 + 011). EXPLORING prototype values. Calm (clear) spells alternate with a seeded weighted pick of weather. Per kind: weight (chance after a calm spell), minutes (spell length), sight_scale/hearing_scale (Burnt One senses), cold (added to ambient cold; drives player exposure), fog (extra visual fog). cold: base x region climate exposure + night share. lightning: thunderstorm strike slots.",
 	"day_seconds": 1440,
 	"start_hour": 8.0,
-	"dawn": [5.0, 7.0],
-	"dusk": [19.0, 21.0],
-	"clear_minutes": [10, 18],
-	"rain_minutes": [3, 6],
-	"night": {"sight_scale": 0.6, "extra_population": 2},
-	"rain": {"sight_scale": 0.8, "hearing_scale": 0.75}
+	"dawn": [
+		5.0,
+		7.0
+	],
+	"dusk": [
+		19.0,
+		21.0
+	],
+	"clear_minutes": [
+		8,
+		16
+	],
+	"night": {
+		"sight_scale": 0.6,
+		"extra_population": 2
+	},
+	"weather": {
+		"clear": {
+			"minutes": [
+				8,
+				16
+			]
+		},
+		"snow": {
+			"weight": 0.34,
+			"minutes": [
+				3,
+				6
+			],
+			"sight_scale": 0.85,
+			"hearing_scale": 0.85,
+			"cold": 0.15,
+			"fog": 0.08
+		},
+		"fog": {
+			"weight": 0.24,
+			"minutes": [
+				3,
+				6
+			],
+			"sight_scale": 0.55,
+			"hearing_scale": 1.0,
+			"cold": 0.05,
+			"fog": 0.5
+		},
+		"heavy_rain": {
+			"weight": 0.14,
+			"minutes": [
+				2,
+				4
+			],
+			"sight_scale": 0.8,
+			"hearing_scale": 0.7,
+			"cold": 0.3,
+			"fog": 0.12
+		},
+		"blizzard": {
+			"weight": 0.13,
+			"minutes": [
+				2,
+				4
+			],
+			"sight_scale": 0.5,
+			"hearing_scale": 0.6,
+			"cold": 0.85,
+			"fog": 0.45
+		},
+		"thunderstorm": {
+			"weight": 0.15,
+			"minutes": [
+				2,
+				4
+			],
+			"sight_scale": 0.75,
+			"hearing_scale": 0.65,
+			"cold": 0.3,
+			"fog": 0.15
+		}
+	},
+	"cold": {
+		"base": 0.8,
+		"night": 0.35
+	},
+	"lightning": {
+		"slot_seconds": 9,
+		"chance": 0.4
+	},
+	"exposure": {
+		"loss_per_minute": 6.0,
+		"chilled_below": 40,
+		"freezing_below": 18,
+		"hurt_below": 6,
+		"health_loss_per_minute": 2.0,
+		"health_floor": 25,
+		"shelter_per_minute": 10,
+		"bunker_per_minute": 7,
+		"bunker_powered_per_minute": 18,
+		"vehicle_heater_per_minute": 10
+	},
+	"sleep_from_hour": 17.0,
+	"sleep_until_hour": 6.0,
+	"wake_hour": 7.0,
+	"sleep_heal": 35
 }

@@ -1688,8 +1688,8 @@
 		"en": "It starts to snow. Sounds carry less; meltwater collectors fill."
 	},
 	"WEATHER_STARTS_CLEAR": {
-		"da": "Sneen holder op.",
-		"en": "The snow stops."
+		"da": "Himlen bliver stille igen.",
+		"en": "The sky goes quiet again."
 	},
 	"NPC_MARA_DESC": {
 		"da": "Mara. Fundet sammenkrøben i et sammenstyrtet hus i bebyggelsen. Ryster og hvisker for sig selv. Praktisk, når hun stoler på dig.",
@@ -2044,8 +2044,8 @@
 		"en": "Time: day"
 	},
 	"DEV_RAIN": {
-		"da": "Snefald til/fra",
-		"en": "Snowfall on/off"
+		"da": "Næste vejr (skift)",
+		"en": "Next weather (cycle)"
 	},
 	"DEV_HEAT": {
 		"da": "Øg varmen ved hjemmet",
@@ -2218,5 +2218,153 @@
 	"DEV_AMBIENT": {
 		"da": "Automatiske trusler til/fra (gammel løkke)",
 		"en": "Automatic threats on/off (old loop)"
+	},
+	"DEV_COLD": {
+		"da": "Gør mig kold (varme 25)",
+		"en": "Make me cold (warmth 25)"
+	},
+	"HUD_WARMTH": {
+		"da": "Varme",
+		"en": "Warmth"
+	},
+	"HUD_WEATHER_SNOW": {
+		"da": "Sne",
+		"en": "Snow"
+	},
+	"HUD_WEATHER_FOG": {
+		"da": "Tåge",
+		"en": "Fog"
+	},
+	"HUD_WEATHER_HEAVY_RAIN": {
+		"da": "Skybrud",
+		"en": "Heavy rain"
+	},
+	"HUD_WEATHER_BLIZZARD": {
+		"da": "Snestorm",
+		"en": "Blizzard"
+	},
+	"HUD_WEATHER_THUNDERSTORM": {
+		"da": "Tordenvejr",
+		"en": "Thunderstorm"
+	},
+	"WEATHER_STARTS_SNOW": {
+		"da": "Det begynder at sne. Lyde bærer mindre.",
+		"en": "It starts to snow. Sounds carry less."
+	},
+	"WEATHER_STARTS_FOG": {
+		"da": "Tågen glider ind mellem træerne.",
+		"en": "Fog rolls in between the trees."
+	},
+	"WEATHER_STARTS_HEAVY_RAIN": {
+		"da": "Kold regn styrter ned. Du bliver hurtigt gennemblødt.",
+		"en": "Cold rain hammers down. You'll soak through fast."
+	},
+	"WEATHER_STARTS_BLIZZARD": {
+		"da": "En snestorm. Kom under tag — snart.",
+		"en": "A blizzard. Get under a roof — soon."
+	},
+	"WEATHER_STARTS_THUNDERSTORM": {
+		"da": "Tordenen ruller et sted over skoven.",
+		"en": "Thunder rolls somewhere over the woods."
+	},
+	"COLD_CHILLED": {
+		"da": "“Mine fingre bliver følelsesløse. Jeg må have varmen.”",
+		"en": "“My fingers are going numb. I need to get warm.”"
+	},
+	"COLD_FREEZING": {
+		"da": "“Jeg kan ikke holde op med at ryste… jeg må indenfor.”",
+		"en": "“I can't stop shaking… I have to get inside.”"
+	},
+	"PROMPT_SLEEP": {
+		"da": "Sov til i morgen",
+		"en": "Sleep until morning"
+	},
+	"SLEEP_NOT_TIRED": {
+		"da": "“Det er stadig lyst. At sove nu ville spilde dagen.”",
+		"en": "“It's still light. Sleeping now would waste the day.”"
+	},
+	"SLEEP_OUT_SCREECH": {
+		"da": "“Det skrig var ikke langt væk… og %s er stadig derude.”",
+		"en": "“That screech wasn't far away… and %s is still out there.”"
+	},
+	"SLEEP_OUT_STORM": {
+		"da": "“Ikke i det her uvejr. Ikke mens %s stadig er derude.”",
+		"en": "“Not in this storm. Not while %s is still out in it.”"
+	},
+	"SLEEP_OUT_DARK": {
+		"da": "“Jeg kan ikke sove, når %s stadig er derude i mørket.”",
+		"en": "“I can't sleep knowing %s is still out there in the dark.”"
+	},
+	"SLEEP_OUT_GENERIC": {
+		"da": "“Jeg kan ikke sove, når %s stadig er derude.”",
+		"en": "“I can't sleep knowing %s is still out there.”"
+	},
+	"SLEEP_VOTE_STARTED": {
+		"da": "%s vil sove. Klar?",
+		"en": "%s wants to sleep. Ready?"
+	},
+	"SLEEP_VOTE_PANEL": {
+		"da": "%s vil sove til i morgen.\nKlar til at sove? (%s / %s klar)",
+		"en": "%s wants to sleep until morning.\nReady to sleep? (%s / %s ready)"
+	},
+	"SLEEP_YES": {
+		"da": "Klar",
+		"en": "Ready"
+	},
+	"SLEEP_NO": {
+		"da": "Ikke endnu",
+		"en": "Not yet"
+	},
+	"SLEEP_WAITING": {
+		"da": "Venter på de andre…",
+		"en": "Waiting for the others…"
+	},
+	"SLEEP_DECLINED": {
+		"da": "%s er ikke klar til at sove.",
+		"en": "%s isn't ready to sleep."
+	},
+	"SLEEP_VOTE_EXPIRED": {
+		"da": "Ingen sov. Natten fortsætter.",
+		"en": "Nobody slept. The night goes on."
+	},
+	"SLEEP_VOTE_LEFT": {
+		"da": "%s gik udenfor igen. Ingen søvn i nat.",
+		"en": "%s went back outside. No sleep tonight."
+	},
+	"SLEEP_WOKE": {
+		"da": "I vågner kl. %s, stive men udhvilede.",
+		"en": "You wake at %s, stiff but rested."
+	},
+	"SLEEP_NO_VOTE": {
+		"da": "Ingen prøver at sove.",
+		"en": "Nobody is trying to sleep."
+	},
+	"SLEEP_NOT_HERE": {
+		"da": "Du er ikke i tilflugtsrummet.",
+		"en": "You're not in the shelter."
+	},
+	"SLEEP_ALREADY_READY": {
+		"da": "Du er allerede klar.",
+		"en": "You're already ready."
+	},
+	"ITEM_WINTER_COAT": {
+		"da": "Vinterfrakke",
+		"en": "Winter coat"
+	},
+	"ITEM_WINTER_COAT_DESC": {
+		"da": "Tung, foret, lugter af en anden. Holder kulden ude langt bedre end noget andet.",
+		"en": "Heavy, lined, smells of somebody else. Keeps the cold out far better than anything else."
+	},
+	"ITEM_FLASHLIGHT": {
+		"da": "Lommelygte",
+		"en": "Flashlight"
+	},
+	"ITEM_FLASHLIGHT_DESC": {
+		"da": "En tung metallommelygte. Tænd og sluk med L.",
+		"en": "A heavy metal flashlight. Toggle it with L."
+	},
+	"INV_STATS_INSULATION": {
+		"da": "Holder %s%% af kulden ude",
+		"en": "Keeps out %s%% of the cold"
 	}
 }

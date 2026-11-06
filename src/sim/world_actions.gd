@@ -73,6 +73,8 @@ static func request_interact(world: WorldState, player_id: String, entity_id: St
 			return _loot(world, p, region, entity_id, def)
 		"starter_bag":
 			return _starter_bag(world, p, region, entity_id, def, state)
+		"bed":
+			return SleepSim.request(world, p)
 	return _fail("ACTION_NOT_SUPPORTED")
 
 

@@ -178,6 +178,17 @@
 				560,
 				640
 			]
+		},
+		{
+			"id": "bedroll",
+			"type": "bed",
+			"position": [
+				770,
+				644
+			],
+			"interact_range": 75,
+			"prompt_key": "PROMPT_SLEEP",
+			"art": "world.bedroll"
 		}
 	],
 	"excavation": {

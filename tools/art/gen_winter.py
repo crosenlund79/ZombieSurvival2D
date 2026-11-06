@@ -946,6 +946,29 @@ def cabin_back_wall():
     c.save(out("world/interior/template_back_wall.png"), winter=False)
 
 
+def bedroll():
+    """A bedroll and folded blanket on a pallet (bunker sleeping spot, indoors)."""
+    W, H = 240, 120
+    c = Canvas(W, H, seed=11401)
+    base = 108
+    c.soft_shadow((14, base - 20, 226, base + 6), alpha=110, blur=6)
+    pal = [(16, 66), (224, 60), (230, 96), (12, 102)]
+    pf(c, pal, TIMBER_M, tex=0.35, ink=2.0)
+    for x in range(30, 220, 38):
+        c.ink([(x, 64), (x + 2, 100)], width=1.0, alpha=140)
+    roll = c.blob(118, 66, 98, 22, n=20, irregular=0.05)
+    m = pf(c, roll, hexc("#4E5A52"), tex=0.35, ink=2.0, shade=(0.4, 1, 4, 80))
+    c.grime(m, 0.25, drips=False)
+    for x in (60, 170):
+        c.ink([(x, 46), (x + 4, 88)], width=1.6, color=hexc("#2F2618"))
+    pillow = c.blob(42, 60, 26, 14, n=14, irregular=0.08)
+    pf(c, pillow, hexc("#B8AE98"), tex=0.25, ink=1.6)
+    blank = [(150, 52), (214, 50), (218, 70), (150, 74)]
+    pf(c, blank, RUST_D, tex=0.4, ink=1.6)
+    c.save(out("world/interior/template_bedroll.png"), winter=False)
+    entry("world.bedroll", "Bedroll on a pallet (sleeping spot)", "world/interior/template_bedroll.png", (120, 60), (W, H), (0.5, base / H))
+
+
 if __name__ == "__main__":
     snow_tile(); frozen_mud_tile(); road_snow_tile()
     pine(0); pine(1); birch_bare(); shrub_frozen(0); shrub_frozen(1)
@@ -953,7 +976,7 @@ if __name__ == "__main__":
         dead_grass(v)
     stump_snow()
     hunter_cabin(); burned_shed(); woodshed(); truck_wreck(); house(0); house(1); house_collapsed()
-    cabin_back_wall()
+    cabin_back_wall(); bedroll()
     sled(); starter_bag(0); starter_bag(1); blood_snow(); snowflake(); fog(); map_paper()
     path = os.path.join(ROOT, "assets", "manifest", "visual_winter.json")
     with open(path, "w") as f:

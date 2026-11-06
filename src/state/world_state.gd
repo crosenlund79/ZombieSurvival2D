@@ -21,6 +21,8 @@ var next_zombie := 0          # id counter (saved, so ids are never reused)
 ## "unlocks": {recipe: true}} (EventSim, discoveries, crafting unlocks).
 var meta := {}
 var npcs := {}                # npc_id -> NpcState (survivors; host simulates, saved)
+var vehicles := {}            # vehicle_id -> VehicleState (iteration 011; host-authoritative, saved)
+var animals := {}             # animal_id -> AnimalState (iteration 011 wildlife; host simulates, transient)
 var env := {}                 # weather: {"weather", "until", "seq"} (EnvSim; saved)
 var next_uid := 1             # id counter for built objects, piles and gear (saved, never reused)
 var threat := ThreatState.new()   # noise + attention (transient, never saved)

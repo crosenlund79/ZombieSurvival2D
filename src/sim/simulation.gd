@@ -36,6 +36,7 @@ static func advance(world: WorldState, ticks: int) -> Array:
 	results.append_array(EnvSim.step(world, ticks))
 	results.append_array(EventSim.step(world, ticks))
 	results.append_array(NpcSim.step(world, ticks))
+	results.append_array(SleepSim.step(world, ticks))
 	return results
 
 

@@ -136,6 +136,18 @@
 			"initial": {
 				"looted_at": -1
 			}
+		},
+		{
+			"id": "homestead.farmhouse.bed",
+			"type": "bed",
+			"position": [
+				640,
+				352
+			],
+			"interact_range": 75,
+			"prompt_key": "PROMPT_SLEEP"
 		}
-	]
+	],
+	"warmth": 1.2,
+	"shelter_group": "home"
 }

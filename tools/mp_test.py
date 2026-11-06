@@ -1166,10 +1166,10 @@ def scenario_world_multi():
         host.cmd(f"host {PORT} new 68 Hosty")
         r = c.cmd(f"join 127.0.0.1 {PORT} Cleo")
         check("world: client joins", r["ok"], r["error"])
-        host.cmd("dev weather rain")
+        host.cmd("dev weather heavy_rain")
         time.sleep(0.4)
         sh, sc = host.state(), c.state()
-        check("world: weather is shared", sh["env"].get("weather") == "rain" and sc["env"].get("weather") == "rain", (sh["env"], sc["env"]))
+        check("world: weather is shared", sh["env"].get("weather") == "heavy_rain" and sc["env"].get("weather") == "heavy_rain", (sh["env"], sc["env"]))
         check("world: one clock (ticks agree)", abs(sh["tick"] - sc["tick"]) <= 5, (sh["tick"], sc["tick"]))
         # Client walks east along the road to the service station; host stays home.
         c.cmd("dev teleport 2300 1400")
@@ -1592,6 +1592,71 @@ def scenario_red_thaw_multi():
             i.kill()
 
 
+def _into_cabin(inst):
+    inst.cmd("walk_to 1150 960")
+    if not inst.state()["entities"]["homestead.yard_gate"]["state"]["open"]:
+        inst.cmd("press_interact")
+    inst.cmd("walk_to 1160 760"); inst.cmd("walk_to 1160 690")
+    if not inst.state()["entities"]["homestead.farmhouse_door"]["state"]["open"]:
+        inst.cmd("interact homestead.farmhouse_door")
+    inst.cmd("walk_to 1160 664 4")
+    return inst.cmd("interact homestead.farmhouse_entry")
+
+
+def scenario_winter_multi():
+    """Iteration 011 B: shared weather, replicated cold exposure, communal sleep
+    (monologue when someone is outside, unanimous vote, real time advance)."""
+    host = Instance("t_wwhost"); c = Instance("t_wwclient")
+    for i in (host, c):
+        i.wipe()
+    try:
+        host.start(); c.start()
+        host.cmd(f"host {PORT} new 130 Hosty"); host.cmd("tips off")
+        r = c.cmd(f"join 127.0.0.1 {PORT} Cleo"); c.cmd("tips off")
+        check("ww: client joins", r["ok"], r["error"])
+        host.cmd("dev time 22"); host.cmd("dev weather blizzard")
+        time.sleep(0.5)
+        check("ww: blizzard is shared", c.state()["env"].get("weather") == "blizzard", c.state()["env"])
+        w0 = player(host.state(), "Cleo")["warmth"]
+        time.sleep(4.0)
+        sh, sc = host.state(), c.state()
+        check("ww: the client loses warmth in the blizzard (host-simulated)", player(sh, "Cleo")["warmth"] < w0 - 0.5, (w0, player(sh, "Cleo")["warmth"]))
+        check("ww: the client's own view matches the host (2-point replication steps)", abs(player(sh, "Cleo")["warmth"] - player(sc, "Cleo")["warmth"]) <= 2.1,
+              (player(sh, "Cleo")["warmth"], player(sc, "Cleo")["warmth"]))
+        r = _into_cabin(host)
+        check("ww: host gets into the cabin", r["state"]["region"] == "homestead.farmhouse", r["state"].get("region"))
+        host.cmd("walk_to 640 380 6")
+        r = host.cmd("interact homestead.farmhouse.bed")
+        notes = r["state"]["notices"][-3:]
+        check("ww: sleeping while Cleo is outside gives an inner monologue", any("SLEEP_OUT_" in str(n) and "Cleo" in str(n) for n in notes), notes)
+        tick0 = host.state()["tick"]
+        check("ww: no time passed", host.state()["tick"] - tick0 < 50, "")
+        r = _into_cabin(c)
+        check("ww: client gets into the cabin", r["state"]["region"] == "homestead.farmhouse", r["state"].get("region"))
+        host.cmd("dev time 22")
+        host.cmd("interact homestead.farmhouse.bed")
+        time.sleep(0.5)
+        v = c.state()["meta"].get("sleep_vote", {})
+        check("ww: a vote starts and reaches the client", v.get("yes") and len(v["yes"]) == 1, v)
+        c.cmd("sleep_vote no")
+        time.sleep(0.4)
+        check("ww: a 'not yet' cancels the vote", not host.state()["meta"].get("sleep_vote"), host.state()["meta"].get("sleep_vote"))
+        host.cmd("interact homestead.farmhouse.bed")
+        tick1 = host.state()["tick"]
+        c.cmd("sleep_vote yes")
+        time.sleep(1.5)
+        sh, sc = host.state(), c.state()
+        hour = ((sh["tick"] / 10.0) / 1440.0 * 24.0 + 8.0) % 24.0
+        check("ww: unanimous: the shared clock jumps to morning", sh["tick"] - tick1 > 5000 and abs(hour - 7.0) < 0.2, (sh["tick"] - tick1, hour))
+        check("ww: the client's clock followed", abs(sc["tick"] - sh["tick"]) < 30, (sc["tick"], sh["tick"]))
+        check("ww: both wake warm", player(sh, "Hosty")["warmth"] > 99 and player(sh, "Cleo")["warmth"] > 99, "")
+        check("ww: needs advanced during the night", player(sh, "Cleo")["hunger"] < 95, player(sh, "Cleo")["hunger"])
+        check("ww: the vote is closed", not sh["meta"].get("sleep_vote"), sh["meta"].get("sleep_vote"))
+    finally:
+        for i in (host, c):
+            i.kill()
+
+
 def scenario_perf_multi():
     """Two connected players, a horde plus extra groups active around them: measure host simulation cost."""
     host = Instance("t_phost"); c = Instance("t_pclient")
@@ -1619,7 +1684,7 @@ def scenario_perf_multi():
             i.kill()
 
 
-SCENARIOS = {"red_thaw_multi": scenario_red_thaw_multi, "perf_multi": scenario_perf_multi, "slice": scenario_slice, "settlement_multi": scenario_settlement_multi, "world_multi": scenario_world_multi, "craft_multi": scenario_craft_multi, "build_multi": scenario_build_multi, "accept": scenario_accept, "infra_multi": scenario_infra_multi, "dig_multi": scenario_dig_multi, "danger_single": scenario_danger_single, "danger_multi": scenario_danger_multi, "settings": scenario_settings, "bunker_single": scenario_bunker_single, "bunker_multi": scenario_bunker_multi, "single": scenario_single, "multiplayer": scenario_multiplayer,
+SCENARIOS = {"winter_multi": scenario_winter_multi, "red_thaw_multi": scenario_red_thaw_multi, "perf_multi": scenario_perf_multi, "slice": scenario_slice, "settlement_multi": scenario_settlement_multi, "world_multi": scenario_world_multi, "craft_multi": scenario_craft_multi, "build_multi": scenario_build_multi, "accept": scenario_accept, "infra_multi": scenario_infra_multi, "dig_multi": scenario_dig_multi, "danger_single": scenario_danger_single, "danger_multi": scenario_danger_multi, "settings": scenario_settings, "bunker_single": scenario_bunker_single, "bunker_multi": scenario_bunker_multi, "single": scenario_single, "multiplayer": scenario_multiplayer,
              "netfail": scenario_connection_failure, "assets": scenario_assets}
 
 if __name__ == "__main__":

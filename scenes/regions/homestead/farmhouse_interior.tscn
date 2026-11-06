@@ -1,5 +1,6 @@
 [gd_scene format=3]
 
+[ext_resource type="Script" path="res://src/presentation/world/bed_view.gd" id="bedv"]
 [ext_resource type="Script" path="res://src/presentation/world/machine_view.gd" id="machinev"]
 [ext_resource type="Script" path="res://src/presentation/world/region_view.gd" id="region"]
 [ext_resource type="Script" path="res://src/presentation/world/prop.gd" id="prop"]
@@ -16,6 +17,7 @@
 script = ExtResource("region")
 region_id = "homestead.farmhouse"
 ambience_id = "amb.wind_muffled"
+ambience2_id = "amb.stove_fire"
 camera_limits = false
 
 [node name="Ground" type="Node2D" parent="."]
@@ -153,3 +155,7 @@ saturation = 0.85
 drift_amount = 0
 vignette_strength = 0.4
 area = Rect2(110, 236, 740, 414)
+
+[node name="SleepSpot" type="Node2D" parent="YSort"]
+script = ExtResource("bedv")
+entity_id = "homestead.farmhouse.bed"

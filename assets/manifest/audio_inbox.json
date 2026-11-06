@@ -1,0 +1,146 @@
+{
+	"kind": "audio",
+	"category": "inbox",
+	"assets": [
+		{
+			"id": "amb.heavy_rain",
+			"name": "Heavy-rain weather loop (steady rain bed)",
+			"template": "res://assets/templates/audio/inbox/template_heavy_rain.wav",
+			"bus": "Ambience",
+			"volume_db": -8.0,
+			"loop": true,
+			"status": "READY",
+			"notes": "From the creator's audio inbox: 'Ambiance/Ambiance_Storm_02.wav' (copied, processed: afade=t=in:d=0.05 by tools/art/import_audio_inbox.py)."
+		},
+		{
+			"id": "amb.thunderstorm",
+			"name": "Thunderstorm weather loop (rain bed under the thunder claps)",
+			"template": "res://assets/templates/audio/inbox/template_thunderstorm.wav",
+			"bus": "Ambience",
+			"volume_db": -7.0,
+			"loop": true,
+			"status": "READY",
+			"notes": "From the creator's audio inbox: 'Ambiance/Ambiance_Storm_01.wav' (copied, processed: volume=4dB by tools/art/import_audio_inbox.py)."
+		},
+		{
+			"id": "sfx.thunder_near",
+			"name": "Close thunder after a lightning flash",
+			"template": "res://assets/templates/audio/inbox/template_thunder_near.wav",
+			"bus": "SFX",
+			"volume_db": -4.0,
+			"loop": false,
+			"status": "READY",
+			"notes": "From the creator's audio inbox: 'Impact/Impact 1.wav' (copied, processed: lowpass=f=900,aecho=0.8:0.7:300|900:0.35|0.25,volume=3dB by tools/art/import_audio_inbox.py)."
+		},
+		{
+			"id": "sfx.thunder_far",
+			"name": "Distant rolling thunder",
+			"template": "res://assets/templates/audio/inbox/template_thunder_far.wav",
+			"bus": "SFX",
+			"volume_db": -8.0,
+			"loop": false,
+			"status": "READY",
+			"notes": "From the creator's audio inbox: 'Impact/Impact Classic 2.wav' (copied, processed: lowpass=f=420,aecho=0.8:0.8:500|1300:0.4|0.3,volume=2dB by tools/art/import_audio_inbox.py)."
+		},
+		{
+			"id": "amb.stove_fire",
+			"name": "Crackling stove inside the hunter's cabin (warmth)",
+			"template": "res://assets/templates/audio/inbox/template_stove_fire.wav",
+			"bus": "Ambience",
+			"volume_db": -12.0,
+			"loop": true,
+			"status": "READY",
+			"notes": "From the creator's audio inbox: 'General effects/Campfire Fire Loop 3.wav' (copied, processed: volume=2dB by tools/art/import_audio_inbox.py)."
+		},
+		{
+			"id": "sfx.body_drop",
+			"name": "A Burnt One collapses (death fall)",
+			"template": "res://assets/templates/audio/inbox/template_body_drop.wav",
+			"bus": "SFX",
+			"volume_db": -4.0,
+			"loop": false,
+			"status": "READY",
+			"notes": "From the creator's audio inbox: 'Body drop/Body Drop 2.wav' (copied, processed: atrim=0:1.2,afade=t=out:st=0.9:d=0.3 by tools/art/import_audio_inbox.py)."
+		},
+		{
+			"id": "sfx.hit_wood",
+			"name": "A blow lands on wood (structures, chopping accent)",
+			"template": "res://assets/templates/audio/inbox/template_hit_wood.wav",
+			"bus": "SFX",
+			"volume_db": -4.0,
+			"loop": false,
+			"status": "READY",
+			"notes": "From the creator's audio inbox: 'Bullet impact/Wood Heavy 1.wav' (copied by tools/art/import_audio_inbox.py)."
+		},
+		{
+			"id": "sfx.hit_metal",
+			"name": "A blow lands on metal (vehicle body, metal barricades)",
+			"template": "res://assets/templates/audio/inbox/template_hit_metal.wav",
+			"bus": "SFX",
+			"volume_db": -6.0,
+			"loop": false,
+			"status": "READY",
+			"notes": "From the creator's audio inbox: 'Bullet impact/Metal Heavy 2.wav' (copied, processed: volume=-3dB by tools/art/import_audio_inbox.py)."
+		},
+		{
+			"id": "sfx.glass_break",
+			"name": "Glass cracks (searching a shop window)",
+			"template": "res://assets/templates/audio/inbox/template_glass_break.wav",
+			"bus": "SFX",
+			"volume_db": -6.0,
+			"loop": false,
+			"status": "READY",
+			"notes": "From the creator's audio inbox: 'Bullet impact/Glass 3.wav' (copied by tools/art/import_audio_inbox.py)."
+		},
+		{
+			"id": "sfx.laugh_mocking_m",
+			"name": "Settlement laughter variant: a man's mocking laugh, muffled behind walls",
+			"template": "res://assets/templates/audio/inbox/template_laugh_mocking_m.wav",
+			"bus": "SFX",
+			"volume_db": -14.0,
+			"loop": false,
+			"status": "READY",
+			"notes": "From the creator's audio inbox: 'Hero Voice - Male/mocking laugh.wav' (copied, processed: highpass=f=180,lowpass=f=1800,aecho=0.8:0.6:200|600:0.3|0.2,volume=-4dB by tools/art/import_audio_inbox.py)."
+		},
+		{
+			"id": "sfx.laugh_mocking_f",
+			"name": "Settlement laughter variant: a woman's short mocking laugh, muffled",
+			"template": "res://assets/templates/audio/inbox/template_laugh_mocking_f.wav",
+			"bus": "SFX",
+			"volume_db": -14.0,
+			"loop": false,
+			"status": "READY",
+			"notes": "From the creator's audio inbox: 'Hero Voice - Female/MOCKING_LAUGH.wav' (copied, processed: highpass=f=200,lowpass=f=2200,aecho=0.8:0.6:180|500:0.3|0.2 by tools/art/import_audio_inbox.py)."
+		},
+		{
+			"id": "sfx.voice_trust",
+			"name": "The frightened survivor, whispering when first spoken to",
+			"template": "res://assets/templates/audio/inbox/template_voice_trust.wav",
+			"bus": "SFX",
+			"volume_db": -10.0,
+			"loop": false,
+			"status": "READY",
+			"notes": "From the creator's audio inbox: 'Hero Voice - Female/CAN_I_TRUST_YOU.wav' (copied, processed: lowpass=f=3000,volume=-2dB by tools/art/import_audio_inbox.py)."
+		},
+		{
+			"id": "ui.error",
+			"name": "Refused action / declined vote",
+			"template": "res://assets/templates/audio/inbox/template_ui_error.wav",
+			"bus": "UI",
+			"volume_db": -14.0,
+			"loop": false,
+			"status": "READY",
+			"notes": "From the creator's audio inbox: 'UI sounds/Error 11.wav' (copied, processed: atrim=0:0.6,afade=t=out:st=0.4:d=0.2 by tools/art/import_audio_inbox.py)."
+		},
+		{
+			"id": "music.theme",
+			"name": "Main-menu theme \"Where the Ice Once Lay\"",
+			"template": "res://assets/templates/audio/inbox/template_theme_where_the_ice_once_lay.ogg",
+			"bus": "Music",
+			"volume_db": -8.0,
+			"loop": true,
+			"status": "READY",
+			"notes": "From the creator's audio inbox: 'Theme/Where the Ice Once Lay.mp3' (copied by tools/art/import_audio_inbox.py)."
+		}
+	]
+}

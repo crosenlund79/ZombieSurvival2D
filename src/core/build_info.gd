@@ -7,12 +7,12 @@ extends RefCounted
 ## "Aftergrowth" (project.godot, SaveCodec.GAME_ID) so saves and the user folder
 ## keep working.
 const GAME_TITLE := "Red Thaw"
-const VERSION := "0.2.0"
-const ITERATION := "010"
-const STAGE := "red-thaw"
+const VERSION := "0.3.0"
+const ITERATION := "011"
+const STAGE := "world-awakens"
 const STATUS := "DEV"
 ## Bumped whenever the network protocol changes incompatibly.
-const PROTOCOL_VERSION := 6
+const PROTOCOL_VERSION := 7
 
 static var _commit := ""
 

@@ -50,7 +50,11 @@ func _ready() -> void:
 	_btn(g, "DEV_NIGHT", func() -> void: Session.request_dev_command("time", 22.0))
 	_btn(g, "DEV_DAY", func() -> void: Session.request_dev_command("time", 9.0))
 	_btn(g, "DEV_RAIN", func() -> void:
-		Session.request_dev_command("weather", "clear" if Session.world != null and EnvSim.is_raining(Session.world) else "rain"))
+		# cycle through every weather kind
+		var ks := EnvSim.KINDS
+		var cur := ks.find(EnvSim.weather(Session.world)) if Session.world != null else 0
+		Session.request_dev_command("weather", ks[(cur + 1) % ks.size()]))
+	_btn(g, "DEV_COLD", func() -> void: Session.request_dev_command("warmth", 25.0))
 	_btn(g, "DEV_HEAT", func() -> void: Session.request_dev_command("heat", 60.0))
 	_btn(g, "DEV_SIEGE", func() -> void: Session.request_dev_command("siege", 15.0))
 	_btn(g, "DEV_HUNGER", func() -> void: Session.request_dev_command("hunger", 20.0))
