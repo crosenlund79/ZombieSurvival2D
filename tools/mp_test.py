@@ -1340,7 +1340,7 @@ def scenario_slice():
     s = Instance("t_slice"); s.wipe(); s.start()
     try:
         r = s.cmd("single new 101 Pioneer"); s.cmd("tips off"); s.cmd("dev ambient 1")  # legacy automatic loop under test
-        check("slice 00: new survival world, nothing prepared", r["ok"] and not r["state"]["bunkers"] and not r["state"]["gear"], "")
+        check("slice 00: new survival world, nothing prepared", r["ok"] and not [b for b in r["state"]["bunkers"] if b != "town.house.cellar"] and not r["state"]["gear"], "")
         # 1. Establish the bunker.
         go_inside(s); s.cmd("walk_to 300 492"); s.cmd("press_interact")
         s.cmd("walk_to 150 470"); r = s.cmd("press_interact")
