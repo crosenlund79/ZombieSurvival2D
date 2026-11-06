@@ -313,7 +313,8 @@ static func request_object(world: WorldState, player_id: String, oid: String, ac
 		return WorldActions._fail("ACTION_UNKNOWN_OBJECT")
 	var o: Dictionary = region.objects[oid]
 	var rect := footprint(region, o)
-	if _rect_distance(rect, p.position) > float(data().get("interact_reach", 110)):
+	var reach := float(data().get("interact_reach", 110))
+	if _rect_distance(rect, p.position) > reach and not SideSection.in_reach(region, p.position, rect.get_center(), reach + rect.size.x * 0.5):
 		return WorldActions._fail("ACTION_TOO_FAR")
 	var d := def(str(o.get("def", "")))
 	var res := WorldActions._ok()
