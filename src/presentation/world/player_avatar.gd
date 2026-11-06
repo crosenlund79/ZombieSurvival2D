@@ -48,6 +48,13 @@ var _sensor: InteractionSensor
 var _beam: PointLight2D
 var _torch: Sprite2D
 var _beam_dir := Vector2.DOWN
+## Iteration 012 (experiment): set when this avatar is shown in a side-view
+## bunker level. Its node position is then a side-view screen position; moves
+## are reported in plan coordinates (SideSection.to_plan).
+var side_region_id := ""
+var _climbing := false
+const CLIMB_SPEED := 150.0
+const FALL_SPEED := 520.0
 
 
 ## bounds: camera limits (empty Rect2 = no limits). light: carry a small light.
@@ -143,13 +150,15 @@ func _physics_process(delta: float) -> void:
 	if is_local:
 		if _seated:
 			_ride(delta, me.vehicle_id)
+		elif side_region_id != "":
+			_local_move_side(delta)
 		else:
 			_local_move(delta)
 		_update_camera(delta)
 	else:
 		var p: PlayerState = me
 		if p != null:
-			target_position = p.position
+			target_position = side_display(p.position) if side_region_id != "" else p.position
 			facing = p.facing
 		if position.distance_to(target_position) > 300.0:
 			position = target_position
@@ -181,6 +190,77 @@ func _local_move(delta: float) -> void:
 			Session.submit_local_move(global_position, facing)
 
 
+func _side_region() -> RegionState:
+	return Session.world.region(side_region_id) if Session.world != null else null
+
+
+## Where a player at plan position `plan` is drawn in the side view: as reported
+## when it is open air on a ladder or scaffold (climbing), else on the floor.
+func side_display(plan: Vector2) -> Vector2:
+	var r := _side_region()
+	if r == null:
+		return plan
+	var at := plan
+	var on_floor := absf(SideSection.floor_y(r, plan.x, plan.y - 4.0) - plan.y) < 6.0
+	if not on_floor and not (SideSection.open_at(r, plan + Vector2(0, -6)) and SideSection.climbable(Session.world, r, plan)):
+		at = SideSection.rest(r, plan)
+	return SideSection.to_screen(r, at)
+
+
+## Side-view control: A/D walk along the floor (one-row steps, no jumping),
+## W/S climb a ladder or a timber scaffold, and you drop back to the floor
+## when you step off. Reported to the host in plan coordinates.
+func _local_move_side(delta: float) -> void:
+	var r := _side_region()
+	if r == null:
+		return
+	var input := Vector2.ZERO
+	if not input_blocked and not _downed:
+		input = Input.get_vector("move_left", "move_right", "move_up", "move_down")
+	var running := Input.is_action_pressed("sprint") and not input_blocked
+	var plan := SideSection.to_plan(r, global_position)
+	var floor_now := SideSection.floor_y(r, plan.x, plan.y - 4.0)
+	var can_climb := SideSection.climbable(Session.world, r, plan)
+	if can_climb and absf(input.y) > 0.4:
+		_climbing = true
+	if not can_climb:
+		_climbing = false
+	var moved := false
+	if _climbing:
+		var top := SideSection.ceiling_y(r, plan.x, plan.y - 4.0) + SideSection.row_h(r) * 0.9
+		plan.y = clampf(plan.y + input.y * CLIMB_SPEED * delta, top, floor_now)
+		moved = absf(input.y) > 0.1
+		if plan.y >= floor_now - 0.5 and input.y >= 0.0:
+			_climbing = false
+	if absf(input.x) > 0.1:
+		var dx := input.x * (SPRINT_SPEED if running else SPEED) * delta
+		var next := SideSection.walk(Session.world, r, plan, dx)
+		if next != plan:
+			plan = next
+			moved = true
+			if not SideSection.climbable(Session.world, r, plan):
+				_climbing = false
+	if not _climbing:  # step off a scaffold or ledge: back down to the floor
+		var f := SideSection.floor_y(r, plan.x, plan.y - 4.0)
+		if plan.y < f:
+			plan.y = move_toward(plan.y, f, FALL_SPEED * delta)
+		elif plan.y > f + 0.5:
+			plan.y = f
+	velocity = Vector2.ZERO
+	global_position = SideSection.to_screen(r, plan)
+	if absf(input.x) > 0.1:
+		facing = 2 if input.x < 0.0 else 3
+	elif _climbing and absf(input.y) > 0.1:
+		facing = 1
+	_animate(delta, moved)
+	_send_accum += delta
+	if _send_accum >= SEND_INTERVAL:
+		_send_accum = 0.0
+		if plan.distance_to(_last_sent) > 0.5:
+			_last_sent = plan
+			Session.submit_local_move(plan, facing)
+
+
 ## In a vehicle the avatar is hidden, passes through everything and rides
 ## along with the car's view (the host keeps the saved position on the car).
 func _set_seated(value: bool) -> void:
@@ -197,8 +277,8 @@ func _set_seated(value: bool) -> void:
 	if torch != null:
 		torch.visible = not value
 	if is_local:
-		collision_layer = 0 if value else 1
-		collision_mask = 0 if value else 1
+		collision_layer = 0 if value or side_region_id != "" else 1
+		collision_mask = 0 if value or side_region_id != "" else 1
 		if _sensor != null:
 			_sensor.process_mode = Node.PROCESS_MODE_DISABLED if value else Node.PROCESS_MODE_INHERIT
 			if value and _sensor.focused != null and is_instance_valid(_sensor.focused):
@@ -238,7 +318,7 @@ func _animate(delta: float, moving: bool) -> void:
 
 
 func _on_corrected(pos: Vector2) -> void:
-	global_position = pos
+	global_position = SideSection.to_screen(_side_region(), pos) if side_region_id != "" and _side_region() != null else pos
 	_last_sent = pos
 	_cam_snap = true
 

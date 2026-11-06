@@ -74,7 +74,7 @@ static func request(world: WorldState, player_id: String, npc_id: String, action
 	res["npcs"] = true
 	match action:
 		"talk":
-			if p.region_id != n.region_id or p.position.distance_to(n.position) > 110.0:
+			if p.region_id != n.region_id or not SideSection.in_reach(world.region(n.region_id), p.position, n.position, 110.0):
 				return WorldActions._fail("ACTION_TOO_FAR")
 			match n.recruit:
 				"waiting":

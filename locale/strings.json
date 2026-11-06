@@ -2562,5 +2562,21 @@
 	"SETTINGS_HIGHLIGHT": {
 		"en": "Highlight what you can use",
 		"da": "Fremhæv det, du kan bruge"
+	},
+	"DEV_BUNKER_VIEW": {
+		"en": "Bunker view: side / top (F7)",
+		"da": "Bunkervisning: side / top (F7)"
+	},
+	"DEV_BUNKER_VIEW_SIDE": {
+		"en": "Bunker view: SIDE (experimental cross-section)",
+		"da": "Bunkervisning: SIDE (eksperimentelt tværsnit)"
+	},
+	"DEV_BUNKER_VIEW_TOP": {
+		"en": "Bunker view: TOP-DOWN (original)",
+		"da": "Bunkervisning: OVENFRA (original)"
+	},
+	"ACTION_BUNKER_VIEW": {
+		"en": "Bunker view side / top (developer)",
+		"da": "Bunkervisning side / top (udvikler)"
 	}
 }

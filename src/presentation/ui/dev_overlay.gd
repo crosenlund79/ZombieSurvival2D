@@ -35,6 +35,10 @@ func _ready() -> void:
 	_btn(g, "DEV_REBUILD_VIEW", func() -> void: rebuild_view_requested.emit())
 	_btn(g, "DEV_SCREENSHOT", func() -> void: screenshot_requested.emit())
 	_btn(g, "DEV_CREATE_LEVEL", func() -> void: Session.request_dev_command("create_level"))
+	_btn(g, "DEV_BUNKER_VIEW", func() -> void:
+		var m := get_tree().root.get_node_or_null("Main")
+		if m != null:
+			m.toggle_bunker_view())
 	_btn(g, "DEV_SPAWN_ZOMBIE", func() -> void: Session.request_dev_command("spawn_zombie"))
 	_btn(g, "DEV_SPAWN_GROUP", func() -> void: Session.request_dev_command("spawn_group"))
 	_btn(g, "DEV_NOISE", func() -> void: Session.request_dev_command("noise", 1.0))

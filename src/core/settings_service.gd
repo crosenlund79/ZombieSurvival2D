@@ -36,6 +36,7 @@ const DEFAULT_BINDINGS := {
 	"repair": [KEY_R],
 	"vehicle_engine": [KEY_G],
 	"flashlight": [KEY_L],
+	"bunker_view": [KEY_F7],
 	"pause_menu": [KEY_ESCAPE],
 	"quick_save": [KEY_F5],
 	"zoom_in": [KEY_EQUAL, KEY_KP_ADD],
@@ -45,7 +46,7 @@ const DEFAULT_BINDINGS := {
 }
 ## Actions shown in the controls list (dev/debug keys are listed but grouped last).
 const REMAPPABLE: Array[String] = ["move_up", "move_down", "move_left", "move_right",
-	"interact", "attack", "sprint", "drink", "eat", "build_menu", "repair", "vehicle_engine", "flashlight", "inventory", "guide", "settlement", "world_map", "pause_menu", "quick_save", "zoom_in", "zoom_out", "dev_overlay", "screenshot"]
+	"interact", "attack", "sprint", "drink", "eat", "build_menu", "repair", "vehicle_engine", "flashlight", "inventory", "guide", "settlement", "world_map", "pause_menu", "quick_save", "zoom_in", "zoom_out", "dev_overlay", "bunker_view", "screenshot"]
 
 var _cfg := ConfigFile.new()
 var _path := ""
@@ -107,6 +108,12 @@ func window_size() -> Vector2i:
 
 func ui_scale() -> float:
 	return clampf(float(get_value("display", "ui_scale", 1.0)), UI_SCALE_MIN, UI_SCALE_MAX)
+
+
+## Iteration 012 (experiment): how bunker levels are shown, "side" (default) or "top".
+func bunker_view() -> String:
+	var v := str(get_value("dev", "bunker_view", "side"))
+	return v if v in ["side", "top"] else "side"
 
 
 func camera_zoom() -> float:

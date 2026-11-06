@@ -254,7 +254,7 @@ static func request_build(world: WorldState, player_id: String, def_id: String, 
 	if region == null or d.is_empty():
 		return WorldActions._fail("ACTION_NOT_SUPPORTED")
 	pos = snap(region, pos)
-	if p.position.distance_to(footprint_at(region, def_id, pos).get_center()) > BUILD_REACH:
+	if not SideSection.in_reach(region, p.position, footprint_at(region, def_id, pos).get_center(), BUILD_REACH):
 		return WorldActions._fail("ACTION_TOO_FAR")
 	var problem := placement_problem(world, p.region_id, def_id, pos)
 	if problem != "":

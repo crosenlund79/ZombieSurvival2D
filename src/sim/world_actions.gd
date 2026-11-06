@@ -32,7 +32,7 @@ static func request_interact(world: WorldState, player_id: String, entity_id: St
 		return _fail("ACTION_UNKNOWN_OBJECT")
 	var def := region.entity_def(entity_id)
 	var reach := float(def.get("interact_range", 80.0)) + RANGE_TOLERANCE
-	if p.position.distance_to(Content.entity_position(def)) > reach:
+	if not SideSection.in_reach(region, p.position, Content.entity_position(def), reach):
 		return _fail("ACTION_TOO_FAR")
 	var state := region.entity_state(entity_id)
 	match str(def.get("type", "")):
@@ -189,6 +189,8 @@ static func _portal(world: WorldState, p: PlayerState, region: RegionState, eid:
 		return _fail("ACTION_NOT_AVAILABLE")
 	p.region_id = t["region_id"]
 	p.position = t["position"]
+	if p.bunker_view == "side" and SideSection.is_level(p.region_id):
+		p.position = SideSection.rest(world.region(p.region_id), p.position)  # feet on the floor
 	var res := _ok()
 	res["transition"] = {"player_id": p.player_id, "region_id": p.region_id, "position": p.position}
 	# Arriving somewhere new for the first time records a world discovery.
@@ -389,7 +391,7 @@ static func request_entity_action(world: WorldState, player_id: String, eid: Str
 	if region == null or not region.has_entity(eid):
 		return _fail("ACTION_UNKNOWN_OBJECT")
 	var def := region.entity_def(eid)
-	if p.position.distance_to(Content.entity_position(def)) > float(def.get("interact_range", 80.0)) + RANGE_TOLERANCE + 40.0:
+	if not SideSection.in_reach(region, p.position, Content.entity_position(def), float(def.get("interact_range", 80.0)) + RANGE_TOLERANCE + 40.0):
 		return _fail("ACTION_TOO_FAR")
 	var b := world.bunker_for_region(region.region_id)
 	var store: Dictionary = b.resources if b != null else {}
@@ -551,7 +553,7 @@ static func request_terrain(world: WorldState, player_id: String, action: String
 	res["terrain"] = [region.region_id]
 	match action:
 		"dig":
-			if p.position.distance_to(center) > DIG_REACH:
+			if not SideSection.in_reach(region, p.position, center, DIG_REACH):
 				return _fail("ACTION_TOO_FAR")
 			var problem := Terrain.dig_problem(region, cell)
 			if problem != "":
@@ -565,7 +567,7 @@ static func request_terrain(world: WorldState, player_id: String, action: String
 			res["events"] = [{"kind": "dig_started", "region_id": region.region_id, "cell": k}]
 			return res
 		"support":
-			if p.position.distance_to(center) > SUPPORT_REACH:
+			if not SideSection.in_reach(region, p.position, center, SUPPORT_REACH):
 				return _fail("ACTION_TOO_FAR")
 			var problem2 := Terrain.support_problem(region, cell)
 			if problem2 != "":

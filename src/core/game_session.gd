@@ -662,6 +662,11 @@ func _host_handle_move(peer_id: int, pos: Vector2, facing: int, region_id: Strin
 	_move_track[pid] = now
 	if p.dead or p.vehicle_id != "":
 		return  # a seated player moves with the vehicle (VehicleSim.submit_pose)
+	var side := p.bunker_view == "side" and SideSection.is_level(p.region_id)
+	if side and _side_move_ok(p, pos, dt):
+		p.position = pos
+		p.facing = clampi(facing, 0, 3)
+		return
 	if not WorldActions.is_plausible_move(p.position, pos, dt):
 		SessionLog.warn("session", "move_rejected", {"player": pid.substr(0, 6),
 			"from": [p.position.x, p.position.y], "to": [pos.x, pos.y], "dt": snappedf(dt, 0.001)})
@@ -675,6 +680,51 @@ func _host_handle_move(peer_id: int, pos: Vector2, facing: int, region_id: Strin
 			ZombieSim.make_noise(world, p.region_id, pos, "run")
 	p.position = pos
 	p.facing = clampi(facing, 0, 3)
+
+
+## Side view (iteration 012): walking is horizontal, steps are one row, climbing
+## follows ladders and supports — so a vertical change can be larger than a
+## top-down move in the same time. Accept horizontal speed and an open spot.
+func _side_move_ok(p: PlayerState, pos: Vector2, dt: float) -> bool:
+	var region := world.region(p.region_id)
+	if region == null:
+		return false
+	var max_dx := WorldActions.MAX_PLAYER_SPEED * dt * 1.5 + WorldActions.MOVE_SLACK
+	var max_dy := SideSection.row_h(region) * 1.6 + 420.0 * dt * 1.5
+	if absf(pos.x - p.position.x) > max_dx or absf(pos.y - p.position.y) > max_dy:
+		return false
+	return SideSection.open_at(region, pos + Vector2(0, -6))
+
+
+## The local player's bunker perspective (iteration 012 experiment).
+func request_bunker_view(view: String) -> void:
+	if not in_world():
+		return
+	if is_authority():
+		_host_handle_bunker_view(1, view)
+	else:
+		_rpc_request_bunker_view.rpc_id(1, view)
+
+
+func _host_handle_bunker_view(peer_id: int, view: String) -> void:
+	var pid: String = _peer_to_player.get(peer_id, "")
+	var p: PlayerState = world.players.get(pid)
+	if p == null or not (view in ["side", "top"]):
+		return
+	p.bunker_view = view
+	SessionLog.info("bunker_view", "set", {"player": pid.substr(0, 6), "view": view})
+	if view == "side" and SideSection.is_level(p.region_id):
+		var region := world.region(p.region_id)
+		if not SideSection.open_at(region, p.position + Vector2(0, -6)) or not SideSection.climbable(world, region, p.position):
+			p.position = SideSection.rest(region, p.position)
+		_move_track[pid] = Time.get_ticks_msec()
+		_send_correction(peer_id, p.position)
+
+
+@rpc("any_peer", "call_remote", "reliable")
+func _rpc_request_bunker_view(view: String) -> void:
+	if mode == Mode.HOST:
+		_host_handle_bunker_view(multiplayer.get_remote_sender_id(), view)
 
 
 func _host_handle_interact(peer_id: int, request_id: int, entity_id: String, expected_rev: int) -> void:

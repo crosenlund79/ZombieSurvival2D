@@ -18,6 +18,9 @@ extends Node2D
 ## Give the local player a small carried light (dark underground spaces).
 @export var player_light := false
 var def_id := ""
+## Iteration 012 (experiment): this view draws a bunker level as a side view
+## (SideBunkerView). Views read it to place themselves in the cross-section.
+var side := false
 
 var local_avatar: PlayerAvatar
 var _avatars := {}  # player_id -> PlayerAvatar
@@ -68,6 +71,16 @@ func _ready() -> void:
 	SessionLog.info("view", "region_view_built", {"region": region_id, "def": def_id})
 
 
+func region_state() -> RegionState:
+	return Session.world.region(region_id) if Session.world != null else null
+
+
+## Bounds as drawn (the side view draws rows shorter).
+func screen_bounds() -> Rect2:
+	var r := region_state()
+	return SideSection.screen_rect(r, bounds()) if side and r != null else bounds()
+
+
 func bounds() -> Rect2:
 	var b: Array = Content.region_def(def_id).get("bounds", [0, 0, 1600, 1100])
 	return Rect2(float(b[0]), float(b[1]), float(b[2]), float(b[3]))
@@ -83,7 +96,11 @@ func _sync_avatars() -> void:
 			var local: bool = p.player_id == Session.local_player_id
 			if local and p.region_id != region_id:
 				continue
-			var a := PlayerAvatar.create(p, local, bounds(), player_light)
+			var a := PlayerAvatar.create(p, local, screen_bounds() if side else bounds(), player_light)
+			if side:
+				a.side_region_id = region_id
+				a.position = a.side_display(p.position)
+				a.target_position = a.position
 			_actors.add_child(a)
 			_avatars[p.player_id] = a
 			if local:

@@ -21,6 +21,10 @@ var warmth := 100.0
 var vehicle_id := ""
 ## Iteration 011: flashlight switched on (replicated presentation state).
 var flashlight := false
+## Iteration 012 (experimental): how this player views bunker levels, "side" or
+## "top". Runtime only; the client reports it, the host uses it to snap feet to
+## the floor in the side view. Both read the same bunker data.
+var bunker_view := "side"
 var dead := false
 ## Item id of the usable tool/weapon in the hand ("" = bare hands). Derived from
 ## the equipped gear (a broken item counts as bare hands); read-only.

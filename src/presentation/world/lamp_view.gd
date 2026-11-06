@@ -12,7 +12,7 @@ func _build() -> void:
 	_light.color = Color(1.0, 0.95, 0.82)
 	_light.texture_scale = 3.6
 	_light.energy = 0.42
-	_light.position = Vector2(0, -60)
+	_light.position = Vector2(0, 46) if _side else Vector2(0, -60)  # side view: the lamp hangs, light falls below it
 	add_child(_light)
 
 

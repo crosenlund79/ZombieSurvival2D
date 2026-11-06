@@ -107,3 +107,90 @@ func test_blood_marks_are_saved() -> void:
 	var w2: WorldState = r["world"]
 	eq(w2.blood.size(), 2, "marks persist")
 	check(absf(float(w2.blood[0][6]) - 0.4) < 0.001, "with how buried they were")
+
+
+# ---------------------------------------------------------------- side-view bunker (one state, two readings)
+
+func _bunker_world() -> Array:
+	var w := WorldState.create_new("w_side", 91)
+	var b := w.create_bunker("homestead.farmhouse.shelter", "homestead.farmhouse", "bunker_earth")
+	var rid := b.level_region(-1)
+	return [w, w.region(rid)]
+
+
+func test_cross_section_floor_ceiling_and_rest() -> void:
+	var a := _bunker_world()
+	var w: WorldState = a[0]
+	var r: RegionState = a[1]
+	var room_floor := Terrain.cell_rect(r, Vector2i(20, 16)).end.y
+	var room_ceiling := Terrain.cell_rect(r, Vector2i(20, 10)).position.y
+	check(absf(SideSection.floor_y(r, 600, 300) - (room_floor - SideSection.FEET)) < 0.1, "the floor is the bottom of the dug room")
+	eq(SideSection.ceiling_y(r, 600, 500), room_ceiling, "the ceiling is its top")
+	var storage := Content.entity_position(r.entity_def("storage"))
+	eq(SideSection.rest(r, storage).x, storage.x, "things keep their place along the room")
+	check(absf(SideSection.rest(r, storage).y - (room_floor - SideSection.FEET)) < 0.1, "and rest on the floor beneath them")
+	var p := SideSection.to_screen(r, Vector2(300, 600))
+	check(SideSection.to_plan(r, p).distance_to(Vector2(300, 600)) < 0.01, "screen projection round-trips (presentation only)")
+	var concrete := w.region(w.add_level(w.bunker("homestead.farmhouse.shelter"), -2, "bunker_concrete"))
+	check(concrete != null and SideSection.floor_y(concrete, 500, 300) > 600.0, "a level without a grid is one room with a floor")
+
+
+func test_side_walking_steps_and_walls() -> void:
+	var a := _bunker_world()
+	var w: WorldState = a[0]
+	var r: RegionState = a[1]
+	var start := SideSection.rest(r, Vector2(600, 600))
+	var moved := SideSection.walk(w, r, start, 40.0)
+	eq(moved.y, start.y, "flat floor: walk along it")
+	check(moved.x > start.x, "and move")
+	# the room ends at column 26: earth beyond it blocks
+	var at_wall := SideSection.rest(r, Vector2(Terrain.cell_rect(r, Vector2i(26, 16)).end.x - 16.0, 600))
+	eq(SideSection.walk(w, r, at_wall, 30.0), at_wall, "solid earth is a wall")
+	# dig one cell out beside the floor and one row down: a single step is walkable
+	var dug: Dictionary = r.terrain.get("dug", {})
+	dug["27,16"] = true
+	dug["28,17"] = true
+	dug["28,16"] = true
+	r.terrain["dug"] = dug
+	var p1 := SideSection.walk(w, r, at_wall, 30.0)
+	check(p1.x > at_wall.x, "a dug opening can be walked into")
+	var p2 := p1
+	for i in 6:
+		p2 = SideSection.walk(w, r, p2, 20.0)
+	check(p2.y > p1.y + 10.0, "one row down is a step, not a jump")
+
+
+func test_side_reach_covers_the_open_space_and_floor_snap_on_arrival() -> void:
+	var a := _bunker_world()
+	var w: WorldState = a[0]
+	var r: RegionState = a[1]
+	var ladder := Content.entity_position(r.entity_def("ladder_up"))
+	var feet := SideSection.rest(r, ladder)
+	check(feet.distance_to(ladder) > 200.0, "the ladder's plan point is near the ceiling")
+	check(SideSection.in_reach(r, feet, ladder, 56.0), "but standing at its foot reaches it")
+	check(not SideSection.in_reach(r, feet + Vector2(300, 0), ladder, 56.0), "horizontal distance still counts")
+	check(not SideSection.in_reach(w.region("homestead"), Vector2.ZERO, Vector2(0, 200), 56.0), "the surface keeps plan distance")
+	# a player arriving by the hatch in side view stands on the floor; in top view where the ladder is
+	var p := _player(w, PID, "homestead.farmhouse", Content.entity_position(w.region("homestead.farmhouse").entity_def("homestead.farmhouse.shelter")))
+	var house := w.region("homestead.farmhouse")
+	house.set_fields("homestead.farmhouse.shelter", {"stage": "built", "open": true})
+	check(WorldActions.request_interact(w, PID, "homestead.farmhouse.hatch_ladder", -1)["ok"], "climb down")
+	check(absf(p.position.y - SideSection.floor_y(r, p.position.x, p.position.y - 4)) < 0.5, "side view: feet on the floor")
+	p.bunker_view = "top"
+	p.region_id = "homestead.farmhouse"
+	p.position = Content.entity_position(house.entity_def("homestead.farmhouse.shelter"))
+	WorldActions.request_interact(w, PID, "homestead.farmhouse.hatch_ladder", -1)
+	check(p.position.y < SideSection.floor_y(r, p.position.x, p.position.y - 4) - 100.0, "top view: by the ladder, as before")
+
+
+func test_supports_and_ladders_are_climbable() -> void:
+	var a := _bunker_world()
+	var w: WorldState = a[0]
+	var r: RegionState = a[1]
+	var lad := Content.entity_position(r.entity_def("ladder_up"))
+	check(SideSection.climbable(w, r, lad), "the ladder up the shaft")
+	var spot := Terrain.cell_center(r, Vector2i(16, 15))
+	check(not SideSection.climbable(w, r, spot), "plain floor is not")
+	var sup: Dictionary = {"16,15": {"stage": "reinforced"}}
+	r.terrain["supports"] = sup
+	check(SideSection.climbable(w, r, spot), "a reinforced timber support is scaffolding you can climb")

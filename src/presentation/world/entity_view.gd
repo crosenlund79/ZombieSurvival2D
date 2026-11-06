@@ -18,6 +18,7 @@ var def_id := ""
 var def := {}
 var interact: Interactable
 var _art_root: Node2D
+var _side := false   # iteration 012: placed and drawn in the side view
 
 
 func _ready() -> void:
@@ -29,6 +30,10 @@ func _ready() -> void:
 		SessionLog.error("world", "view_without_entity", {"entity": entity_id, "def": def_id, "node": str(get_path())})
 		return
 	position = Content.entity_position(def)
+	_side = view != null and view.side
+	if _side:
+		position = SideArt.entity_screen(region_state(), def)
+		occlude = false
 	_art_root = Node2D.new()
 	_art_root.name = "Art"
 	if floor_art:
@@ -93,8 +98,14 @@ func show_art(sprite_name: String, asset_id: String, offset := Vector2.ZERO) -> 
 		s = Sprite2D.new()
 		s.name = sprite_name
 		_art_root.add_child(s)
-	Assets.apply_to_sprite(s, asset_id)
+	var id := SideArt.map(asset_id) if _side else asset_id
+	Assets.apply_to_sprite(s, id)
 	s.position += offset
+	if _side and (id in SideArt.FULL_HEIGHT or SideArt.THROUGH_CEILING.has(id)):  # floor to ceiling (and up the shaft)
+		var h := SideArt.open_height(region_state(), Content.entity_position(def)) + float(SideArt.THROUGH_CEILING.get(id, 0.0))
+		var k := h / maxf(1.0, s.texture.get_size().y * s.scale.y)
+		s.position.y *= k
+		s.scale.y *= k
 	s.visible = true
 	return s
 

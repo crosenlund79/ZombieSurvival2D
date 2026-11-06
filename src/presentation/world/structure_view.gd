@@ -13,6 +13,7 @@ var _sprite: Sprite2D
 var _shape: CollisionShape2D
 var _flash := 0.0
 var _rect := Rect2()
+var _side := false
 
 
 static func create(rid: String, id: String) -> StructureView:
@@ -84,8 +85,12 @@ func refresh() -> void:
 		return
 	var region := Session.world.region(region_id)
 	position = Build.pos_of(o)
+	var view := RegionView.find_for(self)
+	_side = view != null and view.side
+	if _side:
+		position = SideArt.rest_screen(region, Build.pos_of(o))
 	var d := Build.def(str(o.get("def", "")))
-	Assets.apply_to_sprite(_sprite, art_for(region, o))
+	Assets.apply_to_sprite(_sprite, SideArt.map(art_for(region, o)) if _side else art_for(region, o))
 	var building := not Build.is_built(o)
 	_sprite.modulate.a = 0.5 if building else 1.0
 	z_index = -1 if bool(d.get("floor", false)) or Build.is_pile(o) else 0
@@ -96,6 +101,10 @@ func refresh() -> void:
 	_shape.set_deferred("disabled", not Build.blocks(o))
 	interact.position = local.get_center()
 	interact.reach = 70.0 + maxf(local.size.x, local.size.y) * 0.5
+	if _side:  # side view: no plan collision; reach the object from the floor beside it
+		_shape.set_deferred("disabled", true)
+		interact.position = Vector2(0, -24)
+		interact.reach = 90.0
 	interact.enabled = not building or not Build.is_pile(o)
 	interact.prompt_args = [TranslationServer.translate(str(d.get("name_key", "")))]
 	interact.prompt_key = _prompt_key(o, d)
@@ -210,7 +219,8 @@ func _process(delta: float) -> void:
 	if _flash > 0.0:
 		_flash = maxf(0.0, _flash - delta * 4.0)
 		_sprite.self_modulate = Color(1, 1, 1).lerp(Color(1.6, 0.7, 0.6), _flash)
-		position = Build.pos_of(o) + Vector2(sin(_flash * 40.0) * 3.0 * _flash, 0) if not o.is_empty() else position
+		var base := SideArt.rest_screen(Session.world.region(region_id), Build.pos_of(o)) if _side and not o.is_empty() else Build.pos_of(o)
+		position = base + Vector2(sin(_flash * 40.0) * 3.0 * _flash, 0) if not o.is_empty() else position
 
 
 func _draw() -> void:

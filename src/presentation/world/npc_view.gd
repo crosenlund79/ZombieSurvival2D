@@ -68,9 +68,17 @@ func _ready() -> void:
 	add_child(interact)
 	var n := state()
 	if n != null:
-		position = n.position
+		position = _place(n.position)
 	Assets.reloaded.connect(_art)
 	_art()
+
+
+## Where the survivor is drawn: as is, or standing on the floor of the side view (iteration 012).
+func _place(p: Vector2) -> Vector2:
+	var view := RegionView.find_for(self)
+	if view != null and view.side:
+		return SideArt.rest_screen(view.region_state(), p)
+	return p
 
 
 func state() -> NpcState:
@@ -108,8 +116,9 @@ func _process(delta: float) -> void:
 		interact.position = Vector2(0, -8) if huddled else Vector2(0, -30)  # sitting vs standing
 		_art()
 	_t += delta
-	var moving := position.distance_to(n.position) > 1.0
-	position = position.lerp(n.position, clampf(delta * 8.0, 0.0, 1.0))
+	var at := _place(n.position)
+	var moving := position.distance_to(at) > 1.0
+	position = position.lerp(at, clampf(delta * 8.0, 0.0, 1.0))
 	_bob = _bob + delta * 9.0 if moving else 0.0
 	var base := Vector2.ZERO
 	if _huddled:

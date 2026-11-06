@@ -94,6 +94,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		take_screenshot("")
 	elif not Session.in_world():
 		return
+	elif event.is_action_pressed("bunker_view") and Session.in_world():
+		toggle_bunker_view()
 	elif event.is_action_pressed("world_map") and settings_panel == null and not pause_menu.visible:
 		map_panel.visible = not map_panel.visible
 	elif event.is_action_pressed("pause_menu") and map_panel.visible:
@@ -121,6 +123,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _on_world_started() -> void:
 	Audio.stop_loop("music", 2.0)
+	Session.request_bunker_view(Settings.bunker_view())
 	menu.hide()
 	pause_menu.hide()
 	build_region_view()
@@ -147,6 +150,13 @@ func build_region_view() -> void:
 	var region := Session.world.region(me.region_id)
 	if region == null:
 		SessionLog.error("view", "region_missing", {"region": me.region_id})
+		return
+	if SideSection.is_level(region.region_id) and Settings.bunker_view() == "side":
+		# Iteration 012 (experiment): bunker levels as a side view, built from the same data.
+		region_view = SideBunkerView.new()
+		region_view.region_id = region.region_id
+		region_view.def_id = region.def_id
+		world_layer.add_child(region_view)
 		return
 	var scene_path := str(region.definition().get("scene", ""))
 	var packed := load(scene_path) as PackedScene if ResourceLoader.exists(scene_path) else null
@@ -183,6 +193,19 @@ func _on_local_region_changed(region_id: String) -> void:
 func rebuild_view() -> void:
 	SessionLog.info("view", "rebuild_requested", {})
 	build_region_view()
+
+
+## Developer comparison (iteration 012): switch bunker levels between the new
+## side view and the original top-down view. Both show the same bunker.
+func toggle_bunker_view() -> void:
+	var next := "top" if Settings.bunker_view() == "side" else "side"
+	Settings.set_value("dev", "bunker_view", next)
+	Session.request_bunker_view(next)
+	SessionLog.info("view", "bunker_view_toggled", {"view": next})
+	var me := Session.local_player()
+	if me != null and SideSection.is_level(me.region_id):
+		build_region_view.call_deferred()
+	hud.show_notice("DEV_BUNKER_VIEW_" + next.to_upper(), [])
 
 
 func open_settings() -> void:

@@ -67,6 +67,754 @@
 			"complexity": "simple",
 			"status": "READY",
 			"notes": "Generated (tools/art/gen_shadows_depth.py). Keep it small and irregular: a drop, never a pool."
+		},
+		{
+			"id": "side.earth",
+			"name": "Side view: earth strata (tile)",
+			"template": "res://assets/templates/side/template_earth.png",
+			"display_size": [
+				256,
+				256
+			],
+			"source_size": [
+				256,
+				256
+			],
+			"pivot": [
+				0,
+				0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated seamless tile (tools/art/gen_shadows_depth.py)."
+		},
+		{
+			"id": "side.rock",
+			"name": "Side view: bedrock around the shaft (tile)",
+			"template": "res://assets/templates/side/template_rock.png",
+			"display_size": [
+				256,
+				256
+			],
+			"source_size": [
+				256,
+				256
+			],
+			"pivot": [
+				0,
+				0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated seamless tile (tools/art/gen_shadows_depth.py)."
+		},
+		{
+			"id": "side.backwall",
+			"name": "Side view: dug room back wall (tile)",
+			"template": "res://assets/templates/side/template_backwall.png",
+			"display_size": [
+				256,
+				256
+			],
+			"source_size": [
+				256,
+				256
+			],
+			"pivot": [
+				0,
+				0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated seamless tile (tools/art/gen_shadows_depth.py)."
+		},
+		{
+			"id": "side.concrete_wall",
+			"name": "Side view: concrete room wall (tile)",
+			"template": "res://assets/templates/side/template_concrete_wall.png",
+			"display_size": [
+				256,
+				256
+			],
+			"source_size": [
+				256,
+				256
+			],
+			"pivot": [
+				0,
+				0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated seamless tile (tools/art/gen_shadows_depth.py)."
+		},
+		{
+			"id": "side.floorboards",
+			"name": "Side view: timber floorboards (strip)",
+			"template": "res://assets/templates/side/template_floorboards.png",
+			"display_size": [
+				256,
+				28
+			],
+			"source_size": [
+				256,
+				28
+			],
+			"pivot": [
+				0,
+				0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated tileable strip (tools/art/gen_shadows_depth.py)."
+		},
+		{
+			"id": "side.beam",
+			"name": "Side view: ceiling beam (strip)",
+			"template": "res://assets/templates/side/template_beam.png",
+			"display_size": [
+				256,
+				20
+			],
+			"source_size": [
+				256,
+				20
+			],
+			"pivot": [
+				0,
+				0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated tileable strip (tools/art/gen_shadows_depth.py)."
+		},
+		{
+			"id": "side.concrete_slab",
+			"name": "Side view: reinforced concrete floor slab (strip)",
+			"template": "res://assets/templates/side/template_concrete_slab.png",
+			"display_size": [
+				256,
+				28
+			],
+			"source_size": [
+				256,
+				28
+			],
+			"pivot": [
+				0,
+				0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated tileable strip (tools/art/gen_shadows_depth.py)."
+		},
+		{
+			"id": "side.ladder",
+			"name": "Side view: ladder up the shaft",
+			"template": "res://assets/templates/side/template_ladder.png",
+			"display_size": [
+				48,
+				260
+			],
+			"source_size": [
+				96,
+				520
+			],
+			"pivot": [
+				0.5,
+				1.0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_shadows_depth.py) - replace with tablet art."
+		},
+		{
+			"id": "side.hatch_down",
+			"name": "Side view: floor hatch with a ladder down",
+			"template": "res://assets/templates/side/template_hatch_down.png",
+			"display_size": [
+				120,
+				70
+			],
+			"source_size": [
+				240,
+				140
+			],
+			"pivot": [
+				0.5,
+				0.22
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_shadows_depth.py) - replace with tablet art."
+		},
+		{
+			"id": "side.scaffold_exposed",
+			"name": "Side view: timber support / scaffolding (exposed)",
+			"template": "res://assets/templates/side/template_scaffold_exposed.png",
+			"display_size": [
+				64,
+				260
+			],
+			"source_size": [
+				128,
+				520
+			],
+			"pivot": [
+				0.5,
+				1.0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_shadows_depth.py) - replace with tablet art."
+		},
+		{
+			"id": "side.scaffold_building",
+			"name": "Side view: timber support / scaffolding (building)",
+			"template": "res://assets/templates/side/template_scaffold_building.png",
+			"display_size": [
+				64,
+				260
+			],
+			"source_size": [
+				128,
+				520
+			],
+			"pivot": [
+				0.5,
+				1.0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_shadows_depth.py) - replace with tablet art."
+		},
+		{
+			"id": "side.scaffold_done",
+			"name": "Side view: timber support / scaffolding (done)",
+			"template": "res://assets/templates/side/template_scaffold_done.png",
+			"display_size": [
+				64,
+				260
+			],
+			"source_size": [
+				128,
+				520
+			],
+			"pivot": [
+				0.5,
+				1.0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_shadows_depth.py) - replace with tablet art."
+		},
+		{
+			"id": "side.storage",
+			"name": "Side view: storage locker",
+			"template": "res://assets/templates/side/template_storage.png",
+			"display_size": [
+				90,
+				120
+			],
+			"source_size": [
+				180,
+				240
+			],
+			"pivot": [
+				0.5,
+				0.98
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_shadows_depth.py) - replace with tablet art."
+		},
+		{
+			"id": "side.generator_off",
+			"name": "Side view: generator (off)",
+			"template": "res://assets/templates/side/template_generator_off.png",
+			"display_size": [
+				110,
+				80
+			],
+			"source_size": [
+				220,
+				160
+			],
+			"pivot": [
+				0.5,
+				0.98
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_shadows_depth.py) - replace with tablet art."
+		},
+		{
+			"id": "side.generator_on",
+			"name": "Side view: generator (running)",
+			"template": "res://assets/templates/side/template_generator_on.png",
+			"display_size": [
+				110,
+				80
+			],
+			"source_size": [
+				220,
+				160
+			],
+			"pivot": [
+				0.5,
+				0.98
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_shadows_depth.py) - replace with tablet art."
+		},
+		{
+			"id": "side.purifier_off",
+			"name": "Side view: water purifier (idle)",
+			"template": "res://assets/templates/side/template_purifier_off.png",
+			"display_size": [
+				70,
+				110
+			],
+			"source_size": [
+				140,
+				220
+			],
+			"pivot": [
+				0.5,
+				0.98
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_shadows_depth.py) - replace with tablet art."
+		},
+		{
+			"id": "side.purifier_on",
+			"name": "Side view: water purifier (working)",
+			"template": "res://assets/templates/side/template_purifier_on.png",
+			"display_size": [
+				70,
+				110
+			],
+			"source_size": [
+				140,
+				220
+			],
+			"pivot": [
+				0.5,
+				0.98
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_shadows_depth.py) - replace with tablet art."
+		},
+		{
+			"id": "side.lamp_off",
+			"name": "Side view: hanging lamp (off)",
+			"template": "res://assets/templates/side/template_lamp_off.png",
+			"display_size": [
+				30,
+				60
+			],
+			"source_size": [
+				60,
+				120
+			],
+			"pivot": [
+				0.5,
+				0.0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_shadows_depth.py) - replace with tablet art."
+		},
+		{
+			"id": "side.lamp_on",
+			"name": "Side view: hanging lamp (on)",
+			"template": "res://assets/templates/side/template_lamp_on.png",
+			"display_size": [
+				30,
+				60
+			],
+			"source_size": [
+				60,
+				120
+			],
+			"pivot": [
+				0.5,
+				0.0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_shadows_depth.py) - replace with tablet art."
+		},
+		{
+			"id": "side.bedroll",
+			"name": "Side view: bedroll on a pallet",
+			"template": "res://assets/templates/side/template_bedroll.png",
+			"display_size": [
+				120,
+				30
+			],
+			"source_size": [
+				240,
+				60
+			],
+			"pivot": [
+				0.5,
+				0.95
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_shadows_depth.py) - replace with tablet art."
+		},
+		{
+			"id": "side.timber_empty",
+			"name": "Side view: timber pile (empty)",
+			"template": "res://assets/templates/side/template_timber_empty.png",
+			"display_size": [
+				80,
+				55
+			],
+			"source_size": [
+				160,
+				110
+			],
+			"pivot": [
+				0.5,
+				0.97
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_shadows_depth.py) - replace with tablet art."
+		},
+		{
+			"id": "side.timber_small",
+			"name": "Side view: timber pile (small)",
+			"template": "res://assets/templates/side/template_timber_small.png",
+			"display_size": [
+				80,
+				55
+			],
+			"source_size": [
+				160,
+				110
+			],
+			"pivot": [
+				0.5,
+				0.97
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_shadows_depth.py) - replace with tablet art."
+		},
+		{
+			"id": "side.timber_medium",
+			"name": "Side view: timber pile (medium)",
+			"template": "res://assets/templates/side/template_timber_medium.png",
+			"display_size": [
+				80,
+				55
+			],
+			"source_size": [
+				160,
+				110
+			],
+			"pivot": [
+				0.5,
+				0.97
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_shadows_depth.py) - replace with tablet art."
+		},
+		{
+			"id": "side.timber_large",
+			"name": "Side view: timber pile (large)",
+			"template": "res://assets/templates/side/template_timber_large.png",
+			"display_size": [
+				80,
+				55
+			],
+			"source_size": [
+				160,
+				110
+			],
+			"pivot": [
+				0.5,
+				0.97
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_shadows_depth.py) - replace with tablet art."
+		},
+		{
+			"id": "side.wall_wood",
+			"name": "Side view: wood wall / barricade",
+			"template": "res://assets/templates/side/template_wall_wood.png",
+			"display_size": [
+				64,
+				120
+			],
+			"source_size": [
+				128,
+				240
+			],
+			"pivot": [
+				0.5,
+				0.98
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_shadows_depth.py) - replace with tablet art."
+		},
+		{
+			"id": "side.wall_metal",
+			"name": "Side view: metal wall / barricade",
+			"template": "res://assets/templates/side/template_wall_metal.png",
+			"display_size": [
+				64,
+				120
+			],
+			"source_size": [
+				128,
+				240
+			],
+			"pivot": [
+				0.5,
+				0.98
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_shadows_depth.py) - replace with tablet art."
+		},
+		{
+			"id": "side.wall_concrete",
+			"name": "Side view: concrete wall / barricade",
+			"template": "res://assets/templates/side/template_wall_concrete.png",
+			"display_size": [
+				64,
+				120
+			],
+			"source_size": [
+				128,
+				240
+			],
+			"pivot": [
+				0.5,
+				0.98
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_shadows_depth.py) - replace with tablet art."
+		},
+		{
+			"id": "side.door_closed",
+			"name": "Side view: door (closed)",
+			"template": "res://assets/templates/side/template_door_closed.png",
+			"display_size": [
+				50,
+				110
+			],
+			"source_size": [
+				100,
+				220
+			],
+			"pivot": [
+				0.5,
+				0.98
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_shadows_depth.py) - replace with tablet art."
+		},
+		{
+			"id": "side.door_open",
+			"name": "Side view: door (open)",
+			"template": "res://assets/templates/side/template_door_open.png",
+			"display_size": [
+				50,
+				110
+			],
+			"source_size": [
+				100,
+				220
+			],
+			"pivot": [
+				0.5,
+				0.98
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_shadows_depth.py) - replace with tablet art."
+		},
+		{
+			"id": "side.crate",
+			"name": "Side view: storage crate",
+			"template": "res://assets/templates/side/template_crate.png",
+			"display_size": [
+				60,
+				44
+			],
+			"source_size": [
+				120,
+				88
+			],
+			"pivot": [
+				0.5,
+				0.95
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_shadows_depth.py) - replace with tablet art."
+		},
+		{
+			"id": "side.workbench",
+			"name": "Side view: workbench",
+			"template": "res://assets/templates/side/template_workbench.png",
+			"display_size": [
+				100,
+				60
+			],
+			"source_size": [
+				200,
+				120
+			],
+			"pivot": [
+				0.5,
+				0.97
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_shadows_depth.py) - replace with tablet art."
+		},
+		{
+			"id": "side.planter_empty",
+			"name": "Side view: hydroponic planter (empty)",
+			"template": "res://assets/templates/side/template_planter_empty.png",
+			"display_size": [
+				100,
+				60
+			],
+			"source_size": [
+				200,
+				120
+			],
+			"pivot": [
+				0.5,
+				0.97
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_shadows_depth.py) - replace with tablet art."
+		},
+		{
+			"id": "side.planter_growing",
+			"name": "Side view: hydroponic planter (growing)",
+			"template": "res://assets/templates/side/template_planter_growing.png",
+			"display_size": [
+				100,
+				60
+			],
+			"source_size": [
+				200,
+				120
+			],
+			"pivot": [
+				0.5,
+				0.97
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_shadows_depth.py) - replace with tablet art."
+		},
+		{
+			"id": "side.planter_ripe",
+			"name": "Side view: hydroponic planter (ripe)",
+			"template": "res://assets/templates/side/template_planter_ripe.png",
+			"display_size": [
+				100,
+				60
+			],
+			"source_size": [
+				200,
+				120
+			],
+			"pivot": [
+				0.5,
+				0.97
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_shadows_depth.py) - replace with tablet art."
 		}
 	]
 }

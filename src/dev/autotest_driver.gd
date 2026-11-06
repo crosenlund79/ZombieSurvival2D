@@ -311,6 +311,8 @@ func _walk_to(target: Vector2, limit: float) -> bool:
 		if view == null or view.local_avatar == null:
 			break
 		var d := target - view.local_avatar.global_position
+		if view.side:  # side-view bunker: walk along the floor toward the target's x
+			d = Vector2(target.x - view.local_avatar.global_position.x, 0.0)
 		if d.length() <= limit:
 			result = true
 			break
@@ -350,6 +352,9 @@ func _state() -> Dictionary:
 		if sensor != null and sensor.focused != null:
 			s["focused"] = {"id": sensor.focused.entity_id, "lit": sensor.focused._lit.size()}
 		s["blood_count"] = w.blood.size()
+		var meb := Session.local_player()
+		if meb != null and w.region(meb.region_id) != null:
+			s["terrain_dug"] = (w.region(meb.region_id).terrain.get("dug", {}) as Dictionary).size()
 		s["animals"] = w.animals.values().map(func(an): return {"id": an.animal_id, "species": an.species, "region": an.region_id,
 			"x": an.position.x, "y": an.position.y, "activity": an.activity})
 		s["vehicles"] = w.vehicles.values().map(func(v): return {"id": v.vehicle_id, "region": v.region_id,
