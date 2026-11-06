@@ -194,3 +194,21 @@ func test_supports_and_ladders_are_climbable() -> void:
 	var sup: Dictionary = {"16,15": {"stage": "reinforced"}}
 	r.terrain["supports"] = sup
 	check(SideSection.climbable(w, r, spot), "a reinforced timber support is scaffolding you can climb")
+
+
+func test_step_off_a_ledge_but_never_climb_one() -> void:
+	var a := _bunker_world()
+	var w: WorldState = a[0]
+	var r: RegionState = a[1]
+	# a raised chamber two rows above the room floor, opening into the room's left wall
+	var dug := {}
+	for c in range(9, 13):
+		for row in range(11, 15):
+			dug["%d,%d" % [c, row]] = true
+	r.terrain["dug"] = dug
+	var ledge := Vector2(Terrain.cell_rect(r, Vector2i(12, 14)).end.x - 12.0, Terrain.cell_rect(r, Vector2i(12, 14)).end.y - SideSection.FEET)
+	var off := SideSection.walk(w, r, ledge, 30.0)
+	check(off.x > ledge.x, "you can step off the ledge into the room")
+	eq(off.y, ledge.y, "and fall from where you stepped (the avatar drops to the floor)")
+	var floor_pos := SideSection.rest(r, Vector2(Terrain.cell_rect(r, Vector2i(13, 16)).position.x + 10.0, 600))
+	eq(SideSection.walk(w, r, floor_pos, -30.0), floor_pos, "but a two-row ledge cannot be walked up")

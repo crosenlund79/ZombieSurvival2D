@@ -82,6 +82,7 @@ func _draw() -> void:
 	if not SideSection.has_grid(r):
 		_draw_room(r, ink)
 		_draw_shaft(r)
+		_draw_signs(r)
 		return
 	var g := Terrain.grid_size(r)
 	for y in g.y:
@@ -106,6 +107,7 @@ func _draw() -> void:
 				var x := rect.position.x if side < 0 else rect.end.x
 				draw_rect(Rect2(x - (10.0 if side > 0 else 0.0), rect.position.y, 10.0, rect.size.y), Color(0, 0, 0, 0.28))
 				draw_line(Vector2(x, rect.position.y), Vector2(x, rect.end.y), ink, 3.0)
+	_draw_signs(r)
 	# digging in progress: cracks and a progress bar
 	var dig: Dictionary = r.terrain.get("digging", {})
 	for k in dig:
@@ -147,6 +149,35 @@ func _draw_shaft(r: RegionState) -> void:
 		for k in 6:  # faint daylight falling down the shaft
 			var a := 0.10 * (1.0 - float(k) / 6.0)
 			draw_rect(Rect2(shaft.position.x + 4.0, ceil_y - 40.0 - k * 40.0, w - 8.0, 40.0), Color(0.9, 0.9, 0.85, a))
+
+
+## Quiet chalk-and-paint signage on the earth: where the shaft and the floor
+## hatch lead, so the stack of levels reads at a glance (no HUD).
+func _draw_signs(r: RegionState) -> void:
+	var font := ThemeDB.fallback_font
+	var parsed := BunkerState.parse_region_id(region_id)
+	if parsed.is_empty():
+		return
+	var depth: int = parsed["depth"]
+	var b := Session.world.bunker(parsed["bunker_id"])
+	for eid in Content.entity_ids(r.def_id):
+		var d := r.entity_def(eid)
+		var p := Content.entity_position(d)
+		var text := ""
+		var at := Vector2.ZERO
+		if eid.ends_with("ladder_up"):
+			var up_name := ""
+			if depth == -1 and b != null:
+				var ent := Session.world.region(b.entrance_region)
+				up_name = TranslationServer.translate(str(ent.definition().get("display_key", ""))) if ent != null else ""
+			text = "↑ " + (up_name if up_name != "" else UITheme.fmt("SIDE_LEVEL", [depth + 1]))
+			at = _s(SideSection.hang(r, p)) + Vector2(44, -26)
+		elif eid.ends_with("ladder_down") and bool(r.entity_state(eid).get("enabled", true)) and b != null and b.has_level(depth - 1):
+			text = "↓ " + UITheme.fmt("SIDE_LEVEL", [depth - 1])
+			at = _s(SideSection.rest(r, p)) + Vector2(70, 40)
+		if text != "":
+			draw_string_outline(font, at, text, HORIZONTAL_ALIGNMENT_LEFT, -1, 15, 4, Color(0.08, 0.06, 0.04, 0.85))
+			draw_string(font, at, text, HORIZONTAL_ALIGNMENT_LEFT, -1, 15, Color(0.86, 0.8, 0.66, 0.85))
 
 
 ## Timber supports placed by players: scaffolding from floor to ceiling.

@@ -228,7 +228,10 @@ static func walk(world: WorldState, region: RegionState, from: Vector2, dx: floa
 		var c := Vector2i(col, row)
 		if open_cell(region, c) and not blocked_cell(world, region, c):
 			var run := run_of(region, col, row)
-			# land on that run's floor only if it is a single step away
+			# a single step up or down: land on that floor
 			if absi(run.y - here.y) <= 1:
 				return Vector2(to_x, Terrain.cell_rect(region, Vector2i(col, run.y)).end.y - FEET)
+			# a deeper drop at this height: step off the ledge and fall (climbing up needs a ladder)
+			if dr == 0 and run.y > here.y:
+				return Vector2(to_x, from.y)
 	return from

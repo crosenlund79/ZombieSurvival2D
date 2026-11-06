@@ -2578,5 +2578,9 @@
 	"ACTION_BUNKER_VIEW": {
 		"en": "Bunker view side / top (developer)",
 		"da": "Bunkervisning side / top (udvikler)"
+	},
+	"SIDE_LEVEL": {
+		"en": "Level %d",
+		"da": "Niveau %d"
 	}
 }
