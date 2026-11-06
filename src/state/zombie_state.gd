@@ -8,7 +8,11 @@ extends RefCounted
 ## wandering on load. Horde reinforcements (persistent = false) and all AI
 ## memory are transient and never saved, so a reload cannot duplicate a horde.
 
-enum AI { WANDER, INVESTIGATE, CHASE, WINDUP, RECOVER, STAGGER, DEAD }
+## LISTEN (iteration 011): stopped, turned toward a disturbance, listening; may
+## screech before investigating. Appended last so replicated ints stay stable.
+enum AI { WANDER, INVESTIGATE, CHASE, WINDUP, RECOVER, STAGGER, DEAD, LISTEN }
+## Body posture (presentation + speed): upright, crouched (lowered), crawling on all fours.
+enum Posture { UPRIGHT, CROUCH, CRAWL }
 
 var zombie_id := ""
 var region_id := "homestead"
@@ -36,6 +40,23 @@ var extra := false                  # extra wanderer from regional heat / night 
 var hunter := false                 # Red Thaw: a Burnt One hunting one player (ZombieSim.start_hunt)
 var hunt_target := ""               # player id it hunts
 var hunt_until := 0                 # world tick when the hunt gives up
+# --- iteration 011: body and hearing (transient, never saved) ---
+var posture: int = Posture.UPRIGHT
+var posture_timer := 0.0            # seconds before the posture may change again
+var burst := 0.0                    # seconds left of a crawling burst (fast scramble)
+var burst_cd := 0.0                 # seconds before another burst is allowed
+var screech_cd := 0.0               # seconds before this one may screech again
+var listen_level := 0.0             # attention of the sound it is listening to
+var heard_screech := false          # current investigation was triggered by a screech
+var search_left := 0                # extra search points after losing a target
+var last_dir := Vector2.ZERO        # last seen direction of travel of its target
+
+
+## Stable per-individual temperament from the id (same on every peer): speed
+## factor 0.85..1.15 and crawl affinity 0..1, so they do not all behave alike.
+func temperament() -> Vector2:
+	var h := zombie_id.hash()
+	return Vector2(0.85 + float(h % 31) / 100.0, float((h / 31) % 101) / 100.0)
 
 
 func is_dead() -> bool:

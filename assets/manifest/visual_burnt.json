@@ -177,6 +177,270 @@
 			"complexity": "moderate",
 			"status": "READY",
 			"notes": "Generated placeholder (tools/art/gen_figures.py) - replace with tablet art."
+		},
+		{
+			"id": "char.burnt_crouch_down",
+			"name": "Burnt One \u2014 crouched (down)",
+			"template": "res://assets/templates/characters/burnt/template_burnt_crouch_down.png",
+			"display_size": [
+				56,
+				88
+			],
+			"source_size": [
+				110,
+				172
+			],
+			"pivot": [
+				0.5,
+				0.953
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_figures.py) - replace with tablet art."
+		},
+		{
+			"id": "char.burnt_crouch_up",
+			"name": "Burnt One \u2014 crouched (up)",
+			"template": "res://assets/templates/characters/burnt/template_burnt_crouch_up.png",
+			"display_size": [
+				56,
+				88
+			],
+			"source_size": [
+				110,
+				172
+			],
+			"pivot": [
+				0.5,
+				0.953
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_figures.py) - replace with tablet art."
+		},
+		{
+			"id": "char.burnt_crouch_side",
+			"name": "Burnt One \u2014 crouched (side)",
+			"template": "res://assets/templates/characters/burnt/template_burnt_crouch_side.png",
+			"display_size": [
+				56,
+				88
+			],
+			"source_size": [
+				110,
+				172
+			],
+			"pivot": [
+				0.5,
+				0.953
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_figures.py) - replace with tablet art."
+		},
+		{
+			"id": "char.burnt_crawl_down_0",
+			"name": "Burnt One \u2014 crawling (down, frame 1)",
+			"template": "res://assets/templates/characters/burnt/template_burnt_crawl_down_0.png",
+			"display_size": [
+				56,
+				88
+			],
+			"source_size": [
+				110,
+				172
+			],
+			"pivot": [
+				0.5,
+				0.953
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_figures.py) - replace with tablet art."
+		},
+		{
+			"id": "char.burnt_crawl_down_1",
+			"name": "Burnt One \u2014 crawling (down, frame 2)",
+			"template": "res://assets/templates/characters/burnt/template_burnt_crawl_down_1.png",
+			"display_size": [
+				56,
+				88
+			],
+			"source_size": [
+				110,
+				172
+			],
+			"pivot": [
+				0.5,
+				0.953
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_figures.py) - replace with tablet art."
+		},
+		{
+			"id": "char.burnt_crawl_up_0",
+			"name": "Burnt One \u2014 crawling (up, frame 1)",
+			"template": "res://assets/templates/characters/burnt/template_burnt_crawl_up_0.png",
+			"display_size": [
+				56,
+				88
+			],
+			"source_size": [
+				110,
+				172
+			],
+			"pivot": [
+				0.5,
+				0.953
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_figures.py) - replace with tablet art."
+		},
+		{
+			"id": "char.burnt_crawl_up_1",
+			"name": "Burnt One \u2014 crawling (up, frame 2)",
+			"template": "res://assets/templates/characters/burnt/template_burnt_crawl_up_1.png",
+			"display_size": [
+				56,
+				88
+			],
+			"source_size": [
+				110,
+				172
+			],
+			"pivot": [
+				0.5,
+				0.953
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_figures.py) - replace with tablet art."
+		},
+		{
+			"id": "char.burnt_crawl_side_0",
+			"name": "Burnt One \u2014 crawling (side, frame 1)",
+			"template": "res://assets/templates/characters/burnt/template_burnt_crawl_side_0.png",
+			"display_size": [
+				56,
+				88
+			],
+			"source_size": [
+				110,
+				172
+			],
+			"pivot": [
+				0.5,
+				0.953
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_figures.py) - replace with tablet art."
+		},
+		{
+			"id": "char.burnt_crawl_side_1",
+			"name": "Burnt One \u2014 crawling (side, frame 2)",
+			"template": "res://assets/templates/characters/burnt/template_burnt_crawl_side_1.png",
+			"display_size": [
+				56,
+				88
+			],
+			"source_size": [
+				110,
+				172
+			],
+			"pivot": [
+				0.5,
+				0.953
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_figures.py) - replace with tablet art."
+		},
+		{
+			"id": "fx.track_boot",
+			"name": "Track decal \u2014 boot",
+			"template": "res://assets/templates/characters/burnt/template_track_boot.png",
+			"display_size": [
+				24,
+				16
+			],
+			"source_size": [
+				48,
+				32
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_figures.py) - replace with tablet art."
+		},
+		{
+			"id": "fx.track_hand",
+			"name": "Track decal \u2014 hand",
+			"template": "res://assets/templates/characters/burnt/template_track_hand.png",
+			"display_size": [
+				24,
+				16
+			],
+			"source_size": [
+				48,
+				32
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_figures.py) - replace with tablet art."
+		},
+		{
+			"id": "fx.track_blood",
+			"name": "Track decal \u2014 blood",
+			"template": "res://assets/templates/characters/burnt/template_track_blood.png",
+			"display_size": [
+				24,
+				16
+			],
+			"source_size": [
+				48,
+				32
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_figures.py) - replace with tablet art."
 		}
 	]
 }

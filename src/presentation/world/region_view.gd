@@ -181,6 +181,14 @@ func _on_combat_event(ev: Dictionary) -> void:
 			if v != null:
 				v.hit_flash()
 				Audio.play("sfx.burnt_death" if ev["killed"] else "sfx.burnt_hit", v.global_position)
+		"screech":
+			if str(ev.get("region_id", "")) != region_id:
+				return
+			var sv2: ZombieView = _zombies.get(ev["zombie_id"])
+			var at2 := Vector2(float(ev.get("x", 0)), float(ev.get("y", 0)))
+			Audio.play(["sfx.burnt_screech", "sfx.burnt_screech_b", "sfx.burnt_screech_c"][randi() % 3], sv2.global_position if sv2 != null else at2)
+			if sv2 != null:
+				sv2.screech()
 		"player_hit":
 			var a2: PlayerAvatar = _avatars.get(ev["player_id"])
 			if a2 != null:

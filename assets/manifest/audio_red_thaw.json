@@ -141,6 +141,36 @@
 			"loop": false,
 			"status": "READY",
 			"notes": "Generated placeholder (tools/art/gen_red_thaw_audio.py). WAV or OGG override accepted."
+		},
+		{
+			"id": "sfx.burnt_screech",
+			"name": "Burnt One \u2014 screech",
+			"template": "res://assets/templates/audio/red_thaw/template_burnt_screech_a.wav",
+			"bus": "SFX",
+			"volume_db": -3.0,
+			"loop": false,
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_red_thaw_audio.py). WAV or OGG override accepted."
+		},
+		{
+			"id": "sfx.burnt_screech_b",
+			"name": "Burnt One \u2014 screech (variation 2)",
+			"template": "res://assets/templates/audio/red_thaw/template_burnt_screech_b.wav",
+			"bus": "SFX",
+			"volume_db": -3.0,
+			"loop": false,
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_red_thaw_audio.py). WAV or OGG override accepted."
+		},
+		{
+			"id": "sfx.burnt_screech_c",
+			"name": "Burnt One \u2014 screech (variation 3)",
+			"template": "res://assets/templates/audio/red_thaw/template_burnt_screech_c.wav",
+			"bus": "SFX",
+			"volume_db": -3.0,
+			"loop": false,
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_red_thaw_audio.py). WAV or OGG override accepted."
 		}
 	]
 }

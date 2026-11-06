@@ -230,8 +230,31 @@ def burnt():
     save("template_burnt_death.wav", x + fall / np.max(np.abs(fall)), "sfx.burnt_death", "Burnt One — choked fall", "SFX", -5.0)
 
 
+# ---------------------------------------------------------------- iteration 011
+def burnt_screech():
+    """A strained human throat cry: a ragged inhale, then a rising, cracking
+    scream with rough (subharmonic + noise) excitation and a dry tail. Three
+    variations so it never repeats identically. Human, not monstrous."""
+    for k, (f_lo, f_hi, dur, crack) in enumerate(((330, 900, 1.55, 0.62), (290, 780, 1.85, 0.55), (370, 1050, 1.3, 0.7))):
+        n = int(dur * SR); t = np.linspace(0, 1, n)
+        rise = np.clip(t / crack, 0, 1) ** 0.6
+        f0 = f_lo + (f_hi - f_lo) * rise
+        f0 = np.where(t > crack, f_hi * (1 - 0.35 * (t - crack) / (1 - crack)), f0)
+        f0 = f0 * (1 + 0.035 * np.sin(2 * math.pi * 7.5 * t * dur) + 0.02 * RNG.standard_normal(n).cumsum() / np.sqrt(n) * 3)
+        amp = np.clip(t * 12, 0, 1) * np.clip((1 - t) * 3.5, 0, 1) ** 0.7
+        v = voice(f0, VOWELS["a"], amp, breath=0.35, jitter=0.05)
+        sub = voice(f0 * 0.5, VOWELS["e"], amp * 0.45, breath=0.2, jitter=0.07)   # vocal-fry roughness
+        x = v + sub
+        x = np.tanh(x / (np.max(np.abs(x)) or 1) * 2.4)                            # strained, clipped
+        inh = shaped_noise(int(0.28 * SR), lambda f: np.exp(-0.5 * ((f - 1800) / 900) ** 2))
+        inh = inh / np.max(np.abs(inh)) * np.linspace(0, 0.35, len(inh))
+        x = np.concatenate([inh, x])
+        save(f"template_burnt_screech_{'abc'[k]}.wav", reverb(lowpass(x, 5200), 1.1, 0.28, damp=2500),
+             "sfx.burnt_screech" if k == 0 else f"sfx.burnt_screech_{'abc'[k]}", "Burnt One — screech" + ("" if k == 0 else f" (variation {k + 1})"), "SFX", -3.0)
+
+
 if __name__ == "__main__":
-    ambience(); laughter(); mutter(); burnt()
+    ambience(); laughter(); mutter(); burnt(); burnt_screech()
     with open(os.path.join(ROOT, "assets", "manifest", "audio_red_thaw.json"), "w") as f:
         json.dump({"kind": "audio", "category": "red_thaw", "assets": ENTRIES}, f, indent="\t"); f.write("\n")
     print("red thaw audio generated:", len(ENTRIES))

@@ -474,22 +474,26 @@ def _tatters(c, x0, x1, y, n, length=(6, 16), col=None):
 
 
 def _hood(c, hx, hy, side=False, back=False):
+    # Shapes below are authored for the upright figure (hood centre y 33/34);
+    # dy shifts them so lower postures can place the head anywhere.
+    dy = hy - (34 if side else 33)
+    S = lambda pts: [(x, y + dy) for x, y in pts]
     if back:
-        hood = spline([(hx - 15, 34), (hx - 13, 16), (hx, 9), (hx + 13, 15), (hx + 15, 34), (hx + 9, 46), (hx - 9, 46)], steps=4)
+        hood = spline(S([(hx - 15, 34), (hx - 13, 16), (hx, 9), (hx + 13, 15), (hx + 15, 34), (hx + 9, 46), (hx - 9, 46)]), steps=4)
         part(c, hood, B_COAT, tex=0.4, ink=2.0, shade=(0.5, 1, 3.4, 90))
-        _burn(c, hx + 6, 22, 5, 3.5)
+        _burn(c, hx + 6, 22 + dy, 5, 3.5)
         return
     if side:
-        hood = spline([(hx - 14, 40), (hx - 12, 18), (hx + 2, 11), (hx + 12, 16), (hx + 13, 22), (hx + 4, 21), (hx - 2, 30), (hx - 4, 44)], steps=4)
+        hood = spline(S([(hx - 14, 40), (hx - 12, 18), (hx + 2, 11), (hx + 12, 16), (hx + 13, 22), (hx + 4, 21), (hx - 2, 30), (hx - 4, 44)]), steps=4)
     else:
-        hood = spline([(hx - 15, 40), (hx - 14, 18), (hx, 10), (hx + 14, 17), (hx + 15, 40), (hx + 10, 30), (hx + 7, 22), (hx, 20),
-                       (hx - 7, 22), (hx - 10, 30)], steps=4)
+        hood = spline(S([(hx - 15, 40), (hx - 14, 18), (hx, 10), (hx + 14, 17), (hx + 15, 40), (hx + 10, 30), (hx + 7, 22), (hx, 20),
+                       (hx - 7, 22), (hx - 10, 30)]), steps=4)
     part(c, hood, B_COAT, tex=0.4, ink=2.0)
     # shadow over the eyes: the face stays restrained, almost unseen
     eye = [(hx - 9, 24), (hx + 10, 24), (hx + 9, 33), (hx - 8, 33)] if not side else [(hx - 2, 24), (hx + 12, 24), (hx + 12, 33), (hx - 1, 33)]
-    eye = c.blob(sum(p[0] for p in eye) / 4, 27, 10 if not side else 7, 5.5, n=14, irregular=0.15)
+    eye = c.blob(sum(p[0] for p in eye) / 4, 27 + dy, 10 if not side else 7, 5.5, n=14, irregular=0.15)
     c.fill(eye, (22, 19, 17, 205), tex=0.2)
-    c.fill(c.blob(eye[0][0] - 10 if not side else hx + 5, 25, 11 if not side else 8, 3, n=10, irregular=0.1), (22, 19, 17, 150), tex=0.2)
+    c.fill(c.blob(eye[0][0] - 10 if not side else hx + 5, 25 + dy, 11 if not side else 8, 3, n=10, irregular=0.1), (22, 19, 17, 150), tex=0.2)
 
 
 def burnt(view, lunge=False):
@@ -604,6 +608,130 @@ def shadow_figure():
 
 
 
+# ---------------------------------------------------------------- Burnt One postures (iteration 011)
+# Crouched and crawling poses on the same 110x172 canvas, base line 164 and
+# pivot as the upright figure, so they swap in place. Crawl has two frames
+# (alternating limbs) for an awkward animal scramble.
+def _bcanvas(name, seed):
+    c = Canvas(110, 172, seed=seed)
+    return c
+
+
+def _blimb(c, path, widths, col, ink=1.8):
+    return part(c, limb(path, widths), col, tex=0.32, ink=ink)
+
+
+def burnt_crouch(view):
+    c = _bcanvas("crouch_" + view, 5901 + ["down", "up", "side"].index(view))
+    base = 164
+    c.soft_shadow((22, base - 9, 90, base + 6), alpha=130, blur=4)
+    if view == "side":  # facing right, knees bent, torso pitched forward, arms hanging low
+        for k, (hip, knee, foot) in enumerate((((44, 118), (64, 134), (50, 160)), ((50, 118), (72, 138), (62, 161)))):
+            _blimb(c, [hip, knee, foot], [15, 12, 10], B_COAT_D if k == 0 else B_COAT)
+            boot(c, foot[0] + 2, base - 1, 13, facing=1)
+        _blimb(c, [(58, 78), (66, 108), (70, 134)], [11, 9, 8], mix(B_SKIN_D, INK, 0.25))
+        torso = spline([(36, 84), (52, 70), (74, 74), (82, 92), (70, 120), (44, 124), (36, 108)], steps=5)
+        part(c, torso, B_SHIRT, tex=0.35, ink=2.1, shade=(-0.4, 1, 4, 90))
+        c.grime(c.mask(torso), 0.7, drips=True, color=B_BLOOD_D)
+        _tatters(c, 40, 72, 122, 6)
+        _blood(c, 66, 92, 6, 7, drips=2)
+        _blimb(c, [(66, 80), (74, 110), (80, 138)], [12, 10, 8], B_SKIN)
+        hand(c, 81, 142, 5.2, B_SKIN)
+        _hood(c, 84, 66, side=True)
+        _burn(c, 90, 70, 3.5, 2.5)
+    else:
+        front = view == "down"
+        cx = 55
+        for sx in (-1, 1):
+            hip, knee, foot = (cx + sx * 9, 120), (cx + sx * 20, 138), (cx + sx * 12, 160)
+            _blimb(c, [hip, knee, foot], [15, 13, 10], B_COAT if (sx < 0) == front else B_COAT_D)
+            boot(c, foot[0], base - 1, 13)
+        torso = spline([(cx - 22, 82), (cx - 10, 72), (cx + 12, 72), (cx + 22, 82), (cx + 18, 112), (cx, 124), (cx - 18, 112)], steps=5)
+        part(c, torso, B_SHIRT if front else mix(B_SHIRT, B_COAT, 0.4), tex=0.35, ink=2.1, shade=(1, 0.5, 4, 90))
+        c.grime(c.mask(torso), 0.7, drips=True, color=B_BLOOD_D)
+        _tatters(c, cx - 18, cx + 18, 120, 8)
+        for sx in (-1, 1):
+            _blimb(c, [(cx + sx * 20, 80), (cx + sx * 26, 108), (cx + sx * 24, 134)], [12, 9, 8], B_SKIN if sx < 0 else B_SKIN_D)
+            hand(c, cx + sx * 24, 138, 5, B_SKIN)
+        if front:
+            _blood(c, cx - 4, 94, 7, 8, drips=2)
+        _hood(c, cx + 2, 62, back=not front)
+    suffix = view
+    c.save(out("characters/burnt/template_burnt_crouch_%s.png" % suffix), size=(110, 172))
+
+
+def burnt_crawl(view, frame):
+    c = _bcanvas("crawl", 6001 + ["down", "up", "side"].index(view) * 3 + frame)
+    base = 164
+    c.soft_shadow((14, base - 12, 98, base + 6), alpha=140, blur=4)
+    a = 1 if frame == 0 else -1  # which diagonal pair reaches forward
+    if view == "side":  # on all fours facing right, low and long, head pushed forward
+        # far limbs (darker, behind)
+        _blimb(c, [(38, 128), (26 + 6 * a, 146), (36 + 10 * a, 162)], [13, 10, 9], B_COAT_D)
+        _blimb(c, [(76, 126), (84 - 5 * a, 144), (90 - 8 * a, 161)], [11, 9, 8], mix(B_SKIN_D, INK, 0.3))
+        body = spline([(26, 128), (40, 112), (70, 108), (90, 114), (88, 132), (60, 138), (34, 140)], steps=5)
+        part(c, body, B_SHIRT, tex=0.35, ink=2.1, shade=(0, 1, 4, 90))
+        c.grime(c.mask(body), 0.7, drips=True, color=B_BLOOD_D)
+        _tatters(c, 30, 80, 138, 7, (5, 12))
+        _blood(c, 58, 120, 7, 6, drips=1)
+        # near limbs
+        _blimb(c, [(44, 130), (34 - 6 * a, 148), (44 - 10 * a, 162)], [14, 11, 9], B_COAT)
+        boot(c, 48 - 10 * a, base - 1, 12, facing=1)
+        _blimb(c, [(80, 124), (88 + 5 * a, 142), (94 + 6 * a, 160)], [12, 10, 8], B_SKIN)
+        hand(c, 96 + 6 * a, 161, 5, B_SKIN)
+        _hood(c, 90, 104, side=True)
+        _burn(c, 95, 108, 3.5, 2.5)
+    elif view == "down":  # coming toward the viewer: head low and close, arms splayed forward
+        cx = 55
+        back = spline([(cx - 18, 104), (cx, 96), (cx + 18, 104), (cx + 22, 124), (cx, 132), (cx - 22, 124)], steps=5)
+        part(c, back, mix(B_SHIRT, B_COAT, 0.3), tex=0.35, ink=2.0, shade=(1, 0.5, 4, 85))
+        c.grime(c.mask(back), 0.6, drips=False, color=B_BLOOD_D)
+        for sx in (-1, 1):  # knees behind, low
+            _blimb(c, [(cx + sx * 12, 112), (cx + sx * 26, 120), (cx + sx * 30, 132)], [12, 10, 9], B_COAT_D)
+        for sx in (-1, 1):
+            reach = 8 * a * sx
+            _blimb(c, [(cx + sx * 20, 128), (cx + sx * 34, 142 - reach), (cx + sx * 30, 160 - reach)], [12, 10, 8], B_SKIN if sx < 0 else B_SKIN_D)
+            hand(c, cx + sx * 30, 162 - reach, 5.5, B_SKIN)
+        _tatters(c, cx - 16, cx + 16, 130, 6, (4, 10))
+        _hood(c, cx, 116)
+        _blood(c, cx + 8, 138, 5, 4, drips=1)
+    else:  # crawling away: hunched back and hood, soles toward the viewer
+        cx = 55
+        for sx in (-1, 1):
+            _blimb(c, [(cx + sx * 12, 132), (cx + sx * 20, 146), (cx + sx * 16 + 4 * a * sx, 160)], [13, 11, 10], B_COAT_D)
+            c.fill(c.blob(cx + sx * 16 + 4 * a * sx, 160, 7, 4, n=10, irregular=0.1), hexc("#2A221B"))
+        back = spline([(cx - 22, 120), (cx - 10, 100), (cx + 10, 100), (cx + 22, 120), (cx + 16, 138), (cx - 16, 138)], steps=5)
+        part(c, back, mix(B_SHIRT, B_COAT, 0.5), tex=0.35, ink=2.0, shade=(0.5, 1, 4, 85))
+        _burn(c, cx - 6, 116, 7, 5)
+        for sx in (-1, 1):
+            _blimb(c, [(cx + sx * 18, 106), (cx + sx * 28, 96 - 6 * a * sx), (cx + sx * 26, 84 - 6 * a * sx)], [11, 9, 8], B_SKIN_D)
+        _hood(c, cx, 92, back=True)
+    c.save(out("characters/burnt/template_burnt_crawl_%s_%d.png" % (view, frame)), size=(110, 172))
+
+
+def track_decals():
+    """Signs of their presence: a boot print, a bare hand/knee print (crawling) and blood flecks."""
+    from gen_homestead import out as _o
+    for name, draw in (("boot", 0), ("hand", 1), ("blood", 2)):
+        c = Canvas(48, 32, seed=6101 + draw)
+        if draw == 0:
+            for dx, dy in ((12, 20), (30, 11)):
+                b = c.blob(dx, dy, 6, 4, n=12, irregular=0.1)
+                c.fill(b, (120, 132, 140, 150), tex=0.2)
+                c.ink(b[5:12], width=0.9, alpha=90)
+        elif draw == 1:
+            for dx, dy in ((12, 14), (34, 20)):
+                c.fill(c.blob(dx, dy, 5, 4.5, n=10, irregular=0.15), (110, 120, 128, 150), tex=0.2)
+                for k in range(4):
+                    a = -2.3 + k * 0.45
+                    c.ink([(dx + math.cos(a) * 5, dy + math.sin(a) * 4.5), (dx + math.cos(a) * 9, dy + math.sin(a) * 8)], width=1.3, color=(110, 120, 128), alpha=150)
+        else:
+            for _ in range(6):
+                x, y, r = c.rng.uniform(8, 40), c.rng.uniform(8, 24), c.rng.uniform(1.2, 3.2)
+                c.fill(c.blob(x, y, r, r * 0.7, n=8, irregular=0.4), (86, 22, 18, 210), tex=0.2)
+        c.save(_o("characters/burnt/template_track_%s.png" % name), size=(48, 32), finish=False, winter=False)
+
+
 def write_manifest():
     """Manifest for the Red Thaw figures (Burnt Ones, huddled survivor, night silhouette)."""
     import json
@@ -624,6 +752,14 @@ def write_manifest():
         e("char.npc_huddled", "Frightened survivor — huddled", "characters/survivor/template_npc_huddled.png", [52, 84], [104, 168], [0.5, 0.9524]),
         e("char.shadow_figure", "Night silhouette (distant human shape)", "characters/shadow/template_shadow_figure.png", [52, 84], [104, 168], [0.5, 0.9524]),
     ]
+    for v in ("down", "up", "side"):
+        assets.append(e("char.burnt_crouch_" + v, "Burnt One — crouched (%s)" % v, "characters/burnt/template_burnt_crouch_%s.png" % v, *z))
+    for v, frames in (("down", 2), ("up", 2), ("side", 2)):
+        for f in range(frames):
+            assets.append(e("char.burnt_crawl_%s_%d" % (v, f), "Burnt One — crawling (%s, frame %d)" % (v, f + 1),
+                            "characters/burnt/template_burnt_crawl_%s_%d.png" % (v, f), *z))
+    for t in ("boot", "hand", "blood"):
+        assets.append(e("fx.track_" + t, "Track decal — %s" % t, "characters/burnt/template_track_%s.png" % t, [24, 16], [48, 32], [0.5, 0.5]))
     with open(os.path.join(ROOT, "assets", "manifest", "visual_burnt.json"), "w") as f:
         json.dump({"kind": "visual", "category": "burnt", "assets": assets}, f, indent="\t"); f.write("\n")
 
@@ -636,5 +772,10 @@ if __name__ == "__main__":
         burnt(v)
     burnt("down", True); burnt("side", True); burnt_dead()
     npc_huddled(); shadow_figure()
+    for v in ("down", "up", "side"):
+        burnt_crouch(v)
+        for f in (0, 1):
+            burnt_crawl(v, f)
+    track_decals()
     write_manifest()
     print("figures generated")

@@ -286,7 +286,7 @@ func _broadcast_zombies() -> void:
 	var rows := []
 	for z in world.zombies.values():
 		rows.append([z.zombie_id, z.region_id, snappedf(z.position.x, 0.1), snappedf(z.position.y, 0.1),
-			snappedf(z.facing.x, 0.01), snappedf(z.facing.y, 0.01), z.ai, roundi(z.health)])
+			snappedf(z.facing.x, 0.01), snappedf(z.facing.y, 0.01), z.ai, roundi(z.health), z.posture, 1 if z.burst > 0.0 else 0])
 	var zones := []
 	for key in world.threat.zones:
 		if float(world.threat.zones[key]) >= 0.3:
@@ -1146,6 +1146,9 @@ func _rpc_zombies(rows: Array, zones: Array) -> void:
 		z.facing = Vector2(float(r[4]), float(r[5]))
 		z.ai = int(r[6])
 		z.health = float(r[7])
+		if r.size() > 9:
+			z.posture = int(r[8])
+			z.burst = 1.0 if int(r[9]) == 1 else 0.0
 	for id in world.zombies.keys():
 		if not seen.has(id):
 			world.zombies.erase(id)

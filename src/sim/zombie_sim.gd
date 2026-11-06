@@ -223,15 +223,56 @@ static func _process_noise(world: WorldState) -> void:
 		th.recent.append({"tick": world.tick, "category": ev["category"], "zone": key})
 		if th.recent.size() > 12:
 			th.recent.pop_front()
+		var is_screech: bool = str(ev["category"]) == "screech"
+		var hearers: Array = []
 		for z in world.zombies.values():
 			if z.region_id != ev["region_id"] or z.is_dead():
 				continue
 			if z.ai in [ZombieState.AI.CHASE, ZombieState.AI.WINDUP, ZombieState.AI.RECOVER]:
 				continue
+			if is_screech and str(ev.get("source", "")) == z.zombie_id:
+				continue
 			if z.position.distance_to(ev["position"]) <= float(ev["radius"]) * mult:
+				hearers.append(z)
+		if is_screech:
+			# A screech calls only the nearest few, and they never screech back (no chains).
+			hearers.sort_custom(func(a, b): return a.position.distance_to(ev["position"]) < b.position.distance_to(ev["position"]))
+			hearers = hearers.slice(0, int(c("screech_max_responders", 3)))
+		for z in hearers:
+			if is_screech:
+				_investigate(world, z, ev["position"])
+				z.heard_screech = true
+				z.posture = ZombieState.Posture.CROUCH
+				z.posture_timer = 1.0
+			elif float(ev["attention"]) >= float(c("listen_threshold", 0.4)) and z.ai != ZombieState.AI.LISTEN:
+				# A real disturbance: stop, turn toward it and listen before going.
+				z.ai = ZombieState.AI.LISTEN
+				z.goal = ev["position"]
+				z.last_known = ev["position"]
+				z.listen_level = float(ev["attention"])
+				z.timer = world.sim_rng().randf_range(float(c("listen_seconds", [0.9, 1.6])[0]), float(c("listen_seconds", [0.9, 1.6])[1]))
+				z.path.clear()
+			elif z.ai != ZombieState.AI.LISTEN:
 				# Heard it: go and look where the sound came from (not at who made it).
 				_investigate(world, z, ev["position"])
 	th.queue.clear()
+
+
+## Host: a Burnt One screeches. The screech is itself a world noise (category
+## "screech") that draws the nearest few others; cooldowns per individual and
+## per region keep silence the norm. Returns the event result or {}.
+static func screech(world: WorldState, z: ZombieState) -> Dictionary:
+	var rk := "screech:" + z.region_id
+	if z.screech_cd > 0.0 or world.tick - int(world.cooldowns.get(rk, -100000)) < int(float(c("screech_region_cooldown", 14)) * Simulation.TICK_RATE):
+		return {}
+	world.cooldowns[rk] = world.tick
+	z.screech_cd = float(c("screech_cooldown", 50))
+	var n: Dictionary = c("noise", {}).get("screech", {"radius": 680, "attention": 0.6})
+	world.threat.queue.append({"region_id": z.region_id, "position": z.position, "radius": float(n["radius"]),
+		"attention": float(n["attention"]), "category": "screech", "source": z.zombie_id})
+	world.meta["last_screech"] = {"tick": world.tick, "region": z.region_id, "x": roundi(z.position.x), "y": roundi(z.position.y)}
+	SessionLog.info("threat", "screech", {"zombie": z.zombie_id, "region": z.region_id, "at": [roundi(z.position.x), roundi(z.position.y)]})
+	return _event_result({"kind": "screech", "zombie_id": z.zombie_id, "region_id": z.region_id, "x": z.position.x, "y": z.position.y})
 
 
 static func _decay(world: WorldState, seconds: float) -> void:
@@ -274,7 +315,7 @@ static func _escalate(world: WorldState, results: Array) -> void:
 		for z in world.zombies.values():
 			if z.region_id != region_id or z.is_dead():
 				continue
-			if z.ai in [ZombieState.AI.CHASE, ZombieState.AI.WINDUP, ZombieState.AI.RECOVER, ZombieState.AI.STAGGER] \
+			if z.ai in [ZombieState.AI.CHASE, ZombieState.AI.WINDUP, ZombieState.AI.RECOVER, ZombieState.AI.STAGGER, ZombieState.AI.LISTEN] \
 					or (z.ai == ZombieState.AI.INVESTIGATE and z.last_known.distance_to(center) < ThreatState.ZONE_SIZE * 1.5):
 				if z.position.distance_to(center) < float(c("recruit_radius", 1100)) * 1.2:
 					engaged += 1
@@ -329,6 +370,10 @@ static func _update(world: WorldState, z: ZombieState, grid: NavGrid, dyn: Dicti
 			world.zombies.erase(z.zombie_id)
 		return
 	z.attack_cooldown = maxf(0.0, z.attack_cooldown - DT)
+	z.screech_cd = maxf(0.0, z.screech_cd - DT)
+	z.burst = maxf(0.0, z.burst - DT)
+	z.burst_cd = maxf(0.0, z.burst_cd - DT)
+	z.posture_timer = maxf(0.0, z.posture_timer - DT)
 	match z.ai:
 		ZombieState.AI.STAGGER:
 			z.timer -= DT
@@ -365,6 +410,10 @@ static func _update(world: WorldState, z: ZombieState, grid: NavGrid, dyn: Dicti
 			return
 	# Senses: sight (cone + short all-round range, needs line of sight).
 	var seen := _look(world, z, grid, dyn)
+	if seen != null and z.ai == ZombieState.AI.CHASE and z.target_player == seen.player_id:
+		var mv: Vector2 = seen.position - z.last_known
+		if mv.length() > 1.0:
+			z.last_dir = z.last_dir.lerp(mv.normalized(), 0.3)
 	if seen != null:
 		if z.target_player != seen.player_id or z.ai != ZombieState.AI.CHASE:
 			z.path.clear()
@@ -378,7 +427,21 @@ static func _update(world: WorldState, z: ZombieState, grid: NavGrid, dyn: Dicti
 	if z.target_struct != "":
 		_breach(world, z, grid, dyn, budget)
 		return
+	_posture(world, z)
 	match z.ai:
+		ZombieState.AI.LISTEN:
+			# Frozen, head turned toward the sound. Then perhaps a screech, then go.
+			var to := z.goal - z.position
+			if to.length() > 1.0:  # turn by angle (a vector lerp stalls on a sound directly behind)
+				z.facing = Vector2.from_angle(lerp_angle(z.facing.angle(), to.angle(), 0.3))
+			z.timer -= DT
+			if z.timer <= 0.0:
+				var at := z.goal
+				if z.listen_level >= float(c("screech_threshold", 0.9)):
+					var sr := screech(world, z)
+					if not sr.is_empty():
+						results.append(sr)
+				_investigate(world, z, at)
 		ZombieState.AI.CHASE:
 			var tp := _target(world, z)
 			if tp == null:
@@ -390,9 +453,12 @@ static func _update(world: WorldState, z: ZombieState, grid: NavGrid, dyn: Dicti
 				if seen == null:
 					z.lost_sight += DT
 					if z.lost_sight >= float(c("lose_target_after", 3.5)):
+						# Lost them: search where they were heading, then a couple of spots around.
 						z.target_player = ""
-						_investigate(world, z, z.last_known)
-						z.goal = z.last_known
+						var guess := z.last_known + z.last_dir * float(c("search_lead", 90))
+						_investigate(world, z, guess)
+						z.goal = guess
+						z.search_left = int(c("search_points", 2))
 						return
 				z.goal = tp.position if seen != null else z.last_known
 				var d := z.position.distance_to(tp.position)
@@ -400,12 +466,15 @@ static func _update(world: WorldState, z: ZombieState, grid: NavGrid, dyn: Dicti
 					z.ai = ZombieState.AI.WINDUP
 					z.timer = float(c("attack_windup", 0.6))
 					z.facing = (tp.position - z.position).normalized()
+					z.posture = ZombieState.Posture.UPRIGHT  # rears up to strike (lunge pose)
+					z.burst = 0.0
+					z.posture_timer = 1.0
 					return
 				if d > 30.0:
-					_move(world, z, grid, dyn, float(c("speed_chase", 92)), budget)
+					_move(world, z, grid, dyn, float(c("speed_chase", 92)) * _pace(z), budget)
 		ZombieState.AI.INVESTIGATE:
 			if z.position.distance_to(z.goal) > 22.0 and z.timer <= 0.0:
-				_move(world, z, grid, dyn, float(c("speed_investigate", 62)), budget)
+				_move(world, z, grid, dyn, float(c("speed_investigate", 62)) * _pace(z), budget)
 				if z.position.distance_to(z.goal) <= 22.0:
 					z.timer = float(c("search_time", 3.5))
 			else:
@@ -413,7 +482,15 @@ static func _update(world: WorldState, z: ZombieState, grid: NavGrid, dyn: Dicti
 					z.timer = float(c("search_time", 3.5))
 				z.timer -= DT
 				if z.timer <= 0.0:
-					_after_search(world, z)
+					if z.search_left > 0:
+						z.search_left -= 1
+						var rng2 := world.sim_rng()
+						z.goal = z.last_known + Vector2(rng2.randf_range(-160, 160), rng2.randf_range(-160, 160))
+						z.timer = 0.0
+						z.path.clear()
+					else:
+						z.heard_screech = false
+						_after_search(world, z)
 		ZombieState.AI.WANDER:
 			if z.leaving:
 				_move(world, z, grid, dyn, float(c("speed_investigate", 62)), budget)
@@ -430,9 +507,59 @@ static func _update(world: WorldState, z: ZombieState, grid: NavGrid, dyn: Dicti
 				z.timer = rng.randf_range(1.5, 4.5)
 				return
 			var before := z.position
-			_move(world, z, grid, dyn, float(c("speed_wander", 32)), budget)
+			_move(world, z, grid, dyn, float(c("speed_wander", 32)) * _pace(z), budget)
 			if before.distance_to(z.position) < 0.5:
 				z.goal = z.position  # stuck: pick another spot next time
+
+
+## Speed factor from temperament and posture (crawling bursts are the fastest).
+static func _pace(z: ZombieState) -> float:
+	var k := z.temperament().x
+	match z.posture:
+		ZombieState.Posture.CROUCH:
+			k *= float(c("crouch_speed", 0.7))
+		ZombieState.Posture.CRAWL:
+			k *= float(c("burst_speed", 1.55)) if z.burst > 0.0 else float(c("crawl_speed", 0.8))
+	return k
+
+
+## Chooses a body posture for the moment. Wandering: mostly upright, sometimes
+## lowered. Investigating: lowered, creeping; crawl-prone individuals drop to all
+## fours near the spot. Chasing: upright, with occasional crawling bursts (a fast
+## animal scramble) at mid range. Changes are rate-limited so they read as
+## deliberate transitions, and every individual differs (temperament).
+static func _posture(world: WorldState, z: ZombieState) -> void:
+	if z.burst > 0.0:
+		return
+	if z.posture == ZombieState.Posture.CRAWL and z.burst_cd > float(c("burst_cooldown", 6.0)) - 1.0:
+		return  # keep scrambling low for a moment after a burst
+	if z.posture_timer > 0.0:
+		return
+	var crawly := z.temperament().y
+	var rng := world.sim_rng()
+	var want := z.posture
+	match z.ai:
+		ZombieState.AI.WANDER:
+			want = ZombieState.Posture.CROUCH if rng.randf() < 0.18 + crawly * 0.2 else ZombieState.Posture.UPRIGHT
+			if crawly > 0.8 and rng.randf() < 0.15:
+				want = ZombieState.Posture.CRAWL
+		ZombieState.AI.LISTEN:
+			want = ZombieState.Posture.CROUCH if crawly > 0.4 else ZombieState.Posture.UPRIGHT
+		ZombieState.AI.INVESTIGATE:
+			var near := z.position.distance_to(z.goal) < 140.0
+			want = ZombieState.Posture.CRAWL if near and crawly > 0.45 else ZombieState.Posture.CROUCH
+		ZombieState.AI.CHASE:
+			want = ZombieState.Posture.CRAWL if crawly > 0.85 else ZombieState.Posture.UPRIGHT
+			var tp := _target(world, z)
+			if tp != null and z.burst_cd <= 0.0:
+				var d := tp.position.distance_to(z.position)
+				if d > 90.0 and d < 340.0 and rng.randf() < float(c("burst_chance", 0.35)) * (0.5 + crawly):
+					want = ZombieState.Posture.CRAWL
+					z.burst = float(c("burst_seconds", 1.4))
+					z.burst_cd = float(c("burst_cooldown", 6.0))
+	if want != z.posture:
+		z.posture = want
+	z.posture_timer = rng.randf_range(1.2, 3.0)
 
 
 static func _after_search(world: WorldState, z: ZombieState) -> void:

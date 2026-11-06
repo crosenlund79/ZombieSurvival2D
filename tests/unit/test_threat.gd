@@ -60,7 +60,11 @@ func test_noise_sends_zombies_to_the_location_not_the_player() -> void:
 	var far := _zombie(w, Vector2(2300, 300), Vector2.LEFT)
 	ZombieSim.make_noise(w, "homestead", Vector2(700, 1250), "chop")
 	ZombieSim.step(w, 1)
-	eq(near.state_name(), "INVESTIGATE", "zombie in earshot investigates")
+	eq(near.state_name(), "LISTEN", "a real disturbance: it stops and listens first (iteration 011)")
+	for i in 20:
+		w.tick += 1
+		ZombieSim.step(w, 1)
+	eq(near.state_name(), "INVESTIGATE", "then it investigates")
 	check(near.last_known.distance_to(Vector2(700, 1250)) < 1.0, "it heads for the noise location")
 	eq(near.target_player, "", "hearing does not reveal who made the noise")
 	eq(far.state_name(), "WANDER", "zombie out of earshot keeps wandering")
