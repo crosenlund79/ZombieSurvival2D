@@ -279,4 +279,11 @@ and the map reveals each place when you first arrive.
 
 ## 13. Full regression
 
-FULL_REGRESSION_PLACEHOLDER
+- **Full run: 513 of 514 checks passed.** Every scenario in `tools/mp_test.py` (iterations 001–014, two real
+  game processes where multiplayer is involved) ran in one uninterrupted pass on the final code.
+- **The one failure** was `danger: more zombies converge (horde developing)`. That check depends on timing: wandering
+  Burnt Ones must turn toward the players within a fixed window. **Re-running `danger_multi` on its own passed
+  10/10, twice.** It is recorded as an intermittent timing check, not as a regression.
+- **Performance.** The host simulation peaked at 1.18 ms per frame with 47 Burnt Ones and two players
+  (budget 8 ms).
+- **Also on the final code:** unit tests 171/171, content check PASS, script guides EN + DA 125/125.
