@@ -80,7 +80,7 @@ SHOPS = {
             ("aisle_lumber", "shelf", 240, 450, "int.gondola_full", "int.gondola_empty", {"wood": 3}, {}),
             ("aisle_tools", "shelf", 510, 450, "int.gondola_sparse", "int.gondola_empty", {"scrap_metal": 1, "electrical_parts": 1, "cement": 1}, {}),
             ("aisle_bare", "shelf", 240, 590, "int.metal_shelf_empty", "int.metal_shelf_empty", {}, {"searched": True}),
-            ("stock_crate", "crate", 960, 330, "int.crate", "int.crate_open", {"wood": 2, "cement": 1}, {}),
+            ("stock_crate", "crate", 960, 330, "int.crate", "int.crate_open", {"wood": 2, "cement": 1, "stovepipe": 1}, {}),
             ("locked_case", "toolbox", 1040, 610, "int.tool_chest", "int.tool_chest_open", {}, {"gear": ["flashlight", "hatchet"], "discovery": "hardware_case"}),
         ],
         "props": [
@@ -117,7 +117,7 @@ SHOPS = {
         "windows": [600], "tint": (0.46, 0.46, 0.48),
         "containers": [
             ("tool_chest", "toolbox", 210, 300, "int.tool_chest", "int.tool_chest_open", {"scrap_metal": 2, "electrical_parts": 1}, {}),
-            ("parts_shelf", "garage", 470, 310, "int.metal_shelf_full", "int.metal_shelf_empty", {"scrap_metal": 2, "fuel": 1}, {}),
+            ("parts_shelf", "garage", 470, 310, "int.metal_shelf_full", "int.metal_shelf_empty", {"scrap_metal": 2, "fuel": 1, "stovepipe": 1}, {}),
             ("locker_a", "locker", 720, 290, "int.locker", "int.locker_open", {"fuel": 1}, {}),
             ("locker_b", "locker", 800, 290, "int.locker_open", "int.locker_open", {}, {"searched": True}),
             ("scrap_crate", "garage", 220, 620, "int.crate", "int.crate_open", {"scrap_metal": 2, "electrical_parts": 1}, {}),

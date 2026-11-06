@@ -93,6 +93,7 @@ func refresh() -> void:
 	Assets.apply_to_sprite(_sprite, SideArt.map(art_for(region, o)) if _side else art_for(region, o))
 	var building := not Build.is_built(o)
 	_sprite.modulate.a = 0.5 if building else 1.0
+	_update_glow(bool(d.get("heater", false)) and not building)
 	z_index = -1 if bool(d.get("floor", false)) or Build.is_pile(o) else 0
 	_rect = Build.footprint(region, o)
 	var local := Rect2(_rect.position - position, _rect.size)
@@ -246,3 +247,18 @@ func _draw() -> void:
 		return
 	draw_rect(Rect2(at, Vector2(w, 6)).grow(2), Color(0.06, 0.05, 0.04, 0.8))
 	draw_rect(Rect2(at, Vector2(w * frac, 6)), col)
+
+
+## Iteration 013: a lit wood stove glows (presentation only).
+var _glow: PointLight2D
+func _update_glow(on: bool) -> void:
+	if on and _glow == null:
+		_glow = PointLight2D.new()
+		_glow.set_script(LightSpot)
+		_glow.color = Color(1.0, 0.62, 0.3)
+		_glow.energy = 0.9
+		_glow.texture_scale = 2.2
+		_glow.position = Vector2(0, -26)
+		add_child(_glow)
+	if _glow != null:
+		_glow.visible = on

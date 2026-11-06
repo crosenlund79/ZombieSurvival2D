@@ -167,6 +167,30 @@ static func request(world: WorldState, player_id: String, vehicle_id: String, ac
 			r3["events"] = [{"kind": "vehicle_engine", "region_id": v.region_id, "vehicle_id": vehicle_id, "on": v.engine_on,
 				"x": v.position.x, "y": v.position.y}]
 			return r3
+		"store_all", "take_all":
+			# Iteration 013: load / unload in one go. Equipped gear stays on the player.
+			if inside:
+				return WorldActions._fail("VEHICLE_FROM_OUTSIDE")
+			var slots := int(d.get("cargo_slots", 10))
+			var n := 0
+			if action == "store_all":
+				for g in p.gear.duplicate():
+					if not (str(g.get("uid", "")) in p.equipped.values()):
+						n += Inv.transfer(p, v.cargo, true, str(g["uid"]), slots)
+				for item in p.carried.keys():
+					n += Inv.transfer(p, v.cargo, true, str(item), slots)
+			else:
+				for g2 in (v.cargo.get("gear", []) as Array).duplicate():
+					n += Inv.transfer(p, v.cargo, false, str(g2.get("uid", "")), slots)
+				for item2 in (v.cargo.get("items", {}) as Dictionary).keys():
+					n += Inv.transfer(p, v.cargo, false, str(item2), slots)
+			if n <= 0:
+				return WorldActions._fail("VEHICLE_TRUNK_FULL" if action == "store_all" and not p.carried.is_empty() else ("ACTION_CARRY_FULL" if action == "take_all" and not (v.cargo.get("items", {}) as Dictionary).is_empty() else "ACTION_NOTHING_THERE"), [Items.carry_slots()])
+			SessionLog.info("vehicle", action, {"vehicle": vehicle_id, "player": player_id.substr(0, 6), "moved": n})
+			var r5 := _result(v)
+			r5["players"] = [player_id]
+			r5["vitals"] = [player_id]
+			return r5
 		"store", "take":
 			if inside:
 				return WorldActions._fail("VEHICLE_FROM_OUTSIDE")

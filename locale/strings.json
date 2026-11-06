@@ -2862,5 +2862,41 @@
 	"SKILLS_DEV_MULT": {
 		"en": "Developer XP multiplier ×%s active",
 		"da": "Udviklerens XP-multiplikator ×%s er slået til"
+	},
+	"TRUNK_STORE_ALL": {
+		"en": "Load everything (keeps what you hold)",
+		"da": "Læs alt ind (beholder det du har i hånden)"
+	},
+	"TRUNK_TAKE_ALL": {
+		"en": "Unload everything",
+		"da": "Læs alt ud"
+	},
+	"TRUNK_FULL": {
+		"en": "The trunk is full.",
+		"da": "Bagagerummet er fuldt."
+	},
+	"PANEL_STORE_EVERYTHING": {
+		"en": "Store everything you carry",
+		"da": "Læg alt det du bærer på lager"
+	},
+	"ITEM_STOVEPIPE": {
+		"en": "Stovepipe",
+		"da": "Kakkelovnsrør"
+	},
+	"ITEM_STOVEPIPE_DESC": {
+		"en": "A length of flue pipe. With scrap metal and cement it makes a wood stove for the shelter.",
+		"da": "Et stykke røgrør. Med skrot og cement bliver det til en brændeovn til beskyttelsesrummet."
+	},
+	"BUILD_STOVE": {
+		"en": "Wood stove",
+		"da": "Brændeovn"
+	},
+	"BUILD_STOVE_DESC": {
+		"en": "Underground only. Heats the shelter level it stands on: you warm up much faster down here.",
+		"da": "Kun under jorden. Varmer det niveau i beskyttelsesrummet den står på: du får varmen meget hurtigere hernede."
+	},
+	"TIER_IRON": {
+		"en": "Cast iron",
+		"da": "Støbejern"
 	}
 }

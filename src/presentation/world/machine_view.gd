@@ -79,6 +79,7 @@ func panel_data() -> Dictionary:
 	match _type:
 		"storage":
 			lines.append(UITheme.fmt("PANEL_CARRY", [Items.total(carried), Items.carry_slots()]))
+			buttons.append([TranslationServer.translate("PANEL_STORE_EVERYTHING"), "store_all", "", not carried.is_empty()])
 			for item in Items.ids():
 				var have := Items.amount(carried, item)
 				var stored := Items.amount(store, item)

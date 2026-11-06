@@ -273,12 +273,19 @@ func trunk_panel() -> Dictionary:
 	var lines: Array = [UITheme.fmt("STRUCT_CONTAINS", [Hud.bag_text(items) + Hud.gear_text(gear),
 		Items.total(items) + gear.size(), int(vdef().get("cargo_slots", 12))])]
 	var buttons: Array = []
+	var cap := int(vdef().get("cargo_slots", 12))
+	var used := Items.total(items) + gear.size()
+	var loose := me.gear.filter(func(g): return not (str(g["uid"]) in me.equipped.values()))
+	buttons.append([TranslationServer.translate("TRUNK_STORE_ALL"), "store_all", "", used < cap and (not me.carried.is_empty() or not loose.is_empty())])
+	buttons.append([TranslationServer.translate("TRUNK_TAKE_ALL"), "take_all", "", used > 0 and Inv.free_slots(me) > 0])
+	if used >= cap:
+		lines.append(TranslationServer.translate("TRUNK_FULL"))
 	for item in me.carried:
-		buttons.append([UITheme.fmt("STRUCT_STORE", [me.carrying(item), TranslationServer.translate(Items.name_key(item))]), "store", item, true])
+		buttons.append([UITheme.fmt("STRUCT_STORE", [me.carrying(item), TranslationServer.translate(Items.name_key(item))]), "store", item, used < cap])
 	for g in me.gear:
-		buttons.append([UITheme.fmt("STRUCT_STORE", [1, TranslationServer.translate(Items.name_key(str(g["item"])))]), "store", str(g["uid"]), true])
+		buttons.append([UITheme.fmt("STRUCT_STORE", [1, TranslationServer.translate(Items.name_key(str(g["item"])))]), "store", str(g["uid"]), used < cap])
 	for item2 in items:
-		buttons.append([UITheme.fmt("STRUCT_TAKE", [int(items[item2]), TranslationServer.translate(Items.name_key(item2))]), "take", item2, true])
+		buttons.append([UITheme.fmt("STRUCT_TAKE", [int(items[item2]), TranslationServer.translate(Items.name_key(item2))]), "take", item2, Inv.free_slots(me) > 0])
 	for g2 in gear:
-		buttons.append([UITheme.fmt("STRUCT_TAKE", [1, TranslationServer.translate(Items.name_key(str(g2["item"])))]), "take", str(g2["uid"]), true])
+		buttons.append([UITheme.fmt("STRUCT_TAKE", [1, TranslationServer.translate(Items.name_key(str(g2["item"])))]), "take", str(g2["uid"]), Inv.free_slots(me) > 0])
 	return {"title": TranslationServer.translate("VEHICLE_TRUNK"), "lines": lines, "buttons": buttons}

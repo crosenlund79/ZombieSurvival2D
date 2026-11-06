@@ -414,6 +414,13 @@ static func request_entity_action(world: WorldState, player_id: String, eid: Str
 		"storage:store":
 			if Items.move(p.carried, store, arg, 9999) <= 0:
 				return _fail("ACTION_NOTHING_TO_DEPOSIT")
+		"storage:store_all":
+			# Iteration 013: unload everything carried into shelter storage in one go.
+			var moved_all := 0
+			for item in p.carried.keys():
+				moved_all += Items.move(p.carried, store, str(item), 9999)
+			if moved_all <= 0:
+				return _fail("ACTION_NOTHING_TO_DEPOSIT")
 		"storage:take":
 			if Items.move(store, p.carried, arg, 1, Items.carry_slots()) <= 0:
 				return _fail("ACTION_CARRY_FULL" if Items.amount(store, arg) > 0 else "ACTION_NOTHING_THERE", [Items.carry_slots()])

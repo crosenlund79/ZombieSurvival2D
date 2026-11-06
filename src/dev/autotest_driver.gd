@@ -437,6 +437,8 @@ func _state() -> Dictionary:
 				"me_cell": [Terrain.cell_of(tr, me.position).x, Terrain.cell_of(tr, me.position).y]}
 		if me != null:
 			s["region"] = me.region_id
+			s["heated"] = Build.heated(w, me.region_id)
+			s["warmth_rate"] = SurvivalSim.warmth_rate(w, me)
 			s["carried"] = me.carried
 			s["gear"] = me.gear
 			s["equipped"] = me.equipped

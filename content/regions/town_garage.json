@@ -80,7 +80,8 @@
 			"art_searched": "int.metal_shelf_empty",
 			"loot": {
 				"scrap_metal": 2,
-				"fuel": 1
+				"fuel": 1,
+				"stovepipe": 1
 			},
 			"initial": {
 				"searched": false

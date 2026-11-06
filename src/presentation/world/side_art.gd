@@ -34,6 +34,7 @@ const MAP := {
 	"build.door_open": "side.door_open",
 	"build.crate": "side.crate",
 	"build.workbench": "side.workbench",
+	"build.stove": "side.stove",
 	"build.planter_empty": "side.planter_empty",
 	"build.planter_growing": "side.planter_growing",
 	"build.planter_ripe": "side.planter_ripe",

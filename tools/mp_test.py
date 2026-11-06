@@ -2143,7 +2143,102 @@ def scenario_progression_multi():
             i.kill()
 
 
-SCENARIOS = {"progression_multi": scenario_progression_multi, "circuit_multi": scenario_circuit_multi, "side_multi": scenario_side_multi, "blood_multi": scenario_blood_multi, "custom_graphics": scenario_custom_graphics, "wild_multi": scenario_wild_multi, "vehicle_multi": scenario_vehicle_multi, "winter_multi": scenario_winter_multi, "red_thaw_multi": scenario_red_thaw_multi, "perf_multi": scenario_perf_multi, "slice": scenario_slice, "settlement_multi": scenario_settlement_multi, "world_multi": scenario_world_multi, "craft_multi": scenario_craft_multi, "build_multi": scenario_build_multi, "accept": scenario_accept, "infra_multi": scenario_infra_multi, "dig_multi": scenario_dig_multi, "danger_single": scenario_danger_single, "danger_multi": scenario_danger_multi, "settings": scenario_settings, "bunker_single": scenario_bunker_single, "bunker_multi": scenario_bunker_multi, "single": scenario_single, "multiplayer": scenario_multiplayer,
+def scenario_expedition_multi():
+    """Iteration 013 D: the full circuit with two real instances — prepare at the cabin, drive
+    to Ashgrove, scavenge different shops, load the trunk, drive back through the station,
+    unload into the shelter, build the wood stove from scavenged parts, feel its warmth,
+    save and restart with everything in place."""
+    CIRCUIT_POS.update(_load_circuit_positions())
+    host = Instance("t_ehost"); c = Instance("t_eclient")
+    for i in (host, c):
+        i.wipe()
+    try:
+        host.start(); c.start()
+        host.cmd("set dev allow_client_dev_commands 1")
+        host.cmd(f"host {PORT} new 215 Hosty"); host.cmd("tips off"); host.cmd("dev peaceful 1"); host.cmd("dev time 12"); host.cmd("dev weather clear")
+        r = c.cmd(f"join 127.0.0.1 {PORT} Cleo"); c.cmd("tips off")
+        check("exp: client joins at the cabin", r["ok"] and player(host.state(), "Cleo")["region"] == "homestead", r["error"])
+        # drive: station -> Ashgrove (the road from the cabin to the station is covered by vehicle_multi)
+        for i in (host, c):
+            i.cmd("dev goto service_station"); i.cmd("wait 0.6")
+        host.cmd("dev teleport 1400 700"); c.cmd("dev teleport 1430 760"); host.cmd("dev vehicle_here"); time.sleep(0.4)
+        host.cmd("vehicle wagon enter"); c.cmd("vehicle wagon enter"); host.cmd("press_key vehicle_engine")
+        host.cmd("hold move_up 4.0"); time.sleep(1.0)
+        check("exp: both drive into Ashgrove", player(host.state(), "Hosty")["region"] == "town" and player(host.state(), "Cleo")["region"] == "town", "")
+        host.cmd("hold move_down 1.0"); host.cmd("wait 0.8"); host.cmd("press_key vehicle_engine")
+        host.cmd("vehicle wagon exit"); c.cmd("vehicle wagon exit"); time.sleep(0.4)
+        wagon = _veh(host.state())["wagon"]
+        # scavenge two different shops at once
+        _enter_shop(c, "hardware", (1592, 880)); _enter_shop(host, "garage", (2594, 900))
+        _search(c, "town.hardware", "stock_crate"); _search(host, "town.garage", "parts_shelf", 7.0)
+        c.cmd("wait 0.5")
+        c.cmd("entity_action town.hardware.stock_crate take *"); host.cmd("entity_action town.garage.parts_shelf take *")
+        _search(host, "town.garage", "tool_chest", 7.5); host.cmd("entity_action town.garage.tool_chest take *")
+        time.sleep(0.4)
+        hs = host.state()
+        check("exp: the client found a stovepipe in the hardware store", player(hs, "Cleo")["carried"].get("stovepipe") == 1, player(hs, "Cleo")["carried"])
+        check("exp: the host found one in the garage", player(hs, "Hosty")["carried"].get("stovepipe") == 1, player(hs, "Hosty")["carried"])
+        # load the trunk
+        for i, dy in ((host, 90), (c, 120)):
+            i.cmd("dev goto town"); i.cmd("wait 0.5"); i.cmd(f"dev teleport {wagon['x']} {wagon['y'] + dy}"); i.cmd("wait 0.3")
+        before = sum(player(hs, n)["carried"].get(k, 0) for n in ("Hosty", "Cleo") for k in ("stovepipe", "scrap_metal", "cement", "wood", "fuel", "electrical_parts"))
+        c.cmd("vehicle wagon store_all"); host.cmd("vehicle wagon store_all"); time.sleep(0.5)
+        hs = host.state()
+        cargo = _veh(hs)["wagon"]["cargo"]
+        used = sum(cargo.get("items", {}).values()) + len(cargo.get("gear", []))
+        check("exp: the trunk is loaded (12 slots at most)", 0 < used <= 12 and cargo["items"].get("stovepipe") == 2, cargo)
+        after = sum(player(hs, n)["carried"].get(k, 0) for n in ("Hosty", "Cleo") for k in ("stovepipe", "scrap_metal", "cement", "wood", "fuel", "electrical_parts"))
+        check("exp: loading neither loses nor duplicates", after + sum(cargo["items"].get(k, 0) for k in ("stovepipe", "scrap_metal", "cement", "wood", "fuel", "electrical_parts")) == before, (before, after, cargo))
+        check("exp: the client sees the loaded trunk", _veh(c.state())["wagon"]["cargo"] == cargo, _veh(c.state())["wagon"]["cargo"])
+        # drive back: Ashgrove -> station (reverse out of the west road exit) -> homestead.
+        # The wagon is re-parked near the west edge first (dev) so a short reverse reaches the exit.
+        host.cmd("dev teleport 300 1010"); host.cmd("dev vehicle_here 180"); time.sleep(0.3)
+        c.cmd("dev teleport 430 1100"); host.cmd("dev teleport 430 1090"); time.sleep(0.3)
+        check("exp: re-parking keeps the cargo", _veh(host.state())["wagon"]["cargo"] == cargo, _veh(host.state())["wagon"]["cargo"])
+        host.cmd("vehicle wagon enter"); c.cmd("vehicle wagon enter"); host.cmd("press_key vehicle_engine")
+        host.cmd("hold move_up 2.5"); time.sleep(1.0)
+        check("exp: back at the station", player(host.state(), "Hosty")["region"] == "service_station", player(host.state(), "Hosty")["region"])
+        host.cmd("hold move_up 7.5"); time.sleep(1.0)
+        hs = host.state()
+        check("exp: home at the cabin's road, both aboard", player(hs, "Hosty")["region"] == "homestead" and player(hs, "Cleo")["region"] == "homestead", "")
+        check("exp: the cargo came home intact", _veh(hs)["wagon"]["cargo"] == cargo, _veh(hs)["wagon"]["cargo"])
+        host.cmd("hold move_down 1.2"); host.cmd("wait 0.8"); host.cmd("press_key vehicle_engine")
+        host.cmd("vehicle wagon exit"); c.cmd("vehicle wagon exit"); time.sleep(0.4)
+        c.cmd("vehicle wagon take_all"); time.sleep(0.4)
+        hs = host.state()
+        check("exp: unloading into the client's arms", player(hs, "Cleo")["carried"].get("stovepipe") == 2, player(hs, "Cleo")["carried"])
+        left = _veh(hs)["wagon"]["cargo"]
+        if sum(left.get("items", {}).values()) > 0:
+            host.cmd("vehicle wagon take_all"); time.sleep(0.3)
+        check("exp: the trunk is empty afterwards", sum(_veh(host.state())["wagon"]["cargo"].get("items", {}).values()) == 0, _veh(host.state())["wagon"]["cargo"])
+        # into the shelter, store, build the stove
+        c.cmd("dev teleport 1150 1000"); host.cmd("dev teleport 1180 1000")
+        st = _build_shelter_and_descend(c)
+        check("exp: the client carries it all down into the shelter", st["region"] == L1, st["region"])
+        c.cmd("walk_to 650 0 6"); c.cmd("entity_action storage store_all"); time.sleep(0.4)
+        res = host.state()["bunkers"][SITE]["resources"]
+        check("exp: unloaded into shelter storage", res.get("stovepipe") == 2 and res.get("scrap_metal", 0) >= 3, res)
+        rate0 = c.state()["warmth_rate"]
+        c.cmd("walk_to 600 0 6"); c.cmd("build stove 560 701"); c.cmd("wait 7")
+        cs = c.state()
+        res = host.state()["bunkers"][SITE]["resources"]
+        check("exp: the wood stove is built", cs["heated"], cs.get("heated"))
+        check("exp: parts were used once", res.get("stovepipe") == 1, res)
+        check("exp: the shelter warms you much faster", cs["warmth_rate"] >= rate0 + 10, (rate0, cs["warmth_rate"]))
+        st2 = _build_shelter_and_descend(host)
+        check("exp: the host feels it too (same level)", host.state()["heated"], host.state().get("heated"))
+        c.cmd("leave"); host.cmd("save"); host.cmd("leave")
+        host.cmd(f"host {PORT} continue Hosty"); host.cmd("dev peaceful 1")
+        hs = host.state()
+        check("exp: after a restart the stove still heats the shelter", hs["heated"] and hs["region"] == L1, (hs.get("heated"), hs.get("region")))
+        check("exp: storage kept the rest", hs["bunkers"][SITE]["resources"].get("stovepipe") == 1, hs["bunkers"][SITE]["resources"])
+        check("exp: still one wagon, empty trunk", len(hs["vehicles"]) == 1 and sum(_veh(hs)["wagon"]["cargo"].get("items", {}).values()) == 0, "")
+    finally:
+        for i in (host, c):
+            i.kill()
+
+
+SCENARIOS = {"expedition_multi": scenario_expedition_multi, "progression_multi": scenario_progression_multi, "circuit_multi": scenario_circuit_multi, "side_multi": scenario_side_multi, "blood_multi": scenario_blood_multi, "custom_graphics": scenario_custom_graphics, "wild_multi": scenario_wild_multi, "vehicle_multi": scenario_vehicle_multi, "winter_multi": scenario_winter_multi, "red_thaw_multi": scenario_red_thaw_multi, "perf_multi": scenario_perf_multi, "slice": scenario_slice, "settlement_multi": scenario_settlement_multi, "world_multi": scenario_world_multi, "craft_multi": scenario_craft_multi, "build_multi": scenario_build_multi, "accept": scenario_accept, "infra_multi": scenario_infra_multi, "dig_multi": scenario_dig_multi, "danger_single": scenario_danger_single, "danger_multi": scenario_danger_multi, "settings": scenario_settings, "bunker_single": scenario_bunker_single, "bunker_multi": scenario_bunker_multi, "single": scenario_single, "multiplayer": scenario_multiplayer,
              "netfail": scenario_connection_failure, "assets": scenario_assets}
 
 if __name__ == "__main__":

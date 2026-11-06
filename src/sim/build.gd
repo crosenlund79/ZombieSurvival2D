@@ -61,6 +61,18 @@ static func is_built(o: Dictionary) -> bool:
 	return str(o.get("stage", "built")) == "built"
 
 
+## Iteration 013: does a finished heater (the wood stove) stand in this region?
+static func heated(world: WorldState, region_id: String) -> bool:
+	var region := world.region(region_id) if world != null else null
+	if region == null:
+		return false
+	for oid in region.objects:
+		var o: Dictionary = region.objects[oid]
+		if is_built(o) and bool(def(str(o.get("def", ""))).get("heater", false)):
+			return true
+	return false
+
+
 ## Returns "" when a saved object dictionary is usable.
 static func validate_object(o) -> String:
 	if not (o is Dictionary):

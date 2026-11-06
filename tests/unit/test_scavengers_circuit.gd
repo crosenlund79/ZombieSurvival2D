@@ -284,3 +284,64 @@ func test_skills_screen_text() -> void:
 	SkillSim.set_level(p, "scavenging", 10)
 	r = SkillsPanel.rows_for(p)[0]
 	eq(r["fraction"], 1.0, "full bar at the top level")
+
+
+# ---------------------------------------------------------------- milestone D: trunk + stove
+
+func test_trunk_load_and_unload_everything() -> void:
+	var w := WorldState.create_new("w_d1", 141)
+	VehicleSim.ensure(w)
+	var v: VehicleState = w.vehicles["wagon"]
+	var p := _player(w, PID, v.region_id, v.position + Vector2(0, 90))
+	p.carried = {"canned_food": 4, "scrap_metal": 6, "wood": 5}
+	var torch := Inv.new_gear(w, "flashlight")
+	var coat := Inv.new_gear(w, "winter_coat")
+	p.gear = [torch, coat]
+	p.equipped = {"hand": torch["uid"]}
+	var r := VehicleSim.request(w, PID, "wagon", "store_all")
+	check(r["ok"], "load everything")
+	eq(Items.total(v.cargo["items"]) + (v.cargo["gear"] as Array).size(), 12, "the trunk takes exactly 12")
+	eq(Items.total(p.carried) + Items.total(v.cargo["items"]), 15, "nothing lost or duplicated")
+	check(p.gear.any(func(g): return g["uid"] == torch["uid"]), "the flashlight in hand stays with you")
+	eq(VehicleSim.request(w, PID, "wagon", "store_all")["reason"], "VEHICLE_TRUNK_FULL", "full trunk says so")
+	check(VehicleSim.request(w, PID, "wagon", "take_all")["ok"], "unload everything")
+	eq(Items.total(v.cargo.get("items", {})) + (v.cargo.get("gear", []) as Array).size(), 0, "trunk empty")
+	eq(p.carrying("canned_food") + p.carrying("scrap_metal") + p.carrying("wood"), 15, "all back on the player")
+	check(p.gear.any(func(g): return g["uid"] == coat["uid"]), "the coat came back too")
+
+
+func test_stove_needs_scavenged_parts_and_heats_the_shelter() -> void:
+	var w := WorldState.create_new("w_d2", 142)
+	WorldActions.ensure_prebuilt_shelters(w)
+	var b := w.bunker("town.house.cellar")
+	var lv := b.level_region(-1)
+	var reg := w.region(lv)
+	var room := SideSection.room_rect(reg)
+	var spot := Vector2(room.get_center().x, room.end.y - 30.0)
+	var p := _player(w, PID, lv, spot + Vector2(60, 0))
+	p.warmth = 40.0
+	var before := SurvivalSim.warmth_rate(w, p)
+	b.resources = {"scrap_metal": 3, "cement": 1}
+	var r := Build.request_build(w, PID, "stove", spot)
+	check(not r["ok"], "no stove without a stovepipe (%s)" % r["reason"])
+	b.resources["stovepipe"] = 1
+	r = Build.request_build(w, PID, "stove", spot)
+	check(r["ok"], "the stove is built from scavenged parts (%s)" % r.get("reason", ""))
+	eq(b.amount("stovepipe") + b.amount("scrap_metal") + b.amount("cement"), 0, "parts consumed exactly once")
+	check(not Build.heated(w, lv), "not warm while it is being built")
+	_run(w, 7.0)
+	check(Build.heated(w, lv), "lit once finished")
+	var after := SurvivalSim.warmth_rate(w, p)
+	check(after >= before + 10.0, "you warm up much faster (%.1f -> %.1f / min)" % [before, after])
+	var data := SaveCodec.encode(w)
+	var w2: WorldState = SaveCodec.decode(JSON.parse_string(JSON.stringify(data)))["world"]
+	check(Build.heated(w2, lv), "the stove survives a save")
+
+
+func test_stovepipes_are_found_in_ashgrove() -> void:
+	var w := WorldState.create_new("w_d3", 143)
+	var n := 0
+	for name in SHOPS:
+		n += int(_contents(w, "town." + name).get("stovepipe", 0))
+	check(n >= 2, "stovepipes in Ashgrove (%d)" % n)
+	check(_contents(w, "town.hardware").has("stovepipe"), "the hardware store has one")

@@ -215,6 +215,11 @@
 			"slot": "",
 			"unique": false,
 			"use": "flashlight"
+		},
+		"stovepipe": {
+			"name_key": "ITEM_STOVEPIPE",
+			"desc_key": "ITEM_STOVEPIPE_DESC",
+			"cat": "part"
 		}
 	},
 	"bare_hands": {

@@ -104,7 +104,8 @@
 		"shelter_per_minute": 10,
 		"bunker_per_minute": 7,
 		"bunker_powered_per_minute": 18,
-		"vehicle_heater_per_minute": 10
+		"vehicle_heater_per_minute": 10,
+		"stove_per_minute": 12
 	},
 	"sleep_from_hour": 17.0,
 	"sleep_until_hour": 6.0,

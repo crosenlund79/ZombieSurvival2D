@@ -76,7 +76,10 @@ static func warmth_rate(world: WorldState, p: PlayerState) -> float:
 		return -float(ec("loss_per_minute", 6.0)) * cold * (1.0 - insulation(p))
 	var def := world.region_def(p.region_id)
 	if world.bunker_for_region(p.region_id) != null:
-		return float(ec("bunker_powered_per_minute", 18)) if InfraSim.is_powered(world, p.region_id) else float(ec("bunker_per_minute", 7))
+		var rate := float(ec("bunker_powered_per_minute", 18)) if InfraSim.is_powered(world, p.region_id) else float(ec("bunker_per_minute", 7))
+		if Build.heated(world, p.region_id):
+			rate += float(ec("stove_per_minute", 12))  # iteration 013: the wood stove
+		return rate
 	return float(ec("shelter_per_minute", 10)) * float(def.get("warmth", 1.0))
 
 

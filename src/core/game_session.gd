@@ -1163,14 +1163,15 @@ func _host_dev_command(peer_id: int, cmd: String, arg: Variant) -> void:
 				rb["blood"] = true
 				_publish_result(rb)
 		"vehicle_here":
-			# Developer: park the first vehicle beside the player (same region).
+			# Developer: park the first vehicle beside the player (same region);
+			# optional arg = heading in degrees (0 = east, 180 = west).
 			var pv: PlayerState = world.players.get(pid)
 			if pv != null and not world.vehicles.is_empty() and pv.vehicle_id == "":
 				var vv: VehicleState = world.vehicles.values()[0]
 				if vv.occupants().is_empty():
 					vv.region_id = pv.region_id
 					vv.position = pv.position + Vector2(130, 0)
-					vv.rotation = 0.0
+					vv.rotation = deg_to_rad(float(arg)) if (arg is float or arg is int) else 0.0
 					var rv := WorldActions._ok()
 					rv["vehicles"] = [vv.vehicle_id]
 					_publish_result(rv)

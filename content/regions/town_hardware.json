@@ -137,7 +137,8 @@
 			"art_searched": "int.crate_open",
 			"loot": {
 				"wood": 2,
-				"cement": 1
+				"cement": 1,
+				"stovepipe": 1
 			},
 			"initial": {
 				"searched": false
