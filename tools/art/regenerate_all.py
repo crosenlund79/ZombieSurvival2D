@@ -13,7 +13,7 @@ import os, subprocess, sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 STEPS = [
     ["gen_homestead.py"], ["gen_bunker.py"], ["gen_survival.py", "milestone_b"], ["gen_infra.py"],
-    ["gen_build.py"], ["gen_tools.py"], ["gen_overhaul.py"], ["gen_winter.py"], ["gen_figures.py"], ["gen_station.py"],
+    ["gen_build.py"], ["gen_tools.py"], ["gen_overhaul.py"], ["gen_winter.py"], ["gen_figures.py"], ["gen_station.py"], ["gen_world_awakens.py"],
 ]
 
 if __name__ == "__main__":

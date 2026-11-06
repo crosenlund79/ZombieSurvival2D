@@ -34,6 +34,10 @@ signal object_changed(region_id: String, object_id: String)
 ## Weather, threat heat, defence event, discoveries or settlement data changed.
 signal world_meta_changed
 signal npcs_updated
+## Iteration 011: a vehicle's seats / engine / trunk / region changed (full state).
+signal vehicle_changed(vehicle_id: String)
+## The host rejected the local driver's pose; the vehicle view snaps back.
+signal vehicle_corrected(vehicle_id: String)
 
 enum Mode { NONE, SINGLE, HOST, CLIENT }
 
@@ -190,6 +194,11 @@ func _begin() -> void:
 		var added := ZombieSim.ensure_population(world)
 		EventSim.resume_after_load(world)
 		NpcSim.ensure(world)
+		VehicleSim.ensure(world)
+		# Players who are not here cannot stay in a seat (they rejoin beside the car).
+		for po in world.players.values():
+			if not po.online and po.vehicle_id != "":
+				VehicleSim.eject(world, po)
 		SessionLog.info("threat", "population_ready", {"zombies": world.zombies.size(), "added": added})
 	_tick_accum = 0.0
 	_snapshot_accum = 0.0
@@ -301,6 +310,8 @@ func _broadcast_snapshot() -> void:
 	for p in world.online_players():
 		rows.append([p.player_id, p.position, p.facing])
 	_rpc_snapshot.rpc(world.tick, rows)
+	if not world.vehicles.is_empty():
+		_rpc_vehicles.rpc(VehicleSim.rows(world))
 
 
 func _roster_rows() -> Array:
@@ -308,7 +319,7 @@ func _roster_rows() -> Array:
 	for p in world.online_players():
 		rows.append({"id": p.player_id, "name": p.display_name, "region": p.region_id,
 			"position": p.position, "facing": p.facing, "carried": p.carried,
-			"vitals": _vitals_row(p)})
+			"vitals": _vitals_row(p), "vehicle": p.vehicle_id})
 	return rows
 
 
@@ -331,6 +342,59 @@ func submit_local_move(pos: Vector2, facing: int) -> void:
 		_host_handle_move(1, pos, facing, region)
 	else:
 		_rpc_submit_move.rpc_id(1, pos, facing, region)
+
+
+## Vehicles (iteration 011): enter / exit / engine / store / take.
+func request_vehicle(vehicle_id: String, action: String, arg: String = "") -> void:
+	if not in_world():
+		return
+	if is_authority():
+		_host_handle_vehicle(1, vehicle_id, action, arg)
+	else:
+		_rpc_request_vehicle.rpc_id(1, vehicle_id, action, arg)
+
+
+## The local driver reports the predicted pose of the vehicle (20 Hz).
+func submit_vehicle_pose(vehicle_id: String, pos: Vector2, rot: float, speed: float, steer: float) -> void:
+	if not in_world():
+		return
+	if is_authority():
+		_host_handle_vehicle_pose(1, vehicle_id, pos, rot, speed, steer)
+	else:
+		_rpc_submit_vehicle_pose.rpc_id(1, vehicle_id, pos, rot, speed, steer)
+
+
+func _host_handle_vehicle(peer_id: int, vehicle_id: String, action: String, arg: String) -> void:
+	var pid: String = _peer_to_player.get(peer_id, "")
+	var res := VehicleSim.request(world, pid, vehicle_id, action, arg)
+	if res["ok"]:
+		_move_track["veh:" + vehicle_id] = Time.get_ticks_msec()
+		_publish_result(res)
+	else:
+		SessionLog.info("vehicle", "request_refused", {"vehicle": vehicle_id, "action": action, "by": pid.substr(0, 6), "reason": res["reason"]})
+	_send_action_result(peer_id, 0, res["ok"], res["reason"], res["reason_args"])
+
+
+func _host_handle_vehicle_pose(peer_id: int, vehicle_id: String, pos: Vector2, rot: float, speed: float, steer: float) -> void:
+	var pid: String = _peer_to_player.get(peer_id, "")
+	if pid == "":
+		return
+	var key := "veh:" + vehicle_id
+	var now := Time.get_ticks_msec()
+	var dt := maxf(0.001, (now - int(_move_track.get(key, now))) / 1000.0)
+	_move_track[key] = now
+	var res := VehicleSim.submit_pose(world, pid, vehicle_id, pos, rot, speed, steer, dt)
+	if not res["ok"]:
+		if res.get("correct", false):
+			var v: VehicleState = world.vehicles.get(vehicle_id)
+			if v != null:
+				if peer_id == 1:
+					vehicle_corrected.emit(vehicle_id)
+				else:
+					_rpc_vehicle_correct.rpc_id(peer_id, vehicle_id, v.position, v.rotation)
+		return
+	if not (res.get("vehicles", []) as Array).is_empty() or not (res.get("transitions", []) as Array).is_empty():
+		_publish_result(res)
 
 
 ## rev_override >= 0 sends an explicit revision (tests use it to reproduce
@@ -590,8 +654,8 @@ func _host_handle_move(peer_id: int, pos: Vector2, facing: int, region_id: Strin
 	var now := Time.get_ticks_msec()
 	var dt := maxf(0.001, (now - int(_move_track.get(pid, now))) / 1000.0)
 	_move_track[pid] = now
-	if p.dead:
-		return
+	if p.dead or p.vehicle_id != "":
+		return  # a seated player moves with the vehicle (VehicleSim.submit_pose)
 	if not WorldActions.is_plausible_move(p.position, pos, dt):
 		SessionLog.warn("session", "move_rejected", {"player": pid.substr(0, 6),
 			"from": [p.position.x, p.position.y], "to": [pos.x, pos.y], "dt": snappedf(dt, 0.001)})
@@ -669,6 +733,13 @@ func _publish_result(res: Dictionary) -> void:
 		world_meta_changed.emit()
 		if mode == Mode.HOST and not multiplayer.get_peers().is_empty():
 			_rpc_world_meta.rpc(world.env, world.meta)
+	for vid in res.get("vehicles", []):
+		var vs: VehicleState = world.vehicles.get(vid)
+		if vs == null:
+			continue
+		vehicle_changed.emit(vid)
+		if mode == Mode.HOST and not multiplayer.get_peers().is_empty():
+			_rpc_vehicle.rpc(vid, vs.to_dict())
 	for c in res["changes"]:
 		var region := world.region(c["region_id"])
 		if region != null:
@@ -712,6 +783,14 @@ func _publish_result(res: Dictionary) -> void:
 		_move_track[pid2] = Time.get_ticks_msec()
 		SessionLog.info("session", "region_changed", {"player": pid2.substr(0, 6), "region": t["region_id"]})
 		_send_correction(_peer_of(pid2), t["position"], t["region_id"])
+		_broadcast_roster()
+	# Several players changing region together (a vehicle and its occupants).
+	for t2 in res.get("transitions", []):
+		var pid3: String = t2["player_id"]
+		_move_track[pid3] = Time.get_ticks_msec()
+		SessionLog.info("session", "region_changed", {"player": pid3.substr(0, 6), "region": t2["region_id"], "by": "vehicle"})
+		_send_correction(_peer_of(pid3), t2["position"], t2["region_id"])
+	if res.get("roster", false) or not (res.get("transitions", []) as Array).is_empty():
 		_broadcast_roster()
 
 
@@ -956,6 +1035,18 @@ func _host_dev_command(peer_id: int, cmd: String, arg: Variant) -> void:
 				_send_action_result(peer_id, 0, false, res["reason"])
 		"save":
 			save_world()
+		"vehicle_here":
+			# Developer: park the first vehicle beside the player (same region).
+			var pv: PlayerState = world.players.get(pid)
+			if pv != null and not world.vehicles.is_empty() and pv.vehicle_id == "":
+				var vv: VehicleState = world.vehicles.values()[0]
+				if vv.occupants().is_empty():
+					vv.region_id = pv.region_id
+					vv.position = pv.position + Vector2(130, 0)
+					vv.rotation = 0.0
+					var rv := WorldActions._ok()
+					rv["vehicles"] = [vv.vehicle_id]
+					_publish_result(rv)
 		"teleport":
 			if pid != "" and arg is Vector2:
 				var p: PlayerState = world.players[pid]
@@ -1015,6 +1106,8 @@ func _on_peer_disconnected(peer_id: int) -> void:
 		return
 	_peer_to_player.erase(peer_id)
 	var p: PlayerState = world.players.get(pid)
+	if p != null and p.vehicle_id != "":
+		_publish_result(VehicleSim.eject(world, p))  # nobody drives or rides while away
 	if p != null:
 		p.online = false
 		p.last_seen_unix = int(Time.get_unix_time_from_system())
@@ -1131,6 +1224,7 @@ func _rpc_roster(rows: Array) -> void:
 			p.position = row["position"]
 		p.facing = int(row["facing"])
 		p.carried = (row.get("carried", {}) as Dictionary).duplicate()
+		p.vehicle_id = str(row.get("vehicle", ""))
 		if row.has("vitals"):
 			_apply_vitals(p, row["vitals"])
 		p.online = true
@@ -1349,3 +1443,57 @@ func _rpc_dev_command(cmd: String, arg: Variant) -> void:
 func _rpc_session_closing(reason_key: String) -> void:
 	if mode == Mode.CLIENT:
 		_end(reason_key)
+
+
+# ---------------------------------------------------------------- vehicles (iteration 011)
+
+@rpc("any_peer", "call_remote", "reliable")
+func _rpc_request_vehicle(vehicle_id: String, action: String, arg: String) -> void:
+	if mode == Mode.HOST:
+		_host_handle_vehicle(multiplayer.get_remote_sender_id(), vehicle_id, action, arg)
+
+
+@rpc("any_peer", "call_remote", "unreliable_ordered")
+func _rpc_submit_vehicle_pose(vehicle_id: String, pos: Vector2, rot: float, speed: float, steer: float) -> void:
+	if mode == Mode.HOST:
+		_host_handle_vehicle_pose(multiplayer.get_remote_sender_id(), vehicle_id, pos, rot, speed, steer)
+
+
+@rpc("authority", "call_remote", "unreliable_ordered")
+func _rpc_vehicles(rows: Array) -> void:
+	if mode != Mode.CLIENT or world == null:
+		return
+	VehicleSim.apply_rows(world, rows, local_player_id)
+
+
+## Full vehicle state (seats, engine, trunk, region). Seated players follow it.
+@rpc("authority", "call_remote", "reliable")
+func _rpc_vehicle(vehicle_id: String, data: Dictionary) -> void:
+	if mode != Mode.CLIENT or world == null:
+		return
+	var v := VehicleState.from_dict(vehicle_id, data)
+	var old: VehicleState = world.vehicles.get(vehicle_id)
+	if old != null and old.driver() == local_player_id and v.driver() == local_player_id and old.region_id == v.region_id:
+		# keep the local prediction for the pose while still driving here
+		v.position = old.position
+		v.rotation = old.rotation
+		v.speed = old.speed
+	world.vehicles[vehicle_id] = v
+	for p in world.players.values():
+		if v.seat_of(p.player_id) >= 0:
+			p.vehicle_id = vehicle_id
+		elif p.vehicle_id == vehicle_id:
+			p.vehicle_id = ""
+	vehicle_changed.emit(vehicle_id)
+
+
+@rpc("authority", "call_remote", "reliable")
+func _rpc_vehicle_correct(vehicle_id: String, pos: Vector2, rot: float) -> void:
+	if mode != Mode.CLIENT or world == null:
+		return
+	var v: VehicleState = world.vehicles.get(vehicle_id)
+	if v != null:
+		v.position = pos
+		v.rotation = rot
+		v.speed = 0.0
+	vehicle_corrected.emit(vehicle_id)

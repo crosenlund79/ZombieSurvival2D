@@ -122,6 +122,26 @@ func _process(_delta: float) -> void:
 	var main := get_tree().root.get_node_or_null("Main")
 	if BuildMode.placing != "" and main != null and main.get("build_mode") != null:
 		_prompt.text = main.build_mode.hint_text()
+	if me.vehicle_id != "" and not PlayerAvatar.input_blocked:
+		_prompt.text = vehicle_hint(w, me)
+
+
+static func _k(action: String) -> String:
+	var codes: Array = Settings.action_keys(action)
+	return Settings.key_label(codes[0]) if not codes.is_empty() else "?"
+
+
+## Control hint while seated in a vehicle (driver / passenger, engine state).
+static func vehicle_hint(w: WorldState, me: PlayerState) -> String:
+	var v: VehicleState = w.vehicles.get(me.vehicle_id)
+	if v == null:
+		return ""
+	if v.driver() != me.player_id:
+		return UITheme.fmt("HUD_VEHICLE_PASSENGER", [_k("interact")])
+	if not v.engine_on:
+		return UITheme.fmt("HUD_VEHICLE_DRIVER_OFF", [_k("vehicle_engine"), _k("interact")])
+	return UITheme.fmt("HUD_VEHICLE_DRIVER", [_k("move_up"), _k("move_down"), _k("move_left"), _k("move_right"),
+		_k("vehicle_engine"), _k("interact")])
 
 
 ## Horde warning / attack banner from the replicated event record ("" = none).

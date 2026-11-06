@@ -659,5 +659,23 @@
 	"climate": {
 		"exposure": 0.9,
 		"fog": 1.3
-	}
+	},
+	"vehicle_exits": [
+		{
+			"rect": [
+				2360,
+				1310,
+				40,
+				180
+			],
+			"target": {
+				"region": "service_station",
+				"position": [
+					210,
+					710
+				],
+				"rotation": 0
+			}
+		}
+	]
 }

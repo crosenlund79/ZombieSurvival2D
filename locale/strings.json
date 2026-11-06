@@ -2366,5 +2366,69 @@
 	"INV_STATS_INSULATION": {
 		"da": "Holder %s%% af kulden ude",
 		"en": "Keeps out %s%% of the cold"
+	},
+	"PROMPT_ENTER_VEHICLE": {
+		"en": "Get in the station wagon",
+		"da": "Sæt dig ind i stationcaren"
+	},
+	"PROMPT_VEHICLE_TRUNK": {
+		"en": "Open the trunk",
+		"da": "Åbn bagagerummet"
+	},
+	"VEHICLE_TRUNK": {
+		"en": "Trunk",
+		"da": "Bagagerum"
+	},
+	"VEHICLE_STATION_WAGON": {
+		"en": "Station wagon",
+		"da": "Stationcar"
+	},
+	"VEHICLE_ALREADY_INSIDE": {
+		"en": "You are already in a vehicle.",
+		"da": "Du sidder allerede i et køretøj."
+	},
+	"VEHICLE_LOCKED": {
+		"en": "It's locked.",
+		"da": "Den er låst."
+	},
+	"VEHICLE_FULL": {
+		"en": "Every seat is taken.",
+		"da": "Alle pladser er optaget."
+	},
+	"VEHICLE_NOT_INSIDE": {
+		"en": "You are not in that vehicle.",
+		"da": "Du sidder ikke i det køretøj."
+	},
+	"VEHICLE_NOT_DRIVER": {
+		"en": "Only the driver can do that.",
+		"da": "Kun føreren kan gøre det."
+	},
+	"VEHICLE_FROM_OUTSIDE": {
+		"en": "Get out to reach the trunk.",
+		"da": "Stig ud for at nå bagagerummet."
+	},
+	"VEHICLE_TRUNK_FULL": {
+		"en": "The trunk is full.",
+		"da": "Bagagerummet er fyldt."
+	},
+	"VEHICLE_POSE_REJECTED": {
+		"en": "The car lurches back.",
+		"da": "Bilen rykker tilbage."
+	},
+	"ACTION_VEHICLE_ENGINE": {
+		"en": "Engine on / off",
+		"da": "Motor til / fra"
+	},
+	"HUD_VEHICLE_DRIVER": {
+		"en": "Driving — %s/%s throttle and brake · %s/%s steer · %s engine · %s get out",
+		"da": "Du kører — %s/%s gas og bremse · %s/%s styr · %s motor · %s stig ud"
+	},
+	"HUD_VEHICLE_DRIVER_OFF": {
+		"en": "In the driver's seat — %s starts the engine (the key is in the ignition) · %s get out",
+		"da": "I førersædet — %s starter motoren (nøglen sidder i tændingen) · %s stig ud"
+	},
+	"HUD_VEHICLE_PASSENGER": {
+		"en": "Riding along — %s get out",
+		"da": "Du kører med — %s stig ud"
 	}
 }

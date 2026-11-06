@@ -24,6 +24,7 @@ var _avatars := {}  # player_id -> PlayerAvatar
 var _zombies := {}  # zombie_id -> ZombieView
 var _objects := {}  # object_id -> StructureView
 var _npcs := {}     # npc_id -> NpcView
+var _vehicles := {} # vehicle_id -> VehicleView
 var _actors: Node2D
 
 
@@ -93,6 +94,32 @@ func _sync_avatars() -> void:
 func _process(_delta: float) -> void:
 	_sync_zombies()
 	_sync_npcs()
+	_sync_vehicles()
+
+
+func _sync_vehicles() -> void:
+	if Session.world == null:
+		return
+	for v in Session.world.vehicles.values():
+		if v.region_id == region_id and not _vehicles.has(v.vehicle_id):
+			var vv := VehicleView.create(v)
+			_actors.add_child(vv)
+			_vehicles[v.vehicle_id] = vv
+	for id in _vehicles.keys():
+		var v2: VehicleState = Session.world.vehicles.get(id)
+		if v2 == null or v2.region_id != region_id or not is_instance_valid(_vehicles[id]):
+			if is_instance_valid(_vehicles[id]):
+				(_vehicles[id] as Node).queue_free()
+			_vehicles.erase(id)
+
+
+func vehicle_view(vehicle_id: String) -> VehicleView:
+	var v = _vehicles.get(vehicle_id)
+	return v if v != null and is_instance_valid(v) else null
+
+
+func vehicle_count() -> int:
+	return _vehicles.size()
 
 
 func _sync_npcs() -> void:
@@ -195,6 +222,14 @@ func _on_combat_event(ev: Dictionary) -> void:
 			Audio.play(["sfx.burnt_screech", "sfx.burnt_screech_b", "sfx.burnt_screech_c"][randi() % 3], sv2.global_position if sv2 != null else at2)
 			if sv2 != null:
 				sv2.screech()
+		"vehicle_door", "vehicle_engine":
+			if str(ev.get("region_id", "")) != region_id:
+				return
+			var at3 := Vector2(float(ev.get("x", 0)), float(ev.get("y", 0)))
+			if str(ev["kind"]) == "vehicle_door":
+				Audio.play("sfx.car_door", at3)
+			else:
+				Audio.play("sfx.engine_start" if bool(ev.get("on", false)) else "sfx.engine_stop", at3)
 		"player_hit":
 			var a2: PlayerAvatar = _avatars.get(ev["player_id"])
 			if a2 != null:

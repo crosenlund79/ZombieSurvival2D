@@ -34,6 +34,9 @@ var _flash := 0.0
 var _downed := false
 var _aim := Vector2.DOWN
 var _cam_snap := true
+var _seated := false
+var _cam_zoom_factor := 1.0
+var _sensor: InteractionSensor
 
 
 ## bounds: camera limits (empty Rect2 = no limits). light: carry a small light.
@@ -91,6 +94,7 @@ func _build(display_name: String, bounds: Rect2) -> void:
 		var sensor := InteractionSensor.new()
 		sensor.name = "InteractionSensor"
 		add_child(sensor)
+		_sensor = sensor
 	else:
 		collision_layer = 0
 		collision_mask = 0
@@ -114,11 +118,16 @@ func _apply_art() -> void:
 
 func _physics_process(delta: float) -> void:
 	_night_torch(delta)
+	var me: PlayerState = Session.world.players.get(player_id) if Session.world != null else null
+	_set_seated(me != null and me.vehicle_id != "")
 	if is_local:
-		_local_move(delta)
+		if _seated:
+			_ride(delta, me.vehicle_id)
+		else:
+			_local_move(delta)
 		_update_camera(delta)
 	else:
-		var p: PlayerState = Session.world.players.get(player_id) if Session.world != null else null
+		var p: PlayerState = me
 		if p != null:
 			target_position = p.position
 			facing = p.facing
@@ -152,6 +161,47 @@ func _local_move(delta: float) -> void:
 			Session.submit_local_move(global_position, facing)
 
 
+## In a vehicle the avatar is hidden, passes through everything and rides
+## along with the car's view (the host keeps the saved position on the car).
+func _set_seated(value: bool) -> void:
+	if value == _seated:
+		return
+	_seated = value
+	_sprite.visible = not value
+	_label.visible = not value
+	if value:
+		_weapon.visible = false
+	else:
+		refresh_weapon()
+	var torch := get_node_or_null("NightTorch")
+	if torch != null:
+		torch.visible = not value
+	if is_local:
+		collision_layer = 0 if value else 1
+		collision_mask = 0 if value else 1
+		if _sensor != null:
+			_sensor.process_mode = Node.PROCESS_MODE_DISABLED if value else Node.PROCESS_MODE_INHERIT
+			if value and _sensor.focused != null and is_instance_valid(_sensor.focused):
+				_sensor.focused.set_focused(false)
+				_sensor.focused = null
+
+
+func _ride(_delta: float, vehicle_id: String) -> void:
+	velocity = Vector2.ZERO
+	var rv := RegionView.find_for(self)
+	var vv := rv.vehicle_view(vehicle_id) if rv != null else null
+	if vv != null:
+		global_position = vv.global_position
+
+
+func vehicle_view() -> VehicleView:
+	var p: PlayerState = Session.world.players.get(player_id) if Session.world != null else null
+	if p == null or p.vehicle_id == "":
+		return null
+	var rv := RegionView.find_for(self)
+	return rv.vehicle_view(p.vehicle_id) if rv != null else null
+
+
 ## Presentation only: a small bob while walking, horizontal flip by facing.
 func _animate(delta: float, moving: bool) -> void:
 	_flash = maxf(0.0, _flash - delta * 3.0)
@@ -175,6 +225,15 @@ func _on_corrected(pos: Vector2) -> void:
 ## levels); a larger one is followed but never shows beyond its bounds.
 func _update_camera(delta: float) -> void:
 	var target := global_position + Vector2(0, -24)
+	# Driving: look ahead along the car's motion and pull the camera back a little.
+	var vv := vehicle_view() if _seated else null
+	if vv != null:
+		target += Vector2.from_angle(vv.heading) * clampf(vv.speed, -150.0, 430.0) * 0.45
+	var want_zoom := 0.82 if _seated else 1.0
+	if absf(_cam_zoom_factor - want_zoom) > 0.001:
+		var base := camera.zoom.x / _cam_zoom_factor
+		_cam_zoom_factor = move_toward(_cam_zoom_factor, want_zoom, delta * 0.5)
+		camera.zoom = Vector2.ONE * base * _cam_zoom_factor
 	if _frame.has_area():
 		var vis := get_viewport_rect().size / camera.zoom
 		for axis in 2:
@@ -196,6 +255,20 @@ func snap_camera() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if not is_local or input_blocked:
 		return
+	if _seated:
+		var p: PlayerState = Session.local_player()
+		if p != null and p.vehicle_id != "":
+			if event.is_action_pressed("interact"):
+				Session.request_vehicle(p.vehicle_id, "exit")
+				get_viewport().set_input_as_handled()
+				return
+			if event.is_action_pressed("vehicle_engine"):
+				Session.request_vehicle(p.vehicle_id, "engine")
+				get_viewport().set_input_as_handled()
+				return
+			if event.is_action_pressed("attack"):
+				get_viewport().set_input_as_handled()
+				return
 	if event.is_action_pressed("attack") and not _downed and BuildMode.placing == "":
 		var aim := _facing_vector()
 		if event is InputEventMouseButton:
@@ -268,6 +341,6 @@ func set_downed(value: bool) -> void:
 
 
 func _set_zoom(z: float) -> void:
-	z = clampf(z, SettingsService.ZOOM_MIN, SettingsService.ZOOM_MAX)
-	camera.zoom = Vector2(z, z)
+	z = clampf(z / _cam_zoom_factor, SettingsService.ZOOM_MIN, SettingsService.ZOOM_MAX)
+	camera.zoom = Vector2(z, z) * _cam_zoom_factor
 	Settings.set_value("display", "camera_zoom", z)

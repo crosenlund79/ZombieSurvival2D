@@ -1,0 +1,23 @@
+{
+	"_comment": "Vehicle types (iteration 011). Units: px and px/s, seconds. Placements live in region files ('vehicles'); road exits in 'vehicle_exits'. EXPLORING prototype values.",
+	"vehicles": {
+		"station_wagon": {
+			"name_key": "VEHICLE_STATION_WAGON",
+			"seats": 4,
+			"cargo_slots": 12,
+			"length": 176,
+			"width": 76,
+			"max_speed": 430,
+			"reverse_speed": 150,
+			"accel": 230,
+			"brake": 560,
+			"coast": 120,
+			"turn_rate": 2.1,
+			"grip": 6.0,
+			"enter_range": 150,
+			"art_prefix": "vehicle.wagon",
+			"headings": 16,
+			"engine_noise_every": 3.0
+		}
+	}
+}

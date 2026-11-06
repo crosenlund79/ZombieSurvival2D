@@ -1,0 +1,358 @@
+{
+	"kind": "visual",
+	"category": "awakens",
+	"assets": [
+		{
+			"id": "vehicle.wagon_00",
+			"name": "Station wagon, heading 0 deg (screen, clockwise from east)",
+			"template": "res://assets/templates/props/vehicles/template_wagon_00.png",
+			"display_size": [
+				240,
+				200
+			],
+			"source_size": [
+				480,
+				400
+			],
+			"pivot": [
+				0.5,
+				0.65
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_world_awakens.py): 16 headings of one 3D model. Replace each heading with matching art; origin = centre of the car on the ground."
+		},
+		{
+			"id": "vehicle.wagon_01",
+			"name": "Station wagon, heading 22 deg (screen, clockwise from east)",
+			"template": "res://assets/templates/props/vehicles/template_wagon_01.png",
+			"display_size": [
+				240,
+				200
+			],
+			"source_size": [
+				480,
+				400
+			],
+			"pivot": [
+				0.5,
+				0.65
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_world_awakens.py): 16 headings of one 3D model. Replace each heading with matching art; origin = centre of the car on the ground."
+		},
+		{
+			"id": "vehicle.wagon_02",
+			"name": "Station wagon, heading 45 deg (screen, clockwise from east)",
+			"template": "res://assets/templates/props/vehicles/template_wagon_02.png",
+			"display_size": [
+				240,
+				200
+			],
+			"source_size": [
+				480,
+				400
+			],
+			"pivot": [
+				0.5,
+				0.65
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_world_awakens.py): 16 headings of one 3D model. Replace each heading with matching art; origin = centre of the car on the ground."
+		},
+		{
+			"id": "vehicle.wagon_03",
+			"name": "Station wagon, heading 67 deg (screen, clockwise from east)",
+			"template": "res://assets/templates/props/vehicles/template_wagon_03.png",
+			"display_size": [
+				240,
+				200
+			],
+			"source_size": [
+				480,
+				400
+			],
+			"pivot": [
+				0.5,
+				0.65
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_world_awakens.py): 16 headings of one 3D model. Replace each heading with matching art; origin = centre of the car on the ground."
+		},
+		{
+			"id": "vehicle.wagon_04",
+			"name": "Station wagon, heading 90 deg (screen, clockwise from east)",
+			"template": "res://assets/templates/props/vehicles/template_wagon_04.png",
+			"display_size": [
+				240,
+				200
+			],
+			"source_size": [
+				480,
+				400
+			],
+			"pivot": [
+				0.5,
+				0.65
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_world_awakens.py): 16 headings of one 3D model. Replace each heading with matching art; origin = centre of the car on the ground."
+		},
+		{
+			"id": "vehicle.wagon_05",
+			"name": "Station wagon, heading 112 deg (screen, clockwise from east)",
+			"template": "res://assets/templates/props/vehicles/template_wagon_05.png",
+			"display_size": [
+				240,
+				200
+			],
+			"source_size": [
+				480,
+				400
+			],
+			"pivot": [
+				0.5,
+				0.65
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_world_awakens.py): 16 headings of one 3D model. Replace each heading with matching art; origin = centre of the car on the ground."
+		},
+		{
+			"id": "vehicle.wagon_06",
+			"name": "Station wagon, heading 135 deg (screen, clockwise from east)",
+			"template": "res://assets/templates/props/vehicles/template_wagon_06.png",
+			"display_size": [
+				240,
+				200
+			],
+			"source_size": [
+				480,
+				400
+			],
+			"pivot": [
+				0.5,
+				0.65
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_world_awakens.py): 16 headings of one 3D model. Replace each heading with matching art; origin = centre of the car on the ground."
+		},
+		{
+			"id": "vehicle.wagon_07",
+			"name": "Station wagon, heading 157 deg (screen, clockwise from east)",
+			"template": "res://assets/templates/props/vehicles/template_wagon_07.png",
+			"display_size": [
+				240,
+				200
+			],
+			"source_size": [
+				480,
+				400
+			],
+			"pivot": [
+				0.5,
+				0.65
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_world_awakens.py): 16 headings of one 3D model. Replace each heading with matching art; origin = centre of the car on the ground."
+		},
+		{
+			"id": "vehicle.wagon_08",
+			"name": "Station wagon, heading 180 deg (screen, clockwise from east)",
+			"template": "res://assets/templates/props/vehicles/template_wagon_08.png",
+			"display_size": [
+				240,
+				200
+			],
+			"source_size": [
+				480,
+				400
+			],
+			"pivot": [
+				0.5,
+				0.65
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_world_awakens.py): 16 headings of one 3D model. Replace each heading with matching art; origin = centre of the car on the ground."
+		},
+		{
+			"id": "vehicle.wagon_09",
+			"name": "Station wagon, heading 202 deg (screen, clockwise from east)",
+			"template": "res://assets/templates/props/vehicles/template_wagon_09.png",
+			"display_size": [
+				240,
+				200
+			],
+			"source_size": [
+				480,
+				400
+			],
+			"pivot": [
+				0.5,
+				0.65
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_world_awakens.py): 16 headings of one 3D model. Replace each heading with matching art; origin = centre of the car on the ground."
+		},
+		{
+			"id": "vehicle.wagon_10",
+			"name": "Station wagon, heading 225 deg (screen, clockwise from east)",
+			"template": "res://assets/templates/props/vehicles/template_wagon_10.png",
+			"display_size": [
+				240,
+				200
+			],
+			"source_size": [
+				480,
+				400
+			],
+			"pivot": [
+				0.5,
+				0.65
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_world_awakens.py): 16 headings of one 3D model. Replace each heading with matching art; origin = centre of the car on the ground."
+		},
+		{
+			"id": "vehicle.wagon_11",
+			"name": "Station wagon, heading 247 deg (screen, clockwise from east)",
+			"template": "res://assets/templates/props/vehicles/template_wagon_11.png",
+			"display_size": [
+				240,
+				200
+			],
+			"source_size": [
+				480,
+				400
+			],
+			"pivot": [
+				0.5,
+				0.65
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_world_awakens.py): 16 headings of one 3D model. Replace each heading with matching art; origin = centre of the car on the ground."
+		},
+		{
+			"id": "vehicle.wagon_12",
+			"name": "Station wagon, heading 270 deg (screen, clockwise from east)",
+			"template": "res://assets/templates/props/vehicles/template_wagon_12.png",
+			"display_size": [
+				240,
+				200
+			],
+			"source_size": [
+				480,
+				400
+			],
+			"pivot": [
+				0.5,
+				0.65
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_world_awakens.py): 16 headings of one 3D model. Replace each heading with matching art; origin = centre of the car on the ground."
+		},
+		{
+			"id": "vehicle.wagon_13",
+			"name": "Station wagon, heading 292 deg (screen, clockwise from east)",
+			"template": "res://assets/templates/props/vehicles/template_wagon_13.png",
+			"display_size": [
+				240,
+				200
+			],
+			"source_size": [
+				480,
+				400
+			],
+			"pivot": [
+				0.5,
+				0.65
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_world_awakens.py): 16 headings of one 3D model. Replace each heading with matching art; origin = centre of the car on the ground."
+		},
+		{
+			"id": "vehicle.wagon_14",
+			"name": "Station wagon, heading 315 deg (screen, clockwise from east)",
+			"template": "res://assets/templates/props/vehicles/template_wagon_14.png",
+			"display_size": [
+				240,
+				200
+			],
+			"source_size": [
+				480,
+				400
+			],
+			"pivot": [
+				0.5,
+				0.65
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_world_awakens.py): 16 headings of one 3D model. Replace each heading with matching art; origin = centre of the car on the ground."
+		},
+		{
+			"id": "vehicle.wagon_15",
+			"name": "Station wagon, heading 337 deg (screen, clockwise from east)",
+			"template": "res://assets/templates/props/vehicles/template_wagon_15.png",
+			"display_size": [
+				240,
+				200
+			],
+			"source_size": [
+				480,
+				400
+			],
+			"pivot": [
+				0.5,
+				0.65
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_world_awakens.py): 16 headings of one 3D model. Replace each heading with matching art; origin = centre of the car on the ground."
+		}
+	]
+}

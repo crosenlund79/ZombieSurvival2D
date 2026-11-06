@@ -495,5 +495,34 @@
 	"climate": {
 		"exposure": 1.1,
 		"fog": 1.0
-	}
+	},
+	"vehicles": [
+		{
+			"id": "wagon",
+			"def": "station_wagon",
+			"position": [
+				1640,
+				600
+			],
+			"rotation": 200
+		}
+	],
+	"vehicle_exits": [
+		{
+			"rect": [
+				0,
+				620,
+				40,
+				180
+			],
+			"target": {
+				"region": "homestead",
+				"position": [
+					2200,
+					1400
+				],
+				"rotation": 180
+			}
+		}
+	]
 }

@@ -169,7 +169,9 @@ func clear_region_view() -> void:
 
 func _on_local_region_changed(region_id: String) -> void:
 	if region_view == null or region_view.region_id != region_id:
-		Audio.play("sfx.ladder")
+		var me := Session.local_player()
+		if me == null or me.vehicle_id == "":
+			Audio.play("sfx.ladder")
 		# Deferred: the request that moved us may still be running inside the old view.
 		build_region_view.call_deferred()
 

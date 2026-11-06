@@ -22,6 +22,8 @@ extends RefCounted
 ## world.next_uid, world.env (weather), world.meta (threat heat, defence
 ## event, discoveries, unlocks), world.npcs (survivors), bunker gear, player
 ## hunger / gear / equipped. Every new field is optional with a safe default.
+## Iteration 011 adds (still schema 4, optional with defaults): world.vehicles
+## {id: VehicleState.to_dict()}, player warmth and vehicle_id.
 ## World identity (world) and player identity (players) are separate blocks.
 
 const SCHEMA_VERSION := 4
@@ -106,6 +108,7 @@ static func encode(world: WorldState) -> Dictionary:
 			"env": world.env.duplicate(true),
 			"meta": world.meta.duplicate(true),
 			"npcs": NpcState.encode_all(world),
+			"vehicles": VehicleSim.encode_all(world),
 		},
 		"players": players,
 	}
@@ -214,6 +217,8 @@ static func decode(d: Dictionary) -> Dictionary:
 	if wd.get("meta") is Dictionary:
 		w.meta = (wd["meta"] as Dictionary).duplicate(true)
 	NpcState.decode_all(w, wd.get("npcs", {}), warnings)
+	VehicleSim.decode_all(w, wd.get("vehicles", {}), warnings)
+	VehicleSim.validate(w, warnings)
 	var zs: Dictionary = wd.get("zombies", {})
 	for zid in zs:
 		var z := ZombieState.from_dict(str(zid), zs[zid])

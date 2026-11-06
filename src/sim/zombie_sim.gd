@@ -592,7 +592,7 @@ static func _target(world: WorldState, z: ZombieState) -> PlayerState:
 	if z.target_player == "":
 		return null
 	var p: PlayerState = world.players.get(z.target_player, null)
-	if p == null or not p.online or p.dead or p.region_id != z.region_id:
+	if p == null or not p.online or p.dead or p.region_id != z.region_id or p.vehicle_id != "":
 		return null
 	return p
 
@@ -604,8 +604,8 @@ static func _look(world: WorldState, z: ZombieState, grid: NavGrid, dyn: Diction
 	var omni := float(c("omni_sense_range", 110))
 	var cos_half := cos(deg_to_rad(float(c("sight_cone_degrees", 140)) * 0.5))
 	for p in world.online_players():
-		if p.region_id != z.region_id or p.dead:
-			continue
+		if p.region_id != z.region_id or p.dead or p.vehicle_id != "":
+			continue  # inside a closed vehicle nobody is seen (the engine is heard instead)
 		var to: Vector2 = p.position - z.position
 		var d: float = to.length()
 		if d > sight:

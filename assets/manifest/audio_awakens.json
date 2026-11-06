@@ -1,0 +1,46 @@
+{
+	"kind": "audio",
+	"category": "awakens",
+	"assets": [
+		{
+			"id": "sfx.engine_loop",
+			"name": "Station wagon engine running (loop; pitch follows speed)",
+			"template": "res://assets/templates/audio/awakens/template_engine_loop.wav",
+			"bus": "SFX",
+			"volume_db": -9.0,
+			"loop": true,
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_awakens_audio.py). WAV or OGG override accepted."
+		},
+		{
+			"id": "sfx.engine_start",
+			"name": "Engine cranks and catches",
+			"template": "res://assets/templates/audio/awakens/template_engine_start.wav",
+			"bus": "SFX",
+			"volume_db": -6.0,
+			"loop": false,
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_awakens_audio.py). WAV or OGG override accepted."
+		},
+		{
+			"id": "sfx.engine_stop",
+			"name": "Engine shuts off and shudders still",
+			"template": "res://assets/templates/audio/awakens/template_engine_stop.wav",
+			"bus": "SFX",
+			"volume_db": -8.0,
+			"loop": false,
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_awakens_audio.py). WAV or OGG override accepted."
+		},
+		{
+			"id": "sfx.car_door",
+			"name": "Car door opens/closes (thunk and latch)",
+			"template": "res://assets/templates/audio/awakens/template_car_door.wav",
+			"bus": "SFX",
+			"volume_db": -6.0,
+			"loop": false,
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_awakens_audio.py). WAV or OGG override accepted."
+		}
+	]
+}

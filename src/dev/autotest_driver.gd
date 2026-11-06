@@ -88,6 +88,17 @@ func _run(line: String) -> void:
 			Input.action_press(a[0])
 			await get_tree().create_timer(float(a[1])).timeout
 			Input.action_release(a[0])
+		"hold2":
+			# Two actions at once (driving: throttle + steering): hold2 move_up move_left 1.5
+			Input.action_press(a[0])
+			Input.action_press(a[1])
+			await get_tree().create_timer(float(a[2])).timeout
+			Input.action_release(a[0])
+			Input.action_release(a[1])
+		"vehicle":
+			# vehicle <vehicle_id> <enter|exit|engine|store|take> [arg]
+			Session.request_vehicle(a[0], a[1], a[2] if a.size() > 2 else "")
+			await get_tree().create_timer(0.5).timeout
 		"press_interact":
 			var ev := InputEventAction.new()
 			ev.action = "interact"
@@ -318,6 +329,9 @@ func _state() -> Dictionary:
 		s["zombie_rows"] = w.zombies.values().map(func(z): return {"id": z.zombie_id, "ai": z.state_name(), "hunter": z.hunter,
 			"x": z.position.x, "y": z.position.y, "region": z.region_id, "hp": z.health, "target": z.target_player})
 		s["seed"] = w.world_seed
+		s["vehicles"] = w.vehicles.values().map(func(v): return {"id": v.vehicle_id, "region": v.region_id,
+			"x": v.position.x, "y": v.position.y, "rot": v.rotation, "engine": v.engine_on, "seats": v.seats.duplicate(),
+			"speed": v.speed, "cargo": v.cargo.duplicate(true)})
 		s["tick"] = w.tick
 		var players := []
 		for pid in w.players:
