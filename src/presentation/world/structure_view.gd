@@ -166,7 +166,7 @@ func panel_data() -> Dictionary:
 		lines.append(TranslationServer.translate("STRUCT_BUILDING"))
 	if d.has("container_slots"):
 		lines.append(UITheme.fmt("STRUCT_CONTAINS", [Hud.bag_text(o.get("items", {})) + Hud.gear_text(o.get("gear", [])),
-			Items.total(o.get("items", {})) + (o.get("gear", []) as Array).size(), int(d["container_slots"])]))
+			Inv.box_used(o), int(d["container_slots"])]))
 		for item in me.carried:
 			buttons.append([UITheme.fmt("STRUCT_STORE", [me.carrying(item), TranslationServer.translate(Items.name_key(item))]), "store", item, true])
 		for g in me.gear:

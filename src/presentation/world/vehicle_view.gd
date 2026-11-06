@@ -271,10 +271,10 @@ func trunk_panel() -> Dictionary:
 	var items: Dictionary = v.cargo.get("items", {})
 	var gear: Array = v.cargo.get("gear", [])
 	var lines: Array = [UITheme.fmt("STRUCT_CONTAINS", [Hud.bag_text(items) + Hud.gear_text(gear),
-		Items.total(items) + gear.size(), int(vdef().get("cargo_slots", 12))])]
+		Items.slots(items) + gear.size(), int(vdef().get("cargo_slots", 12))])]
 	var buttons: Array = []
 	var cap := int(vdef().get("cargo_slots", 12))
-	var used := Items.total(items) + gear.size()
+	var used := Items.slots(items) + gear.size()
 	var loose := me.gear.filter(func(g): return not (str(g["uid"]) in me.equipped.values()))
 	buttons.append([TranslationServer.translate("TRUNK_STORE_ALL"), "store_all", "", used < cap and (not me.carried.is_empty() or not loose.is_empty())])
 	buttons.append([TranslationServer.translate("TRUNK_TAKE_ALL"), "take_all", "", used > 0 and Inv.free_slots(me) > 0])

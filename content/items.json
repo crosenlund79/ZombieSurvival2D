@@ -1,103 +1,151 @@
 {
-	"_comment": "Item definitions (iterations 003 + 007). Stackable items are whole units, one carrying slot per unit. Gear (stack: false) are individual items with an id and condition, one slot each. 'use' = what Use does (drink/eat/heal/read). All numbers are EXPLORING prototype values.",
+	"_comment": "Item definitions (iterations 003, 007, 014). 'stack_limit' = units per carrying slot; 'weight' in kg (shown, not limiting). Gear (stack: false) are individual items with an id and condition, one slot each. 'use' = what Use does (eat / drink / heal / warm / repair_hand / read / map / flashlight). Clothing slots: body, head, hands, feet, legs, back, face. Full catalogue and sources: tools/build_catalogue.py. All numbers are EXPLORING prototype values.",
 	"carry_slots": 30,
 	"items": {
 		"wood": {
 			"name_key": "ITEM_WOOD",
 			"desc_key": "ITEM_WOOD_DESC",
-			"cat": "material"
+			"cat": "fire",
+			"weight": 1.5,
+			"stack_limit": 1,
+			"icon": "icon.wood"
 		},
 		"scrap_metal": {
 			"name_key": "ITEM_SCRAP_METAL",
 			"desc_key": "ITEM_SCRAP_METAL_DESC",
-			"cat": "material"
+			"cat": "material",
+			"weight": 1.0,
+			"stack_limit": 1,
+			"icon": "icon.scrap_metal"
 		},
 		"cement": {
 			"name_key": "ITEM_CEMENT",
 			"desc_key": "ITEM_CEMENT_DESC",
-			"cat": "material"
+			"cat": "material",
+			"weight": 5.0,
+			"stack_limit": 1,
+			"icon": "icon.cement"
 		},
 		"cloth": {
 			"name_key": "ITEM_CLOTH",
 			"desc_key": "ITEM_CLOTH_DESC",
-			"cat": "material"
+			"cat": "material",
+			"weight": 0.2,
+			"stack_limit": 1,
+			"icon": "icon.cloth"
 		},
 		"electrical_parts": {
 			"name_key": "ITEM_ELECTRICAL",
 			"desc_key": "ITEM_ELECTRICAL_DESC",
-			"cat": "material"
+			"cat": "electronics",
+			"weight": 0.3,
+			"stack_limit": 1,
+			"icon": "icon.electrical_parts"
 		},
 		"fuel": {
 			"name_key": "ITEM_FUEL",
 			"desc_key": "ITEM_FUEL_DESC",
-			"cat": "supply"
+			"cat": "fuel",
+			"weight": 3.0,
+			"stack_limit": 1,
+			"icon": "icon.fuel"
 		},
 		"water_dirty": {
 			"name_key": "ITEM_WATER_DIRTY",
 			"desc_key": "ITEM_WATER_DIRTY_DESC",
-			"cat": "supply"
+			"cat": "drink",
+			"weight": 1.0,
+			"stack_limit": 1,
+			"icon": "icon.water_dirty"
 		},
 		"water_clean": {
 			"name_key": "ITEM_WATER_CLEAN",
 			"desc_key": "ITEM_WATER_CLEAN_DESC",
-			"cat": "supply",
+			"cat": "drink",
 			"use": "drink",
-			"hydration": 40
+			"hydration": 40,
+			"weight": 1.0,
+			"stack_limit": 1,
+			"icon": "icon.water_clean"
 		},
 		"water_bottle": {
 			"name_key": "ITEM_WATER_BOTTLE",
 			"desc_key": "ITEM_WATER_BOTTLE_DESC",
-			"cat": "supply",
+			"cat": "drink",
 			"use": "drink",
-			"hydration": 70
+			"hydration": 70,
+			"weight": 1.0,
+			"stack_limit": 1,
+			"icon": "icon.water_bottle"
 		},
 		"canned_food": {
 			"name_key": "ITEM_CANNED_FOOD",
 			"desc_key": "ITEM_CANNED_FOOD_DESC",
 			"cat": "food",
 			"use": "eat",
-			"food": 40
+			"food": 40,
+			"weight": 0.45,
+			"stack_limit": 1,
+			"icon": "icon.canned_food"
 		},
 		"potato": {
 			"name_key": "ITEM_POTATO",
 			"desc_key": "ITEM_POTATO_DESC",
 			"cat": "food",
 			"use": "eat",
-			"food": 20
+			"food": 20,
+			"weight": 0.2,
+			"stack_limit": 3,
+			"icon": "icon.potato"
 		},
 		"crackers": {
 			"name_key": "ITEM_CRACKERS",
 			"desc_key": "ITEM_CRACKERS_DESC",
 			"cat": "food",
 			"use": "eat",
-			"food": 25
+			"food": 25,
+			"weight": 0.2,
+			"stack_limit": 1,
+			"icon": "icon.crackers"
 		},
 		"bandage": {
 			"name_key": "ITEM_BANDAGE",
 			"desc_key": "ITEM_BANDAGE_DESC",
-			"cat": "supply",
+			"cat": "medical",
 			"use": "heal",
-			"heal": 35
+			"heal": 35,
+			"weight": 0.05,
+			"stack_limit": 5,
+			"icon": "icon.bandage"
 		},
 		"timber_frame": {
 			"name_key": "ITEM_TIMBER_FRAME",
 			"desc_key": "ITEM_TIMBER_FRAME_DESC",
-			"cat": "part"
+			"cat": "part",
+			"weight": 6.0,
+			"stack_limit": 1,
+			"icon": "icon.timber_frame"
 		},
 		"spike_kit": {
 			"name_key": "ITEM_SPIKE_KIT",
 			"desc_key": "ITEM_SPIKE_KIT_DESC",
-			"cat": "part"
+			"cat": "part",
+			"weight": 3.0,
+			"stack_limit": 1,
+			"icon": "icon.spike_kit"
 		},
 		"grow_light": {
 			"name_key": "ITEM_GROW_LIGHT",
 			"desc_key": "ITEM_GROW_LIGHT_DESC",
-			"cat": "part"
+			"cat": "part",
+			"weight": 1.5,
+			"stack_limit": 1,
+			"icon": "icon.grow_light"
 		},
 		"club": {
 			"name_key": "ITEM_CLUB",
 			"desc_key": "ITEM_CLUB_DESC",
-			"cat": "gear",
+			"cat": "weapon",
 			"stack": false,
 			"slot": "hand",
 			"damage": 34,
@@ -107,12 +155,15 @@
 			"durability": 120,
 			"repair": {
 				"wood": 1
-			}
+			},
+			"weight": 1.0,
+			"stack_limit": 1,
+			"icon": "icon.club"
 		},
 		"machete": {
 			"name_key": "ITEM_MACHETE",
 			"desc_key": "ITEM_MACHETE_DESC",
-			"cat": "gear",
+			"cat": "weapon",
 			"stack": false,
 			"slot": "hand",
 			"damage": 55,
@@ -122,12 +173,15 @@
 			"durability": 160,
 			"repair": {
 				"scrap_metal": 1
-			}
+			},
+			"weight": 0.8,
+			"stack_limit": 1,
+			"icon": "icon.machete"
 		},
 		"hatchet": {
 			"name_key": "ITEM_HATCHET",
 			"desc_key": "ITEM_HATCHET_DESC",
-			"cat": "gear",
+			"cat": "tool",
 			"stack": false,
 			"slot": "hand",
 			"damage": 28,
@@ -137,12 +191,15 @@
 			"durability": 140,
 			"repair": {
 				"wood": 1
-			}
+			},
+			"weight": 0.9,
+			"stack_limit": 1,
+			"icon": "icon.hatchet"
 		},
 		"felling_axe": {
 			"name_key": "ITEM_FELLING_AXE",
 			"desc_key": "ITEM_FELLING_AXE_DESC",
-			"cat": "gear",
+			"cat": "tool",
 			"stack": false,
 			"slot": "hand",
 			"damage": 42,
@@ -153,12 +210,15 @@
 			"durability": 220,
 			"repair": {
 				"scrap_metal": 1
-			}
+			},
+			"weight": 2.6,
+			"stack_limit": 1,
+			"icon": "icon.felling_axe"
 		},
 		"padded_jacket": {
 			"name_key": "ITEM_JACKET",
 			"desc_key": "ITEM_JACKET_DESC",
-			"cat": "gear",
+			"cat": "clothing",
 			"stack": false,
 			"slot": "body",
 			"armor": 0.35,
@@ -166,38 +226,50 @@
 			"repair": {
 				"cloth": 1
 			},
-			"insulation": 0.35
+			"insulation": 0.35,
+			"weight": 1.2,
+			"stack_limit": 1,
+			"icon": "icon.padded_jacket"
 		},
 		"carburetor": {
 			"name_key": "ITEM_CARBURETOR",
 			"desc_key": "ITEM_CARBURETOR_DESC",
 			"cat": "part",
 			"stack": false,
-			"unique": true
+			"unique": true,
+			"weight": 1.5,
+			"stack_limit": 1,
+			"icon": "icon.carburetor"
 		},
 		"workshop_manual": {
 			"name_key": "ITEM_MANUAL",
 			"desc_key": "ITEM_MANUAL_DESC",
-			"cat": "part",
+			"cat": "junk",
 			"stack": false,
 			"unique": true,
 			"use": "read",
 			"unlocks": [
 				"felling_axe"
-			]
+			],
+			"weight": 0.6,
+			"stack_limit": 1,
+			"icon": "icon.workshop_manual"
 		},
 		"field_map": {
 			"name_key": "ITEM_FIELD_MAP",
 			"desc_key": "ITEM_FIELD_MAP_DESC",
-			"cat": "supply",
+			"cat": "utility",
 			"stack": false,
 			"unique": true,
-			"use": "map"
+			"use": "map",
+			"weight": 0.1,
+			"stack_limit": 1,
+			"icon": "icon.field_map"
 		},
 		"winter_coat": {
 			"name_key": "ITEM_WINTER_COAT",
 			"desc_key": "ITEM_WINTER_COAT_DESC",
-			"cat": "gear",
+			"cat": "clothing",
 			"stack": false,
 			"slot": "body",
 			"armor": 0.15,
@@ -205,21 +277,30 @@
 			"durability": 200,
 			"repair": {
 				"cloth": 1
-			}
+			},
+			"weight": 2.0,
+			"stack_limit": 1,
+			"icon": "icon.winter_coat"
 		},
 		"flashlight": {
 			"name_key": "ITEM_FLASHLIGHT",
 			"desc_key": "ITEM_FLASHLIGHT_DESC",
-			"cat": "gear",
+			"cat": "utility",
 			"stack": false,
 			"slot": "",
 			"unique": false,
-			"use": "flashlight"
+			"use": "flashlight",
+			"weight": 0.3,
+			"stack_limit": 1,
+			"icon": "icon.flashlight"
 		},
 		"stovepipe": {
 			"name_key": "ITEM_STOVEPIPE",
 			"desc_key": "ITEM_STOVEPIPE_DESC",
-			"cat": "part"
+			"cat": "part",
+			"weight": 2.0,
+			"stack_limit": 1,
+			"icon": "icon.stovepipe"
 		},
 		"handgun": {
 			"name_key": "ITEM_HANDGUN",
@@ -247,7 +328,10 @@
 				"sound": "sfx.gun_pistol",
 				"wear": 0.5,
 				"magazine": "loaded_magazine"
-			}
+			},
+			"weight": 0.9,
+			"stack_limit": 1,
+			"icon": "icon.handgun"
 		},
 		"revolver": {
 			"name_key": "ITEM_REVOLVER",
@@ -274,7 +358,10 @@
 				"noise": "gunshot",
 				"sound": "sfx.gun_revolver",
 				"wear": 0.5
-			}
+			},
+			"weight": 1.1,
+			"stack_limit": 1,
+			"icon": "icon.revolver"
 		},
 		"shotgun": {
 			"name_key": "ITEM_SHOTGUN",
@@ -301,7 +388,10 @@
 				"noise": "gunshot_heavy",
 				"sound": "sfx.gun_shotgun",
 				"wear": 0.8
-			}
+			},
+			"weight": 3.2,
+			"stack_limit": 1,
+			"icon": "icon.shotgun"
 		},
 		"hunting_rifle": {
 			"name_key": "ITEM_HUNTING_RIFLE",
@@ -328,7 +418,10 @@
 				"noise": "gunshot_heavy",
 				"sound": "sfx.gun_rifle",
 				"wear": 0.5
-			}
+			},
+			"weight": 3.6,
+			"stack_limit": 1,
+			"icon": "icon.hunting_rifle"
 		},
 		"military_rifle": {
 			"name_key": "ITEM_MILITARY_RIFLE",
@@ -355,37 +448,1457 @@
 				"noise": "gunshot_heavy",
 				"sound": "sfx.gun_rifle",
 				"wear": 0.4
-			}
+			},
+			"weight": 3.9,
+			"stack_limit": 1,
+			"icon": "icon.military_rifle"
 		},
 		"ammo_pistol": {
 			"name_key": "ITEM_AMMO_PISTOL",
 			"desc_key": "ITEM_AMMO_PISTOL_DESC",
-			"cat": "ammo"
+			"cat": "ammo",
+			"weight": 0.012,
+			"stack_limit": 30,
+			"icon": "icon.ammo_pistol"
 		},
 		"ammo_revolver": {
 			"name_key": "ITEM_AMMO_REVOLVER",
 			"desc_key": "ITEM_AMMO_REVOLVER_DESC",
-			"cat": "ammo"
+			"cat": "ammo",
+			"weight": 0.015,
+			"stack_limit": 30,
+			"icon": "icon.ammo_revolver"
 		},
 		"shotgun_shells": {
 			"name_key": "ITEM_SHOTGUN_SHELLS",
 			"desc_key": "ITEM_SHOTGUN_SHELLS_DESC",
-			"cat": "ammo"
+			"cat": "ammo",
+			"weight": 0.04,
+			"stack_limit": 20,
+			"icon": "icon.shotgun_shells"
 		},
 		"rifle_rounds": {
 			"name_key": "ITEM_RIFLE_ROUNDS",
 			"desc_key": "ITEM_RIFLE_ROUNDS_DESC",
-			"cat": "ammo"
+			"cat": "ammo",
+			"weight": 0.025,
+			"stack_limit": 30,
+			"icon": "icon.rifle_rounds"
 		},
 		"loaded_magazine": {
 			"name_key": "ITEM_LOADED_MAGAZINE",
 			"desc_key": "ITEM_LOADED_MAGAZINE_DESC",
-			"cat": "ammo"
+			"cat": "ammo",
+			"weight": 0.25,
+			"stack_limit": 4,
+			"icon": "icon.loaded_magazine"
 		},
 		"weapon_parts": {
 			"name_key": "ITEM_WEAPON_PARTS",
 			"desc_key": "ITEM_WEAPON_PARTS_DESC",
-			"cat": "part"
+			"cat": "part",
+			"weight": 0.3,
+			"stack_limit": 3,
+			"icon": "icon.weapon_parts"
+		},
+		"canned_soup": {
+			"name_key": "ITEM_CANNED_SOUP",
+			"desc_key": "ITEM_CANNED_SOUP_DESC",
+			"cat": "food",
+			"weight": 0.45,
+			"stack_limit": 1,
+			"use": "eat",
+			"food": 30,
+			"hydration": 12,
+			"icon": "icon.canned_soup"
+		},
+		"canned_meat": {
+			"name_key": "ITEM_CANNED_MEAT",
+			"desc_key": "ITEM_CANNED_MEAT_DESC",
+			"cat": "food",
+			"weight": 0.4,
+			"stack_limit": 1,
+			"use": "eat",
+			"food": 45,
+			"icon": "icon.canned_meat"
+		},
+		"chocolate": {
+			"name_key": "ITEM_CHOCOLATE",
+			"desc_key": "ITEM_CHOCOLATE_DESC",
+			"cat": "food",
+			"weight": 0.1,
+			"stack_limit": 3,
+			"use": "eat",
+			"food": 15,
+			"warmth": 3,
+			"icon": "icon.chocolate"
+		},
+		"energy_bar": {
+			"name_key": "ITEM_ENERGY_BAR",
+			"desc_key": "ITEM_ENERGY_BAR_DESC",
+			"cat": "food",
+			"weight": 0.08,
+			"stack_limit": 4,
+			"use": "eat",
+			"food": 20,
+			"icon": "icon.energy_bar"
+		},
+		"jerky": {
+			"name_key": "ITEM_JERKY",
+			"desc_key": "ITEM_JERKY_DESC",
+			"cat": "food",
+			"weight": 0.15,
+			"stack_limit": 3,
+			"use": "eat",
+			"food": 25,
+			"hydration": -4,
+			"icon": "icon.jerky"
+		},
+		"fresh_meat": {
+			"name_key": "ITEM_FRESH_MEAT",
+			"desc_key": "ITEM_FRESH_MEAT_DESC",
+			"cat": "food",
+			"weight": 0.6,
+			"stack_limit": 1,
+			"use": "eat",
+			"food": 35,
+			"health": -3,
+			"icon": "icon.fresh_meat"
+		},
+		"vegetables": {
+			"name_key": "ITEM_VEGETABLES",
+			"desc_key": "ITEM_VEGETABLES_DESC",
+			"cat": "food",
+			"weight": 0.4,
+			"stack_limit": 1,
+			"use": "eat",
+			"food": 20,
+			"hydration": 5,
+			"icon": "icon.vegetables"
+		},
+		"spoiled_food": {
+			"name_key": "ITEM_SPOILED_FOOD",
+			"desc_key": "ITEM_SPOILED_FOOD_DESC",
+			"cat": "food",
+			"weight": 0.3,
+			"stack_limit": 2,
+			"use": "eat",
+			"food": 10,
+			"health": -12,
+			"icon": "icon.spoiled_food"
+		},
+		"frozen_food": {
+			"name_key": "ITEM_FROZEN_FOOD",
+			"desc_key": "ITEM_FROZEN_FOOD_DESC",
+			"cat": "food",
+			"weight": 0.5,
+			"stack_limit": 1,
+			"use": "eat",
+			"food": 30,
+			"warmth": -4,
+			"icon": "icon.frozen_food"
+		},
+		"soda": {
+			"name_key": "ITEM_SODA",
+			"desc_key": "ITEM_SODA_DESC",
+			"cat": "drink",
+			"weight": 0.35,
+			"stack_limit": 2,
+			"use": "drink",
+			"hydration": 25,
+			"food": 4,
+			"icon": "icon.soda"
+		},
+		"energy_drink": {
+			"name_key": "ITEM_ENERGY_DRINK",
+			"desc_key": "ITEM_ENERGY_DRINK_DESC",
+			"cat": "drink",
+			"weight": 0.35,
+			"stack_limit": 2,
+			"use": "drink",
+			"hydration": 20,
+			"food": 6,
+			"icon": "icon.energy_drink"
+		},
+		"coffee": {
+			"name_key": "ITEM_COFFEE",
+			"desc_key": "ITEM_COFFEE_DESC",
+			"cat": "drink",
+			"weight": 0.3,
+			"stack_limit": 2,
+			"use": "drink",
+			"hydration": 10,
+			"warmth": 8,
+			"icon": "icon.coffee"
+		},
+		"alcohol": {
+			"name_key": "ITEM_ALCOHOL",
+			"desc_key": "ITEM_ALCOHOL_DESC",
+			"cat": "drink",
+			"weight": 0.8,
+			"stack_limit": 1,
+			"use": "drink",
+			"hydration": -6,
+			"warmth": 6,
+			"icon": "icon.alcohol"
+		},
+		"rags": {
+			"name_key": "ITEM_RAGS",
+			"desc_key": "ITEM_RAGS_DESC",
+			"cat": "medical",
+			"weight": 0.05,
+			"stack_limit": 5,
+			"use": "heal",
+			"heal": 10,
+			"icon": "icon.rags"
+		},
+		"first_aid_kit": {
+			"name_key": "ITEM_FIRST_AID_KIT",
+			"desc_key": "ITEM_FIRST_AID_KIT_DESC",
+			"cat": "medical",
+			"weight": 0.6,
+			"stack_limit": 1,
+			"use": "heal",
+			"heal": 70,
+			"icon": "icon.first_aid_kit"
+		},
+		"disinfectant": {
+			"name_key": "ITEM_DISINFECTANT",
+			"desc_key": "ITEM_DISINFECTANT_DESC",
+			"cat": "medical",
+			"weight": 0.3,
+			"stack_limit": 2,
+			"use": "heal",
+			"heal": 15,
+			"icon": "icon.disinfectant"
+		},
+		"painkillers": {
+			"name_key": "ITEM_PAINKILLERS",
+			"desc_key": "ITEM_PAINKILLERS_DESC",
+			"cat": "medical",
+			"weight": 0.03,
+			"stack_limit": 5,
+			"use": "heal",
+			"heal": 20,
+			"icon": "icon.painkillers"
+		},
+		"antibiotics": {
+			"name_key": "ITEM_ANTIBIOTICS",
+			"desc_key": "ITEM_ANTIBIOTICS_DESC",
+			"cat": "medical",
+			"weight": 0.03,
+			"stack_limit": 5,
+			"use": "heal",
+			"heal": 25,
+			"icon": "icon.antibiotics"
+		},
+		"vitamins": {
+			"name_key": "ITEM_VITAMINS",
+			"desc_key": "ITEM_VITAMINS_DESC",
+			"cat": "medical",
+			"weight": 0.05,
+			"stack_limit": 5,
+			"use": "heal",
+			"heal": 5,
+			"food": 3,
+			"icon": "icon.vitamins"
+		},
+		"splint": {
+			"name_key": "ITEM_SPLINT",
+			"desc_key": "ITEM_SPLINT_DESC",
+			"cat": "medical",
+			"weight": 0.3,
+			"stack_limit": 2,
+			"use": "heal",
+			"heal": 25,
+			"icon": "icon.splint"
+		},
+		"medical_syringe": {
+			"name_key": "ITEM_MEDICAL_SYRINGE",
+			"desc_key": "ITEM_MEDICAL_SYRINGE_DESC",
+			"cat": "medical",
+			"weight": 0.03,
+			"stack_limit": 3,
+			"use": "heal",
+			"heal": 50,
+			"icon": "icon.medical_syringe"
+		},
+		"matches": {
+			"name_key": "ITEM_MATCHES",
+			"desc_key": "ITEM_MATCHES_DESC",
+			"cat": "fire",
+			"weight": 0.03,
+			"stack_limit": 10,
+			"icon": "icon.matches"
+		},
+		"lighter": {
+			"name_key": "ITEM_LIGHTER",
+			"desc_key": "ITEM_LIGHTER_DESC",
+			"cat": "fire",
+			"weight": 0.03,
+			"stack_limit": 5,
+			"icon": "icon.lighter"
+		},
+		"firestarter": {
+			"name_key": "ITEM_FIRESTARTER",
+			"desc_key": "ITEM_FIRESTARTER_DESC",
+			"cat": "fire",
+			"weight": 0.1,
+			"stack_limit": 5,
+			"icon": "icon.firestarter"
+		},
+		"tinder": {
+			"name_key": "ITEM_TINDER",
+			"desc_key": "ITEM_TINDER_DESC",
+			"cat": "fire",
+			"weight": 0.05,
+			"stack_limit": 10,
+			"icon": "icon.tinder"
+		},
+		"charcoal": {
+			"name_key": "ITEM_CHARCOAL",
+			"desc_key": "ITEM_CHARCOAL_DESC",
+			"cat": "fire",
+			"weight": 0.5,
+			"stack_limit": 5,
+			"icon": "icon.charcoal"
+		},
+		"hand_warmer": {
+			"name_key": "ITEM_HAND_WARMER",
+			"desc_key": "ITEM_HAND_WARMER_DESC",
+			"cat": "fire",
+			"weight": 0.05,
+			"stack_limit": 5,
+			"use": "warm",
+			"warmth": 25,
+			"icon": "icon.hand_warmer"
+		},
+		"gloves": {
+			"name_key": "ITEM_GLOVES",
+			"desc_key": "ITEM_GLOVES_DESC",
+			"cat": "clothing",
+			"weight": 0.2,
+			"stack_limit": 1,
+			"stack": false,
+			"slot": "hands",
+			"insulation": 0.06,
+			"durability": 120,
+			"repair": {
+				"cloth": 1
+			},
+			"icon": "icon.gloves"
+		},
+		"hat": {
+			"name_key": "ITEM_HAT",
+			"desc_key": "ITEM_HAT_DESC",
+			"cat": "clothing",
+			"weight": 0.1,
+			"stack_limit": 1,
+			"stack": false,
+			"slot": "head",
+			"insulation": 0.08,
+			"durability": 120,
+			"repair": {
+				"cloth": 1
+			},
+			"icon": "icon.hat"
+		},
+		"scarf": {
+			"name_key": "ITEM_SCARF",
+			"desc_key": "ITEM_SCARF_DESC",
+			"cat": "clothing",
+			"weight": 0.15,
+			"stack_limit": 1,
+			"stack": false,
+			"slot": "face",
+			"insulation": 0.06,
+			"durability": 120,
+			"repair": {
+				"cloth": 1
+			},
+			"icon": "icon.scarf"
+		},
+		"boots": {
+			"name_key": "ITEM_BOOTS",
+			"desc_key": "ITEM_BOOTS_DESC",
+			"cat": "clothing",
+			"weight": 1.4,
+			"stack_limit": 1,
+			"stack": false,
+			"slot": "feet",
+			"insulation": 0.1,
+			"armor": 0.05,
+			"durability": 200,
+			"repair": {
+				"cloth": 1
+			},
+			"icon": "icon.boots"
+		},
+		"socks": {
+			"name_key": "ITEM_SOCKS",
+			"desc_key": "ITEM_SOCKS_DESC",
+			"cat": "clothing",
+			"weight": 0.05,
+			"stack_limit": 1,
+			"stack": false,
+			"slot": "feet",
+			"insulation": 0.03,
+			"durability": 60,
+			"repair": {
+				"cloth": 1
+			},
+			"icon": "icon.socks"
+		},
+		"wool_socks": {
+			"name_key": "ITEM_WOOL_SOCKS",
+			"desc_key": "ITEM_WOOL_SOCKS_DESC",
+			"cat": "clothing",
+			"weight": 0.1,
+			"stack_limit": 1,
+			"stack": false,
+			"slot": "feet",
+			"insulation": 0.07,
+			"durability": 100,
+			"repair": {
+				"cloth": 1
+			},
+			"icon": "icon.wool_socks"
+		},
+		"trousers": {
+			"name_key": "ITEM_TROUSERS",
+			"desc_key": "ITEM_TROUSERS_DESC",
+			"cat": "clothing",
+			"weight": 0.8,
+			"stack_limit": 1,
+			"stack": false,
+			"slot": "legs",
+			"insulation": 0.08,
+			"armor": 0.05,
+			"durability": 160,
+			"repair": {
+				"cloth": 1
+			},
+			"icon": "icon.trousers"
+		},
+		"thermal_underwear": {
+			"name_key": "ITEM_THERMAL_UNDERWEAR",
+			"desc_key": "ITEM_THERMAL_UNDERWEAR_DESC",
+			"cat": "clothing",
+			"weight": 0.3,
+			"stack_limit": 1,
+			"stack": false,
+			"slot": "legs",
+			"insulation": 0.12,
+			"durability": 120,
+			"repair": {
+				"cloth": 1
+			},
+			"icon": "icon.thermal_underwear"
+		},
+		"backpack": {
+			"name_key": "ITEM_BACKPACK",
+			"desc_key": "ITEM_BACKPACK_DESC",
+			"cat": "clothing",
+			"weight": 1.0,
+			"stack_limit": 1,
+			"stack": false,
+			"slot": "back",
+			"carry": 10,
+			"durability": 300,
+			"repair": {
+				"cloth": 1
+			},
+			"icon": "icon.backpack"
+		},
+		"insulated_gloves": {
+			"name_key": "ITEM_INSULATED_GLOVES",
+			"desc_key": "ITEM_INSULATED_GLOVES_DESC",
+			"cat": "clothing",
+			"weight": 0.3,
+			"stack_limit": 1,
+			"stack": false,
+			"slot": "hands",
+			"insulation": 0.12,
+			"durability": 140,
+			"repair": {
+				"cloth": 1
+			},
+			"icon": "icon.insulated_gloves"
+		},
+		"snow_goggles": {
+			"name_key": "ITEM_SNOW_GOGGLES",
+			"desc_key": "ITEM_SNOW_GOGGLES_DESC",
+			"cat": "clothing",
+			"weight": 0.1,
+			"stack_limit": 1,
+			"stack": false,
+			"slot": "face",
+			"insulation": 0.03,
+			"durability": 120,
+			"icon": "icon.snow_goggles"
+		},
+		"kitchen_knife": {
+			"name_key": "ITEM_KITCHEN_KNIFE",
+			"desc_key": "ITEM_KITCHEN_KNIFE_DESC",
+			"cat": "weapon",
+			"weight": 0.2,
+			"stack_limit": 1,
+			"stack": false,
+			"slot": "hand",
+			"damage": 26,
+			"range": 56,
+			"cooldown_ticks": 4,
+			"chop": 1,
+			"durability": 90,
+			"repair": {
+				"scrap_metal": 1
+			},
+			"icon": "icon.kitchen_knife"
+		},
+		"hunting_knife": {
+			"name_key": "ITEM_HUNTING_KNIFE",
+			"desc_key": "ITEM_HUNTING_KNIFE_DESC",
+			"cat": "weapon",
+			"weight": 0.35,
+			"stack_limit": 1,
+			"stack": false,
+			"slot": "hand",
+			"damage": 34,
+			"range": 60,
+			"cooldown_ticks": 4,
+			"chop": 1,
+			"durability": 160,
+			"repair": {
+				"scrap_metal": 1
+			},
+			"icon": "icon.hunting_knife"
+		},
+		"baseball_bat": {
+			"name_key": "ITEM_BASEBALL_BAT",
+			"desc_key": "ITEM_BASEBALL_BAT_DESC",
+			"cat": "weapon",
+			"weight": 1.0,
+			"stack_limit": 1,
+			"stack": false,
+			"slot": "hand",
+			"damage": 40,
+			"range": 82,
+			"cooldown_ticks": 7,
+			"chop": 1,
+			"durability": 140,
+			"repair": {
+				"wood": 1
+			},
+			"icon": "icon.baseball_bat"
+		},
+		"crowbar": {
+			"name_key": "ITEM_CROWBAR",
+			"desc_key": "ITEM_CROWBAR_DESC",
+			"cat": "tool",
+			"weight": 1.6,
+			"stack_limit": 1,
+			"stack": false,
+			"slot": "hand",
+			"damage": 38,
+			"range": 74,
+			"cooldown_ticks": 7,
+			"chop": 1,
+			"durability": 300,
+			"repair": {
+				"scrap_metal": 1
+			},
+			"icon": "icon.crowbar"
+		},
+		"hammer": {
+			"name_key": "ITEM_HAMMER",
+			"desc_key": "ITEM_HAMMER_DESC",
+			"cat": "tool",
+			"weight": 0.7,
+			"stack_limit": 1,
+			"stack": false,
+			"slot": "hand",
+			"damage": 30,
+			"range": 60,
+			"cooldown_ticks": 5,
+			"chop": 1,
+			"durability": 240,
+			"repair": {
+				"scrap_metal": 1
+			},
+			"icon": "icon.hammer"
+		},
+		"fire_axe": {
+			"name_key": "ITEM_FIRE_AXE",
+			"desc_key": "ITEM_FIRE_AXE_DESC",
+			"cat": "weapon",
+			"weight": 2.2,
+			"stack_limit": 1,
+			"stack": false,
+			"slot": "hand",
+			"damage": 58,
+			"range": 80,
+			"cooldown_ticks": 8,
+			"chop": 2,
+			"durability": 220,
+			"repair": {
+				"scrap_metal": 1
+			},
+			"icon": "icon.fire_axe"
+		},
+		"shovel": {
+			"name_key": "ITEM_SHOVEL",
+			"desc_key": "ITEM_SHOVEL_DESC",
+			"cat": "tool",
+			"weight": 1.8,
+			"stack_limit": 1,
+			"stack": false,
+			"slot": "hand",
+			"damage": 32,
+			"range": 84,
+			"cooldown_ticks": 7,
+			"chop": 1,
+			"durability": 200,
+			"repair": {
+				"scrap_metal": 1
+			},
+			"icon": "icon.shovel"
+		},
+		"pickaxe": {
+			"name_key": "ITEM_PICKAXE",
+			"desc_key": "ITEM_PICKAXE_DESC",
+			"cat": "tool",
+			"weight": 2.4,
+			"stack_limit": 1,
+			"stack": false,
+			"slot": "hand",
+			"damage": 44,
+			"range": 76,
+			"cooldown_ticks": 8,
+			"chop": 1,
+			"durability": 260,
+			"repair": {
+				"scrap_metal": 1
+			},
+			"icon": "icon.pickaxe"
+		},
+		"sharpened_stick": {
+			"name_key": "ITEM_SHARPENED_STICK",
+			"desc_key": "ITEM_SHARPENED_STICK_DESC",
+			"cat": "weapon",
+			"weight": 0.5,
+			"stack_limit": 1,
+			"stack": false,
+			"slot": "hand",
+			"damage": 18,
+			"range": 80,
+			"cooldown_ticks": 5,
+			"chop": 1,
+			"durability": 40,
+			"repair": {
+				"wood": 1
+			},
+			"icon": "icon.sharpened_stick"
+		},
+		"metal_pipe": {
+			"name_key": "ITEM_METAL_PIPE",
+			"desc_key": "ITEM_METAL_PIPE_DESC",
+			"cat": "weapon",
+			"weight": 1.4,
+			"stack_limit": 1,
+			"stack": false,
+			"slot": "hand",
+			"damage": 32,
+			"range": 76,
+			"cooldown_ticks": 6,
+			"chop": 1,
+			"durability": 260,
+			"repair": {
+				"scrap_metal": 1
+			},
+			"icon": "icon.metal_pipe"
+		},
+		"ice_pick": {
+			"name_key": "ITEM_ICE_PICK",
+			"desc_key": "ITEM_ICE_PICK_DESC",
+			"cat": "frozen",
+			"weight": 0.6,
+			"stack_limit": 1,
+			"stack": false,
+			"slot": "hand",
+			"damage": 30,
+			"range": 62,
+			"cooldown_ticks": 5,
+			"chop": 1,
+			"durability": 180,
+			"repair": {
+				"scrap_metal": 1
+			},
+			"icon": "icon.ice_pick"
+		},
+		"gun_cleaning_kit": {
+			"name_key": "ITEM_GUN_CLEANING_KIT",
+			"desc_key": "ITEM_GUN_CLEANING_KIT_DESC",
+			"cat": "tool",
+			"weight": 0.4,
+			"stack_limit": 1,
+			"use": "repair_hand",
+			"repair": 40,
+			"fixes": "firearm",
+			"icon": "icon.gun_cleaning_kit"
+		},
+		"gun_oil": {
+			"name_key": "ITEM_GUN_OIL",
+			"desc_key": "ITEM_GUN_OIL_DESC",
+			"cat": "tool",
+			"weight": 0.15,
+			"stack_limit": 3,
+			"use": "repair_hand",
+			"repair": 15,
+			"fixes": "firearm",
+			"icon": "icon.gun_oil"
+		},
+		"sharpening_stone": {
+			"name_key": "ITEM_SHARPENING_STONE",
+			"desc_key": "ITEM_SHARPENING_STONE_DESC",
+			"cat": "tool",
+			"weight": 0.3,
+			"stack_limit": 1,
+			"use": "repair_hand",
+			"repair": 30,
+			"fixes": "melee",
+			"icon": "icon.sharpening_stone"
+		},
+		"screwdriver": {
+			"name_key": "ITEM_SCREWDRIVER",
+			"desc_key": "ITEM_SCREWDRIVER_DESC",
+			"cat": "tool",
+			"weight": 0.4,
+			"stack_limit": 1,
+			"stack": false,
+			"icon": "icon.screwdriver"
+		},
+		"wrench": {
+			"name_key": "ITEM_WRENCH",
+			"desc_key": "ITEM_WRENCH_DESC",
+			"cat": "tool",
+			"weight": 0.4,
+			"stack_limit": 1,
+			"stack": false,
+			"icon": "icon.wrench"
+		},
+		"pliers": {
+			"name_key": "ITEM_PLIERS",
+			"desc_key": "ITEM_PLIERS_DESC",
+			"cat": "tool",
+			"weight": 0.4,
+			"stack_limit": 1,
+			"stack": false,
+			"icon": "icon.pliers"
+		},
+		"handsaw": {
+			"name_key": "ITEM_HANDSAW",
+			"desc_key": "ITEM_HANDSAW_DESC",
+			"cat": "tool",
+			"weight": 1.4,
+			"stack_limit": 1,
+			"stack": false,
+			"icon": "icon.handsaw"
+		},
+		"hacksaw": {
+			"name_key": "ITEM_HACKSAW",
+			"desc_key": "ITEM_HACKSAW_DESC",
+			"cat": "tool",
+			"weight": 0.4,
+			"stack_limit": 1,
+			"stack": false,
+			"icon": "icon.hacksaw"
+		},
+		"wire_cutters": {
+			"name_key": "ITEM_WIRE_CUTTERS",
+			"desc_key": "ITEM_WIRE_CUTTERS_DESC",
+			"cat": "tool",
+			"weight": 0.4,
+			"stack_limit": 1,
+			"stack": false,
+			"icon": "icon.wire_cutters"
+		},
+		"multitool": {
+			"name_key": "ITEM_MULTITOOL",
+			"desc_key": "ITEM_MULTITOOL_DESC",
+			"cat": "tool",
+			"weight": 0.4,
+			"stack_limit": 1,
+			"stack": false,
+			"icon": "icon.multitool"
+		},
+		"lockpick": {
+			"name_key": "ITEM_LOCKPICK",
+			"desc_key": "ITEM_LOCKPICK_DESC",
+			"cat": "tool",
+			"weight": 0.4,
+			"stack_limit": 1,
+			"stack": false,
+			"icon": "icon.lockpick"
+		},
+		"bolt_cutters": {
+			"name_key": "ITEM_BOLT_CUTTERS",
+			"desc_key": "ITEM_BOLT_CUTTERS_DESC",
+			"cat": "tool",
+			"weight": 1.4,
+			"stack_limit": 1,
+			"stack": false,
+			"icon": "icon.bolt_cutters"
+		},
+		"sewing_kit": {
+			"name_key": "ITEM_SEWING_KIT",
+			"desc_key": "ITEM_SEWING_KIT_DESC",
+			"cat": "tool",
+			"weight": 0.4,
+			"stack_limit": 1,
+			"stack": false,
+			"icon": "icon.sewing_kit"
+		},
+		"planks": {
+			"name_key": "ITEM_PLANKS",
+			"desc_key": "ITEM_PLANKS_DESC",
+			"cat": "material",
+			"weight": 1.2,
+			"stack_limit": 4,
+			"icon": "icon.planks"
+		},
+		"nails": {
+			"name_key": "ITEM_NAILS",
+			"desc_key": "ITEM_NAILS_DESC",
+			"cat": "material",
+			"weight": 0.05,
+			"stack_limit": 30,
+			"icon": "icon.nails"
+		},
+		"screws": {
+			"name_key": "ITEM_SCREWS",
+			"desc_key": "ITEM_SCREWS_DESC",
+			"cat": "material",
+			"weight": 0.05,
+			"stack_limit": 30,
+			"icon": "icon.screws"
+		},
+		"sheet_metal": {
+			"name_key": "ITEM_SHEET_METAL",
+			"desc_key": "ITEM_SHEET_METAL_DESC",
+			"cat": "material",
+			"weight": 2.0,
+			"stack_limit": 2,
+			"icon": "icon.sheet_metal"
+		},
+		"rope": {
+			"name_key": "ITEM_ROPE",
+			"desc_key": "ITEM_ROPE_DESC",
+			"cat": "material",
+			"weight": 0.8,
+			"stack_limit": 3,
+			"icon": "icon.rope"
+		},
+		"wire": {
+			"name_key": "ITEM_WIRE",
+			"desc_key": "ITEM_WIRE_DESC",
+			"cat": "material",
+			"weight": 0.4,
+			"stack_limit": 5,
+			"icon": "icon.wire"
+		},
+		"duct_tape": {
+			"name_key": "ITEM_DUCT_TAPE",
+			"desc_key": "ITEM_DUCT_TAPE_DESC",
+			"cat": "material",
+			"weight": 0.2,
+			"stack_limit": 5,
+			"icon": "icon.duct_tape"
+		},
+		"glue": {
+			"name_key": "ITEM_GLUE",
+			"desc_key": "ITEM_GLUE_DESC",
+			"cat": "material",
+			"weight": 0.1,
+			"stack_limit": 5,
+			"icon": "icon.glue"
+		},
+		"leather": {
+			"name_key": "ITEM_LEATHER",
+			"desc_key": "ITEM_LEATHER_DESC",
+			"cat": "material",
+			"weight": 0.4,
+			"stack_limit": 5,
+			"icon": "icon.leather"
+		},
+		"plastic": {
+			"name_key": "ITEM_PLASTIC",
+			"desc_key": "ITEM_PLASTIC_DESC",
+			"cat": "material",
+			"weight": 0.2,
+			"stack_limit": 10,
+			"icon": "icon.plastic"
+		},
+		"rubber": {
+			"name_key": "ITEM_RUBBER",
+			"desc_key": "ITEM_RUBBER_DESC",
+			"cat": "material",
+			"weight": 0.3,
+			"stack_limit": 10,
+			"icon": "icon.rubber"
+		},
+		"glass_bottles": {
+			"name_key": "ITEM_GLASS_BOTTLES",
+			"desc_key": "ITEM_GLASS_BOTTLES_DESC",
+			"cat": "material",
+			"weight": 0.4,
+			"stack_limit": 5,
+			"icon": "icon.glass_bottles"
+		},
+		"gears": {
+			"name_key": "ITEM_GEARS",
+			"desc_key": "ITEM_GEARS_DESC",
+			"cat": "mechanical",
+			"weight": 0.3,
+			"stack_limit": 3,
+			"icon": "icon.gears"
+		},
+		"springs": {
+			"name_key": "ITEM_SPRINGS",
+			"desc_key": "ITEM_SPRINGS_DESC",
+			"cat": "mechanical",
+			"weight": 0.3,
+			"stack_limit": 10,
+			"icon": "icon.springs"
+		},
+		"bolts": {
+			"name_key": "ITEM_BOLTS",
+			"desc_key": "ITEM_BOLTS_DESC",
+			"cat": "mechanical",
+			"weight": 0.3,
+			"stack_limit": 10,
+			"icon": "icon.bolts"
+		},
+		"pipes": {
+			"name_key": "ITEM_PIPES",
+			"desc_key": "ITEM_PIPES_DESC",
+			"cat": "mechanical",
+			"weight": 2.0,
+			"stack_limit": 3,
+			"icon": "icon.pipes"
+		},
+		"bearings": {
+			"name_key": "ITEM_BEARINGS",
+			"desc_key": "ITEM_BEARINGS_DESC",
+			"cat": "mechanical",
+			"weight": 0.3,
+			"stack_limit": 10,
+			"icon": "icon.bearings"
+		},
+		"engine_parts": {
+			"name_key": "ITEM_ENGINE_PARTS",
+			"desc_key": "ITEM_ENGINE_PARTS_DESC",
+			"cat": "mechanical",
+			"weight": 2.0,
+			"stack_limit": 3,
+			"icon": "icon.engine_parts"
+		},
+		"batteries": {
+			"name_key": "ITEM_BATTERIES",
+			"desc_key": "ITEM_BATTERIES_DESC",
+			"cat": "electronics",
+			"weight": 0.1,
+			"stack_limit": 10,
+			"icon": "icon.batteries"
+		},
+		"cables": {
+			"name_key": "ITEM_CABLES",
+			"desc_key": "ITEM_CABLES_DESC",
+			"cat": "electronics",
+			"weight": 0.3,
+			"stack_limit": 5,
+			"icon": "icon.cables"
+		},
+		"circuit_boards": {
+			"name_key": "ITEM_CIRCUIT_BOARDS",
+			"desc_key": "ITEM_CIRCUIT_BOARDS_DESC",
+			"cat": "electronics",
+			"weight": 0.2,
+			"stack_limit": 5,
+			"icon": "icon.circuit_boards"
+		},
+		"fuses": {
+			"name_key": "ITEM_FUSES",
+			"desc_key": "ITEM_FUSES_DESC",
+			"cat": "electronics",
+			"weight": 0.05,
+			"stack_limit": 10,
+			"icon": "icon.fuses"
+		},
+		"diesel": {
+			"name_key": "ITEM_DIESEL",
+			"desc_key": "ITEM_DIESEL_DESC",
+			"cat": "fuel",
+			"weight": 3.0,
+			"stack_limit": 1,
+			"icon": "icon.diesel"
+		},
+		"propane": {
+			"name_key": "ITEM_PROPANE",
+			"desc_key": "ITEM_PROPANE_DESC",
+			"cat": "fuel",
+			"weight": 1.0,
+			"stack_limit": 2,
+			"icon": "icon.propane"
+		},
+		"kerosene": {
+			"name_key": "ITEM_KEROSENE",
+			"desc_key": "ITEM_KEROSENE_DESC",
+			"cat": "fuel",
+			"weight": 1.0,
+			"stack_limit": 2,
+			"icon": "icon.kerosene"
+		},
+		"motor_oil": {
+			"name_key": "ITEM_MOTOR_OIL",
+			"desc_key": "ITEM_MOTOR_OIL_DESC",
+			"cat": "fuel",
+			"weight": 1.0,
+			"stack_limit": 2,
+			"icon": "icon.motor_oil"
+		},
+		"headlamp": {
+			"name_key": "ITEM_HEADLAMP",
+			"desc_key": "ITEM_HEADLAMP_DESC",
+			"cat": "utility",
+			"weight": 0.4,
+			"stack_limit": 1,
+			"stack": false,
+			"use": "flashlight",
+			"icon": "icon.headlamp"
+		},
+		"lantern": {
+			"name_key": "ITEM_LANTERN",
+			"desc_key": "ITEM_LANTERN_DESC",
+			"cat": "utility",
+			"weight": 0.4,
+			"stack_limit": 1,
+			"stack": false,
+			"use": "flashlight",
+			"icon": "icon.lantern"
+		},
+		"hand_crank_flashlight": {
+			"name_key": "ITEM_HAND_CRANK_FLASHLIGHT",
+			"desc_key": "ITEM_HAND_CRANK_FLASHLIGHT_DESC",
+			"cat": "utility",
+			"weight": 0.4,
+			"stack_limit": 1,
+			"stack": false,
+			"use": "flashlight",
+			"icon": "icon.hand_crank_flashlight"
+		},
+		"glow_sticks": {
+			"name_key": "ITEM_GLOW_STICKS",
+			"desc_key": "ITEM_GLOW_STICKS_DESC",
+			"cat": "utility",
+			"weight": 0.03,
+			"stack_limit": 10,
+			"use": "flashlight",
+			"icon": "icon.glow_sticks",
+			"burn_seconds": 600
+		},
+		"flare": {
+			"name_key": "ITEM_FLARE",
+			"desc_key": "ITEM_FLARE_DESC",
+			"cat": "utility",
+			"weight": 0.2,
+			"stack_limit": 5,
+			"use": "flashlight",
+			"icon": "icon.flare",
+			"burn_seconds": 240
+		},
+		"compass": {
+			"name_key": "ITEM_COMPASS",
+			"desc_key": "ITEM_COMPASS_DESC",
+			"cat": "utility",
+			"weight": 0.1,
+			"stack_limit": 1,
+			"stack": false,
+			"icon": "icon.compass"
+		},
+		"binoculars": {
+			"name_key": "ITEM_BINOCULARS",
+			"desc_key": "ITEM_BINOCULARS_DESC",
+			"cat": "utility",
+			"weight": 0.7,
+			"stack_limit": 1,
+			"stack": false,
+			"icon": "icon.binoculars"
+		},
+		"handheld_radio": {
+			"name_key": "ITEM_HANDHELD_RADIO",
+			"desc_key": "ITEM_HANDHELD_RADIO_DESC",
+			"cat": "utility",
+			"weight": 0.6,
+			"stack_limit": 1,
+			"stack": false,
+			"icon": "icon.handheld_radio"
+		},
+		"walkie_talkie": {
+			"name_key": "ITEM_WALKIE_TALKIE",
+			"desc_key": "ITEM_WALKIE_TALKIE_DESC",
+			"cat": "utility",
+			"weight": 0.4,
+			"stack_limit": 1,
+			"stack": false,
+			"icon": "icon.walkie_talkie"
+		},
+		"padlock": {
+			"name_key": "ITEM_PADLOCK",
+			"desc_key": "ITEM_PADLOCK_DESC",
+			"cat": "utility",
+			"weight": 0.3,
+			"stack_limit": 3,
+			"icon": "icon.padlock"
+		},
+		"keys": {
+			"name_key": "ITEM_KEYS",
+			"desc_key": "ITEM_KEYS_DESC",
+			"cat": "utility",
+			"weight": 0.05,
+			"stack_limit": 5,
+			"icon": "icon.keys"
+		},
+		"keycard": {
+			"name_key": "ITEM_KEYCARD",
+			"desc_key": "ITEM_KEYCARD_DESC",
+			"cat": "utility",
+			"weight": 0.01,
+			"stack_limit": 5,
+			"icon": "icon.keycard"
+		},
+		"combination_note": {
+			"name_key": "ITEM_COMBINATION_NOTE",
+			"desc_key": "ITEM_COMBINATION_NOTE_DESC",
+			"cat": "utility",
+			"weight": 0.01,
+			"stack_limit": 5,
+			"icon": "icon.combination_note"
+		},
+		"dust_mask": {
+			"name_key": "ITEM_DUST_MASK",
+			"desc_key": "ITEM_DUST_MASK_DESC",
+			"cat": "utility",
+			"weight": 0.03,
+			"stack_limit": 1,
+			"stack": false,
+			"slot": "face",
+			"insulation": 0.02,
+			"durability": 60,
+			"icon": "icon.dust_mask"
+		},
+		"gas_mask": {
+			"name_key": "ITEM_GAS_MASK",
+			"desc_key": "ITEM_GAS_MASK_DESC",
+			"cat": "utility",
+			"weight": 0.6,
+			"stack_limit": 1,
+			"stack": false,
+			"slot": "face",
+			"insulation": 0.04,
+			"durability": 200,
+			"icon": "icon.gas_mask"
+		},
+		"gas_mask_filter": {
+			"name_key": "ITEM_GAS_MASK_FILTER",
+			"desc_key": "ITEM_GAS_MASK_FILTER_DESC",
+			"cat": "utility",
+			"weight": 0.2,
+			"stack_limit": 5,
+			"icon": "icon.gas_mask_filter"
+		},
+		"protective_goggles": {
+			"name_key": "ITEM_PROTECTIVE_GOGGLES",
+			"desc_key": "ITEM_PROTECTIVE_GOGGLES_DESC",
+			"cat": "utility",
+			"weight": 0.1,
+			"stack_limit": 1,
+			"stack": false,
+			"slot": "face",
+			"durability": 100,
+			"icon": "icon.protective_goggles"
+		},
+		"empty_bottle": {
+			"name_key": "ITEM_EMPTY_BOTTLE",
+			"desc_key": "ITEM_EMPTY_BOTTLE_DESC",
+			"cat": "utility",
+			"weight": 0.2,
+			"stack_limit": 3,
+			"icon": "icon.empty_bottle"
+		},
+		"canteen": {
+			"name_key": "ITEM_CANTEEN",
+			"desc_key": "ITEM_CANTEEN_DESC",
+			"cat": "utility",
+			"weight": 0.4,
+			"stack_limit": 2,
+			"icon": "icon.canteen"
+		},
+		"thermos": {
+			"name_key": "ITEM_THERMOS",
+			"desc_key": "ITEM_THERMOS_DESC",
+			"cat": "frozen",
+			"weight": 0.5,
+			"stack_limit": 1,
+			"stack": false,
+			"icon": "icon.thermos"
+		},
+		"fuel_can": {
+			"name_key": "ITEM_FUEL_CAN",
+			"desc_key": "ITEM_FUEL_CAN_DESC",
+			"cat": "utility",
+			"weight": 1.0,
+			"stack_limit": 1,
+			"stack": false,
+			"icon": "icon.fuel_can"
+		},
+		"small_pouch": {
+			"name_key": "ITEM_SMALL_POUCH",
+			"desc_key": "ITEM_SMALL_POUCH_DESC",
+			"cat": "utility",
+			"weight": 0.1,
+			"stack_limit": 3,
+			"icon": "icon.small_pouch"
+		},
+		"can_opener": {
+			"name_key": "ITEM_CAN_OPENER",
+			"desc_key": "ITEM_CAN_OPENER_DESC",
+			"cat": "utility",
+			"weight": 0.1,
+			"stack_limit": 3,
+			"icon": "icon.can_opener"
+		},
+		"fishing_hook": {
+			"name_key": "ITEM_FISHING_HOOK",
+			"desc_key": "ITEM_FISHING_HOOK_DESC",
+			"cat": "utility",
+			"weight": 0.01,
+			"stack_limit": 20,
+			"icon": "icon.fishing_hook"
+		},
+		"fishing_line": {
+			"name_key": "ITEM_FISHING_LINE",
+			"desc_key": "ITEM_FISHING_LINE_DESC",
+			"cat": "utility",
+			"weight": 0.05,
+			"stack_limit": 10,
+			"icon": "icon.fishing_line"
+		},
+		"needle": {
+			"name_key": "ITEM_NEEDLE",
+			"desc_key": "ITEM_NEEDLE_DESC",
+			"cat": "utility",
+			"weight": 0.01,
+			"stack_limit": 20,
+			"icon": "icon.needle"
+		},
+		"thread": {
+			"name_key": "ITEM_THREAD",
+			"desc_key": "ITEM_THREAD_DESC",
+			"cat": "utility",
+			"weight": 0.02,
+			"stack_limit": 10,
+			"icon": "icon.thread"
+		},
+		"whistle": {
+			"name_key": "ITEM_WHISTLE",
+			"desc_key": "ITEM_WHISTLE_DESC",
+			"cat": "utility",
+			"weight": 0.02,
+			"stack_limit": 3,
+			"icon": "icon.whistle"
+		},
+		"thermal_blanket": {
+			"name_key": "ITEM_THERMAL_BLANKET",
+			"desc_key": "ITEM_THERMAL_BLANKET_DESC",
+			"cat": "frozen",
+			"weight": 0.1,
+			"stack_limit": 1,
+			"stack": false,
+			"use": "warm",
+			"warmth": 15,
+			"reusable": true,
+			"icon": "icon.thermal_blanket"
+		},
+		"ice_cleats": {
+			"name_key": "ITEM_ICE_CLEATS",
+			"desc_key": "ITEM_ICE_CLEATS_DESC",
+			"cat": "frozen",
+			"weight": 0.4,
+			"stack_limit": 1,
+			"stack": false,
+			"icon": "icon.ice_cleats"
+		},
+		"portable_stove": {
+			"name_key": "ITEM_PORTABLE_STOVE",
+			"desc_key": "ITEM_PORTABLE_STOVE_DESC",
+			"cat": "frozen",
+			"weight": 1.2,
+			"stack_limit": 1,
+			"stack": false,
+			"use": "warm",
+			"warmth": 30,
+			"reusable": true,
+			"consumes": {
+				"stove_fuel": 1
+			},
+			"icon": "icon.portable_stove"
+		},
+		"stove_fuel": {
+			"name_key": "ITEM_STOVE_FUEL",
+			"desc_key": "ITEM_STOVE_FUEL_DESC",
+			"cat": "frozen",
+			"weight": 0.3,
+			"stack_limit": 5,
+			"icon": "icon.stove_fuel"
+		},
+		"snow_container": {
+			"name_key": "ITEM_SNOW_CONTAINER",
+			"desc_key": "ITEM_SNOW_CONTAINER_DESC",
+			"cat": "frozen",
+			"weight": 1.0,
+			"stack_limit": 2,
+			"use": "drink",
+			"hydration": 15,
+			"warmth": -5,
+			"icon": "icon.snow_container"
+		},
+		"books": {
+			"name_key": "ITEM_BOOKS",
+			"desc_key": "ITEM_BOOKS_DESC",
+			"cat": "junk",
+			"weight": 0.6,
+			"stack_limit": 3,
+			"icon": "icon.books"
+		},
+		"photographs": {
+			"name_key": "ITEM_PHOTOGRAPHS",
+			"desc_key": "ITEM_PHOTOGRAPHS_DESC",
+			"cat": "junk",
+			"weight": 0.01,
+			"stack_limit": 10,
+			"icon": "icon.photographs"
+		},
+		"old_newspapers": {
+			"name_key": "ITEM_OLD_NEWSPAPERS",
+			"desc_key": "ITEM_OLD_NEWSPAPERS_DESC",
+			"cat": "junk",
+			"weight": 0.2,
+			"stack_limit": 5,
+			"icon": "icon.old_newspapers"
+		},
+		"cigarettes": {
+			"name_key": "ITEM_CIGARETTES",
+			"desc_key": "ITEM_CIGARETTES_DESC",
+			"cat": "junk",
+			"weight": 0.03,
+			"stack_limit": 10,
+			"icon": "icon.cigarettes"
+		},
+		"playing_cards": {
+			"name_key": "ITEM_PLAYING_CARDS",
+			"desc_key": "ITEM_PLAYING_CARDS_DESC",
+			"cat": "junk",
+			"weight": 0.1,
+			"stack_limit": 3,
+			"icon": "icon.playing_cards"
+		},
+		"watch": {
+			"name_key": "ITEM_WATCH",
+			"desc_key": "ITEM_WATCH_DESC",
+			"cat": "junk",
+			"weight": 0.05,
+			"stack_limit": 5,
+			"icon": "icon.watch"
+		},
+		"jewellery": {
+			"name_key": "ITEM_JEWELLERY",
+			"desc_key": "ITEM_JEWELLERY_DESC",
+			"cat": "junk",
+			"weight": 0.02,
+			"stack_limit": 10,
+			"icon": "icon.jewellery"
+		},
+		"toys": {
+			"name_key": "ITEM_TOYS",
+			"desc_key": "ITEM_TOYS_DESC",
+			"cat": "junk",
+			"weight": 0.2,
+			"stack_limit": 3,
+			"icon": "icon.toys"
+		},
+		"toothbrush": {
+			"name_key": "ITEM_TOOTHBRUSH",
+			"desc_key": "ITEM_TOOTHBRUSH_DESC",
+			"cat": "junk",
+			"weight": 0.02,
+			"stack_limit": 10,
+			"icon": "icon.toothbrush"
+		},
+		"soap": {
+			"name_key": "ITEM_SOAP",
+			"desc_key": "ITEM_SOAP_DESC",
+			"cat": "junk",
+			"weight": 0.1,
+			"stack_limit": 5,
+			"icon": "icon.soap"
+		},
+		"wallet": {
+			"name_key": "ITEM_WALLET",
+			"desc_key": "ITEM_WALLET_DESC",
+			"cat": "junk",
+			"weight": 0.1,
+			"stack_limit": 5,
+			"icon": "icon.wallet"
+		},
+		"coins": {
+			"name_key": "ITEM_COINS",
+			"desc_key": "ITEM_COINS_DESC",
+			"cat": "junk",
+			"weight": 0.01,
+			"stack_limit": 30,
+			"icon": "icon.coins"
+		},
+		"pens": {
+			"name_key": "ITEM_PENS",
+			"desc_key": "ITEM_PENS_DESC",
+			"cat": "junk",
+			"weight": 0.01,
+			"stack_limit": 10,
+			"icon": "icon.pens"
+		},
+		"notebook": {
+			"name_key": "ITEM_NOTEBOOK",
+			"desc_key": "ITEM_NOTEBOOK_DESC",
+			"cat": "junk",
+			"weight": 0.1,
+			"stack_limit": 5,
+			"icon": "icon.notebook"
+		},
+		"candles": {
+			"name_key": "ITEM_CANDLES",
+			"desc_key": "ITEM_CANDLES_DESC",
+			"cat": "junk",
+			"weight": 0.1,
+			"stack_limit": 10,
+			"icon": "icon.candles"
+		},
+		"broken_electronics": {
+			"name_key": "ITEM_BROKEN_ELECTRONICS",
+			"desc_key": "ITEM_BROKEN_ELECTRONICS_DESC",
+			"cat": "junk",
+			"weight": 0.8,
+			"stack_limit": 3,
+			"icon": "icon.broken_electronics"
 		}
 	},
 	"bare_hands": {
@@ -393,5 +1906,23 @@
 		"range": 54,
 		"cooldown_ticks": 5,
 		"chop": 1
+	},
+	"categories": {
+		"food": "CAT_FOOD",
+		"drink": "CAT_DRINK",
+		"medical": "CAT_MEDICAL",
+		"fire": "CAT_FIRE",
+		"clothing": "CAT_CLOTHING",
+		"weapon": "CAT_WEAPON",
+		"ammo": "CAT_AMMO",
+		"tool": "CAT_TOOL",
+		"material": "CAT_MATERIAL",
+		"mechanical": "CAT_MECHANICAL",
+		"electronics": "CAT_ELECTRONICS",
+		"fuel": "CAT_FUEL",
+		"utility": "CAT_UTILITY",
+		"frozen": "CAT_FROZEN",
+		"junk": "CAT_JUNK",
+		"part": "CAT_PART"
 	}
 }

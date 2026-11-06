@@ -279,6 +279,8 @@ func _run(line: String) -> void:
 					main.pause_menu.visible = on
 				"map":
 					main.map_panel.visible = on
+				"inventory":
+					main.inventory_panel.visible = on
 				"settings":
 					if on:
 						main.open_settings()

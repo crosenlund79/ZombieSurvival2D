@@ -269,7 +269,7 @@ static func _chop(world: WorldState, p: PlayerState, region: RegionState, eid: S
 	var key := p.player_id + ":chop"
 	if world.tick - int(world.cooldowns.get(key, -1000)) < CHOP_COOLDOWN_TICKS:
 		return _fail("ACTION_TOO_FAST")
-	if Items.free_slots(p.carried) <= 0:
+	if Inv.room_for(p, "wood") <= 0:
 		return _fail("ACTION_CARRY_FULL", [Items.carry_slots()])
 	world.cooldowns[key] = world.tick
 	# Better tools count for several chops per blow (hatchet x2, felling axe x4).
@@ -286,7 +286,7 @@ static func _chop(world: WorldState, p: PlayerState, region: RegionState, eid: S
 	# The felling blow: the tree's wood goes to whoever landed it, once.
 	region.set_fields(eid, {"chops": chops, "felled": true})
 	ZombieSim.make_noise(world, region.region_id, Content.entity_position(def), "fell")
-	var gained := mini(int(def.get("wood", 4)) + int(tool.get("wood_bonus", 0)), Inv.free_slots(p))
+	var gained := mini(int(def.get("wood", 4)) + int(tool.get("wood_bonus", 0)), Inv.room_for(p, "wood"))
 	p.carried["wood"] = p.carrying("wood") + gained
 	var res := _changed(region, eid, "felled")
 	res["players"] = [p.player_id]
@@ -422,7 +422,7 @@ static func request_entity_action(world: WorldState, player_id: String, eid: Str
 			if moved_all <= 0:
 				return _fail("ACTION_NOTHING_TO_DEPOSIT")
 		"storage:take":
-			if Items.move(store, p.carried, arg, 1, Items.carry_slots()) <= 0:
+			if Items.move(store, p.carried, arg, mini(1, Inv.room_for(p, arg))) <= 0:
 				return _fail("ACTION_CARRY_FULL" if Items.amount(store, arg) > 0 else "ACTION_NOTHING_THERE", [Items.carry_slots()])
 		"generator:fuel":
 			var cap := float(InfraSim.c("generator_fuel_capacity", 4))
@@ -471,7 +471,7 @@ static func request_entity_action(world: WorldState, player_id: String, eid: Str
 			region.set_fields(eid, {"input": int(st.get("input", 0)) + moved})
 			res["changes"] = [{"region_id": region.region_id, "entity_id": eid, "cause": "filled"}]
 		"purifier:collect":
-			var n2 := mini(int(st.get("output", 0)), Items.free_slots(p.carried))
+			var n2 := mini(int(st.get("output", 0)), Inv.room_for(p, "water_clean"))
 			if n2 <= 0:
 				return _fail("ACTION_NOTHING_THERE" if int(st.get("output", 0)) == 0 else "ACTION_CARRY_FULL", [Items.carry_slots()])
 			p.carried["water_clean"] = p.carrying("water_clean") + n2

@@ -1,0 +1,248 @@
+{
+	"kind": "visual",
+	"category": "melee_014",
+	"assets": [
+		{
+			"id": "item.kitchen_knife",
+			"name": "Kitchen knife (held)",
+			"template": "res://assets/templates/items/template_kitchen_knife.png",
+			"display_size": [
+				20,
+				60
+			],
+			"source_size": [
+				40,
+				120
+			],
+			"pivot": [
+				0.5,
+				0.9
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace with tablet art."
+		},
+		{
+			"id": "item.hunting_knife",
+			"name": "Hunting knife (held)",
+			"template": "res://assets/templates/items/template_hunting_knife.png",
+			"display_size": [
+				20,
+				60
+			],
+			"source_size": [
+				40,
+				120
+			],
+			"pivot": [
+				0.5,
+				0.9
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace with tablet art."
+		},
+		{
+			"id": "item.baseball_bat",
+			"name": "Baseball bat (held)",
+			"template": "res://assets/templates/items/template_baseball_bat.png",
+			"display_size": [
+				20,
+				60
+			],
+			"source_size": [
+				40,
+				120
+			],
+			"pivot": [
+				0.5,
+				0.9
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace with tablet art."
+		},
+		{
+			"id": "item.crowbar",
+			"name": "Crowbar (held)",
+			"template": "res://assets/templates/items/template_crowbar.png",
+			"display_size": [
+				20,
+				60
+			],
+			"source_size": [
+				40,
+				120
+			],
+			"pivot": [
+				0.5,
+				0.9
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace with tablet art."
+		},
+		{
+			"id": "item.hammer",
+			"name": "Hammer (held)",
+			"template": "res://assets/templates/items/template_hammer.png",
+			"display_size": [
+				20,
+				60
+			],
+			"source_size": [
+				40,
+				120
+			],
+			"pivot": [
+				0.5,
+				0.9
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace with tablet art."
+		},
+		{
+			"id": "item.fire_axe",
+			"name": "Fire axe (held)",
+			"template": "res://assets/templates/items/template_fire_axe.png",
+			"display_size": [
+				20,
+				60
+			],
+			"source_size": [
+				40,
+				120
+			],
+			"pivot": [
+				0.5,
+				0.9
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace with tablet art."
+		},
+		{
+			"id": "item.shovel",
+			"name": "Shovel (held)",
+			"template": "res://assets/templates/items/template_shovel.png",
+			"display_size": [
+				20,
+				60
+			],
+			"source_size": [
+				40,
+				120
+			],
+			"pivot": [
+				0.5,
+				0.9
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace with tablet art."
+		},
+		{
+			"id": "item.pickaxe",
+			"name": "Pickaxe (held)",
+			"template": "res://assets/templates/items/template_pickaxe.png",
+			"display_size": [
+				20,
+				60
+			],
+			"source_size": [
+				40,
+				120
+			],
+			"pivot": [
+				0.5,
+				0.9
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace with tablet art."
+		},
+		{
+			"id": "item.sharpened_stick",
+			"name": "Sharpened stick (held)",
+			"template": "res://assets/templates/items/template_sharpened_stick.png",
+			"display_size": [
+				20,
+				60
+			],
+			"source_size": [
+				40,
+				120
+			],
+			"pivot": [
+				0.5,
+				0.9
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace with tablet art."
+		},
+		{
+			"id": "item.metal_pipe",
+			"name": "Metal pipe (held)",
+			"template": "res://assets/templates/items/template_metal_pipe.png",
+			"display_size": [
+				20,
+				60
+			],
+			"source_size": [
+				40,
+				120
+			],
+			"pivot": [
+				0.5,
+				0.9
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace with tablet art."
+		},
+		{
+			"id": "item.ice_pick",
+			"name": "Ice pick (held)",
+			"template": "res://assets/templates/items/template_ice_pick.png",
+			"display_size": [
+				20,
+				60
+			],
+			"source_size": [
+				40,
+				120
+			],
+			"pivot": [
+				0.5,
+				0.9
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace with tablet art."
+		}
+	]
+}

@@ -93,7 +93,7 @@ static func object_action(world: WorldState, p: PlayerState, region: RegionState
 		"collect":
 			if not bool(d.get("collector", false)):
 				return WorldActions._fail("ACTION_NOT_SUPPORTED")
-			var n := mini(int(o.get("stored", 0)), Inv.free_slots(p))
+			var n := mini(int(o.get("stored", 0)), Inv.room_for(p, "water_dirty"))
 			if int(o.get("stored", 0)) <= 0:
 				return WorldActions._fail("ACTION_NOTHING_THERE")
 			if n <= 0:

@@ -412,7 +412,7 @@ static func request_object(world: WorldState, player_id: String, oid: String, ac
 			var got := 0
 			var items: Dictionary = o.get("items", {})
 			for item4 in items.keys():
-				var n2 := mini(int(items[item4]), Inv.free_slots(p))
+				var n2 := mini(int(items[item4]), Inv.room_for(p, str(item4)))
 				if n2 > 0:
 					p.carried[item4] = p.carrying(item4) + n2
 					items[item4] = int(items[item4]) - n2

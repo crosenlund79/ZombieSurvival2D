@@ -312,7 +312,7 @@ static func transfer(world: WorldState, v: VehicleState, target: Dictionary) -> 
 		r["meta"] = true
 		r["broadcast_notice"] = {"key": "DISCOVERED_REGION", "args": [TranslationServer.translate(str(world.region_def(to_region).get("display_key", "")))]}
 	SessionLog.info("vehicle", "region_transfer", {"vehicle": v.vehicle_id, "from": from, "to": to_region,
-		"occupants": occupants.size(), "cargo": Items.total(v.cargo.get("items", {})) + (v.cargo.get("gear", []) as Array).size()})
+		"occupants": occupants.size(), "cargo": Inv.box_used(v.cargo)})
 	return r
 
 

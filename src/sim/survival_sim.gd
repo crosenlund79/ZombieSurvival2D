@@ -31,8 +31,10 @@ static func step(world: WorldState, ticks: int) -> Array:
 				results.append(respawn(world, p))
 			continue
 		_exposure(world, p, seconds, results)
-		if p.flashlight and not p.has_gear_item("flashlight"):
-			p.flashlight = false  # dropped, stored or traded away: the light goes with it
+		var burnt_out: bool = p.light_until > 0 and world.tick >= p.light_until
+		if p.flashlight and (burnt_out or (p.light_until == 0 and not p.has_lamp())):
+			p.flashlight = false  # dropped, stored or traded away (or the glow stick died): the light goes with it
+			p.light_until = 0
 			var rf := WorldActions._ok()
 			rf["vitals"] = [p.player_id]
 			results.append(rf)
@@ -59,12 +61,17 @@ static func is_freezing(p: PlayerState) -> bool:
 	return p.warmth < float(ec("freezing_below", 18))
 
 
-## Worn insulation 0..0.8 (body slot item "insulation").
+## Worn insulation 0..0.85: the "insulation" of everything worn adds up (a coat,
+## a hat, gloves, boots, trousers, a scarf), so a full winter outfit beats a coat alone.
 static func insulation(p: PlayerState) -> float:
-	var g := p.equipped_gear("body")
-	if g.is_empty():
-		return 0.0
-	return clampf(float(Items.info(str(g.get("item", ""))).get("insulation", 0.0)), 0.0, 0.8)
+	var total := 0.0
+	for slot in p.equipped:
+		if str(slot) == "hand":
+			continue
+		var g := p.equipped_gear(str(slot))
+		if not g.is_empty():
+			total += float(Items.info(str(g.get("item", ""))).get("insulation", 0.0))
+	return clampf(total, 0.0, 0.85)
 
 
 ## Warmth change per minute where the player is now (+ recovers, - loses).

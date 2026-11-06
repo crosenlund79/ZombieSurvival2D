@@ -78,7 +78,7 @@ func panel_data() -> Dictionary:
 	var buttons := []
 	match _type:
 		"storage":
-			lines.append(UITheme.fmt("PANEL_CARRY", [Items.total(carried), Items.carry_slots()]))
+			lines.append(UITheme.fmt("PANEL_CARRY", [Inv.slots_used(me) if me != null else 0, Inv.capacity(me) if me != null else Items.carry_slots()]))
 			buttons.append([TranslationServer.translate("PANEL_STORE_EVERYTHING"), "store_all", "", not carried.is_empty()])
 			for item in Items.ids():
 				var have := Items.amount(carried, item)
@@ -88,7 +88,7 @@ func panel_data() -> Dictionary:
 				var nm := TranslationServer.translate(Items.name_key(item))
 				lines.append(UITheme.fmt("PANEL_ITEM_LINE", [nm, stored, have]))
 				buttons.append([UITheme.fmt("PANEL_STORE_ALL", [nm, have]), "store", item, have > 0])
-				buttons.append([UITheme.fmt("PANEL_TAKE", [nm]), "take", item, stored > 0 and Items.free_slots(carried) > 0])
+				buttons.append([UITheme.fmt("PANEL_TAKE", [nm]), "take", item, stored > 0 and me != null and Inv.room_for(me, item) > 0])
 			if lines.size() == 1:
 				lines.append(TranslationServer.translate("PANEL_EMPTY"))
 			return {"title": TranslationServer.translate("PANEL_STORAGE"), "lines": lines, "buttons": buttons}
@@ -124,7 +124,7 @@ func panel_data() -> Dictionary:
 			lines.append(UITheme.fmt("PUR_LEVELS", [input, int(InfraSim.c("purifier_input_capacity", 6)), output, int(InfraSim.c("purifier_output_capacity", 6)), roundi(float(st.get("progress", 0.0)) * 100.0)]))
 			var dirty := Items.amount(carried, "water_dirty") + Items.amount(store, "water_dirty")
 			buttons.append([UITheme.fmt("PUR_FILL", [dirty]), "fill", "", dirty > 0 and input < int(InfraSim.c("purifier_input_capacity", 6))])
-			buttons.append([TranslationServer.translate("PUR_COLLECT"), "collect", "", output > 0 and Items.free_slots(carried) > 0])
+			buttons.append([TranslationServer.translate("PUR_COLLECT"), "collect", "", output > 0 and me != null and Inv.room_for(me, "water_clean") > 0])
 			buttons.append([TranslationServer.translate("PUR_DRINK"), "drink_tap", "", output > 0])
 			return {"title": TranslationServer.translate("PANEL_PURIFIER"), "lines": lines, "buttons": buttons}
 	return {"title": "", "lines": [], "buttons": []}

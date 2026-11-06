@@ -416,20 +416,20 @@
 		"en": "time"
 	},
 	"ITEM_FUEL": {
-		"da": "Brændstof",
-		"en": "Fuel"
+		"en": "Gasoline",
+		"da": "Benzin"
 	},
 	"ITEM_WATER_CLEAN": {
-		"da": "Rent vand",
-		"en": "Clean water"
+		"en": "Clean water",
+		"da": "Rent vand"
 	},
 	"ITEM_WATER_DIRTY": {
-		"da": "Snavset vand",
-		"en": "Dirty water"
+		"en": "Dirty water",
+		"da": "Beskidt vand"
 	},
 	"ITEM_WOOD": {
-		"da": "Træ",
-		"en": "Wood"
+		"en": "Wood (firewood)",
+		"da": "Træ (brænde)"
 	},
 	"JOIN_BAD_SNAPSHOT": {
 		"da": "Værten sendte verdensdata, som spillet ikke kunne læse.",
@@ -936,152 +936,152 @@
 		"en": "Make thirsty"
 	},
 	"ITEM_WOOD_DESC": {
-		"da": "Tømmer fra fældede træer. Bruges til barrikader, støtter og møbler.",
-		"en": "Timber from felled trees. Builds barricades, supports and furniture."
+		"en": "Split logs: fuel for stoves, timber for building.",
+		"da": "Kløvet træ: brændsel og byggemateriale."
 	},
 	"ITEM_SCRAP_METAL": {
-		"da": "Metalskrot",
-		"en": "Scrap metal"
+		"en": "Scrap metal",
+		"da": "Skrot"
 	},
 	"ITEM_SCRAP_METAL_DESC": {
-		"da": "Bjærget plade- og stangmetal. Giver stærkere forsvar og værktøj.",
-		"en": "Salvaged sheet and bar metal. Makes stronger defences and tools."
+		"en": "Twisted sheet and rod. Building and repairs.",
+		"da": "Bøjet plade og stang. Til byggeri og reparationer."
 	},
 	"ITEM_CEMENT": {
-		"da": "Cement",
-		"en": "Cement"
+		"en": "Cement",
+		"da": "Cement"
 	},
 	"ITEM_CEMENT_DESC": {
-		"da": "En sæk cement. Betonvægge og stållemmen kræver det.",
-		"en": "A bag of cement. Concrete walls and the steel hatch need it."
+		"en": "A sack of cement. Concrete and steel hatches.",
+		"da": "En sæk cement. Beton og stållemme."
 	},
 	"ITEM_CLOTH": {
-		"da": "Stof",
-		"en": "Cloth"
+		"en": "Cloth",
+		"da": "Stof"
 	},
 	"ITEM_CLOTH_DESC": {
-		"da": "Klude og gammelt tøj. Til forbindinger og polstring.",
-		"en": "Rags and old clothes. Bandages and padding."
+		"en": "Fabric for bandages, clothing and repairs.",
+		"da": "Stof til forbindinger, tøj og reparationer."
 	},
 	"ITEM_ELECTRICAL": {
-		"da": "Elektriske dele",
-		"en": "Electrical parts"
+		"en": "Electronic components",
+		"da": "Elektroniske komponenter"
 	},
 	"ITEM_ELECTRICAL_DESC": {
-		"da": "Ledning, kontakter og et par hele pærer.",
-		"en": "Wire, switches and a few working bulbs."
+		"en": "Switches, relays and wire. Power and lights.",
+		"da": "Kontakter, relæer og ledning. Strøm og lys."
 	},
 	"ITEM_FUEL_DESC": {
-		"da": "En dunk brændstof. Driver generatoren.",
-		"en": "A can of fuel. Runs the generator."
+		"en": "A few litres of gasoline: the generator and the car.",
+		"da": "Et par liter benzin: generatoren og bilen."
 	},
 	"ITEM_WATER_DIRTY_DESC": {
-		"da": "Ikke til at drikke. Rens det i bunkeren.",
-		"en": "Unsafe to drink. Purify it underground."
+		"en": "Melted snow, grey with ash. Purify it first.",
+		"da": "Smeltet sne, grå af aske. Rens det først."
 	},
 	"ITEM_WATER_CLEAN_DESC": {
-		"da": "Rent drikkevand. +40 vand.",
-		"en": "Safe drinking water. +40 water."
+		"en": "Filtered, safe to drink.",
+		"da": "Filtreret, sikkert at drikke."
 	},
 	"ITEM_CANNED_FOOD": {
-		"da": "Dåsemad",
-		"en": "Canned food"
+		"en": "Canned beans",
+		"da": "Dåsebønner"
 	},
 	"ITEM_CANNED_FOOD_DESC": {
-		"da": "Bulet, men lukket. +40 mad.",
-		"en": "Dented but sealed. +40 food."
+		"en": "Beans in tomato sauce. Filling. Needs no cooking.",
+		"da": "Bønner i tomatsauce. Mættende. Skal ikke tilberedes."
 	},
 	"ITEM_POTATO": {
-		"da": "Kartofler",
-		"en": "Potatoes"
+		"en": "Potato",
+		"da": "Kartoffel"
 	},
 	"ITEM_POTATO_DESC": {
-		"da": "Dyrket under bunkerens lamper. +20 mad.",
-		"en": "Grown under the bunker's lamps. +20 food."
+		"en": "Grown under lamps in the shelter.",
+		"da": "Dyrket under lamper i beskyttelsesrummet."
 	},
 	"ITEM_BANDAGE": {
-		"da": "Forbinding",
-		"en": "Bandage"
+		"en": "Bandage",
+		"da": "Forbinding"
 	},
 	"ITEM_BANDAGE_DESC": {
-		"da": "Rene stofstrimler. Giver 35 helbred.",
-		"en": "Clean cloth strips. Restores 35 health."
+		"en": "Stops the bleeding.",
+		"da": "Stopper blødningen."
 	},
 	"ITEM_TIMBER_FRAME": {
-		"da": "Tømmerramme",
-		"en": "Timber frame"
+		"en": "Timber frame",
+		"da": "Tømmerramme"
 	},
 	"ITEM_TIMBER_FRAME_DESC": {
-		"da": "En afstivet træramme. Bruges til forstærkede døre.",
-		"en": "A braced wooden frame. Needed for reinforced doors."
+		"en": "A ready-made frame for a door or barricade.",
+		"da": "En færdig ramme til en dør eller barrikade."
 	},
 	"ITEM_SPIKE_KIT": {
-		"da": "Pigsæt",
-		"en": "Spike kit"
+		"en": "Spike kit",
+		"da": "Pigge-sæt"
 	},
 	"ITEM_SPIKE_KIT_DESC": {
-		"da": "Spidse pæle på en planke. Placeres som en pigfælde.",
-		"en": "Sharpened stakes on a board. Place it as a spike trap."
+		"en": "Sharpened stakes for a trap.",
+		"da": "Spidsede pæle til en fælde."
 	},
 	"ITEM_GROW_LIGHT": {
-		"da": "Vækstlampe",
-		"en": "Grow light"
+		"en": "Grow light",
+		"da": "Vækstlampe"
 	},
 	"ITEM_GROW_LIGHT_DESC": {
-		"da": "En lampe, planter kan leve af. Bruges til et hydroponisk plantebed.",
-		"en": "A lamp that plants can live by. Needed for a hydroponic planter."
+		"en": "A lamp that grows potatoes in the dark.",
+		"da": "En lampe der dyrker kartofler i mørket."
 	},
 	"ITEM_CLUB": {
-		"da": "Kølle",
-		"en": "Club"
+		"en": "Wooden club",
+		"da": "Træknippel"
 	},
 	"ITEM_CLUB_DESC": {
-		"da": "Et tungt stykke træ. 34 skade.",
-		"en": "A heavy length of wood. 34 damage."
+		"en": "A heavy length of wood.",
+		"da": "Et tungt stykke træ."
 	},
 	"ITEM_MACHETE": {
-		"da": "Machete",
-		"en": "Machete"
+		"en": "Machete",
+		"da": "Machete"
 	},
 	"ITEM_MACHETE_DESC": {
-		"da": "Et langt blad slebet af skrot. 55 skade, længere rækkevidde.",
-		"en": "A long blade ground from scrap. 55 damage, longer reach."
+		"en": "A long blade that also clears brush.",
+		"da": "Et langt blad der også rydder krat."
 	},
 	"ITEM_HATCHET": {
-		"da": "Håndøkse",
-		"en": "Hatchet"
+		"en": "Hatchet",
+		"da": "Håndøkse"
 	},
 	"ITEM_HATCHET_DESC": {
-		"da": "Fælder træer dobbelt så hurtigt. 28 skade.",
-		"en": "Chops trees twice as fast. 28 damage."
+		"en": "Chops wood quickly; a light weapon.",
+		"da": "Hugger brænde hurtigt; et let våben."
 	},
 	"ITEM_FELLING_AXE": {
-		"da": "Fældeøkse",
-		"en": "Felling axe"
+		"en": "Felling axe",
+		"da": "Fældeøkse"
 	},
 	"ITEM_FELLING_AXE_DESC": {
-		"da": "Fælder et træ i få hug og giver mere tømmer. 42 skade.",
-		"en": "Fells a tree in a few blows and yields more timber. 42 damage."
+		"en": "Fells trees in few strokes.",
+		"da": "Fælder træer med få hug."
 	},
 	"ITEM_JACKET": {
-		"da": "Polstret jakke",
-		"en": "Padded jacket"
+		"en": "Jacket",
+		"da": "Jakke"
 	},
 	"ITEM_JACKET_DESC": {
-		"da": "Lag af stof og metalplader. Tager 35 % af slag.",
-		"en": "Layers of cloth and metal plates. Takes 35% off hits."
+		"en": "A padded jacket.",
+		"da": "En vatteret jakke."
 	},
 	"ITEM_CARBURETOR": {
-		"da": "Justeret karburator",
-		"en": "Tuned carburetor"
+		"en": "Carburetor",
+		"da": "Karburator"
 	},
 	"ITEM_CARBURETOR_DESC": {
 		"da": "En omhyggeligt genopbygget karburator. Monter den på generatoren for at halvere brændstofforbruget.",
 		"en": "A carefully rebuilt carburetor. Fit it to the generator to halve its fuel use."
 	},
 	"ITEM_MANUAL": {
-		"da": "Værkstedshåndbog",
-		"en": "Workshop manual"
+		"en": "Workshop manual",
+		"da": "Værkstedshåndbog"
 	},
 	"ITEM_MANUAL_DESC": {
 		"da": "Slidte noter om værktøj. Læs den for at lære at lave en fældeøkse.",
@@ -2108,24 +2108,24 @@
 		"en": "In the bag: %s."
 	},
 	"ITEM_WATER_BOTTLE": {
-		"da": "Stor flaske vand",
-		"en": "Large bottle of water"
+		"en": "Bottled water",
+		"da": "Flaskevand"
 	},
 	"ITEM_WATER_BOTTLE_DESC": {
-		"da": "Rent vand, halvt frosset i halsen. En lang slurk.",
-		"en": "Clean water, half frozen at the neck. One long drink."
+		"en": "A large sealed bottle of water.",
+		"da": "En stor forseglet flaske vand."
 	},
 	"ITEM_CRACKERS": {
-		"da": "Pakke kiks",
-		"en": "Pack of crackers"
+		"en": "Pack of crackers",
+		"da": "Pakke kiks"
 	},
 	"ITEM_CRACKERS_DESC": {
-		"da": "Tørre, salte, lidt bløde. Bedre end ingenting.",
-		"en": "Dry, salty, a little stale. Better than nothing."
+		"en": "Dry crackers. Light to carry.",
+		"da": "Tørre kiks. Lette at bære."
 	},
 	"ITEM_FIELD_MAP": {
-		"da": "Kort over området",
-		"en": "Map of the area"
+		"en": "Paper map",
+		"da": "Papirkort"
 	},
 	"ITEM_FIELD_MAP_DESC": {
 		"da": "Et foldet papirkort, blødt i folderne. Nogen har markeret en hytte i skoven.",
@@ -2348,20 +2348,20 @@
 		"en": "You're already ready."
 	},
 	"ITEM_WINTER_COAT": {
-		"da": "Vinterfrakke",
-		"en": "Winter coat"
+		"en": "Winter coat",
+		"da": "Vinterfrakke"
 	},
 	"ITEM_WINTER_COAT_DESC": {
-		"da": "Tung, foret, lugter af en anden. Holder kulden ude langt bedre end noget andet.",
-		"en": "Heavy, lined, smells of somebody else. Keeps the cold out far better than anything else."
+		"en": "Long, down-filled. The best defence against the cold.",
+		"da": "Lang og dunfyldt. Det bedste værn mod kulden."
 	},
 	"ITEM_FLASHLIGHT": {
-		"da": "Lommelygte",
-		"en": "Flashlight"
+		"en": "Flashlight",
+		"da": "Lommelygte"
 	},
 	"ITEM_FLASHLIGHT_DESC": {
-		"da": "En tung metallommelygte. Tænd og sluk med L.",
-		"en": "A heavy metal flashlight. Toggle it with L."
+		"en": "Lights the dark (L).",
+		"da": "Lyser mørket op (L)."
 	},
 	"INV_STATS_INSULATION": {
 		"da": "Holder %s%% af kulden ude",
@@ -3350,5 +3350,1297 @@
 	"HUD_TIME_SCALE": {
 		"en": "Time ×%s (dev)",
 		"da": "Tid ×%s (dev)"
+	},
+	"ITEM_CANNED_SOUP": {
+		"en": "Canned soup",
+		"da": "Dåsesuppe"
+	},
+	"ITEM_CANNED_SOUP_DESC": {
+		"en": "Thin, salty, warm if you can heat it. Some water too.",
+		"da": "Tynd og salt suppe. Lidt væske med."
+	},
+	"ITEM_CANNED_MEAT": {
+		"en": "Canned meat",
+		"da": "Dåsekød"
+	},
+	"ITEM_CANNED_MEAT_DESC": {
+		"en": "Corned beef. Dense and fatty.",
+		"da": "Corned beef. Kompakt og fedt."
+	},
+	"ITEM_CHOCOLATE": {
+		"en": "Chocolate",
+		"da": "Chokolade"
+	},
+	"ITEM_CHOCOLATE_DESC": {
+		"en": "A bar of dark chocolate. A small comfort.",
+		"da": "En plade mørk chokolade. En lille trøst."
+	},
+	"ITEM_ENERGY_BAR": {
+		"en": "Energy bar",
+		"da": "Energibar"
+	},
+	"ITEM_ENERGY_BAR_DESC": {
+		"en": "Oats and syrup, pressed.",
+		"da": "Havre og sirup, presset."
+	},
+	"ITEM_JERKY": {
+		"en": "Jerky",
+		"da": "Tørret kød"
+	},
+	"ITEM_JERKY_DESC": {
+		"en": "Dried, salted strips of meat. Keeps forever.",
+		"da": "Tørrede, saltede kødstrimler. Holder evigt."
+	},
+	"ITEM_FRESH_MEAT": {
+		"en": "Fresh meat",
+		"da": "Frisk kød"
+	},
+	"ITEM_FRESH_MEAT_DESC": {
+		"en": "Frozen solid out here. Edible, barely.",
+		"da": "Frosset fast herude. Spiselig, lige akkurat."
+	},
+	"ITEM_VEGETABLES": {
+		"en": "Vegetables",
+		"da": "Grøntsager"
+	},
+	"ITEM_VEGETABLES_DESC": {
+		"en": "A tin of mixed vegetables.",
+		"da": "En dåse blandede grøntsager."
+	},
+	"ITEM_SPOILED_FOOD": {
+		"en": "Spoiled food",
+		"da": "Fordærvet mad"
+	},
+	"ITEM_SPOILED_FOOD_DESC": {
+		"en": "It smells wrong. Eating it will make you ill.",
+		"da": "Den lugter forkert. Den gør dig syg."
+	},
+	"ITEM_FROZEN_FOOD": {
+		"en": "Frozen food",
+		"da": "Frossen mad"
+	},
+	"ITEM_FROZEN_FOOD_DESC": {
+		"en": "A frozen ready meal, hard as stone.",
+		"da": "En frossen færdigret, hård som sten."
+	},
+	"ITEM_SODA": {
+		"en": "Soda",
+		"da": "Sodavand"
+	},
+	"ITEM_SODA_DESC": {
+		"en": "A can of something sweet and flat.",
+		"da": "En dåse noget sødt og fladt."
+	},
+	"ITEM_ENERGY_DRINK": {
+		"en": "Energy drink",
+		"da": "Energidrik"
+	},
+	"ITEM_ENERGY_DRINK_DESC": {
+		"en": "Sugar, caffeine, and a buzzing heart.",
+		"da": "Sukker, koffein og et summende hjerte."
+	},
+	"ITEM_COFFEE": {
+		"en": "Coffee",
+		"da": "Kaffe"
+	},
+	"ITEM_COFFEE_DESC": {
+		"en": "A jar of instant coffee. Warms the hands.",
+		"da": "Et glas pulverkaffe. Varmer hænderne."
+	},
+	"ITEM_ALCOHOL": {
+		"en": "Alcohol",
+		"da": "Alkohol"
+	},
+	"ITEM_ALCOHOL_DESC": {
+		"en": "A bottle of strong spirits. Feels warm — it isn't.",
+		"da": "En flaske stærk spiritus. Føles varm — er det ikke."
+	},
+	"ITEM_RAGS": {
+		"en": "Rags",
+		"da": "Klude"
+	},
+	"ITEM_RAGS_DESC": {
+		"en": "Torn cloth. A poor dressing.",
+		"da": "Revet stof. En dårlig forbinding."
+	},
+	"ITEM_FIRST_AID_KIT": {
+		"en": "First-aid kit",
+		"da": "Førstehjælpskasse"
+	},
+	"ITEM_FIRST_AID_KIT_DESC": {
+		"en": "A proper kit: dressings, tape, antiseptic.",
+		"da": "En rigtig kasse: forbindinger, tape, desinfektion."
+	},
+	"ITEM_DISINFECTANT": {
+		"en": "Disinfectant",
+		"da": "Desinfektionsmiddel"
+	},
+	"ITEM_DISINFECTANT_DESC": {
+		"en": "Stings. Keeps a wound clean.",
+		"da": "Svier. Holder et sår rent."
+	},
+	"ITEM_PAINKILLERS": {
+		"en": "Painkillers",
+		"da": "Smertestillende"
+	},
+	"ITEM_PAINKILLERS_DESC": {
+		"en": "A strip of pills. Dulls the pain.",
+		"da": "En blisterpakke. Dulmer smerten."
+	},
+	"ITEM_ANTIBIOTICS": {
+		"en": "Antibiotics",
+		"da": "Antibiotika"
+	},
+	"ITEM_ANTIBIOTICS_DESC": {
+		"en": "A course of tablets. Rare now.",
+		"da": "En kur tabletter. Sjældne nu."
+	},
+	"ITEM_VITAMINS": {
+		"en": "Vitamins",
+		"da": "Vitaminer"
+	},
+	"ITEM_VITAMINS_DESC": {
+		"en": "Small tablets. A little better than nothing.",
+		"da": "Små tabletter. Lidt bedre end ingenting."
+	},
+	"ITEM_SPLINT": {
+		"en": "Splint",
+		"da": "Skinne"
+	},
+	"ITEM_SPLINT_DESC": {
+		"en": "Holds a limb straight.",
+		"da": "Holder et lem lige."
+	},
+	"ITEM_MEDICAL_SYRINGE": {
+		"en": "Medical syringe",
+		"da": "Medicinsk sprøjte"
+	},
+	"ITEM_MEDICAL_SYRINGE_DESC": {
+		"en": "A sealed emergency injection.",
+		"da": "En forseglet nødindsprøjtning."
+	},
+	"ITEM_MATCHES": {
+		"en": "Matches",
+		"da": "Tændstikker"
+	},
+	"ITEM_MATCHES_DESC": {
+		"en": "A box of matches. Fire-making material.",
+		"da": "En æske tændstikker. Til at tænde ild."
+	},
+	"ITEM_LIGHTER": {
+		"en": "Lighter",
+		"da": "Lighter"
+	},
+	"ITEM_LIGHTER_DESC": {
+		"en": "A disposable lighter. Fire-making material.",
+		"da": "En engangslighter. Til at tænde ild."
+	},
+	"ITEM_FIRESTARTER": {
+		"en": "Firestarter",
+		"da": "Optændingsblok"
+	},
+	"ITEM_FIRESTARTER_DESC": {
+		"en": "Wax cubes that burn long. Fire-making material.",
+		"da": "Voksterninger der brænder længe."
+	},
+	"ITEM_TINDER": {
+		"en": "Tinder",
+		"da": "Tøndersvamp"
+	},
+	"ITEM_TINDER_DESC": {
+		"en": "Dry bark and lint. Fire-making material.",
+		"da": "Tør bark og fnug. Til at tænde ild."
+	},
+	"ITEM_CHARCOAL": {
+		"en": "Charcoal",
+		"da": "Trækul"
+	},
+	"ITEM_CHARCOAL_DESC": {
+		"en": "Burns hot and clean. Fuel and crafting material.",
+		"da": "Brænder varmt og rent."
+	},
+	"ITEM_HAND_WARMER": {
+		"en": "Hand warmers",
+		"da": "Håndvarmere"
+	},
+	"ITEM_HAND_WARMER_DESC": {
+		"en": "Shake the pouch; it heats for an hour.",
+		"da": "Ryst posen; den varmer en time."
+	},
+	"ITEM_GLOVES": {
+		"en": "Gloves",
+		"da": "Handsker"
+	},
+	"ITEM_GLOVES_DESC": {
+		"en": "Work gloves.",
+		"da": "Arbejdshandsker."
+	},
+	"ITEM_HAT": {
+		"en": "Hat",
+		"da": "Hue"
+	},
+	"ITEM_HAT_DESC": {
+		"en": "A knitted hat.",
+		"da": "En strikket hue."
+	},
+	"ITEM_SCARF": {
+		"en": "Scarf",
+		"da": "Halstørklæde"
+	},
+	"ITEM_SCARF_DESC": {
+		"en": "Wool, wrapped twice.",
+		"da": "Uld, viklet to gange."
+	},
+	"ITEM_BOOTS": {
+		"en": "Boots",
+		"da": "Støvler"
+	},
+	"ITEM_BOOTS_DESC": {
+		"en": "Lined winter boots.",
+		"da": "Forede vinterstøvler."
+	},
+	"ITEM_SOCKS": {
+		"en": "Socks",
+		"da": "Strømper"
+	},
+	"ITEM_SOCKS_DESC": {
+		"en": "Cotton socks. Better than bare feet.",
+		"da": "Bomuldsstrømper. Bedre end bare fødder."
+	},
+	"ITEM_WOOL_SOCKS": {
+		"en": "Wool socks",
+		"da": "Uldsokker"
+	},
+	"ITEM_WOOL_SOCKS_DESC": {
+		"en": "Thick wool socks.",
+		"da": "Tykke uldsokker."
+	},
+	"ITEM_TROUSERS": {
+		"en": "Trousers",
+		"da": "Bukser"
+	},
+	"ITEM_TROUSERS_DESC": {
+		"en": "Heavy work trousers.",
+		"da": "Kraftige arbejdsbukser."
+	},
+	"ITEM_THERMAL_UNDERWEAR": {
+		"en": "Thermal underwear",
+		"da": "Termoundertøj"
+	},
+	"ITEM_THERMAL_UNDERWEAR_DESC": {
+		"en": "A thin layer that keeps the warmth in.",
+		"da": "Et tyndt lag der holder på varmen."
+	},
+	"ITEM_BACKPACK": {
+		"en": "Backpack",
+		"da": "Rygsæk"
+	},
+	"ITEM_BACKPACK_DESC": {
+		"en": "Carry ten more things.",
+		"da": "Bær ti ting mere."
+	},
+	"ITEM_INSULATED_GLOVES": {
+		"en": "Insulated gloves",
+		"da": "Forede handsker"
+	},
+	"ITEM_INSULATED_GLOVES_DESC": {
+		"en": "Thick mittens with a lining.",
+		"da": "Tykke luffer med for."
+	},
+	"ITEM_SNOW_GOGGLES": {
+		"en": "Snow goggles",
+		"da": "Snebriller"
+	},
+	"ITEM_SNOW_GOGGLES_DESC": {
+		"en": "Cut the glare of the snow.",
+		"da": "Tager blændingen fra sneen."
+	},
+	"ITEM_KITCHEN_KNIFE": {
+		"en": "Kitchen knife",
+		"da": "Køkkenkniv"
+	},
+	"ITEM_KITCHEN_KNIFE_DESC": {
+		"en": "Short and sharp.",
+		"da": "Kort og skarp."
+	},
+	"ITEM_HUNTING_KNIFE": {
+		"en": "Hunting knife",
+		"da": "Jagtkniv"
+	},
+	"ITEM_HUNTING_KNIFE_DESC": {
+		"en": "A heavy fixed blade.",
+		"da": "Et tungt, fast blad."
+	},
+	"ITEM_BASEBALL_BAT": {
+		"en": "Baseball bat",
+		"da": "Baseballbat"
+	},
+	"ITEM_BASEBALL_BAT_DESC": {
+		"en": "Ash wood. Heavy swings.",
+		"da": "Asketræ. Tunge slag."
+	},
+	"ITEM_CROWBAR": {
+		"en": "Crowbar",
+		"da": "Brækjern"
+	},
+	"ITEM_CROWBAR_DESC": {
+		"en": "Pries, breaks, and swings.",
+		"da": "Bryder op og slår."
+	},
+	"ITEM_HAMMER": {
+		"en": "Hammer",
+		"da": "Hammer"
+	},
+	"ITEM_HAMMER_DESC": {
+		"en": "A claw hammer. Tool and weapon.",
+		"da": "En kløfthammer. Værktøj og våben."
+	},
+	"ITEM_FIRE_AXE": {
+		"en": "Fire axe",
+		"da": "Brandøkse"
+	},
+	"ITEM_FIRE_AXE_DESC": {
+		"en": "Red-handled, heavy, brutal.",
+		"da": "Rødt skaft, tung og brutal."
+	},
+	"ITEM_SHOVEL": {
+		"en": "Shovel",
+		"da": "Skovl"
+	},
+	"ITEM_SHOVEL_DESC": {
+		"en": "Digs snow and swings hard.",
+		"da": "Skovler sne og slår hårdt."
+	},
+	"ITEM_PICKAXE": {
+		"en": "Pickaxe",
+		"da": "Hakke"
+	},
+	"ITEM_PICKAXE_DESC": {
+		"en": "A miner's pick.",
+		"da": "En minearbejders hakke."
+	},
+	"ITEM_SHARPENED_STICK": {
+		"en": "Sharpened stick",
+		"da": "Spidset stok"
+	},
+	"ITEM_SHARPENED_STICK_DESC": {
+		"en": "Better than nothing.",
+		"da": "Bedre end ingenting."
+	},
+	"ITEM_METAL_PIPE": {
+		"en": "Metal pipe",
+		"da": "Metalrør"
+	},
+	"ITEM_METAL_PIPE_DESC": {
+		"en": "A length of steel pipe.",
+		"da": "Et stykke stålrør."
+	},
+	"ITEM_ICE_PICK": {
+		"en": "Ice pick",
+		"da": "Isøkse"
+	},
+	"ITEM_ICE_PICK_DESC": {
+		"en": "A climber's ice axe.",
+		"da": "En bjergbestigers isøkse."
+	},
+	"ITEM_GUN_CLEANING_KIT": {
+		"en": "Gun cleaning kit",
+		"da": "Våbenrensesæt"
+	},
+	"ITEM_GUN_CLEANING_KIT_DESC": {
+		"en": "Rods, patches and solvent. Restores a held firearm's condition.",
+		"da": "Stænger, klude og opløsning. Genopretter et skydevåben i hånden."
+	},
+	"ITEM_GUN_OIL": {
+		"en": "Gun oil",
+		"da": "Våbenolie"
+	},
+	"ITEM_GUN_OIL_DESC": {
+		"en": "A small can of oil. Improves a held firearm's condition a little.",
+		"da": "En lille dåse olie. Forbedrer et skydevåben lidt."
+	},
+	"ITEM_SHARPENING_STONE": {
+		"en": "Sharpening stone",
+		"da": "Slibesten"
+	},
+	"ITEM_SHARPENING_STONE_DESC": {
+		"en": "Restores the edge of a held blade or axe.",
+		"da": "Genopretter æggen på et blad eller en økse i hånden."
+	},
+	"ITEM_SCREWDRIVER": {
+		"en": "Screwdriver",
+		"da": "Skruetrækker"
+	},
+	"ITEM_SCREWDRIVER_DESC": {
+		"en": "A tool. Kept for crafting and repairs.",
+		"da": "Et værktøj. Til håndværk og reparationer."
+	},
+	"ITEM_WRENCH": {
+		"en": "Wrench",
+		"da": "Skruenøgle"
+	},
+	"ITEM_WRENCH_DESC": {
+		"en": "A tool. Kept for crafting and repairs.",
+		"da": "Et værktøj. Til håndværk og reparationer."
+	},
+	"ITEM_PLIERS": {
+		"en": "Pliers",
+		"da": "Tang"
+	},
+	"ITEM_PLIERS_DESC": {
+		"en": "A tool. Kept for crafting and repairs.",
+		"da": "Et værktøj. Til håndværk og reparationer."
+	},
+	"ITEM_HANDSAW": {
+		"en": "Handsaw",
+		"da": "Fuchsvans"
+	},
+	"ITEM_HANDSAW_DESC": {
+		"en": "A tool. Kept for crafting and repairs.",
+		"da": "Et værktøj. Til håndværk og reparationer."
+	},
+	"ITEM_HACKSAW": {
+		"en": "Hacksaw",
+		"da": "Nedstryger"
+	},
+	"ITEM_HACKSAW_DESC": {
+		"en": "A tool. Kept for crafting and repairs.",
+		"da": "Et værktøj. Til håndværk og reparationer."
+	},
+	"ITEM_WIRE_CUTTERS": {
+		"en": "Wire cutters",
+		"da": "Bidetang"
+	},
+	"ITEM_WIRE_CUTTERS_DESC": {
+		"en": "A tool. Kept for crafting and repairs.",
+		"da": "Et værktøj. Til håndværk og reparationer."
+	},
+	"ITEM_MULTITOOL": {
+		"en": "Multitool",
+		"da": "Multiværktøj"
+	},
+	"ITEM_MULTITOOL_DESC": {
+		"en": "A tool. Kept for crafting and repairs.",
+		"da": "Et værktøj. Til håndværk og reparationer."
+	},
+	"ITEM_LOCKPICK": {
+		"en": "Lockpick",
+		"da": "Dirk"
+	},
+	"ITEM_LOCKPICK_DESC": {
+		"en": "A tool. Kept for crafting and repairs.",
+		"da": "Et værktøj. Til håndværk og reparationer."
+	},
+	"ITEM_BOLT_CUTTERS": {
+		"en": "Bolt cutters",
+		"da": "Boltsaks"
+	},
+	"ITEM_BOLT_CUTTERS_DESC": {
+		"en": "A tool. Kept for crafting and repairs.",
+		"da": "Et værktøj. Til håndværk og reparationer."
+	},
+	"ITEM_SEWING_KIT": {
+		"en": "Sewing kit",
+		"da": "Syæske"
+	},
+	"ITEM_SEWING_KIT_DESC": {
+		"en": "A tool. Kept for crafting and repairs.",
+		"da": "Et værktøj. Til håndværk og reparationer."
+	},
+	"ITEM_PLANKS": {
+		"en": "Planks",
+		"da": "Brædder"
+	},
+	"ITEM_PLANKS_DESC": {
+		"en": "Sawn boards.",
+		"da": "Savede brædder."
+	},
+	"ITEM_NAILS": {
+		"en": "Nails",
+		"da": "Søm"
+	},
+	"ITEM_NAILS_DESC": {
+		"en": "A handful of nails.",
+		"da": "En håndfuld søm."
+	},
+	"ITEM_SCREWS": {
+		"en": "Screws",
+		"da": "Skruer"
+	},
+	"ITEM_SCREWS_DESC": {
+		"en": "A handful of screws.",
+		"da": "En håndfuld skruer."
+	},
+	"ITEM_SHEET_METAL": {
+		"en": "Sheet metal",
+		"da": "Metalplade"
+	},
+	"ITEM_SHEET_METAL_DESC": {
+		"en": "A flat sheet of steel.",
+		"da": "En flad stålplade."
+	},
+	"ITEM_ROPE": {
+		"en": "Rope",
+		"da": "Reb"
+	},
+	"ITEM_ROPE_DESC": {
+		"en": "Ten metres of rope.",
+		"da": "Ti meter reb."
+	},
+	"ITEM_WIRE": {
+		"en": "Wire",
+		"da": "Ståltråd"
+	},
+	"ITEM_WIRE_DESC": {
+		"en": "A coil of steel wire.",
+		"da": "En rulle ståltråd."
+	},
+	"ITEM_DUCT_TAPE": {
+		"en": "Duct tape",
+		"da": "Gaffatape"
+	},
+	"ITEM_DUCT_TAPE_DESC": {
+		"en": "Fixes almost anything for a while.",
+		"da": "Fikser næsten alt for en stund."
+	},
+	"ITEM_GLUE": {
+		"en": "Glue",
+		"da": "Lim"
+	},
+	"ITEM_GLUE_DESC": {
+		"en": "A tube of strong glue.",
+		"da": "En tube stærk lim."
+	},
+	"ITEM_LEATHER": {
+		"en": "Leather",
+		"da": "Læder"
+	},
+	"ITEM_LEATHER_DESC": {
+		"en": "A piece of tough hide.",
+		"da": "Et stykke sejt skind."
+	},
+	"ITEM_PLASTIC": {
+		"en": "Plastic",
+		"da": "Plastik"
+	},
+	"ITEM_PLASTIC_DESC": {
+		"en": "Scraps of hard plastic.",
+		"da": "Stumper af hård plastik."
+	},
+	"ITEM_RUBBER": {
+		"en": "Rubber",
+		"da": "Gummi"
+	},
+	"ITEM_RUBBER_DESC": {
+		"en": "Strips of rubber.",
+		"da": "Gummistrimler."
+	},
+	"ITEM_GLASS_BOTTLES": {
+		"en": "Glass bottles",
+		"da": "Glasflasker"
+	},
+	"ITEM_GLASS_BOTTLES_DESC": {
+		"en": "Empty bottles.",
+		"da": "Tomme flasker."
+	},
+	"ITEM_GEARS": {
+		"en": "Gears",
+		"da": "Tandhjul"
+	},
+	"ITEM_GEARS_DESC": {
+		"en": "Mechanical parts. Crafting and repairs.",
+		"da": "Mekaniske dele. Til håndværk og reparationer."
+	},
+	"ITEM_SPRINGS": {
+		"en": "Springs",
+		"da": "Fjedre"
+	},
+	"ITEM_SPRINGS_DESC": {
+		"en": "Mechanical parts. Crafting and repairs.",
+		"da": "Mekaniske dele. Til håndværk og reparationer."
+	},
+	"ITEM_BOLTS": {
+		"en": "Bolts",
+		"da": "Bolte"
+	},
+	"ITEM_BOLTS_DESC": {
+		"en": "Mechanical parts. Crafting and repairs.",
+		"da": "Mekaniske dele. Til håndværk og reparationer."
+	},
+	"ITEM_PIPES": {
+		"en": "Pipes",
+		"da": "Rør"
+	},
+	"ITEM_PIPES_DESC": {
+		"en": "Mechanical parts. Crafting and repairs.",
+		"da": "Mekaniske dele. Til håndværk og reparationer."
+	},
+	"ITEM_BEARINGS": {
+		"en": "Bearings",
+		"da": "Lejer"
+	},
+	"ITEM_BEARINGS_DESC": {
+		"en": "Mechanical parts. Crafting and repairs.",
+		"da": "Mekaniske dele. Til håndværk og reparationer."
+	},
+	"ITEM_ENGINE_PARTS": {
+		"en": "Engine parts",
+		"da": "Motordele"
+	},
+	"ITEM_ENGINE_PARTS_DESC": {
+		"en": "Mechanical parts. Crafting and repairs.",
+		"da": "Mekaniske dele. Til håndværk og reparationer."
+	},
+	"ITEM_BATTERIES": {
+		"en": "Batteries",
+		"da": "Batterier"
+	},
+	"ITEM_BATTERIES_DESC": {
+		"en": "A pack of AA batteries. Crafting material.",
+		"da": "En pakke AA-batterier. Materiale."
+	},
+	"ITEM_CABLES": {
+		"en": "Cables",
+		"da": "Kabler"
+	},
+	"ITEM_CABLES_DESC": {
+		"en": "Lengths of insulated cable.",
+		"da": "Stykker af isoleret kabel."
+	},
+	"ITEM_CIRCUIT_BOARDS": {
+		"en": "Circuit boards",
+		"da": "Printkort"
+	},
+	"ITEM_CIRCUIT_BOARDS_DESC": {
+		"en": "Salvaged boards.",
+		"da": "Bjærgede printkort."
+	},
+	"ITEM_FUSES": {
+		"en": "Fuses",
+		"da": "Sikringer"
+	},
+	"ITEM_FUSES_DESC": {
+		"en": "A box of fuses.",
+		"da": "En æske sikringer."
+	},
+	"ITEM_DIESEL": {
+		"en": "Diesel",
+		"da": "Diesel"
+	},
+	"ITEM_DIESEL_DESC": {
+		"en": "A can of diesel. Heavy machinery fuel (not used by the generator).",
+		"da": "En dunk diesel. Til tunge maskiner (ikke generatoren)."
+	},
+	"ITEM_PROPANE": {
+		"en": "Propane canister",
+		"da": "Propanflaske"
+	},
+	"ITEM_PROPANE_DESC": {
+		"en": "A small gas canister.",
+		"da": "En lille gasflaske."
+	},
+	"ITEM_KEROSENE": {
+		"en": "Kerosene",
+		"da": "Petroleum"
+	},
+	"ITEM_KEROSENE_DESC": {
+		"en": "Lamp oil.",
+		"da": "Lampeolie."
+	},
+	"ITEM_MOTOR_OIL": {
+		"en": "Motor oil",
+		"da": "Motorolie"
+	},
+	"ITEM_MOTOR_OIL_DESC": {
+		"en": "A bottle of engine oil.",
+		"da": "En flaske motorolie."
+	},
+	"ITEM_HEADLAMP": {
+		"en": "Headlamp",
+		"da": "Pandelampe"
+	},
+	"ITEM_HEADLAMP_DESC": {
+		"en": "A strap-on lamp. Lights the dark (L).",
+		"da": "En pandelampe. Lyser mørket op (L)."
+	},
+	"ITEM_LANTERN": {
+		"en": "Lantern",
+		"da": "Lanterne"
+	},
+	"ITEM_LANTERN_DESC": {
+		"en": "A storm lantern. Lights the dark (L).",
+		"da": "En stormlampe. Lyser mørket op (L)."
+	},
+	"ITEM_HAND_CRANK_FLASHLIGHT": {
+		"en": "Hand-crank flashlight",
+		"da": "Dynamolygte"
+	},
+	"ITEM_HAND_CRANK_FLASHLIGHT_DESC": {
+		"en": "Wind it, and it lights the dark (L). Needs no batteries.",
+		"da": "Drej den, så lyser den (L)."
+	},
+	"ITEM_GLOW_STICKS": {
+		"en": "Glow sticks",
+		"da": "Lysstave"
+	},
+	"ITEM_GLOW_STICKS_DESC": {
+		"en": "Snap one for a faint green light that lasts ten minutes (L).",
+		"da": "Knæk én for svagt grønt lys i ti minutter (L)."
+	},
+	"ITEM_FLARE": {
+		"en": "Flares",
+		"da": "Nødblus"
+	},
+	"ITEM_FLARE_DESC": {
+		"en": "A road flare. Burns bright for four minutes (L).",
+		"da": "Et nødblus. Brænder klart i fire minutter (L)."
+	},
+	"ITEM_COMPASS": {
+		"en": "Compass",
+		"da": "Kompas"
+	},
+	"ITEM_COMPASS_DESC": {
+		"en": "A brass compass. A keepsake.",
+		"da": "Et messingkompas. Et minde."
+	},
+	"ITEM_BINOCULARS": {
+		"en": "Binoculars",
+		"da": "Kikkert"
+	},
+	"ITEM_BINOCULARS_DESC": {
+		"en": "Old field glasses. Valuable.",
+		"da": "En gammel kikkert. Værdifuld."
+	},
+	"ITEM_HANDHELD_RADIO": {
+		"en": "Handheld radio",
+		"da": "Transistorradio"
+	},
+	"ITEM_HANDHELD_RADIO_DESC": {
+		"en": "Only static now. Valuable for parts.",
+		"da": "Kun sus nu. Værdifuld for delene."
+	},
+	"ITEM_WALKIE_TALKIE": {
+		"en": "Walkie-talkie",
+		"da": "Walkie-talkie"
+	},
+	"ITEM_WALKIE_TALKIE_DESC": {
+		"en": "No one answers. Valuable for parts.",
+		"da": "Ingen svarer. Værdifuld for delene."
+	},
+	"ITEM_PADLOCK": {
+		"en": "Padlock",
+		"da": "Hængelås"
+	},
+	"ITEM_PADLOCK_DESC": {
+		"en": "A sturdy padlock.",
+		"da": "En solid hængelås."
+	},
+	"ITEM_KEYS": {
+		"en": "Keys",
+		"da": "Nøgler"
+	},
+	"ITEM_KEYS_DESC": {
+		"en": "A ring of keys to doors that no longer matter.",
+		"da": "Et nøglebundt til døre der ikke betyder noget."
+	},
+	"ITEM_KEYCARD": {
+		"en": "Keycard",
+		"da": "Nøglekort"
+	},
+	"ITEM_KEYCARD_DESC": {
+		"en": "A plastic access card.",
+		"da": "Et adgangskort i plastik."
+	},
+	"ITEM_COMBINATION_NOTE": {
+		"en": "Combination note",
+		"da": "Kodeseddel"
+	},
+	"ITEM_COMBINATION_NOTE_DESC": {
+		"en": "Four digits scribbled on a scrap of paper.",
+		"da": "Fire cifre kradset ned på en lap papir."
+	},
+	"ITEM_DUST_MASK": {
+		"en": "Dust mask",
+		"da": "Støvmaske"
+	},
+	"ITEM_DUST_MASK_DESC": {
+		"en": "Keeps the ash out of your throat.",
+		"da": "Holder asken ude af halsen."
+	},
+	"ITEM_GAS_MASK": {
+		"en": "Gas mask",
+		"da": "Gasmaske"
+	},
+	"ITEM_GAS_MASK_DESC": {
+		"en": "Rubber and glass. Hard to breathe in.",
+		"da": "Gummi og glas. Svær at ånde i."
+	},
+	"ITEM_GAS_MASK_FILTER": {
+		"en": "Gas mask filters",
+		"da": "Gasmaskefiltre"
+	},
+	"ITEM_GAS_MASK_FILTER_DESC": {
+		"en": "Screw-in filters.",
+		"da": "Filtre til at skrue i."
+	},
+	"ITEM_PROTECTIVE_GOGGLES": {
+		"en": "Protective goggles",
+		"da": "Beskyttelsesbriller"
+	},
+	"ITEM_PROTECTIVE_GOGGLES_DESC": {
+		"en": "Clear safety goggles.",
+		"da": "Klare sikkerhedsbriller."
+	},
+	"ITEM_EMPTY_BOTTLE": {
+		"en": "Water bottle",
+		"da": "Drikkedunk"
+	},
+	"ITEM_EMPTY_BOTTLE_DESC": {
+		"en": "An empty reusable bottle.",
+		"da": "En tom genbrugsflaske."
+	},
+	"ITEM_CANTEEN": {
+		"en": "Canteen",
+		"da": "Feltflaske"
+	},
+	"ITEM_CANTEEN_DESC": {
+		"en": "An empty army canteen.",
+		"da": "En tom feltflaske."
+	},
+	"ITEM_THERMOS": {
+		"en": "Thermos",
+		"da": "Termokande"
+	},
+	"ITEM_THERMOS_DESC": {
+		"en": "Keeps a drink warm for hours (empty).",
+		"da": "Holder en drik varm i timer (tom)."
+	},
+	"ITEM_FUEL_CAN": {
+		"en": "Fuel can",
+		"da": "Benzindunk"
+	},
+	"ITEM_FUEL_CAN_DESC": {
+		"en": "An empty jerrycan.",
+		"da": "En tom dunk."
+	},
+	"ITEM_SMALL_POUCH": {
+		"en": "Small pouch",
+		"da": "Lille pung"
+	},
+	"ITEM_SMALL_POUCH_DESC": {
+		"en": "A leather pouch.",
+		"da": "En læderpung."
+	},
+	"ITEM_CAN_OPENER": {
+		"en": "Can opener",
+		"da": "Dåseåbner"
+	},
+	"ITEM_CAN_OPENER_DESC": {
+		"en": "Small and important.",
+		"da": "Lille og vigtig."
+	},
+	"ITEM_FISHING_HOOK": {
+		"en": "Fishing hook",
+		"da": "Fiskekrog"
+	},
+	"ITEM_FISHING_HOOK_DESC": {
+		"en": "Hooks. The holes in the ice are far away.",
+		"da": "Kroge. Hullerne i isen er langt væk."
+	},
+	"ITEM_FISHING_LINE": {
+		"en": "Fishing line",
+		"da": "Fiskeline"
+	},
+	"ITEM_FISHING_LINE_DESC": {
+		"en": "A spool of line.",
+		"da": "En spole line."
+	},
+	"ITEM_NEEDLE": {
+		"en": "Needle",
+		"da": "Nål"
+	},
+	"ITEM_NEEDLE_DESC": {
+		"en": "A sewing needle.",
+		"da": "En synål."
+	},
+	"ITEM_THREAD": {
+		"en": "Thread",
+		"da": "Tråd"
+	},
+	"ITEM_THREAD_DESC": {
+		"en": "A spool of thread.",
+		"da": "En trådrulle."
+	},
+	"ITEM_WHISTLE": {
+		"en": "Whistle",
+		"da": "Fløjte"
+	},
+	"ITEM_WHISTLE_DESC": {
+		"en": "Loud. Better left in the pocket.",
+		"da": "Højlydt. Bedst i lommen."
+	},
+	"ITEM_THERMAL_BLANKET": {
+		"en": "Thermal blanket",
+		"da": "Varmetæppe"
+	},
+	"ITEM_THERMAL_BLANKET_DESC": {
+		"en": "A foil blanket. Wrap up (+warmth); reusable.",
+		"da": "Et folietæppe. Svøb dig (+varme); kan genbruges."
+	},
+	"ITEM_ICE_CLEATS": {
+		"en": "Ice cleats",
+		"da": "Isbrodder"
+	},
+	"ITEM_ICE_CLEATS_DESC": {
+		"en": "Spikes for your boots.",
+		"da": "Pigge til støvlerne."
+	},
+	"ITEM_PORTABLE_STOVE": {
+		"en": "Portable stove",
+		"da": "Spritkoger"
+	},
+	"ITEM_PORTABLE_STOVE_DESC": {
+		"en": "Burns stove fuel for warmth (+warmth, uses 1 stove fuel).",
+		"da": "Brænder brændsel for varme (bruger 1 brændsel)."
+	},
+	"ITEM_STOVE_FUEL": {
+		"en": "Stove fuel",
+		"da": "Brændsel til koger"
+	},
+	"ITEM_STOVE_FUEL_DESC": {
+		"en": "A small canister for the portable stove.",
+		"da": "En lille dåse til kogeren."
+	},
+	"ITEM_SNOW_CONTAINER": {
+		"en": "Snow-filled container",
+		"da": "Beholder med sne"
+	},
+	"ITEM_SNOW_CONTAINER_DESC": {
+		"en": "Melt it in your mouth: water, and cold.",
+		"da": "Smelt den i munden: vand, og kulde."
+	},
+	"ITEM_BOOKS": {
+		"en": "Books",
+		"da": "Bøger"
+	},
+	"ITEM_BOOKS_DESC": {
+		"en": "Something that belonged to somebody. No use now — or a trade, one day.",
+		"da": "Noget der tilhørte nogen. Ingen nytte nu — eller en byttehandel en dag."
+	},
+	"ITEM_PHOTOGRAPHS": {
+		"en": "Photographs",
+		"da": "Fotografier"
+	},
+	"ITEM_PHOTOGRAPHS_DESC": {
+		"en": "Something that belonged to somebody. No use now — or a trade, one day.",
+		"da": "Noget der tilhørte nogen. Ingen nytte nu — eller en byttehandel en dag."
+	},
+	"ITEM_OLD_NEWSPAPERS": {
+		"en": "Old newspapers",
+		"da": "Gamle aviser"
+	},
+	"ITEM_OLD_NEWSPAPERS_DESC": {
+		"en": "Something that belonged to somebody. No use now — or a trade, one day.",
+		"da": "Noget der tilhørte nogen. Ingen nytte nu — eller en byttehandel en dag."
+	},
+	"ITEM_CIGARETTES": {
+		"en": "Cigarette packs",
+		"da": "Cigaretpakker"
+	},
+	"ITEM_CIGARETTES_DESC": {
+		"en": "Something that belonged to somebody. No use now — or a trade, one day.",
+		"da": "Noget der tilhørte nogen. Ingen nytte nu — eller en byttehandel en dag."
+	},
+	"ITEM_PLAYING_CARDS": {
+		"en": "Playing cards",
+		"da": "Spillekort"
+	},
+	"ITEM_PLAYING_CARDS_DESC": {
+		"en": "Something that belonged to somebody. No use now — or a trade, one day.",
+		"da": "Noget der tilhørte nogen. Ingen nytte nu — eller en byttehandel en dag."
+	},
+	"ITEM_WATCH": {
+		"en": "Watches",
+		"da": "Ure"
+	},
+	"ITEM_WATCH_DESC": {
+		"en": "Something that belonged to somebody. No use now — or a trade, one day.",
+		"da": "Noget der tilhørte nogen. Ingen nytte nu — eller en byttehandel en dag."
+	},
+	"ITEM_JEWELLERY": {
+		"en": "Jewellery",
+		"da": "Smykker"
+	},
+	"ITEM_JEWELLERY_DESC": {
+		"en": "Something that belonged to somebody. No use now — or a trade, one day.",
+		"da": "Noget der tilhørte nogen. Ingen nytte nu — eller en byttehandel en dag."
+	},
+	"ITEM_TOYS": {
+		"en": "Toys",
+		"da": "Legetøj"
+	},
+	"ITEM_TOYS_DESC": {
+		"en": "Something that belonged to somebody. No use now — or a trade, one day.",
+		"da": "Noget der tilhørte nogen. Ingen nytte nu — eller en byttehandel en dag."
+	},
+	"ITEM_TOOTHBRUSH": {
+		"en": "Toothbrushes",
+		"da": "Tandbørster"
+	},
+	"ITEM_TOOTHBRUSH_DESC": {
+		"en": "Something that belonged to somebody. No use now — or a trade, one day.",
+		"da": "Noget der tilhørte nogen. Ingen nytte nu — eller en byttehandel en dag."
+	},
+	"ITEM_SOAP": {
+		"en": "Soap",
+		"da": "Sæbe"
+	},
+	"ITEM_SOAP_DESC": {
+		"en": "Something that belonged to somebody. No use now — or a trade, one day.",
+		"da": "Noget der tilhørte nogen. Ingen nytte nu — eller en byttehandel en dag."
+	},
+	"ITEM_WALLET": {
+		"en": "Wallets",
+		"da": "Punge"
+	},
+	"ITEM_WALLET_DESC": {
+		"en": "Something that belonged to somebody. No use now — or a trade, one day.",
+		"da": "Noget der tilhørte nogen. Ingen nytte nu — eller en byttehandel en dag."
+	},
+	"ITEM_COINS": {
+		"en": "Coins",
+		"da": "Mønter"
+	},
+	"ITEM_COINS_DESC": {
+		"en": "Something that belonged to somebody. No use now — or a trade, one day.",
+		"da": "Noget der tilhørte nogen. Ingen nytte nu — eller en byttehandel en dag."
+	},
+	"ITEM_PENS": {
+		"en": "Pens",
+		"da": "Kuglepenne"
+	},
+	"ITEM_PENS_DESC": {
+		"en": "Something that belonged to somebody. No use now — or a trade, one day.",
+		"da": "Noget der tilhørte nogen. Ingen nytte nu — eller en byttehandel en dag."
+	},
+	"ITEM_NOTEBOOK": {
+		"en": "Notebooks",
+		"da": "Notesbøger"
+	},
+	"ITEM_NOTEBOOK_DESC": {
+		"en": "Something that belonged to somebody. No use now — or a trade, one day.",
+		"da": "Noget der tilhørte nogen. Ingen nytte nu — eller en byttehandel en dag."
+	},
+	"ITEM_CANDLES": {
+		"en": "Candles",
+		"da": "Stearinlys"
+	},
+	"ITEM_CANDLES_DESC": {
+		"en": "Something that belonged to somebody. No use now — or a trade, one day.",
+		"da": "Noget der tilhørte nogen. Ingen nytte nu — eller en byttehandel en dag."
+	},
+	"ITEM_BROKEN_ELECTRONICS": {
+		"en": "Broken electronics",
+		"da": "Ødelagt elektronik"
+	},
+	"ITEM_BROKEN_ELECTRONICS_DESC": {
+		"en": "Something that belonged to somebody. No use now — or a trade, one day.",
+		"da": "Noget der tilhørte nogen. Ingen nytte nu — eller en byttehandel en dag."
+	},
+	"CAT_FOOD": {
+		"en": "Food",
+		"da": "Mad"
+	},
+	"CAT_DRINK": {
+		"en": "Drinks",
+		"da": "Drikke"
+	},
+	"CAT_MEDICAL": {
+		"en": "Medical",
+		"da": "Medicin"
+	},
+	"CAT_FIRE": {
+		"en": "Fire & warmth",
+		"da": "Ild & varme"
+	},
+	"CAT_CLOTHING": {
+		"en": "Clothing",
+		"da": "Tøj"
+	},
+	"CAT_WEAPON": {
+		"en": "Weapons",
+		"da": "Våben"
+	},
+	"CAT_AMMO": {
+		"en": "Ammunition",
+		"da": "Ammunition"
+	},
+	"CAT_TOOL": {
+		"en": "Tools",
+		"da": "Værktøj"
+	},
+	"CAT_MATERIAL": {
+		"en": "Materials",
+		"da": "Materialer"
+	},
+	"CAT_MECHANICAL": {
+		"en": "Mechanical parts",
+		"da": "Mekaniske dele"
+	},
+	"CAT_ELECTRONICS": {
+		"en": "Electronics",
+		"da": "Elektronik"
+	},
+	"CAT_FUEL": {
+		"en": "Fuel",
+		"da": "Brændstof"
+	},
+	"CAT_UTILITY": {
+		"en": "Utilities",
+		"da": "Udstyr"
+	},
+	"CAT_FROZEN": {
+		"en": "Frozen-world survival",
+		"da": "Overlevelse i kulden"
+	},
+	"CAT_JUNK": {
+		"en": "Household & junk",
+		"da": "Husgeråd & skrammel"
+	},
+	"CAT_PART": {
+		"en": "Parts",
+		"da": "Dele"
+	},
+	"CAT_ALL": {
+		"en": "All",
+		"da": "Alt"
+	},
+	"WARMED": {
+		"en": "Warmth +%d.",
+		"da": "Varme +%d."
+	},
+	"ACTION_ALREADY_WARM": {
+		"en": "You are already warm.",
+		"da": "Du er allerede varm."
+	},
+	"ACTION_NOTHING_TO_REPAIR": {
+		"en": "Nothing in your hand needs it.",
+		"da": "Intet i din hånd har brug for det."
+	},
+	"ACTION_WRONG_KIT": {
+		"en": "That kit is for another kind of weapon.",
+		"da": "Det sæt er til en anden slags våben."
+	},
+	"INV_FILTER": {
+		"en": "Show:",
+		"da": "Vis:"
+	},
+	"INV_WEIGHT": {
+		"en": "%s kg",
+		"da": "%s kg"
+	},
+	"INV_STACKS": {
+		"en": "(%s slots)",
+		"da": "(%s pladser)"
+	},
+	"INV_SLOT_HEAD": {
+		"en": "Head: %s",
+		"da": "Hoved: %s"
+	},
+	"INV_SLOT_FACE": {
+		"en": "Face: %s",
+		"da": "Ansigt: %s"
+	},
+	"INV_SLOT_HANDS": {
+		"en": "Hands: %s",
+		"da": "Hænder: %s"
+	},
+	"INV_SLOT_LEGS": {
+		"en": "Legs: %s",
+		"da": "Ben: %s"
+	},
+	"INV_SLOT_FEET": {
+		"en": "Feet: %s",
+		"da": "Fødder: %s"
+	},
+	"INV_SLOT_BACK": {
+		"en": "Back: %s",
+		"da": "Ryg: %s"
+	},
+	"INV_USE_WARM": {
+		"en": "Warm up",
+		"da": "Varm op"
+	},
+	"INV_USE_REPAIR_HAND": {
+		"en": "Maintain held weapon",
+		"da": "Vedligehold våben i hånden"
+	},
+	"INV_USE_FLASHLIGHT": {
+		"en": "Light",
+		"da": "Tænd"
+	},
+	"INV_TIP_BASICS": {
+		"en": "%s · %s kg · %s per slot",
+		"da": "%s · %s kg · %s pr. plads"
+	},
+	"INV_TIP_COND": {
+		"en": "Condition %s%%",
+		"da": "Stand %s%%"
+	},
+	"INV_TIP_FOOD": {
+		"en": "Nutrition %s",
+		"da": "Næring %s"
+	},
+	"INV_TIP_WATER": {
+		"en": "Hydration %s",
+		"da": "Væske %s"
+	},
+	"INV_TIP_HEAL": {
+		"en": "Heals %s",
+		"da": "Heler %s"
+	},
+	"INV_TIP_HEALTH": {
+		"en": "Health %s",
+		"da": "Helbred %s"
+	},
+	"INV_TIP_WARMTH": {
+		"en": "Warmth %s",
+		"da": "Varme %s"
+	},
+	"INV_TIP_CARRY": {
+		"en": "+%s carrying slots when worn",
+		"da": "+%s bærepladser når den bæres"
+	},
+	"INV_TIP_FIREARM": {
+		"en": "Damage %s · range %s · holds %s · uses %s",
+		"da": "Skade %s · rækkevidde %s · rummer %s · bruger %s"
+	},
+	"INV_TIP_LOADED": {
+		"en": "Loaded %s / %s",
+		"da": "Ladt %s / %s"
+	},
+	"INV_TIP_AMMO_FOR": {
+		"en": "Ammunition for: %s",
+		"da": "Ammunition til: %s"
+	},
+	"INV_TIP_REPAIRS": {
+		"en": "Restores a held %s (+%s%%)",
+		"da": "Genopretter et %s i hånden (+%s%%)"
+	},
+	"INV_TIP_FIXES_FIREARM": {
+		"en": "firearm",
+		"da": "skydevåben"
+	},
+	"INV_TIP_FIXES_MELEE": {
+		"en": "blade or tool",
+		"da": "blad eller værktøj"
+	},
+	"INV_TIP_BURNS": {
+		"en": "Burns for %s minutes once lit",
+		"da": "Brænder i %s minutter når den tændes"
+	},
+	"INV_TIP_USED_FOR": {
+		"en": "Used for: %s",
+		"da": "Bruges til: %s"
 	}
 }

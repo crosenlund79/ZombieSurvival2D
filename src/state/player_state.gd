@@ -21,6 +21,9 @@ var warmth := 100.0
 var vehicle_id := ""
 ## Iteration 011: flashlight switched on (replicated presentation state).
 var flashlight := false
+## Iteration 014: world tick a snapped glow stick / lit flare burns out (0 = a lamp
+## that stays on). Runtime only, like the light itself.
+var light_until := 0
 ## Iteration 012 (experimental): how this player views bunker levels, "side" or
 ## "top". Runtime only; the client reports it, the host uses it to snap feet to
 ## the floor in the side view. Both read the same bunker data.
@@ -52,6 +55,15 @@ func carrying(resource: String) -> int:
 func has_gear_item(item: String) -> bool:
 	for g in gear:
 		if str(g.get("item", "")) == item:
+			return true
+	return false
+
+
+## Iteration 014: carries a lamp (any gear item used as a light: flashlight,
+## headlamp, lantern, crank flashlight).
+func has_lamp() -> bool:
+	for g in gear:
+		if str(Items.info(str(g.get("item", ""))).get("use", "")) == "flashlight":
 			return true
 	return false
 

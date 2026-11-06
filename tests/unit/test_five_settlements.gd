@@ -385,3 +385,110 @@ func test_hideout_wakes_once_and_follows_you_outside() -> void:
 	var data := SaveCodec.encode(w)
 	var w2: WorldState = SaveCodec.decode(JSON.parse_string(JSON.stringify(data)))["world"]
 	check(bool(w2.region("stillwater.quiet_house").entity_state(hid).get("triggered", false)), "the hideout stays triggered after a save")
+
+
+# ---------------------------------------------------------------- E: item catalogue
+
+func test_every_item_has_the_full_catalogue_record() -> void:
+	var cats: Dictionary = Items.data().get("categories", {})
+	check(Items.ids().size() >= 170, "the complete catalogue (%d items)" % Items.ids().size())
+	var bad: Array = []
+	for id in Items.ids():
+		var info := Items.info(id)
+		for k in ["name_key", "desc_key", "cat", "weight", "stack_limit", "icon"]:
+			if not info.has(k):
+				bad.append("%s lacks %s" % [id, k])
+		if not cats.has(str(info.get("cat", ""))):
+			bad.append(id + ": unknown category")
+		if not AssetCatalog.has(Items.icon_id(id)):
+			bad.append(id + ": no icon asset")
+		if TranslationServer.translate(Items.name_key(id)) == Items.name_key(id):
+			bad.append(id + ": no name text")
+		if info.has("slot") and str(info["slot"]) != "" and not (str(info["slot"]) in InventoryPanel.SLOTS):
+			bad.append(id + ": unknown slot")
+		var fa: Dictionary = info.get("firearm", {})
+		if not fa.is_empty() and not Items.exists(str(fa.get("ammo", ""))):
+			bad.append(id + ": unknown ammo")
+		if str(info.get("slot", "")) == "hand" and not AssetCatalog.has("item." + id):
+			bad.append(id + ": no held art")
+	eq(bad, [], "every item: id, name, description, category, weight, stack limit, icon")
+
+
+func test_stack_limits_decide_slots_and_a_backpack_adds_room() -> void:
+	var w := WorldState.create_new("w_e1", 501)
+	var p := _player(w, PID, "homestead", Vector2(0, 0))
+	eq(Items.slots_of("ammo_pistol", 30), 1, "30 pistol rounds share one slot")
+	eq(Items.slots_of("ammo_pistol", 31), 2, "the 31st needs another")
+	eq(Items.slots_of("wood", 3), 3, "firewood stays one per slot")
+	p.carried = {"ammo_pistol": 25}
+	eq(Inv.slots_used(p), 1, "a part stack is one slot")
+	eq(Inv.room_for(p, "ammo_pistol"), 5 + (Items.carry_slots() - 1) * 30, "room = the rest of the stack + whole stacks")
+	var base := Inv.capacity(p)
+	var bag := Inv.new_gear(w, "backpack")
+	p.gear.append(bag)
+	check(Inv.request(w, PID, "equip", str(bag["uid"]))["ok"], "the backpack is worn")
+	eq(Inv.capacity(p), base + 10, "a worn backpack adds 10 slots")
+	p.carried = {"nails": Items.carry_slots() * 30}
+	check(Inv.free_slots(p) > 0, "so a full pocket still has room")
+	var box := {"items": {"nails": 40}, "gear": []}
+	var before: int = p.carrying("nails") + 40
+	Inv.transfer(p, box, false, "nails", 10)
+	eq(p.carrying("nails") + Items.amount(box["items"], "nails"), before, "nothing lost or duplicated")
+
+
+func test_worn_clothes_add_up_to_insulation() -> void:
+	var w := WorldState.create_new("w_e2", 502)
+	var p := _player(w, PID, "homestead", Vector2.ZERO)
+	var coat := Inv.new_gear(w, "winter_coat")
+	p.gear.append(coat)
+	Inv.request(w, PID, "equip", str(coat["uid"]))
+	var coat_only := SurvivalSim.insulation(p)
+	for it in ["hat", "insulated_gloves", "boots", "thermal_underwear", "scarf"]:
+		var g := Inv.new_gear(w, it)
+		p.gear.append(g)
+		check(Inv.request(w, PID, "equip", str(g["uid"]))["ok"], "wear " + it)
+	check(SurvivalSim.insulation(p) > coat_only, "a full outfit keeps out more cold than the coat alone")
+	check(SurvivalSim.insulation(p) <= 0.85, "capped")
+
+
+func test_new_use_effects_warm_repair_and_light() -> void:
+	var w := WorldState.create_new("w_e3", 503)
+	var p := _player(w, PID, "homestead", Vector2.ZERO)
+	p.warmth = 40.0
+	p.carried = {"hand_warmer": 2}
+	check(Inv.request(w, PID, "use", "hand_warmer")["ok"], "a heat pack")
+	check(p.warmth > 60.0 and p.carrying("hand_warmer") == 1, "warms and is used up")
+	var blanket := Inv.new_gear(w, "thermal_blanket")
+	p.gear.append(blanket)
+	p.warmth = 40.0
+	check(Inv.request(w, PID, "use", str(blanket["uid"]))["ok"] and p.find_gear(str(blanket["uid"])) >= 0, "the blanket is kept")
+	# maintenance kits restore the held weapon of the right kind
+	var gun := Inv.new_gear(w, "handgun")
+	gun["cond"] = 100.0
+	p.gear.append(gun)
+	Inv.request(w, PID, "equip", str(gun["uid"]))
+	p.carried["gun_oil"] = 1
+	p.carried["sharpening_stone"] = 1
+	check(not Inv.request(w, PID, "use", "sharpening_stone")["ok"], "a whetstone does nothing for a gun")
+	check(Inv.request(w, PID, "use", "gun_oil")["ok"], "gun oil")
+	check(float(gun["cond"]) > 100.0, "restores the gun")
+	# glow sticks: snapped (used up), burn out on their own
+	p.carried["glow_sticks"] = 2
+	check(Inv.request(w, PID, "use", "glow_sticks")["ok"] and p.flashlight, "a glow stick lights")
+	eq(p.carrying("glow_sticks"), 1, "one used")
+	w.tick = p.light_until + 1
+	SurvivalSim.step(w, 1)
+	check(not p.flashlight, "and burns out")
+	# eating spoiled food hurts
+	p.carried["spoiled_food"] = 1
+	p.health = 80.0
+	Inv.request(w, PID, "use", "spoiled_food")
+	check(p.health < 80.0, "spoiled food makes you ill")
+
+
+func test_tooltips_describe_items() -> void:
+	var t := InventoryPanel.describe("handgun", {"loaded": 3, "cond": 200.0})
+	check(t.find("3 /") >= 0 or t.find("3 / 8") >= 0, "the tooltip shows the rounds loaded")
+	check(InventoryPanel.describe("ammo_pistol").find(TranslationServer.translate("ITEM_HANDGUN")) >= 0, "ammunition names its gun")
+	check("BUILD_BARRICADE" in InventoryPanel.crafting_uses("wood"), "materials know what they build")
+	check(InventoryPanel.describe("wood").find(TranslationServer.translate("INV_TIP_USED_FOR").split("%")[0]) >= 0, "and the tooltip says so")

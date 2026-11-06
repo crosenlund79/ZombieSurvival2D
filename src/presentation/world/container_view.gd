@@ -48,7 +48,7 @@ func _refresh(cause: String) -> void:
 		interact.enabled = true
 		interact.prompt_args = []
 		if searched:
-			var n := Items.total(st.get("items", {})) + (st.get("gear", []) as Array).size()
+			var n := Inv.box_used(st)
 			interact.prompt_key = "PROMPT_CONTAINER_CONTENTS" if n > 0 else "PROMPT_CONTAINER_EMPTY"
 			interact.prompt_args = [n]
 		elif by == me:
@@ -106,7 +106,7 @@ func panel_data() -> Dictionary:
 	var items: Dictionary = st.get("items", {})
 	var gear: Array = st.get("gear", [])
 	var free := Inv.free_slots(me) if me != null else 0
-	lines.append(UITheme.fmt("PANEL_CARRY", [Items.carry_slots() - free, Items.carry_slots()]))
+	lines.append(UITheme.fmt("PANEL_CARRY", [Inv.slots_used(me) if me != null else 0, Inv.capacity(me) if me != null else Items.carry_slots()]))
 	for item in items:
 		var nm := TranslationServer.translate(Items.name_key(str(item)))
 		lines.append(UITheme.fmt("CONTAINER_ITEM_LINE", [nm, int(items[item])]))

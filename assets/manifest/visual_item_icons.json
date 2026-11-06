@@ -1,0 +1,3856 @@
+{
+	"kind": "visual",
+	"category": "item_icons",
+	"assets": [
+		{
+			"id": "icon.canned_food",
+			"name": "Canned food (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_canned_food.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/canned_food.png."
+		},
+		{
+			"id": "icon.canned_soup",
+			"name": "Canned soup (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_canned_soup.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/canned_soup.png."
+		},
+		{
+			"id": "icon.canned_meat",
+			"name": "Canned meat (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_canned_meat.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/canned_meat.png."
+		},
+		{
+			"id": "icon.crackers",
+			"name": "Crackers (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_crackers.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/crackers.png."
+		},
+		{
+			"id": "icon.chocolate",
+			"name": "Chocolate (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_chocolate.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/chocolate.png."
+		},
+		{
+			"id": "icon.energy_bar",
+			"name": "Energy bar (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_energy_bar.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/energy_bar.png."
+		},
+		{
+			"id": "icon.jerky",
+			"name": "Jerky (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_jerky.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/jerky.png."
+		},
+		{
+			"id": "icon.fresh_meat",
+			"name": "Fresh meat (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_fresh_meat.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/fresh_meat.png."
+		},
+		{
+			"id": "icon.vegetables",
+			"name": "Vegetables (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_vegetables.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/vegetables.png."
+		},
+		{
+			"id": "icon.spoiled_food",
+			"name": "Spoiled food (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_spoiled_food.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/spoiled_food.png."
+		},
+		{
+			"id": "icon.frozen_food",
+			"name": "Frozen food (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_frozen_food.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/frozen_food.png."
+		},
+		{
+			"id": "icon.potato",
+			"name": "Potato (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_potato.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/potato.png."
+		},
+		{
+			"id": "icon.water_bottle",
+			"name": "Water bottle (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_water_bottle.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/water_bottle.png."
+		},
+		{
+			"id": "icon.water_dirty",
+			"name": "Water dirty (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_water_dirty.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/water_dirty.png."
+		},
+		{
+			"id": "icon.water_clean",
+			"name": "Water clean (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_water_clean.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/water_clean.png."
+		},
+		{
+			"id": "icon.soda",
+			"name": "Soda (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_soda.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/soda.png."
+		},
+		{
+			"id": "icon.energy_drink",
+			"name": "Energy drink (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_energy_drink.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/energy_drink.png."
+		},
+		{
+			"id": "icon.coffee",
+			"name": "Coffee (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_coffee.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/coffee.png."
+		},
+		{
+			"id": "icon.alcohol",
+			"name": "Alcohol (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_alcohol.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/alcohol.png."
+		},
+		{
+			"id": "icon.bandage",
+			"name": "Bandage (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_bandage.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/bandage.png."
+		},
+		{
+			"id": "icon.rags",
+			"name": "Rags (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_rags.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/rags.png."
+		},
+		{
+			"id": "icon.first_aid_kit",
+			"name": "First aid kit (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_first_aid_kit.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/first_aid_kit.png."
+		},
+		{
+			"id": "icon.disinfectant",
+			"name": "Disinfectant (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_disinfectant.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/disinfectant.png."
+		},
+		{
+			"id": "icon.painkillers",
+			"name": "Painkillers (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_painkillers.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/painkillers.png."
+		},
+		{
+			"id": "icon.antibiotics",
+			"name": "Antibiotics (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_antibiotics.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/antibiotics.png."
+		},
+		{
+			"id": "icon.vitamins",
+			"name": "Vitamins (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_vitamins.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/vitamins.png."
+		},
+		{
+			"id": "icon.splint",
+			"name": "Splint (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_splint.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/splint.png."
+		},
+		{
+			"id": "icon.medical_syringe",
+			"name": "Medical syringe (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_medical_syringe.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/medical_syringe.png."
+		},
+		{
+			"id": "icon.matches",
+			"name": "Matches (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_matches.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/matches.png."
+		},
+		{
+			"id": "icon.lighter",
+			"name": "Lighter (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_lighter.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/lighter.png."
+		},
+		{
+			"id": "icon.firestarter",
+			"name": "Firestarter (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_firestarter.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/firestarter.png."
+		},
+		{
+			"id": "icon.tinder",
+			"name": "Tinder (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_tinder.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/tinder.png."
+		},
+		{
+			"id": "icon.charcoal",
+			"name": "Charcoal (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_charcoal.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/charcoal.png."
+		},
+		{
+			"id": "icon.wood",
+			"name": "Wood (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_wood.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/wood.png."
+		},
+		{
+			"id": "icon.hand_warmer",
+			"name": "Hand warmer (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_hand_warmer.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/hand_warmer.png."
+		},
+		{
+			"id": "icon.padded_jacket",
+			"name": "Padded jacket (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_padded_jacket.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/padded_jacket.png."
+		},
+		{
+			"id": "icon.winter_coat",
+			"name": "Winter coat (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_winter_coat.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/winter_coat.png."
+		},
+		{
+			"id": "icon.gloves",
+			"name": "Gloves (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_gloves.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/gloves.png."
+		},
+		{
+			"id": "icon.hat",
+			"name": "Hat (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_hat.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/hat.png."
+		},
+		{
+			"id": "icon.scarf",
+			"name": "Scarf (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_scarf.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/scarf.png."
+		},
+		{
+			"id": "icon.boots",
+			"name": "Boots (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_boots.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/boots.png."
+		},
+		{
+			"id": "icon.socks",
+			"name": "Socks (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_socks.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/socks.png."
+		},
+		{
+			"id": "icon.wool_socks",
+			"name": "Wool socks (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_wool_socks.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/wool_socks.png."
+		},
+		{
+			"id": "icon.trousers",
+			"name": "Trousers (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_trousers.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/trousers.png."
+		},
+		{
+			"id": "icon.thermal_underwear",
+			"name": "Thermal underwear (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_thermal_underwear.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/thermal_underwear.png."
+		},
+		{
+			"id": "icon.backpack",
+			"name": "Backpack (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_backpack.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/backpack.png."
+		},
+		{
+			"id": "icon.insulated_gloves",
+			"name": "Insulated gloves (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_insulated_gloves.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/insulated_gloves.png."
+		},
+		{
+			"id": "icon.snow_goggles",
+			"name": "Snow goggles (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_snow_goggles.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/snow_goggles.png."
+		},
+		{
+			"id": "icon.kitchen_knife",
+			"name": "Kitchen knife (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_kitchen_knife.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/kitchen_knife.png."
+		},
+		{
+			"id": "icon.hunting_knife",
+			"name": "Hunting knife (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_hunting_knife.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/hunting_knife.png."
+		},
+		{
+			"id": "icon.baseball_bat",
+			"name": "Baseball bat (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_baseball_bat.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/baseball_bat.png."
+		},
+		{
+			"id": "icon.crowbar",
+			"name": "Crowbar (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_crowbar.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/crowbar.png."
+		},
+		{
+			"id": "icon.hammer",
+			"name": "Hammer (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_hammer.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/hammer.png."
+		},
+		{
+			"id": "icon.fire_axe",
+			"name": "Fire axe (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_fire_axe.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/fire_axe.png."
+		},
+		{
+			"id": "icon.shovel",
+			"name": "Shovel (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_shovel.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/shovel.png."
+		},
+		{
+			"id": "icon.pickaxe",
+			"name": "Pickaxe (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_pickaxe.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/pickaxe.png."
+		},
+		{
+			"id": "icon.sharpened_stick",
+			"name": "Sharpened stick (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_sharpened_stick.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/sharpened_stick.png."
+		},
+		{
+			"id": "icon.metal_pipe",
+			"name": "Metal pipe (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_metal_pipe.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/metal_pipe.png."
+		},
+		{
+			"id": "icon.ice_pick",
+			"name": "Ice pick (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_ice_pick.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/ice_pick.png."
+		},
+		{
+			"id": "icon.club",
+			"name": "Club (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_club.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/club.png."
+		},
+		{
+			"id": "icon.machete",
+			"name": "Machete (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_machete.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/machete.png."
+		},
+		{
+			"id": "icon.hatchet",
+			"name": "Hatchet (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_hatchet.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/hatchet.png."
+		},
+		{
+			"id": "icon.felling_axe",
+			"name": "Felling axe (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_felling_axe.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/felling_axe.png."
+		},
+		{
+			"id": "icon.handgun",
+			"name": "Handgun (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_handgun.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/handgun.png."
+		},
+		{
+			"id": "icon.revolver",
+			"name": "Revolver (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_revolver.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/revolver.png."
+		},
+		{
+			"id": "icon.shotgun",
+			"name": "Shotgun (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_shotgun.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/shotgun.png."
+		},
+		{
+			"id": "icon.hunting_rifle",
+			"name": "Hunting rifle (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_hunting_rifle.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/hunting_rifle.png."
+		},
+		{
+			"id": "icon.military_rifle",
+			"name": "Military rifle (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_military_rifle.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/military_rifle.png."
+		},
+		{
+			"id": "icon.ammo_pistol",
+			"name": "Ammo pistol (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_ammo_pistol.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/ammo_pistol.png."
+		},
+		{
+			"id": "icon.ammo_revolver",
+			"name": "Ammo revolver (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_ammo_revolver.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/ammo_revolver.png."
+		},
+		{
+			"id": "icon.shotgun_shells",
+			"name": "Shotgun shells (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_shotgun_shells.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/shotgun_shells.png."
+		},
+		{
+			"id": "icon.rifle_rounds",
+			"name": "Rifle rounds (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_rifle_rounds.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/rifle_rounds.png."
+		},
+		{
+			"id": "icon.loaded_magazine",
+			"name": "Loaded magazine (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_loaded_magazine.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/loaded_magazine.png."
+		},
+		{
+			"id": "icon.gun_cleaning_kit",
+			"name": "Gun cleaning kit (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_gun_cleaning_kit.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/gun_cleaning_kit.png."
+		},
+		{
+			"id": "icon.gun_oil",
+			"name": "Gun oil (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_gun_oil.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/gun_oil.png."
+		},
+		{
+			"id": "icon.weapon_parts",
+			"name": "Weapon parts (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_weapon_parts.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/weapon_parts.png."
+		},
+		{
+			"id": "icon.sharpening_stone",
+			"name": "Sharpening stone (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_sharpening_stone.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/sharpening_stone.png."
+		},
+		{
+			"id": "icon.screwdriver",
+			"name": "Screwdriver (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_screwdriver.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/screwdriver.png."
+		},
+		{
+			"id": "icon.wrench",
+			"name": "Wrench (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_wrench.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/wrench.png."
+		},
+		{
+			"id": "icon.pliers",
+			"name": "Pliers (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_pliers.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/pliers.png."
+		},
+		{
+			"id": "icon.handsaw",
+			"name": "Handsaw (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_handsaw.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/handsaw.png."
+		},
+		{
+			"id": "icon.hacksaw",
+			"name": "Hacksaw (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_hacksaw.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/hacksaw.png."
+		},
+		{
+			"id": "icon.wire_cutters",
+			"name": "Wire cutters (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_wire_cutters.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/wire_cutters.png."
+		},
+		{
+			"id": "icon.multitool",
+			"name": "Multitool (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_multitool.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/multitool.png."
+		},
+		{
+			"id": "icon.lockpick",
+			"name": "Lockpick (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_lockpick.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/lockpick.png."
+		},
+		{
+			"id": "icon.bolt_cutters",
+			"name": "Bolt cutters (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_bolt_cutters.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/bolt_cutters.png."
+		},
+		{
+			"id": "icon.sewing_kit",
+			"name": "Sewing kit (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_sewing_kit.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/sewing_kit.png."
+		},
+		{
+			"id": "icon.planks",
+			"name": "Planks (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_planks.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/planks.png."
+		},
+		{
+			"id": "icon.nails",
+			"name": "Nails (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_nails.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/nails.png."
+		},
+		{
+			"id": "icon.screws",
+			"name": "Screws (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_screws.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/screws.png."
+		},
+		{
+			"id": "icon.scrap_metal",
+			"name": "Scrap metal (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_scrap_metal.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/scrap_metal.png."
+		},
+		{
+			"id": "icon.sheet_metal",
+			"name": "Sheet metal (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_sheet_metal.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/sheet_metal.png."
+		},
+		{
+			"id": "icon.rope",
+			"name": "Rope (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_rope.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/rope.png."
+		},
+		{
+			"id": "icon.wire",
+			"name": "Wire (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_wire.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/wire.png."
+		},
+		{
+			"id": "icon.duct_tape",
+			"name": "Duct tape (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_duct_tape.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/duct_tape.png."
+		},
+		{
+			"id": "icon.glue",
+			"name": "Glue (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_glue.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/glue.png."
+		},
+		{
+			"id": "icon.cloth",
+			"name": "Cloth (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_cloth.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/cloth.png."
+		},
+		{
+			"id": "icon.leather",
+			"name": "Leather (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_leather.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/leather.png."
+		},
+		{
+			"id": "icon.plastic",
+			"name": "Plastic (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_plastic.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/plastic.png."
+		},
+		{
+			"id": "icon.rubber",
+			"name": "Rubber (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_rubber.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/rubber.png."
+		},
+		{
+			"id": "icon.glass_bottles",
+			"name": "Glass bottles (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_glass_bottles.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/glass_bottles.png."
+		},
+		{
+			"id": "icon.cement",
+			"name": "Cement (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_cement.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/cement.png."
+		},
+		{
+			"id": "icon.timber_frame",
+			"name": "Timber frame (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_timber_frame.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/timber_frame.png."
+		},
+		{
+			"id": "icon.spike_kit",
+			"name": "Spike kit (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_spike_kit.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/spike_kit.png."
+		},
+		{
+			"id": "icon.grow_light",
+			"name": "Grow light (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_grow_light.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/grow_light.png."
+		},
+		{
+			"id": "icon.stovepipe",
+			"name": "Stovepipe (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_stovepipe.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/stovepipe.png."
+		},
+		{
+			"id": "icon.carburetor",
+			"name": "Carburetor (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_carburetor.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/carburetor.png."
+		},
+		{
+			"id": "icon.workshop_manual",
+			"name": "Workshop manual (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_workshop_manual.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/workshop_manual.png."
+		},
+		{
+			"id": "icon.gears",
+			"name": "Gears (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_gears.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/gears.png."
+		},
+		{
+			"id": "icon.springs",
+			"name": "Springs (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_springs.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/springs.png."
+		},
+		{
+			"id": "icon.bolts",
+			"name": "Bolts (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_bolts.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/bolts.png."
+		},
+		{
+			"id": "icon.pipes",
+			"name": "Pipes (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_pipes.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/pipes.png."
+		},
+		{
+			"id": "icon.bearings",
+			"name": "Bearings (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_bearings.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/bearings.png."
+		},
+		{
+			"id": "icon.engine_parts",
+			"name": "Engine parts (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_engine_parts.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/engine_parts.png."
+		},
+		{
+			"id": "icon.batteries",
+			"name": "Batteries (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_batteries.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/batteries.png."
+		},
+		{
+			"id": "icon.cables",
+			"name": "Cables (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_cables.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/cables.png."
+		},
+		{
+			"id": "icon.circuit_boards",
+			"name": "Circuit boards (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_circuit_boards.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/circuit_boards.png."
+		},
+		{
+			"id": "icon.electrical_parts",
+			"name": "Electrical parts (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_electrical_parts.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/electrical_parts.png."
+		},
+		{
+			"id": "icon.fuses",
+			"name": "Fuses (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_fuses.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/fuses.png."
+		},
+		{
+			"id": "icon.fuel",
+			"name": "Fuel (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_fuel.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/fuel.png."
+		},
+		{
+			"id": "icon.diesel",
+			"name": "Diesel (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_diesel.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/diesel.png."
+		},
+		{
+			"id": "icon.propane",
+			"name": "Propane (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_propane.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/propane.png."
+		},
+		{
+			"id": "icon.kerosene",
+			"name": "Kerosene (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_kerosene.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/kerosene.png."
+		},
+		{
+			"id": "icon.motor_oil",
+			"name": "Motor oil (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_motor_oil.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/motor_oil.png."
+		},
+		{
+			"id": "icon.flashlight",
+			"name": "Flashlight (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_flashlight.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/flashlight.png."
+		},
+		{
+			"id": "icon.headlamp",
+			"name": "Headlamp (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_headlamp.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/headlamp.png."
+		},
+		{
+			"id": "icon.lantern",
+			"name": "Lantern (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_lantern.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/lantern.png."
+		},
+		{
+			"id": "icon.hand_crank_flashlight",
+			"name": "Hand crank flashlight (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_hand_crank_flashlight.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/hand_crank_flashlight.png."
+		},
+		{
+			"id": "icon.glow_sticks",
+			"name": "Glow sticks (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_glow_sticks.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/glow_sticks.png."
+		},
+		{
+			"id": "icon.flare",
+			"name": "Flare (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_flare.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/flare.png."
+		},
+		{
+			"id": "icon.compass",
+			"name": "Compass (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_compass.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/compass.png."
+		},
+		{
+			"id": "icon.field_map",
+			"name": "Field map (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_field_map.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/field_map.png."
+		},
+		{
+			"id": "icon.binoculars",
+			"name": "Binoculars (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_binoculars.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/binoculars.png."
+		},
+		{
+			"id": "icon.handheld_radio",
+			"name": "Handheld radio (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_handheld_radio.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/handheld_radio.png."
+		},
+		{
+			"id": "icon.walkie_talkie",
+			"name": "Walkie talkie (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_walkie_talkie.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/walkie_talkie.png."
+		},
+		{
+			"id": "icon.padlock",
+			"name": "Padlock (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_padlock.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/padlock.png."
+		},
+		{
+			"id": "icon.keys",
+			"name": "Keys (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_keys.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/keys.png."
+		},
+		{
+			"id": "icon.keycard",
+			"name": "Keycard (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_keycard.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/keycard.png."
+		},
+		{
+			"id": "icon.combination_note",
+			"name": "Combination note (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_combination_note.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/combination_note.png."
+		},
+		{
+			"id": "icon.dust_mask",
+			"name": "Dust mask (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_dust_mask.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/dust_mask.png."
+		},
+		{
+			"id": "icon.gas_mask",
+			"name": "Gas mask (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_gas_mask.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/gas_mask.png."
+		},
+		{
+			"id": "icon.gas_mask_filter",
+			"name": "Gas mask filter (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_gas_mask_filter.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/gas_mask_filter.png."
+		},
+		{
+			"id": "icon.protective_goggles",
+			"name": "Protective goggles (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_protective_goggles.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/protective_goggles.png."
+		},
+		{
+			"id": "icon.empty_bottle",
+			"name": "Empty bottle (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_empty_bottle.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/empty_bottle.png."
+		},
+		{
+			"id": "icon.canteen",
+			"name": "Canteen (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_canteen.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/canteen.png."
+		},
+		{
+			"id": "icon.thermos",
+			"name": "Thermos (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_thermos.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/thermos.png."
+		},
+		{
+			"id": "icon.fuel_can",
+			"name": "Fuel can (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_fuel_can.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/fuel_can.png."
+		},
+		{
+			"id": "icon.small_pouch",
+			"name": "Small pouch (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_small_pouch.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/small_pouch.png."
+		},
+		{
+			"id": "icon.can_opener",
+			"name": "Can opener (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_can_opener.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/can_opener.png."
+		},
+		{
+			"id": "icon.fishing_hook",
+			"name": "Fishing hook (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_fishing_hook.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/fishing_hook.png."
+		},
+		{
+			"id": "icon.fishing_line",
+			"name": "Fishing line (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_fishing_line.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/fishing_line.png."
+		},
+		{
+			"id": "icon.needle",
+			"name": "Needle (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_needle.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/needle.png."
+		},
+		{
+			"id": "icon.thread",
+			"name": "Thread (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_thread.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/thread.png."
+		},
+		{
+			"id": "icon.whistle",
+			"name": "Whistle (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_whistle.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/whistle.png."
+		},
+		{
+			"id": "icon.thermal_blanket",
+			"name": "Thermal blanket (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_thermal_blanket.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/thermal_blanket.png."
+		},
+		{
+			"id": "icon.ice_cleats",
+			"name": "Ice cleats (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_ice_cleats.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/ice_cleats.png."
+		},
+		{
+			"id": "icon.portable_stove",
+			"name": "Portable stove (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_portable_stove.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/portable_stove.png."
+		},
+		{
+			"id": "icon.stove_fuel",
+			"name": "Stove fuel (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_stove_fuel.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/stove_fuel.png."
+		},
+		{
+			"id": "icon.snow_container",
+			"name": "Snow container (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_snow_container.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/snow_container.png."
+		},
+		{
+			"id": "icon.books",
+			"name": "Books (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_books.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/books.png."
+		},
+		{
+			"id": "icon.photographs",
+			"name": "Photographs (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_photographs.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/photographs.png."
+		},
+		{
+			"id": "icon.old_newspapers",
+			"name": "Old newspapers (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_old_newspapers.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/old_newspapers.png."
+		},
+		{
+			"id": "icon.cigarettes",
+			"name": "Cigarettes (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_cigarettes.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/cigarettes.png."
+		},
+		{
+			"id": "icon.playing_cards",
+			"name": "Playing cards (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_playing_cards.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/playing_cards.png."
+		},
+		{
+			"id": "icon.watch",
+			"name": "Watch (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_watch.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/watch.png."
+		},
+		{
+			"id": "icon.jewellery",
+			"name": "Jewellery (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_jewellery.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/jewellery.png."
+		},
+		{
+			"id": "icon.toys",
+			"name": "Toys (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_toys.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/toys.png."
+		},
+		{
+			"id": "icon.toothbrush",
+			"name": "Toothbrush (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_toothbrush.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/toothbrush.png."
+		},
+		{
+			"id": "icon.soap",
+			"name": "Soap (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_soap.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/soap.png."
+		},
+		{
+			"id": "icon.wallet",
+			"name": "Wallet (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_wallet.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/wallet.png."
+		},
+		{
+			"id": "icon.coins",
+			"name": "Coins (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_coins.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/coins.png."
+		},
+		{
+			"id": "icon.pens",
+			"name": "Pens (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_pens.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/pens.png."
+		},
+		{
+			"id": "icon.notebook",
+			"name": "Notebook (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_notebook.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/notebook.png."
+		},
+		{
+			"id": "icon.candles",
+			"name": "Candles (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_candles.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/candles.png."
+		},
+		{
+			"id": "icon.broken_electronics",
+			"name": "Broken electronics (inventory icon)",
+			"template": "res://assets/templates/ui/icons/template_broken_electronics.png",
+			"display_size": [
+				32,
+				32
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_item_icons.py) - replace via assets/overrides/ui/icons/broken_electronics.png."
+		}
+	]
+}

@@ -82,7 +82,7 @@ static func object_action(world: WorldState, p: PlayerState, region: RegionState
 				return WorldActions._fail("ACTION_NOTHING_THERE")
 			var got := 0
 			for item in items.keys():
-				var n := mini(int(items[item]), Inv.free_slots(p))
+				var n := mini(int(items[item]), Inv.room_for(p, str(item)))
 				if n > 0:
 					p.carried[item] = p.carrying(item) + n
 					items[item] = int(items[item]) - n

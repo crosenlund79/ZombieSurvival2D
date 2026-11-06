@@ -3,7 +3,8 @@ extends RefCounted
 ## Item catalogue (res://content/items.json): stable item ids and display name
 ## keys. Quantities live in plain dictionaries {item_id: amount}: the
 ## player's `carried` and each bunker's shared `resources` (its storage).
-## Carrying capacity is simple: every unit takes one slot.
+## Carrying capacity counts slots: a slot holds up to an item's "stack_limit"
+## units (1 for most bulky things, e.g. 30 pistol rounds or 10 matches share one).
 
 const PATH := "res://content/items.json"
 static var _data: Dictionary = {}
@@ -32,6 +33,7 @@ static func carry_slots() -> int:
 	return int(data().get("carry_slots", 30))
 
 
+## Units in a bag (all items together).
 static func total(bag: Dictionary) -> int:
 	var n := 0
 	for k in bag:
@@ -39,8 +41,41 @@ static func total(bag: Dictionary) -> int:
 	return n
 
 
+static func stack_limit(item: String) -> int:
+	return maxi(1, int(info(item).get("stack_limit", 1)))
+
+
+## Slots `n` units of `item` take.
+static func slots_of(item: String, n: int) -> int:
+	if n <= 0:
+		return 0
+	var lim := stack_limit(item)
+	return int((n + lim - 1) / lim)
+
+
+## Slots a bag of stacks takes.
+static func slots(bag: Dictionary) -> int:
+	var n := 0
+	for k in bag:
+		n += slots_of(str(k), int(bag[k]))
+	return n
+
+
 static func free_slots(bag: Dictionary) -> int:
-	return maxi(0, carry_slots() - total(bag))
+	return maxi(0, carry_slots() - slots(bag))
+
+
+## Units of `item` that still fit in `bag` with `free` empty slots left
+## (the room in its last part-filled stack plus whole new stacks).
+static func room_for(bag: Dictionary, item: String, free: int) -> int:
+	var lim := stack_limit(item)
+	var have := amount(bag, item)
+	var partial := (lim - have % lim) % lim
+	return partial + maxi(0, free) * lim
+
+
+static func weight(item: String) -> float:
+	return float(info(item).get("weight", 0.0))
 
 
 static func amount(bag: Dictionary, item: String) -> int:
@@ -53,7 +88,7 @@ static func amount(bag: Dictionary, item: String) -> int:
 static func move(from: Dictionary, to: Dictionary, item: String, qty: int, to_limit: int = -1) -> int:
 	var n := mini(qty, amount(from, item))
 	if to_limit >= 0:
-		n = mini(n, maxi(0, to_limit - total(to)))
+		n = mini(n, room_for(to, item, to_limit - slots(to)))
 	if n <= 0:
 		return 0
 	from[item] = amount(from, item) - n
@@ -65,6 +100,14 @@ static func move(from: Dictionary, to: Dictionary, item: String, qty: int, to_li
 
 static func info(item: String) -> Dictionary:
 	return data().get("items", {}).get(item, {})
+
+
+static func category(item: String) -> String:
+	return str(info(item).get("cat", "misc"))
+
+
+static func icon_id(item: String) -> String:
+	return str(info(item).get("icon", "icon." + item))
 
 
 static func is_stack(item: String) -> bool:

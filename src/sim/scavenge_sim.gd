@@ -176,7 +176,7 @@ static func take(world: WorldState, p: PlayerState, region: RegionState, eid: St
 	else:
 		moved = Inv.transfer(p, box, false, what, 0)
 	if moved <= 0:
-		var left := Items.total(box["items"]) + (box["gear"] as Array).size()
+		var left := Inv.box_used(box)
 		return WorldActions._fail("ACTION_CARRY_FULL" if left > 0 else "ACTION_NOTHING_THERE", [Items.carry_slots()])
 	region.set_fields(eid, {"items": box["items"], "gear": box["gear"]})
 	var res := WorldActions._changed(region, eid, "taken")
