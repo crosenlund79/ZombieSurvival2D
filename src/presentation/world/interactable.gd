@@ -59,4 +59,41 @@ func activate() -> void:
 func set_focused(value: bool) -> void:
 	if focused != value:
 		focused = value
+		_highlight(value)
 		focus_changed.emit(value)
+
+
+const HIGHLIGHT_SHADER := preload("res://src/presentation/world/highlight.gdshader")
+static var _highlight_material: ShaderMaterial
+var _lit: Array[Sprite2D] = []
+
+
+## Iteration 011 D: the focused target's own art gets a soft warm rim (sprites
+## that already use another material, e.g. swaying plants, are left alone; the
+## prompt still shows). Presentation only.
+func _highlight(on: bool) -> void:
+	for sp in _lit:
+		if is_instance_valid(sp) and sp.material == _highlight_material:
+			sp.material = null
+	_lit.clear()
+	if not on or not bool(Settings.get_value("display", "highlight_interactables", true)):
+		return
+	if _highlight_material == null:
+		_highlight_material = ShaderMaterial.new()
+		_highlight_material.shader = HIGHLIGHT_SHADER
+	var owner_node := get_parent()
+	if owner_node == null:
+		return
+	var nodes: Array = owner_node.get_children()
+	var art := owner_node.get_node_or_null("Art")  # EntityView keeps its sprites under "Art"
+	if art != null:
+		nodes.append_array(art.get_children())
+	for child in nodes:
+		var sp := child as Sprite2D
+		if sp != null and sp.visible and sp.texture != null and sp.material == null:
+			sp.material = _highlight_material
+			_lit.append(sp)
+
+
+func _exit_tree() -> void:
+	_highlight(false)

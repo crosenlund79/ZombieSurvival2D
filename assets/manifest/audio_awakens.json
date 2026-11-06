@@ -41,6 +41,46 @@
 			"loop": false,
 			"status": "READY",
 			"notes": "Generated placeholder (tools/art/gen_awakens_audio.py). WAV or OGG override accepted."
+		},
+		{
+			"id": "sfx.wolf_howl",
+			"name": "Wolf howl (distant, echoing through the pines)",
+			"template": "res://assets/templates/audio/awakens/template_wolf_howl.wav",
+			"bus": "SFX",
+			"volume_db": -10.0,
+			"loop": false,
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_awakens_audio.py). WAV or OGG override accepted."
+		},
+		{
+			"id": "sfx.wolf_huff",
+			"name": "Wolf huff / short warning bark",
+			"template": "res://assets/templates/audio/awakens/template_wolf_huff.wav",
+			"bus": "SFX",
+			"volume_db": -8.0,
+			"loop": false,
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_awakens_audio.py). WAV or OGG override accepted."
+		},
+		{
+			"id": "sfx.bear_grunt",
+			"name": "Bear grunt / low growl",
+			"template": "res://assets/templates/audio/awakens/template_bear_grunt.wav",
+			"bus": "SFX",
+			"volume_db": -6.0,
+			"loop": false,
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_awakens_audio.py). WAV or OGG override accepted."
+		},
+		{
+			"id": "sfx.bear_huff",
+			"name": "Bear huffing (alarmed, backing off)",
+			"template": "res://assets/templates/audio/awakens/template_bear_huff.wav",
+			"bus": "SFX",
+			"volume_db": -6.0,
+			"loop": false,
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_awakens_audio.py). WAV or OGG override accepted."
 		}
 	]
 }

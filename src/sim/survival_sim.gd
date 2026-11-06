@@ -31,6 +31,11 @@ static func step(world: WorldState, ticks: int) -> Array:
 				results.append(respawn(world, p))
 			continue
 		_exposure(world, p, seconds, results)
+		if p.flashlight and not p.has_gear_item("flashlight"):
+			p.flashlight = false  # dropped, stored or traded away: the light goes with it
+			var rf := WorldActions._ok()
+			rf["vitals"] = [p.player_id]
+			results.append(rf)
 		# No recovery while thirsty, hungry or freezing: water, food and warmth matter.
 		if p.health < 100.0 and not InfraSim.is_thirsty(p) and not InfraSim.is_hungry(p) and not is_freezing(p) and world.tick - p.last_hurt_tick >= int(REGEN_DELAY_SECONDS * Simulation.TICK_RATE):
 			var before := floorf(p.health)

@@ -521,3 +521,25 @@ func test_wildlife_roams_notices_and_backs_off_never_attacks() -> void:
 	check((w2.animals[wolf.animal_id] as AnimalState).position.distance_to(wolf.position) < 0.2, "at the host's position")
 	WildlifeSim.apply_rows(w2, [])
 	eq(w2.animals.size(), 0, "and drop the ones the host no longer has")
+
+
+func test_flashlight_toggle_needs_one_and_goes_with_it() -> void:
+	var w := WorldState.create_new("w_torch", 72)
+	var p := _player(w, PID, "homestead.farmhouse", Vector2(630, 520))
+	eq(Inv.request(w, PID, "flashlight", "")["reason"], "FLASHLIGHT_NONE", "no flashlight, no light")
+	var house := w.region("homestead.farmhouse")
+	check(WorldActions.request_interact(w, PID, "homestead.farmhouse.flashlight", -1)["ok"], "the cabin has a flashlight for each player")
+	eq(WorldActions.request_interact(w, PID, "homestead.farmhouse.flashlight", -1)["reason"], "FLASHLIGHT_ALREADY", "one per player")
+	var r := Inv.request(w, PID, "flashlight", "")
+	check(r["ok"] and p.flashlight, "switched on")
+	check((r["vitals"] as Array).has(PID), "and replicated with the vitals")
+	eq(GameSession._vitals_row(p).size(), 7, "the vitals row carries it")
+	check(p.has_gear_item("flashlight"), "never used up")
+	var uid := ""
+	for g in p.gear:
+		if g["item"] == "flashlight":
+			uid = g["uid"]
+	Inv.request(w, PID, "drop", uid)
+	SurvivalSim.step(w, 1)
+	check(not p.flashlight, "dropping it switches the light off")
+	check(house != null, "")

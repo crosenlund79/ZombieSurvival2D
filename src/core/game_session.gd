@@ -196,6 +196,7 @@ func _begin() -> void:
 		NpcSim.ensure(world)
 		VehicleSim.ensure(world)
 		WorldActions.ensure_prebuilt_shelters(world)
+		WildlifeSim.ensure(world)
 		# Players who are not here cannot stay in a seat (they rejoin beside the car).
 		for po in world.players.values():
 			if not po.online and po.vehicle_id != "":
@@ -313,6 +314,8 @@ func _broadcast_snapshot() -> void:
 	_rpc_snapshot.rpc(world.tick, rows)
 	if not world.vehicles.is_empty():
 		_rpc_vehicles.rpc(VehicleSim.rows(world))
+	if not world.animals.is_empty():
+		_rpc_animals.rpc(WildlifeSim.rows(world))
 
 
 func _roster_rows() -> Array:
@@ -697,7 +700,7 @@ func _host_handle_attack(peer_id: int, aim: Vector2) -> void:
 
 
 static func _vitals_row(p: PlayerState) -> Array:
-	return [snappedf(p.health, 0.1), snappedf(p.hydration, 0.1), p.dead, p.weapon, snappedf(p.hunger, 0.1), snappedf(p.warmth, 0.1)]
+	return [snappedf(p.health, 0.1), snappedf(p.hydration, 0.1), p.dead, p.weapon, snappedf(p.hunger, 0.1), snappedf(p.warmth, 0.1), p.flashlight]
 
 
 ## Sends everything a WorldActions result changed to all peers, in an order
@@ -1359,6 +1362,8 @@ static func _apply_vitals(p: PlayerState, row: Array) -> void:
 		p.hunger = float(row[4])
 	if row.size() > 5:
 		p.warmth = float(row[5])
+	if row.size() > 6:
+		p.flashlight = bool(row[6])
 
 
 @rpc("authority", "call_remote", "reliable")
@@ -1500,6 +1505,13 @@ func _rpc_vehicle(vehicle_id: String, data: Dictionary) -> void:
 		elif p.vehicle_id == vehicle_id:
 			p.vehicle_id = ""
 	vehicle_changed.emit(vehicle_id)
+
+
+@rpc("authority", "call_remote", "unreliable_ordered")
+func _rpc_animals(rows: Array) -> void:
+	if mode != Mode.CLIENT or world == null:
+		return
+	WildlifeSim.apply_rows(world, rows)
 
 
 @rpc("authority", "call_remote", "reliable")

@@ -25,6 +25,7 @@ var _zombies := {}  # zombie_id -> ZombieView
 var _objects := {}  # object_id -> StructureView
 var _npcs := {}     # npc_id -> NpcView
 var _vehicles := {} # vehicle_id -> VehicleView
+var _animals := {}  # animal_id -> AnimalView
 var _actors: Node2D
 
 
@@ -95,6 +96,27 @@ func _process(_delta: float) -> void:
 	_sync_zombies()
 	_sync_npcs()
 	_sync_vehicles()
+	_sync_animals()
+
+
+func _sync_animals() -> void:
+	if Session.world == null:
+		return
+	for a in Session.world.animals.values():
+		if a.region_id == region_id and not _animals.has(a.animal_id):
+			var av := AnimalView.create(a)
+			_actors.add_child(av)
+			_animals[a.animal_id] = av
+	for id in _animals.keys():
+		var a2: AnimalState = Session.world.animals.get(id)
+		if a2 == null or a2.region_id != region_id or not is_instance_valid(_animals[id]):
+			if is_instance_valid(_animals[id]):
+				(_animals[id] as Node).queue_free()
+			_animals.erase(id)
+
+
+func animal_count() -> int:
+	return _animals.size()
 
 
 func _sync_vehicles() -> void:
@@ -222,6 +244,9 @@ func _on_combat_event(ev: Dictionary) -> void:
 			Audio.play(["sfx.burnt_screech", "sfx.burnt_screech_b", "sfx.burnt_screech_c"][randi() % 3], sv2.global_position if sv2 != null else at2)
 			if sv2 != null:
 				sv2.screech()
+		"animal_call":
+			if str(ev.get("region_id", "")) == region_id and str(ev.get("sound", "")) != "":
+				Audio.play(str(ev["sound"]), Vector2(float(ev.get("x", 0)), float(ev.get("y", 0))))
 		"vehicle_door", "vehicle_engine":
 			if str(ev.get("region_id", "")) != region_id:
 				return

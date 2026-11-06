@@ -190,6 +190,8 @@ static func request(world: WorldState, player_id: String, action: String, arg: S
 			res["objects"] = [[p.region_id, pile]]
 		"use":
 			return _use(world, p, arg, res)
+		"flashlight":
+			return toggle_flashlight(p, res)
 		_:
 			return WorldActions._fail("ACTION_NOT_SUPPORTED")
 	return res
@@ -205,6 +207,8 @@ static func _use(world: WorldState, p: PlayerState, arg: String, res: Dictionary
 		return WorldActions._fail("ACTION_NOTHING_THERE")
 	if str(info.get("use", "")) == "map":
 		return res  # reading the map is local (the map panel opens); nothing is used up
+	if str(info.get("use", "")) == "flashlight":
+		return toggle_flashlight(p, res)  # never used up (no batteries)
 	match str(info.get("use", "")):
 		"eat":
 			p.hunger = minf(100.0, p.hunger + float(info.get("food", 20)))
@@ -234,6 +238,17 @@ static func _use(world: WorldState, p: PlayerState, arg: String, res: Dictionary
 		p.carried[item] = p.carrying(item) - 1
 		if int(p.carried[item]) <= 0:
 			p.carried.erase(item)
+	return res
+
+
+## Switches the player's flashlight on/off (host). Needs a flashlight in the gear.
+static func toggle_flashlight(p: PlayerState, res: Dictionary) -> Dictionary:
+	if not p.has_gear_item("flashlight"):
+		p.flashlight = false
+		return WorldActions._fail("FLASHLIGHT_NONE")
+	p.flashlight = not p.flashlight
+	res["vitals"] = [p.player_id]
+	res["events"] = [{"kind": "flashlight", "player_id": p.player_id, "on": p.flashlight}]
 	return res
 
 

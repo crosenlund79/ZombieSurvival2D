@@ -41,6 +41,14 @@ func carrying(resource: String) -> int:
 
 
 ## Index of a gear item in `gear` by uid (-1 if not carried).
+## Iteration 011: carries at least one gear item of this kind (e.g. a flashlight).
+func has_gear_item(item: String) -> bool:
+	for g in gear:
+		if str(g.get("item", "")) == item:
+			return true
+	return false
+
+
 func find_gear(uid: String) -> int:
 	for i in gear.size():
 		if str(gear[i].get("uid", "")) == uid:

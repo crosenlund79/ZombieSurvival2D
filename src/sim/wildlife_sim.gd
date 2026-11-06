@@ -93,7 +93,7 @@ static func _nearest_player(world: WorldState, a: AnimalState) -> PlayerState:
 	for p in world.online_players():
 		if p.region_id != a.region_id or p.dead:
 			continue
-		var d := p.position.distance_to(a.position)
+		var d: float = p.position.distance_to(a.position)
 		if d < bd:
 			bd = d
 			best = p
@@ -109,7 +109,7 @@ static func _think(world: WorldState, a: AnimalState, dt: float, night: bool, ev
 	var s := spec(a.species)
 	var rng := world.sim_rng()
 	var p := _nearest_player(world, a)
-	var d := p.position.distance_to(a.position) if p != null else INF
+	var d: float = p.position.distance_to(a.position) if p != null else INF
 	# --- awareness: players are watched, then avoided; never approached
 	if d < float(s.get("flee_radius", 280)):
 		if a.activity != "flee":

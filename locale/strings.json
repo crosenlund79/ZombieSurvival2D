@@ -2522,5 +2522,25 @@
 	"VEHICLE_STOP_FIRST": {
 		"en": "Stop the car first.",
 		"da": "Stands bilen først."
+	},
+	"PROMPT_TAKE_FLASHLIGHT": {
+		"en": "Take a flashlight",
+		"da": "Tag en lommelygte"
+	},
+	"FLASHLIGHT_TAKEN": {
+		"en": "You take the %s. (L switches it on and off.)",
+		"da": "Du tager: %s. (L tænder og slukker den.)"
+	},
+	"FLASHLIGHT_ALREADY": {
+		"en": "You already took a flashlight from here.",
+		"da": "Du har allerede taget en lommelygte herfra."
+	},
+	"FLASHLIGHT_NONE": {
+		"en": "You have no flashlight.",
+		"da": "Du har ingen lommelygte."
+	},
+	"ACTION_FLASHLIGHT": {
+		"en": "Flashlight on / off",
+		"da": "Lommelygte til / fra"
 	}
 }

@@ -95,6 +95,14 @@ func _run(line: String) -> void:
 			await get_tree().create_timer(float(a[2])).timeout
 			Input.action_release(a[0])
 			Input.action_release(a[1])
+		"equip_item":
+			# equip_item <item>: equip the first gear item of that kind (e.g. club)
+			var mei := Session.local_player()
+			for g in mei.gear:
+				if str(g["item"]) == a[0]:
+					Session.request_inventory("equip", str(g["uid"]))
+					break
+			await get_tree().create_timer(0.4).timeout
 		"vehicle":
 			# vehicle <vehicle_id> <enter|exit|engine|store|take> [arg]
 			Session.request_vehicle(a[0], a[1], a[2] if a.size() > 2 else "")
@@ -329,6 +337,11 @@ func _state() -> Dictionary:
 		s["zombie_rows"] = w.zombies.values().map(func(z): return {"id": z.zombie_id, "ai": z.state_name(), "hunter": z.hunter,
 			"x": z.position.x, "y": z.position.y, "region": z.region_id, "hp": z.health, "target": z.target_player})
 		s["seed"] = w.world_seed
+		var sensor := get_tree().get_first_node_in_group("local_sensor") as InteractionSensor
+		if sensor != null and sensor.focused != null:
+			s["focused"] = {"id": sensor.focused.entity_id, "lit": sensor.focused._lit.size()}
+		s["animals"] = w.animals.values().map(func(an): return {"id": an.animal_id, "species": an.species, "region": an.region_id,
+			"x": an.position.x, "y": an.position.y, "activity": an.activity})
 		s["vehicles"] = w.vehicles.values().map(func(v): return {"id": v.vehicle_id, "region": v.region_id,
 			"x": v.position.x, "y": v.position.y, "rot": v.rotation, "engine": v.engine_on, "seats": v.seats.duplicate(),
 			"speed": v.speed, "cargo": v.cargo.duplicate(true)})
@@ -336,7 +349,7 @@ func _state() -> Dictionary:
 		var players := []
 		for pid in w.players:
 			var p: PlayerState = w.players[pid]
-			players.append({"gear": p.gear.map(func(g): return g["item"]), "hunger": p.hunger, "warmth": p.warmth, "vehicle": p.vehicle_id, "id": pid, "name": p.display_name, "online": p.online,
+			players.append({"gear": p.gear.map(func(g): return g["item"]), "hunger": p.hunger, "warmth": p.warmth, "vehicle": p.vehicle_id, "flashlight": p.flashlight, "id": pid, "name": p.display_name, "online": p.online,
 				"x": p.position.x, "y": p.position.y, "region": p.region_id, "carried": p.carried,
 				"health": p.health, "dead": p.dead, "hydration": p.hydration})
 		s["players"] = players

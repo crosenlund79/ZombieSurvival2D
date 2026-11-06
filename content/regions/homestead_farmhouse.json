@@ -146,6 +146,30 @@
 			],
 			"interact_range": 75,
 			"prompt_key": "PROMPT_SLEEP"
+		},
+		{
+			"id": "homestead.farmhouse.flashlight",
+			"type": "starter_bag",
+			"position": [
+				630,
+				520
+			],
+			"interact_range": 80,
+			"prompt_key": "PROMPT_TAKE_FLASHLIGHT",
+			"kit": {
+				"flashlight": 1
+			},
+			"art": "item.flashlight",
+			"art_empty": "",
+			"art_offset": [
+				0,
+				-62
+			],
+			"initial": {
+				"taken_by": []
+			},
+			"taken_key": "FLASHLIGHT_TAKEN",
+			"empty_key": "FLASHLIGHT_ALREADY"
 		}
 	],
 	"warmth": 1.2,

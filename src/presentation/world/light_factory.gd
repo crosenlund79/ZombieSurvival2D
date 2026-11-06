@@ -37,7 +37,12 @@ static var _cone: ImageTexture
 
 ## A soft cone pointing +x from the texture centre (headlights, flashlight).
 ## Rotate the light node to aim it; generated once, no image file needed.
-static func cone_texture() -> ImageTexture:
+static func cone_texture() -> Texture2D:
+	# The beam shape is a replaceable asset (fx.flashlight_cone); the generated cone is the fallback.
+	if AssetCatalog.has("fx.flashlight_cone"):
+		var t := Assets.texture("fx.flashlight_cone")
+		if t != null:
+			return t
 	if _cone == null:
 		var n := 256
 		var img := Image.create(n, n, false, Image.FORMAT_RGBA8)

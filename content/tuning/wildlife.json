@@ -8,9 +8,15 @@
 			"notice_radius": 520,
 			"flee_radius": 300,
 			"calm_radius": 700,
-			"idle_seconds": [2.5, 7.0],
+			"idle_seconds": [
+				2.5,
+				7.0
+			],
 			"wander_radius": 420,
-			"call_seconds": [45, 120],
+			"call_seconds": [
+				45,
+				120
+			],
 			"call_sound": "sfx.wolf_howl",
 			"alarm_sound": "sfx.wolf_huff",
 			"night_calls": 2.5
@@ -22,9 +28,15 @@
 			"notice_radius": 460,
 			"flee_radius": 260,
 			"calm_radius": 640,
-			"idle_seconds": [4.0, 10.0],
+			"idle_seconds": [
+				4.0,
+				10.0
+			],
 			"wander_radius": 360,
-			"call_seconds": [60, 150],
+			"call_seconds": [
+				60,
+				150
+			],
 			"call_sound": "sfx.bear_grunt",
 			"alarm_sound": "sfx.bear_huff",
 			"night_calls": 1.0
@@ -32,14 +44,50 @@
 	},
 	"regions": {
 		"homestead": [
-			{"species": "wolf", "count": 3, "area": [200, 80, 1300, 300]}
+			{
+				"species": "wolf",
+				"count": 3,
+				"area": [
+					1350,
+					980,
+					450,
+					300
+				]
+			}
 		],
 		"service_station": [
-			{"species": "bear", "count": 1, "area": [300, 1120, 1600, 240]}
+			{
+				"species": "bear",
+				"count": 1,
+				"area": [
+					300,
+					1120,
+					1600,
+					240
+				]
+			}
 		],
 		"town": [
-			{"species": "wolf", "count": 2, "area": [1800, 1720, 1300, 240]},
-			{"species": "bear", "count": 1, "area": [300, 120, 1200, 300]}
+			{
+				"species": "wolf",
+				"count": 2,
+				"area": [
+					1800,
+					1720,
+					1300,
+					240
+				]
+			},
+			{
+				"species": "bear",
+				"count": 1,
+				"area": [
+					300,
+					120,
+					1200,
+					300
+				]
+			}
 		]
 	}
 }

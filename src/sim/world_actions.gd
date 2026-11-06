@@ -85,7 +85,7 @@ static func request_interact(world: WorldState, player_id: String, entity_id: St
 static func _starter_bag(world: WorldState, p: PlayerState, region: RegionState, eid: String, def: Dictionary, state: Dictionary) -> Dictionary:
 	var taken: Array = (state.get("taken_by", []) as Array).duplicate()
 	if taken.has(p.player_id):
-		return _fail("ACTION_BAG_EMPTY")
+		return _fail(str(def.get("empty_key", "ACTION_BAG_EMPTY")))
 	var kit: Dictionary = def.get("kit", {})
 	var need := 0
 	for item in kit:
@@ -105,7 +105,7 @@ static func _starter_bag(world: WorldState, p: PlayerState, region: RegionState,
 	var res := _changed(region, eid, "looted")
 	res["players"] = [p.player_id]
 	res["vitals"] = [p.player_id]
-	res["notice"] = {"key": "STARTER_BAG_TAKEN", "args": [", ".join(found)]}
+	res["notice"] = {"key": str(def.get("taken_key", "STARTER_BAG_TAKEN")), "args": [", ".join(found)]}
 	return res
 
 

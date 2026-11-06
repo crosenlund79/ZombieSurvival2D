@@ -12,6 +12,7 @@
 [ext_resource type="Script" path="res://src/presentation/world/support_view.gd" id="support"]
 [ext_resource type="Script" path="res://src/presentation/world/light_spot.gd" id="light"]
 [ext_resource type="Script" path="res://src/presentation/world/weapon_rack_view.gd" id="rack"]
+[ext_resource type="Script" path="res://src/presentation/world/starter_bag_view.gd" id="bagv"]
 
 [node name="FarmhouseInterior" type="Node2D"]
 script = ExtResource("region")
@@ -159,3 +160,7 @@ area = Rect2(110, 236, 740, 414)
 [node name="SleepSpot" type="Node2D" parent="YSort"]
 script = ExtResource("bedv")
 entity_id = "homestead.farmhouse.bed"
+
+[node name="FlashlightKit" type="Node2D" parent="YSort"]
+script = ExtResource("bagv")
+entity_id = "homestead.farmhouse.flashlight"

@@ -529,6 +529,226 @@
 			"complexity": "moderate",
 			"status": "READY",
 			"notes": "Generated placeholder (tools/art/gen_world_awakens.py) - replace with tablet art."
+		},
+		{
+			"id": "char.wolf_side_0",
+			"name": "Wolf (side, walk frame 0)",
+			"template": "res://assets/templates/characters/animals/template_wolf_side_0.png",
+			"display_size": [
+				110,
+				70
+			],
+			"source_size": [
+				220,
+				140
+			],
+			"pivot": [
+				0.5,
+				0.9143
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_world_awakens.py). Side art faces right (flipped for left)."
+		},
+		{
+			"id": "char.wolf_side_1",
+			"name": "Wolf (side, walk frame 1)",
+			"template": "res://assets/templates/characters/animals/template_wolf_side_1.png",
+			"display_size": [
+				110,
+				70
+			],
+			"source_size": [
+				220,
+				140
+			],
+			"pivot": [
+				0.5,
+				0.9143
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_world_awakens.py). Side art faces right (flipped for left)."
+		},
+		{
+			"id": "char.wolf_down",
+			"name": "Wolf (down)",
+			"template": "res://assets/templates/characters/animals/template_wolf_down.png",
+			"display_size": [
+				110,
+				70
+			],
+			"source_size": [
+				220,
+				140
+			],
+			"pivot": [
+				0.5,
+				0.9143
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_world_awakens.py). Side art faces right (flipped for left)."
+		},
+		{
+			"id": "char.wolf_up",
+			"name": "Wolf (up)",
+			"template": "res://assets/templates/characters/animals/template_wolf_up.png",
+			"display_size": [
+				110,
+				70
+			],
+			"source_size": [
+				220,
+				140
+			],
+			"pivot": [
+				0.5,
+				0.9143
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_world_awakens.py). Side art faces right (flipped for left)."
+		},
+		{
+			"id": "char.bear_side_0",
+			"name": "Bear (side, walk frame 0)",
+			"template": "res://assets/templates/characters/animals/template_bear_side_0.png",
+			"display_size": [
+				150,
+				100
+			],
+			"source_size": [
+				300,
+				200
+			],
+			"pivot": [
+				0.5,
+				0.93
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_world_awakens.py). Side art faces right (flipped for left)."
+		},
+		{
+			"id": "char.bear_side_1",
+			"name": "Bear (side, walk frame 1)",
+			"template": "res://assets/templates/characters/animals/template_bear_side_1.png",
+			"display_size": [
+				150,
+				100
+			],
+			"source_size": [
+				300,
+				200
+			],
+			"pivot": [
+				0.5,
+				0.93
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_world_awakens.py). Side art faces right (flipped for left)."
+		},
+		{
+			"id": "char.bear_down",
+			"name": "Bear (down)",
+			"template": "res://assets/templates/characters/animals/template_bear_down.png",
+			"display_size": [
+				150,
+				100
+			],
+			"source_size": [
+				300,
+				200
+			],
+			"pivot": [
+				0.5,
+				0.93
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_world_awakens.py). Side art faces right (flipped for left)."
+		},
+		{
+			"id": "char.bear_up",
+			"name": "Bear (up)",
+			"template": "res://assets/templates/characters/animals/template_bear_up.png",
+			"display_size": [
+				150,
+				100
+			],
+			"source_size": [
+				300,
+				200
+			],
+			"pivot": [
+				0.5,
+				0.93
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_world_awakens.py). Side art faces right (flipped for left)."
+		},
+		{
+			"id": "item.flashlight",
+			"name": "Flashlight (in the hand while switched on)",
+			"template": "res://assets/templates/items/template_flashlight.png",
+			"display_size": [
+				40,
+				20
+			],
+			"source_size": [
+				80,
+				40
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_world_awakens.py) - replace with tablet art."
+		},
+		{
+			"id": "fx.flashlight_cone",
+			"name": "Flashlight / headlight beam (light texture; points right from the centre)",
+			"template": "res://assets/templates/fx/template_flashlight_cone.png",
+			"display_size": [
+				256,
+				256
+			],
+			"source_size": [
+				256,
+				256
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated (tools/art/gen_world_awakens.py). White where lit; the beam points to the right from the image centre."
 		}
 	]
 }

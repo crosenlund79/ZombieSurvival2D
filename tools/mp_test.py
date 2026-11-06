@@ -1745,6 +1745,49 @@ def scenario_vehicle_multi():
             i.kill()
 
 
+def scenario_wild_multi():
+    """Iteration 011 D: wildlife mirrored on the client (non-aggressive), the cabin
+    flashlight per player, a replicated flashlight toggle."""
+    host = Instance("t_dhost"); c = Instance("t_dclient")
+    for i in (host, c):
+        i.wipe()
+    try:
+        host.start(); c.start()
+        host.cmd(f"host {PORT} new 150 Hosty"); host.cmd("tips off"); host.cmd("dev peaceful 1")
+        r = c.cmd(f"join 127.0.0.1 {PORT} Cleo"); c.cmd("tips off")
+        check("wild: client joins", r["ok"], r["error"])
+        time.sleep(0.6)
+        ha, ca = host.state()["animals"], c.state()["animals"]
+        check("wild: wolves and bears exist on the host", len(ha) >= 4 and {a["species"] for a in ha} == {"wolf", "bear"}, len(ha))
+        check("wild: the client mirrors every animal", len(ca) == len(ha), (len(ca), len(ha)))
+        wolf = [a for a in ha if a["region"] == "homestead"][0]
+        hp = player(host.state(), "Cleo")["health"]
+        c.cmd("walk_to %d %d 12" % (wolf["x"] - 200, wolf["y"]))
+        time.sleep(1.0)
+        acts = [a["activity"] for a in host.state()["animals"] if a["region"] == "homestead"]
+        check("wild: a wolf reacts to the client's approach (watch / flee)", any(x in ("alert", "flee") for x in acts), acts)
+        check("wild: and never attacks", player(host.state(), "Cleo")["health"] >= hp - 0.01, (hp, player(host.state(), "Cleo")["health"]))
+        r = _into_cabin(c)
+        check("wild: client gets into the cabin", r["state"]["region"] == "homestead.farmhouse", r["state"].get("region"))
+        c.cmd("walk_to 630 540 8")
+        r = c.cmd("interact homestead.farmhouse.flashlight")
+        time.sleep(0.3)
+        check("wild: the client takes a flashlight", "flashlight" in player(host.state(), "Cleo")["gear"], player(host.state(), "Cleo")["gear"])
+        c.cmd("press_key flashlight")
+        time.sleep(0.4)
+        check("wild: the client switches it on (host-validated)", player(host.state(), "Cleo")["flashlight"], "")
+        check("wild: the client's own replica agrees", player(c.state(), "Cleo")["flashlight"], "")
+        host.cmd("press_key flashlight")
+        time.sleep(0.3)
+        check("wild: without a flashlight the host gets no light", not player(c.state(), "Hosty")["flashlight"], "")
+        c.cmd("press_key flashlight")
+        time.sleep(0.4)
+        check("wild: switched off again for everyone", not player(host.state(), "Cleo")["flashlight"] and not player(c.state(), "Cleo")["flashlight"], "")
+    finally:
+        for i in (host, c):
+            i.kill()
+
+
 def scenario_perf_multi():
     """Two connected players, a horde plus extra groups active around them: measure host simulation cost."""
     host = Instance("t_phost"); c = Instance("t_pclient")
@@ -1772,7 +1815,7 @@ def scenario_perf_multi():
             i.kill()
 
 
-SCENARIOS = {"vehicle_multi": scenario_vehicle_multi, "winter_multi": scenario_winter_multi, "red_thaw_multi": scenario_red_thaw_multi, "perf_multi": scenario_perf_multi, "slice": scenario_slice, "settlement_multi": scenario_settlement_multi, "world_multi": scenario_world_multi, "craft_multi": scenario_craft_multi, "build_multi": scenario_build_multi, "accept": scenario_accept, "infra_multi": scenario_infra_multi, "dig_multi": scenario_dig_multi, "danger_single": scenario_danger_single, "danger_multi": scenario_danger_multi, "settings": scenario_settings, "bunker_single": scenario_bunker_single, "bunker_multi": scenario_bunker_multi, "single": scenario_single, "multiplayer": scenario_multiplayer,
+SCENARIOS = {"wild_multi": scenario_wild_multi, "vehicle_multi": scenario_vehicle_multi, "winter_multi": scenario_winter_multi, "red_thaw_multi": scenario_red_thaw_multi, "perf_multi": scenario_perf_multi, "slice": scenario_slice, "settlement_multi": scenario_settlement_multi, "world_multi": scenario_world_multi, "craft_multi": scenario_craft_multi, "build_multi": scenario_build_multi, "accept": scenario_accept, "infra_multi": scenario_infra_multi, "dig_multi": scenario_dig_multi, "danger_single": scenario_danger_single, "danger_multi": scenario_danger_multi, "settings": scenario_settings, "bunker_single": scenario_bunker_single, "bunker_multi": scenario_bunker_multi, "single": scenario_single, "multiplayer": scenario_multiplayer,
              "netfail": scenario_connection_failure, "assets": scenario_assets}
 
 if __name__ == "__main__":

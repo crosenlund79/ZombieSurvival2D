@@ -11,6 +11,14 @@ const SEND_INTERVAL := 0.05
 const ASSET_ID := "char.player"
 ## Art per facing (0 down, 1 up, 2 left, 3 right). Side art faces right; left is flipped.
 const FACING_ASSETS := ["char.player", "char.player_up", "char.player_side", "char.player_side"]
+## Held weapon per facing (0 down, 1 up, 2 left, 3 right): hand offset, rotation,
+## mirrored, drawn behind the body. Matches the hands of the figure art.
+const WEAPON_POSE := [
+	{"pos": Vector2(-16, -28), "rot": -0.35, "flip": false, "behind": false},
+	{"pos": Vector2(16, -30), "rot": 0.35, "flip": true, "behind": true},
+	{"pos": Vector2(-4, -28), "rot": -0.55, "flip": true, "behind": false},
+	{"pos": Vector2(4, -28), "rot": 0.55, "flip": false, "behind": false},
+]
 
 ## Set by UI while a menu/text field has focus (local input only — the shared
 ## world keeps running).
@@ -37,6 +45,9 @@ var _cam_snap := true
 var _seated := false
 var _cam_zoom_factor := 1.0
 var _sensor: InteractionSensor
+var _beam: PointLight2D
+var _torch: Sprite2D
+var _beam_dir := Vector2.DOWN
 
 
 ## bounds: camera limits (empty Rect2 = no limits). light: carry a small light.
@@ -68,6 +79,14 @@ func _build(display_name: String, bounds: Rect2) -> void:
 	_weapon.rotation = 0.5
 	add_child(_weapon)
 	refresh_weapon()
+	_torch = Sprite2D.new()
+	_torch.visible = false
+	add_child(_torch)
+	_beam = LightFactory.cone_light(Color(1.0, 0.95, 0.82), 3.0, 0.0)
+	_beam.name = "Flashlight"
+	_beam.position = Vector2(0, -30)
+	_beam.visible = false
+	add_child(_beam)
 	_label = Label.new()
 	_label.text = display_name
 	_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -118,6 +137,7 @@ func _apply_art() -> void:
 
 func _physics_process(delta: float) -> void:
 	_night_torch(delta)
+	_update_flashlight(delta)
 	var me: PlayerState = Session.world.players.get(player_id) if Session.world != null else null
 	_set_seated(me != null and me.vehicle_id != "")
 	if is_local:
@@ -210,6 +230,8 @@ func _animate(delta: float, moving: bool) -> void:
 	_sprite.modulate = tint
 	if facing != _shown_facing:
 		_apply_art()
+		if _swing_tween == null or not _swing_tween.is_valid():
+			_place_weapon()
 	_sprite.flip_h = facing == 2
 	_bob = _bob + delta * 12.0 if moving else 0.0
 	_sprite.offset.y = -absf(sin(_bob)) * 6.0 / maxf(_sprite.scale.y, 0.01)
@@ -269,6 +291,10 @@ func _unhandled_input(event: InputEvent) -> void:
 			if event.is_action_pressed("attack"):
 				get_viewport().set_input_as_handled()
 				return
+	if event.is_action_pressed("flashlight"):
+		Session.request_inventory("flashlight", "")
+		get_viewport().set_input_as_handled()
+		return
 	if event.is_action_pressed("attack") and not _downed and BuildMode.placing == "":
 		var aim := _facing_vector()
 		if event is InputEventMouseButton:
@@ -320,11 +346,49 @@ func refresh_weapon() -> void:
 	var p: PlayerState = Session.world.players.get(player_id) if Session.world != null else null
 	var held := p.weapon if p != null else ""
 	var art := "item." + held
-	_weapon.visible = held != "" and AssetCatalog.has(art)
+	_weapon.visible = held != "" and AssetCatalog.has(art) and not _seated
 	if _weapon.visible:
 		Assets.apply_to_sprite(_weapon, art)
-	_weapon.position = Vector2(14, -34)
-	_weapon.rotation = 0.5
+		# Keep the art's grip point (its pivot, near the handle end) on the node origin,
+		# so the weapon sits in the hand and turns around the grip in every facing.
+		_weapon.offset = _weapon.position / _weapon.scale
+	_place_weapon()
+
+
+func _place_weapon() -> void:
+	var pose: Dictionary = WEAPON_POSE[clampi(facing, 0, 3)]
+	_weapon.position = pose["pos"]
+	_weapon.rotation = pose["rot"]
+	_weapon.flip_h = pose["flip"]
+	_weapon.z_index = -1 if pose["behind"] else 1
+
+
+## Flashlight (iteration 011 D): the replicated on/off state lights a beam in the
+## direction the player faces (the local player's beam follows movement smoothly).
+func _update_flashlight(delta: float) -> void:
+	var p: PlayerState = Session.world.players.get(player_id) if Session.world != null else null
+	var on := p != null and p.flashlight and not _seated and not _downed
+	var want_dir := _facing_vector()
+	if is_local and not input_blocked:
+		var d := Input.get_vector("move_left", "move_right", "move_up", "move_down")
+		if d != Vector2.ZERO:
+			want_dir = d.normalized()
+		else:
+			want_dir = _beam_dir
+	_beam_dir = Vector2.from_angle(lerp_angle(_beam_dir.angle(), want_dir.angle(), 1.0 - exp(-10.0 * delta)))
+	var dark := 1.0 - EnvSim.daylight(Session.world) if Session.world != null else 0.0
+	_beam.energy = move_toward(_beam.energy, (0.45 + 1.1 * dark) if on else 0.0, delta * 6.0)
+	_beam.visible = _beam.energy > 0.01
+	_beam.rotation = _beam_dir.angle()
+	_beam.position = Vector2(0, -30) + _beam_dir * 10.0
+	if on and not _torch.visible and AssetCatalog.has("item.flashlight"):
+		Assets.apply_to_sprite(_torch, "item.flashlight")
+	_torch.visible = on
+	if on:
+		_torch.position = Vector2(0, -30) + Vector2(_beam_dir.x * 12.0, _beam_dir.y * 6.0)
+		_torch.rotation = _beam_dir.angle() if _beam_dir.x >= 0.0 else _beam_dir.angle() + PI
+		_torch.flip_h = _beam_dir.x < 0.0
+		_torch.z_index = -1 if _beam_dir.y < -0.5 else 1
 
 
 func hurt_flash() -> void:
