@@ -6,7 +6,7 @@
 	"bounds": [
 		0,
 		0,
-		1664,
+		1792,
 		1088
 	],
 	"excavation": {
@@ -15,24 +15,24 @@
 			0,
 			0
 		],
-		"cols": 26,
+		"cols": 28,
 		"rows": 17,
 		"fixed": true,
 		"initial_open": [
 			[
 				5,
 				9,
-				16,
+				18,
 				4
 			],
 			[
 				5,
 				4,
-				16,
+				18,
 				4
 			],
 			[
-				19,
+				21,
 				8,
 				1,
 				1
@@ -40,7 +40,7 @@
 		],
 		"platforms": [
 			[
-				19,
+				21,
 				7,
 				1,
 				1
@@ -53,17 +53,17 @@
 		"envelope": [
 			4,
 			3,
-			18,
+			20,
 			11
 		],
-		"exterior": "side.ext_siding",
+		"exterior": "side.ext_brick",
 		"basement": "",
 		"rooms": [
 			{
 				"rect": [
 					5,
 					9,
-					9,
+					8,
 					4
 				],
 				"wall": "side.wall_office",
@@ -71,9 +71,9 @@
 			},
 			{
 				"rect": [
-					14,
+					13,
 					9,
-					7,
+					10,
 					4
 				],
 				"wall": "side.wall_house",
@@ -83,7 +83,7 @@
 				"rect": [
 					5,
 					4,
-					16,
+					18,
 					4
 				],
 				"wall": "side.wall_office",
@@ -92,27 +92,25 @@
 		],
 		"windows": [
 			[
-				640.0,
+				576.0,
 				683.5
 			],
 			[
-				1120.0,
-				683.5,
-				"boarded"
+				1056.0,
+				683.5
 			],
 			[
-				832.0,
+				704.0,
 				363.5
 			],
 			[
-				1152.0,
-				363.5,
-				"boarded"
+				1088.0,
+				363.5
 			]
 		],
 		"dividers": [
 			[
-				896,
+				832,
 				576,
 				665.6,
 				832
@@ -128,24 +126,29 @@
 	},
 	"side_props": [
 		{
-			"asset": "int.meal_table",
-			"x": 819.2,
+			"asset": "int.bookshelf",
+			"x": 921.6,
 			"y": 829
 		},
 		{
-			"asset": "int.sofa",
+			"asset": "int.armchair",
 			"x": 1024.0,
 			"y": 829
 		},
 		{
+			"asset": "int.sofa",
+			"x": 1177.6,
+			"y": 829
+		},
+		{
 			"asset": "world.furniture_bed",
-			"x": 768.0,
+			"x": 537.6,
 			"y": 509,
 			"back": true
 		},
 		{
-			"asset": "int.boxes",
-			"x": 1088.0,
+			"asset": "int.bookshelf",
+			"x": 1113.6,
 			"y": 509
 		}
 	],
@@ -189,7 +192,7 @@
 				"searched": false
 			},
 			"position": [
-				512.0,
+				499.2,
 				829
 			]
 		},
@@ -207,7 +210,7 @@
 				"searched": false
 			},
 			"position": [
-				704.0,
+				678.4,
 				829
 			]
 		},
@@ -215,7 +218,7 @@
 			"id": "stillwater.apartments.stairs_0",
 			"type": "stairs",
 			"position": [
-				1248.0,
+				1376.0,
 				829
 			],
 			"top": 509,
@@ -235,7 +238,7 @@
 				"searched": false
 			},
 			"position": [
-				576.0,
+				742.4,
 				509
 			]
 		},
@@ -253,7 +256,7 @@
 				"searched": false
 			},
 			"position": [
-				992.0,
+				896.0,
 				509
 			]
 		}

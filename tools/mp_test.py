@@ -2091,7 +2091,7 @@ def scenario_progression_multi():
     try:
         host.start(); c.start()
         host.cmd("set dev allow_client_dev_commands 1")
-        host.cmd(f"host {PORT} new 214 Hosty"); host.cmd("tips off"); host.cmd("dev peaceful 1"); host.cmd("dev time 12")
+        host.cmd(f"host {PORT} new 214 Hosty"); host.cmd("tips off")  # not peaceful: that would remove the hideout's Burnt Ones; host.cmd("dev time 12")
         r = c.cmd(f"join 127.0.0.1 {PORT} Cleo"); c.cmd("tips off")
         check("prog: client joins", r["ok"], r["error"])
         c.cmd("dev xp_multiplier 25"); c.cmd("dev grant_xp 500"); c.cmd("dev set_skill_level 10"); time.sleep(0.4)
@@ -2238,7 +2238,87 @@ def scenario_expedition_multi():
             i.kill()
 
 
-SCENARIOS = {"expedition_multi": scenario_expedition_multi, "progression_multi": scenario_progression_multi, "circuit_multi": scenario_circuit_multi, "side_multi": scenario_side_multi, "blood_multi": scenario_blood_multi, "custom_graphics": scenario_custom_graphics, "wild_multi": scenario_wild_multi, "vehicle_multi": scenario_vehicle_multi, "winter_multi": scenario_winter_multi, "red_thaw_multi": scenario_red_thaw_multi, "perf_multi": scenario_perf_multi, "slice": scenario_slice, "settlement_multi": scenario_settlement_multi, "world_multi": scenario_world_multi, "craft_multi": scenario_craft_multi, "build_multi": scenario_build_multi, "accept": scenario_accept, "infra_multi": scenario_infra_multi, "dig_multi": scenario_dig_multi, "danger_single": scenario_danger_single, "danger_multi": scenario_danger_multi, "settings": scenario_settings, "bunker_single": scenario_bunker_single, "bunker_multi": scenario_bunker_multi, "single": scenario_single, "multiplayer": scenario_multiplayer,
+def scenario_five_multi():
+    """Iteration 014: the five settlements with two real game instances — a pooled
+    container searched once in a side-view interior (same contents on both peers, no
+    duplication), the handgun (reload, fire, ammo) host-authoritative, the time controls
+    refused in a hosted game, the mine and the disturbed hideout, and everything after a
+    save, restart and rejoin."""
+    host = Instance("t_fhost"); c = Instance("t_fclient")
+    for i in (host, c):
+        i.wipe()
+    try:
+        host.start(); c.start()
+        host.cmd(f"host {PORT} new 214 Hosty"); host.cmd("tips off")  # not peaceful: that would remove the hideout's Burnt Ones
+        r = c.cmd(f"join 127.0.0.1 {PORT} Cleo"); c.cmd("tips off")
+        check("five: client joins", r["ok"], r["error"])
+        host.cmd("set dev allow_client_dev_commands 1")
+        # --- a pooled container in the harbour cannery (side view), searched by the client
+        for i in (host, c):
+            i.cmd("dev goto harbor.cannery"); i.cmd("wait 1.0")
+        check("five: both in the cannery (side view)", c.state()["region"] == "harbor.cannery" and c.state()["view"].get("side") is True, c.state()["region"])
+        eid = "harbor.cannery.tins"
+        c.cmd("walk_to 794 0 8"); c.cmd(f"interact {eid}"); c.cmd("wait 9")
+        hs = host.state()["entities"][eid]["state"]; cs = c.state()["entities"][eid]["state"]
+        check("five: the host committed the search", hs.get("searched") is True, hs)
+        check("five: the client sees the same rolled contents", hs.get("items") == cs.get("items") and len(hs.get("gear", [])) == len(cs.get("gear", [])), (hs.get("items"), cs.get("items")))
+        before = sum(hs.get("items", {}).values()) + len(hs.get("gear", []))
+        cp0 = player(host.state(), "Cleo")
+        held0 = sum(cp0["carried"].values()) + len(cp0["gear"])
+        c.cmd(f"entity_action {eid} take *"); c.cmd("wait 0.8")
+        hs2 = host.state()["entities"][eid]["state"]; cp1 = player(host.state(), "Cleo")
+        after = sum(hs2.get("items", {}).values()) + len(hs2.get("gear", [])) + sum(cp1["carried"].values()) + len(cp1["gear"]) - held0
+        check("five: taking moves everything once (nothing lost or duplicated)", after == before, (before, after))
+        check("five: the container is empty after taking all", not hs2.get("items") and not hs2.get("gear"), hs2)
+        xp = cp1["scav_xp"]
+        c.cmd(f"interact {eid}"); c.cmd("wait 9")
+        check("five: searching it again gives no XP and no new loot", player(host.state(), "Cleo")["scav_xp"] == xp and host.state()["entities"][eid]["state"].get("items", {}) == hs2.get("items", {}), "")
+        # --- time controls are refused in a hosted game (host and client)
+        t0 = host.state()["tick"]
+        host.cmd("dev time_scale 10"); c.cmd("dev time_scale 10"); host.cmd("wait 2.0")
+        hs3 = host.state()
+        check("five: time acceleration refused for the host of a multiplayer game", hs3["time_scale"] == 1.0, hs3["time_scale"])
+        check("five: and for the client; the clock keeps its normal pace", hs3["tick"] - t0 < 45, hs3["tick"] - t0)
+        # --- the handgun: reload, fire, ammunition, all on the host
+        c.cmd("dev grant handgun"); c.cmd("dev grant ammo_pistol:12"); c.cmd("wait 0.5")
+        c.cmd("equip_item handgun"); c.cmd("press_key reload"); c.cmd("wait 2.0")
+        cp = player(host.state(), "Cleo")
+        check("five: the client reloads (host sees 8 in the gun)", cp["loaded"] == 8 and cp["carried"].get("ammo_pistol", 0) == 4, (cp["loaded"], cp["carried"].get("ammo_pistol")))
+        c.cmd("attack_nearest 2 0.9"); c.cmd("wait 0.5")
+        cp = player(host.state(), "Cleo")
+        check("five: two shots fired, two rounds gone", cp["loaded"] == 6, cp["loaded"])
+        check("five: the client's own view agrees", player(c.state(), "Cleo")["loaded"] == 6, player(c.state(), "Cleo")["loaded"])
+        # --- the mine
+        c.cmd("dev goto greyhollow.mine"); c.cmd("wait 1.2")
+        check("five: the client is down the mine (side view)", c.state()["region"] == "greyhollow.mine" and c.state()["view"].get("side") is True, c.state()["region"])
+        check("five: the host places the client in the mine", player(host.state(), "Cleo")["region"] == "greyhollow.mine", player(host.state(), "Cleo")["region"])
+        # --- the disturbed hideout
+        c.cmd("dev goto stillwater.quiet_house"); c.cmd("wait 1.0")
+        c.cmd("dev noise 3"); c.cmd("wait 1.5")
+        hide = host.state()["entities"]["stillwater.quiet_house.hideout"]["state"]
+        check("five: noise wakes the hideout (host)", hide.get("triggered") is True and len(hide.get("zombies", [])) >= 1, hide)
+        zs = [z for z in host.state()["zombies"] if z.get("region") == "stillwater.quiet_house"]
+        check("five: one or two Burnt Ones emerge", 1 <= len(zs) <= 2, len(zs))
+        c.cmd("dev noise 3"); c.cmd("wait 1.5")
+        zs2 = [z for z in host.state()["zombies"] if z.get("region") == "stillwater.quiet_house"]
+        check("five: and never again (no regeneration)", len(zs2) <= len(zs), (len(zs), len(zs2)))
+        # --- save, restart, rejoin
+        host.cmd("save")
+        c.cmd("leave"); host.cmd("leave")
+        host.cmd(f"host {PORT} continue Hosty")
+        r = c.cmd(f"join 127.0.0.1 {PORT} Cleo"); c.cmd("wait 1.2")
+        hs4 = host.state()
+        cp = player(hs4, "Cleo")
+        check("five: after a restart the client is back in the quiet house", cp["region"] == "stillwater.quiet_house", cp["region"])
+        check("five: its handgun still holds 6 rounds and 4 spare", cp["loaded"] == 6 and cp["carried"].get("ammo_pistol", 0) == 4, (cp["loaded"], cp["carried"].get("ammo_pistol")))
+        check("five: the searched container stayed searched and empty", hs4["entities"][eid]["state"].get("searched") is True and not hs4["entities"][eid]["state"].get("items"), hs4["entities"][eid]["state"])
+        check("five: the hideout stayed triggered", hs4["entities"]["stillwater.quiet_house.hideout"]["state"].get("triggered") is True, "")
+    finally:
+        for i in (host, c):
+            i.kill()
+
+
+SCENARIOS = {"five_multi": scenario_five_multi, "expedition_multi": scenario_expedition_multi, "progression_multi": scenario_progression_multi, "circuit_multi": scenario_circuit_multi, "side_multi": scenario_side_multi, "blood_multi": scenario_blood_multi, "custom_graphics": scenario_custom_graphics, "wild_multi": scenario_wild_multi, "vehicle_multi": scenario_vehicle_multi, "winter_multi": scenario_winter_multi, "red_thaw_multi": scenario_red_thaw_multi, "perf_multi": scenario_perf_multi, "slice": scenario_slice, "settlement_multi": scenario_settlement_multi, "world_multi": scenario_world_multi, "craft_multi": scenario_craft_multi, "build_multi": scenario_build_multi, "accept": scenario_accept, "infra_multi": scenario_infra_multi, "dig_multi": scenario_dig_multi, "danger_single": scenario_danger_single, "danger_multi": scenario_danger_multi, "settings": scenario_settings, "bunker_single": scenario_bunker_single, "bunker_multi": scenario_bunker_multi, "single": scenario_single, "multiplayer": scenario_multiplayer,
              "netfail": scenario_connection_failure, "assets": scenario_assets}
 
 if __name__ == "__main__":

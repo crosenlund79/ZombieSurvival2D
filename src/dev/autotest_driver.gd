@@ -368,13 +368,16 @@ func _state() -> Dictionary:
 			"x": v.position.x, "y": v.position.y, "rot": v.rotation, "engine": v.engine_on, "seats": v.seats.duplicate(),
 			"speed": v.speed, "cargo": v.cargo.duplicate(true)})
 		s["tick"] = w.tick
+		s["time_scale"] = Session.time_scale
 		var players := []
 		for pid in w.players:
 			var p: PlayerState = w.players[pid]
 			players.append({"gear": p.gear.map(func(g): return g["item"]), "hunger": p.hunger, "warmth": p.warmth, "vehicle": p.vehicle_id, "flashlight": p.flashlight, "id": pid, "name": p.display_name, "online": p.online,
 				"x": p.position.x, "y": p.position.y, "region": p.region_id, "carried": p.carried,
 				"health": p.health, "dead": p.dead, "hydration": p.hydration, "skills": p.skills.duplicate(true),
-				"scav_level": SkillSim.level(p, "scavenging"), "scav_xp": SkillSim.xp(p, "scavenging")})
+				"scav_level": SkillSim.level(p, "scavenging"), "scav_xp": SkillSim.xp(p, "scavenging"),
+				"loaded": Firearms.loaded(Firearms.held(p)) if not Firearms.held(p).is_empty() else -1,
+				"capacity": Inv.capacity(p)})
 		s["players"] = players
 		var ents := {}
 		var levels := {}

@@ -32,7 +32,7 @@
 				4
 			],
 			[
-				19,
+				6,
 				8,
 				1,
 				1
@@ -40,7 +40,7 @@
 		],
 		"platforms": [
 			[
-				19,
+				6,
 				7,
 				1,
 				1
@@ -56,28 +56,28 @@
 			18,
 			11
 		],
-		"exterior": "side.ext_siding",
+		"exterior": "side.ext_logs",
 		"basement": "",
 		"rooms": [
 			{
 				"rect": [
 					5,
 					9,
-					9,
-					4
-				],
-				"wall": "side.wall_house",
-				"floor": "side.floor_linoleum"
-			},
-			{
-				"rect": [
-					14,
-					9,
 					7,
 					4
 				],
-				"wall": "side.wall_house_b",
+				"wall": "side.wall_house",
 				"floor": "side.floorboards"
+			},
+			{
+				"rect": [
+					12,
+					9,
+					9,
+					4
+				],
+				"wall": "side.wall_cabin",
+				"floor": "side.floor_linoleum"
 			},
 			{
 				"rect": [
@@ -92,27 +92,27 @@
 		],
 		"windows": [
 			[
-				640.0,
-				683.5
-			],
-			[
-				1120.0,
+				678.4,
 				683.5,
 				"boarded"
 			],
 			[
-				832.0,
-				363.5
+				1088.0,
+				683.5
 			],
 			[
-				1152.0,
+				768.0,
 				363.5,
 				"boarded"
+			],
+			[
+				1184.0,
+				363.5
 			]
 		],
 		"dividers": [
 			[
-				896,
+				768,
 				576,
 				665.6,
 				832
@@ -120,7 +120,7 @@
 		],
 		"labels": [
 			[
-				345.6,
+				576.0,
 				284,
 				"SIDE_UPSTAIRS"
 			]
@@ -128,25 +128,25 @@
 	},
 	"side_props": [
 		{
-			"asset": "int.meal_table",
-			"x": 819.2,
-			"y": 829
-		},
-		{
 			"asset": "int.sofa",
-			"x": 1024.0,
+			"x": 678.4,
 			"y": 829
 		},
 		{
-			"asset": "world.furniture_bed",
-			"x": 768.0,
-			"y": 509,
-			"back": true
+			"asset": "int.meal_table",
+			"x": 870.4,
+			"y": 829
 		},
 		{
 			"asset": "int.boxes",
-			"x": 1088.0,
+			"x": 640.0,
 			"y": 509
+		},
+		{
+			"asset": "world.furniture_bed",
+			"x": 960.0,
+			"y": 509,
+			"back": true
 		}
 	],
 	"spawn_points": [
@@ -171,7 +171,7 @@
 			},
 			"prompt_key": "PROMPT_EXIT_HOUSE",
 			"position": [
-				364.8,
+				537.6,
 				829
 			]
 		},
@@ -189,7 +189,7 @@
 				"searched": false
 			},
 			"position": [
-				512.0,
+				1036.8,
 				829
 			]
 		},
@@ -207,7 +207,7 @@
 				"searched": false
 			},
 			"position": [
-				704.0,
+				1203.2,
 				829
 			]
 		},
@@ -215,29 +215,11 @@
 			"id": "harbor.cottage.stairs_0",
 			"type": "stairs",
 			"position": [
-				1248.0,
+				416.0,
 				829
 			],
 			"top": 509,
-			"flip": false
-		},
-		{
-			"id": "harbor.cottage.dresser",
-			"type": "container",
-			"kind": "drawer",
-			"interact_range": 72,
-			"prompt_key": "PROMPT_SEARCH_DRAWER",
-			"art": "int.dresser",
-			"art_searched": "int.dresser_open",
-			"loot": {},
-			"pool": "harbor_home_bedroom",
-			"initial": {
-				"searched": false
-			},
-			"position": [
-				576.0,
-				509
-			]
+			"flip": true
 		},
 		{
 			"id": "harbor.cottage.wardrobe",
@@ -253,7 +235,25 @@
 				"searched": false
 			},
 			"position": [
-				992.0,
+				780.8,
+				509
+			]
+		},
+		{
+			"id": "harbor.cottage.dresser",
+			"type": "container",
+			"kind": "drawer",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_DRAWER",
+			"art": "int.dresser",
+			"art_searched": "int.dresser_open",
+			"loot": {},
+			"pool": "harbor_home_bedroom",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				1177.6,
 				509
 			]
 		}

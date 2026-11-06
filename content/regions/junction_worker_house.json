@@ -37,44 +37,44 @@
 			18,
 			6
 		],
-		"exterior": "side.ext_siding",
+		"exterior": "side.ext_logs",
 		"basement": "",
 		"rooms": [
 			{
 				"rect": [
 					5,
 					4,
-					9,
-					4
-				],
-				"wall": "side.wall_house",
-				"floor": "side.floor_linoleum"
-			},
-			{
-				"rect": [
-					14,
-					4,
 					7,
 					4
 				],
 				"wall": "side.wall_house_b",
 				"floor": "side.floorboards"
+			},
+			{
+				"rect": [
+					12,
+					4,
+					9,
+					4
+				],
+				"wall": "side.wall_house",
+				"floor": "side.floor_linoleum"
 			}
 		],
 		"windows": [
 			[
-				640.0,
-				363.5
-			],
-			[
-				1120.0,
+				678.4,
 				363.5,
 				"boarded"
+			],
+			[
+				1088.0,
+				363.5
 			]
 		],
 		"dividers": [
 			[
-				896,
+				768,
 				256,
 				345.6,
 				512
@@ -84,13 +84,13 @@
 	},
 	"side_props": [
 		{
-			"asset": "int.meal_table",
-			"x": 819.2,
+			"asset": "int.sofa",
+			"x": 678.4,
 			"y": 509
 		},
 		{
-			"asset": "int.sofa",
-			"x": 1024.0,
+			"asset": "int.meal_table",
+			"x": 870.4,
 			"y": 509
 		}
 	],
@@ -116,7 +116,7 @@
 			},
 			"prompt_key": "PROMPT_EXIT_HOUSE",
 			"position": [
-				364.8,
+				537.6,
 				509
 			]
 		},
@@ -134,7 +134,7 @@
 				"searched": false
 			},
 			"position": [
-				512.0,
+				1036.8,
 				509
 			]
 		},
@@ -152,7 +152,7 @@
 				"searched": false
 			},
 			"position": [
-				704.0,
+				1203.2,
 				509
 			]
 		},
@@ -170,7 +170,7 @@
 				"searched": false
 			},
 			"position": [
-				1177.6,
+				435.2,
 				509
 			]
 		}

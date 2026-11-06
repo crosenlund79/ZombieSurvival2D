@@ -238,30 +238,76 @@ def _c(c, cx):
     return (key, kind, cx, 0, art, art_s, {}, searched, None, None, pool)
 
 
-def house(rid, display, town, x, base, wall_a="side.wall_house", wall_b="side.wall_house_b", pool_prefix="home", storeys=2, extra=None):
-    s = Section(rid, 16, tuple(range(storeys)), display, exterior="side.ext_siding")
-    s.room(0, 0, 9, wall=wall_a, floor="side.floor_linoleum")
-    s.room(0, 9, 16, wall=wall_b)
-    s.divider(0, 9)
-    s.exit(0.7, town, _door_target(town, x, base))
-    s.window(0, 5.0)
-    s.window(0, 12.5, boarded=True)
-    s.container("kitchen", "cupboard", 3.0, 0, "int.kitchen_counter", "int.kitchen_counter", {}, pool=f"{pool_prefix}_kitchen")
-    s.container("fridge", "fridge", 6.0, 0, "int.home_fridge", "int.home_fridge_open", {}, pool=f"{pool_prefix}_fridge")
-    s.prop("int.meal_table", 7.8, 0)
-    s.prop("int.sofa", 11.0, 0)
-    if storeys > 1:
-        s.room(1, 0, 16, wall=wall_a)
-        s.window(1, 8.0)
-        s.window(1, 13.0, boarded=True)
-        s.stairs(14.5, 0, 1)
-        s.label(1, 0.4, "SIDE_UPSTAIRS")
-        s.container("dresser", "drawer", 4.0, 1, "int.dresser", "int.dresser_open", {}, pool=f"{pool_prefix}_bedroom")
-        s.prop("world.furniture_bed", 7.0, 1, back=True)
-        s.container("wardrobe", "locker", 10.5, 1, "int.locker", "int.locker_open", {}, pool=f"{pool_prefix}_closet")
-        s.prop("int.boxes", 12.0, 1)
+def house(rid, display, town, x, base, wall_a="side.wall_house", wall_b="side.wall_house_b", pool_prefix="home", storeys=2, extra=None,
+          layout="a", ext="side.ext_siding"):
+    """A home in three layouts (same container ids in each, so saves and pools stay put):
+    a = kitchen by the door, stairs on the right; b = mirrored, living room first, stairs
+    on the left; c = a wider flat with a reading corner and the bedroom up front."""
+    width = 18 if layout == "c" else 16
+    s = Section(rid, width, tuple(range(storeys)), display, exterior=ext)
+    if layout == "b":
+        s.room(0, 0, 7, wall=wall_b)
+        s.room(0, 7, 16, wall=wall_a, floor="side.floor_linoleum")
+        s.divider(0, 7)
+        s.exit(3.4, town, _door_target(town, x, base))
+        s.window(0, 5.6, boarded=True)
+        s.window(0, 12.0)
+        s.prop("int.sofa", 5.6, 0)
+        s.prop("int.meal_table", 8.6, 0)
+        s.container("kitchen", "cupboard", 11.2, 0, "int.kitchen_counter", "int.kitchen_counter", {}, pool=f"{pool_prefix}_kitchen")
+        s.container("fridge", "fridge", 13.8, 0, "int.home_fridge", "int.home_fridge_open", {}, pool=f"{pool_prefix}_fridge")
+    elif layout == "c":
+        s.room(0, 0, 8, wall=wall_a, floor="side.floor_linoleum")
+        s.room(0, 8, 18, wall=wall_b)
+        s.divider(0, 8)
+        s.exit(0.7, town, _door_target(town, x, base))
+        s.window(0, 4.0)
+        s.window(0, 11.5)
+        s.container("kitchen", "cupboard", 2.8, 0, "int.kitchen_counter", "int.kitchen_counter", {}, pool=f"{pool_prefix}_kitchen")
+        s.container("fridge", "fridge", 5.6, 0, "int.home_fridge", "int.home_fridge_open", {}, pool=f"{pool_prefix}_fridge")
+        s.prop("int.bookshelf", 9.4, 0)
+        s.prop("int.armchair", 11.0, 0)
+        s.prop("int.sofa", 13.4, 0)
     else:
-        s.container("dresser", "drawer", 13.4, 0, "int.dresser", "int.dresser_open", {}, pool=f"{pool_prefix}_bedroom")
+        s.room(0, 0, 9, wall=wall_a, floor="side.floor_linoleum")
+        s.room(0, 9, 16, wall=wall_b)
+        s.divider(0, 9)
+        s.exit(0.7, town, _door_target(town, x, base))
+        s.window(0, 5.0)
+        s.window(0, 12.5, boarded=True)
+        s.container("kitchen", "cupboard", 3.0, 0, "int.kitchen_counter", "int.kitchen_counter", {}, pool=f"{pool_prefix}_kitchen")
+        s.container("fridge", "fridge", 6.0, 0, "int.home_fridge", "int.home_fridge_open", {}, pool=f"{pool_prefix}_fridge")
+        s.prop("int.meal_table", 7.8, 0)
+        s.prop("int.sofa", 11.0, 0)
+    if storeys > 1:
+        s.room(1, 0, width, wall=wall_b if layout == "b" else wall_a)
+        s.label(1, 0.4 if layout != "b" else 4.0, "SIDE_UPSTAIRS")
+        if layout == "b":
+            s.window(1, 7.0, boarded=True)
+            s.window(1, 13.5)
+            s.stairs(1.5, 0, 1, flip=True)
+            s.prop("int.boxes", 5.0, 1)
+            s.container("wardrobe", "locker", 7.2, 1, "int.locker", "int.locker_open", {}, pool=f"{pool_prefix}_closet")
+            s.prop("world.furniture_bed", 10.0, 1, back=True)
+            s.container("dresser", "drawer", 13.4, 1, "int.dresser", "int.dresser_open", {}, pool=f"{pool_prefix}_bedroom")
+        elif layout == "c":
+            s.window(1, 6.0)
+            s.window(1, 12.0)
+            s.stairs(16.5, 0, 1)
+            s.prop("world.furniture_bed", 3.4, 1, back=True)
+            s.container("dresser", "drawer", 6.6, 1, "int.dresser", "int.dresser_open", {}, pool=f"{pool_prefix}_bedroom")
+            s.container("wardrobe", "locker", 9.0, 1, "int.locker", "int.locker_open", {}, pool=f"{pool_prefix}_closet")
+            s.prop("int.bookshelf", 12.4, 1)
+        else:
+            s.window(1, 8.0)
+            s.window(1, 13.0, boarded=True)
+            s.stairs(14.5, 0, 1)
+            s.container("dresser", "drawer", 4.0, 1, "int.dresser", "int.dresser_open", {}, pool=f"{pool_prefix}_bedroom")
+            s.prop("world.furniture_bed", 7.0, 1, back=True)
+            s.container("wardrobe", "locker", 10.5, 1, "int.locker", "int.locker_open", {}, pool=f"{pool_prefix}_closet")
+            s.prop("int.boxes", 12.0, 1)
+    else:
+        s.container("dresser", "drawer", 1.8 if layout == "b" else 13.4, 0, "int.dresser", "int.dresser_open", {}, pool=f"{pool_prefix}_bedroom")
     if extra:
         extra(s)
     return s
@@ -392,7 +438,7 @@ def junction_interiors(rid, display, x, base, town):
                   C("aisle_b", "shelf", ("int.gondola_empty", "int.gondola_empty"), "grocery_shelf", True), C("cooler", "fridge", FREEZER, "grocery_cooler")],
                  [C("stock", "crate", CRATE, "grocery_stock")])
     elif rid == "junction.worker_house":
-        s = house(rid, display, town, x, base, storeys=1)
+        s = house(rid, display, town, x, base, storeys=1, layout="b", ext="side.ext_logs")
     else:  # utility
         s = office(rid, display, town, x, base, ext="side.ext_concrete", pool="utility",
                    ground_extra=lambda s: s.container("switch_room", "garage", 13.5, 0, "int.metal_shelf_full", "int.metal_shelf_empty", {}, pool="electronics"))
@@ -459,7 +505,7 @@ def greyhollow_interiors(rid, display, x, base, town):
                   C("lamps", "shelf", METAL, "mine_lamps"), C("ropes", "garage", CRATE, "mine_tools")],
                  [C("explosives_locker", "locker", LOCKER, "mine_store", True), C("parts", "garage", METAL, "industrial_parts")], labels=("SIDE_STOCKROOM",))
     elif rid == "greyhollow.rowhouse":
-        s = house(rid, display, town, x, base, wall_a="side.wall_house_b", wall_b="side.wall_house", pool_prefix="miner_home")
+        s = house(rid, display, town, x, base, wall_a="side.wall_house_b", wall_b="side.wall_house", pool_prefix="miner_home", layout="b", ext="side.ext_brick")
     else:
         s = hall(rid, display, town, x, base, "side.ext_concrete", "side.wall_brick_in", "industrial",
                  [C("crate_a", "crate", CRATE, "industrial_materials"), C("shelf_a", "shelf", METAL, "industrial_parts"),
@@ -534,9 +580,9 @@ def stillwater_interiors(rid, display, x, base, town):
             s.container("armory", "locker", 14.0, 1, "int.locker", "int.locker_open", {}, pool="police_armory")
         return office(rid, display, town, x, base, pool="police", ground_extra=ground, upper_extra=upper)
     if rid == "stillwater.apartments":
-        return house(rid, display, town, x, base, wall_a="side.wall_office", wall_b="side.wall_house", pool_prefix="home")
+        return house(rid, display, town, x, base, wall_a="side.wall_office", wall_b="side.wall_house", pool_prefix="home", layout="c", ext="side.ext_brick")
     if rid == "stillwater.house":
-        return house(rid, display, town, x, base, pool_prefix="home")
+        return house(rid, display, town, x, base, wall_a="side.wall_house_b", wall_b="side.wall_cabin", pool_prefix="home", layout="c")
     if rid == "stillwater.quiet_house":
         def hideout(s):
             # An ordinary house. Two disturbed survivors hide here (an approved situational
@@ -621,7 +667,7 @@ def harbor(interiors):
 
 def harbor_interiors(rid, display, x, base, town):
     if rid == "harbor.cottage":
-        return house(rid, display, town, x, base, pool_prefix="harbor_home")
+        return house(rid, display, town, x, base, wall_a="side.wall_cabin", wall_b="side.wall_house", pool_prefix="harbor_home", layout="b", ext="side.ext_logs")
     if rid == "harbor.chandlery":
         return shop(rid, display, town, x, base, "side.ext_siding", "side.wall_house_b", "side.floorboards",
                     [C("counter", "drawer", ("int.checkout", "int.checkout"), "store_counter"), C("ropes", "shelf", METAL, "marine"),

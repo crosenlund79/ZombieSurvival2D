@@ -609,3 +609,39 @@ func test_searching_a_pooled_container_rolls_once_and_never_again() -> void:
 	ScavengeSim.step(w, 1)
 	eq(SkillSim.xp(p, "scavenging"), xp_before, "no XP for searching it again")
 	eq(r.entity_state(eid).get("items", {}), st.get("items", {}), "contents unchanged")
+
+
+# ---------------------------------------------------------------- G: persistence
+
+func test_save_keeps_the_five_settlements_state() -> void:
+	var w := WorldState.create_new("w_g1", 701)
+	var p := _player(w, PID, "greyhollow.mine", Vector2(1952, 400))
+	var gun := Inv.new_gear(w, "handgun")
+	gun["loaded"] = 5
+	p.gear.append(gun)
+	p.equipped["hand"] = str(gun["uid"])
+	var coat := Inv.new_gear(w, "winter_coat")
+	var bag := Inv.new_gear(w, "backpack")
+	p.gear.append_array([coat, bag])
+	p.equipped["body"] = str(coat["uid"])
+	p.equipped["back"] = str(bag["uid"])
+	p.carried = {"ammo_pistol": 27, "nails": 44}
+	var cannery := w.region("harbor.cannery")
+	var rolled := LootPools.roll(w, "cannery_tins", "harbor.cannery.tins")
+	cannery.set_fields("harbor.cannery.tins", {"searched": true, "items": rolled["items"], "gear": rolled["gear"]})
+	var qh := w.region("stillwater.quiet_house")
+	qh.set_fields("stillwater.quiet_house.hideout", {"triggered": true, "cleared": false, "zombies": ["z_1"], "disturbance": 1.2})
+	var res := SaveCodec.decode(JSON.parse_string(JSON.stringify(SaveCodec.encode(w))))
+	check(res["ok"], "decodes: " + str(res.get("error")))
+	var w2: WorldState = res["world"]
+	var p2: PlayerState = w2.players[PID]
+	eq(p2.region_id, "greyhollow.mine", "still down the mine")
+	eq(Firearms.loaded(Firearms.held(p2)), 5, "rounds in the gun kept")
+	eq(p2.carried, {"ammo_pistol": 27, "nails": 44}, "stacks kept")
+	eq(str(p2.equipped.get("back", "")), str(bag["uid"]), "the backpack is still worn")
+	eq(Inv.capacity(p2), Items.carry_slots() + 10, "and still adds room")
+	var kept: Dictionary = w2.region("harbor.cannery").entity_state("harbor.cannery.tins").get("items", {})
+	eq(kept.keys(), (rolled["items"] as Dictionary).keys(), "searched container contents kept")
+	eq(Items.total(kept), Items.total(rolled["items"]), "in the same amounts")
+	var hide := w2.region("stillwater.quiet_house").entity_state("stillwater.quiet_house.hideout")
+	check(bool(hide.get("triggered", false)) and not bool(hide.get("cleared", true)), "the hideout stays disturbed")
