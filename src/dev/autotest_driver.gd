@@ -338,7 +338,7 @@ func _state() -> Dictionary:
 		s["hunts"] = ZombieSim.hunt_lines(w)
 		s["ambient"] = w.threat.ambient
 		s["zombie_rows"] = w.zombies.values().map(func(z): return {"id": z.zombie_id, "ai": z.state_name(), "hunter": z.hunter,
-			"x": z.position.x, "y": z.position.y, "region": z.region_id, "hp": z.health, "target": z.target_player})
+			"x": z.position.x, "y": z.position.y, "region": z.region_id, "hp": z.health, "target": z.target_player, "posture": z.posture})
 		s["seed"] = w.world_seed
 		var sensor := get_tree().get_first_node_in_group("local_sensor") as InteractionSensor
 		if sensor != null and sensor.focused != null:
