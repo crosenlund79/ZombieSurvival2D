@@ -1,0 +1,974 @@
+{
+	"kind": "visual",
+	"category": "circuit",
+	"assets": [
+		{
+			"id": "int.wall_shop",
+			"name": "Interior back wall (shop)",
+			"template": "res://assets/templates/world/interior/template_wall_shop.png",
+			"display_size": [
+				1100,
+				220
+			],
+			"source_size": [
+				2200,
+				440
+			],
+			"pivot": [
+				0.5,
+				1.0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_scavengers_circuit.py) - replace with tablet art."
+		},
+		{
+			"id": "int.wall_garage",
+			"name": "Interior back wall (garage)",
+			"template": "res://assets/templates/world/interior/template_wall_garage.png",
+			"display_size": [
+				1100,
+				220
+			],
+			"source_size": [
+				2200,
+				440
+			],
+			"pivot": [
+				0.5,
+				1.0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_scavengers_circuit.py) - replace with tablet art."
+		},
+		{
+			"id": "int.wall_house",
+			"name": "Interior back wall (house)",
+			"template": "res://assets/templates/world/interior/template_wall_house.png",
+			"display_size": [
+				1100,
+				220
+			],
+			"source_size": [
+				2200,
+				440
+			],
+			"pivot": [
+				0.5,
+				1.0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_scavengers_circuit.py) - replace with tablet art."
+		},
+		{
+			"id": "int.wall_planks",
+			"name": "Interior back wall (planks)",
+			"template": "res://assets/templates/world/interior/template_wall_planks.png",
+			"display_size": [
+				1100,
+				220
+			],
+			"source_size": [
+				2200,
+				440
+			],
+			"pivot": [
+				0.5,
+				1.0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_scavengers_circuit.py) - replace with tablet art."
+		},
+		{
+			"id": "int.floor_linoleum",
+			"name": "Interior floor (linoleum, seamless tile)",
+			"template": "res://assets/templates/world/interior/template_floor_linoleum.png",
+			"display_size": [
+				256,
+				256
+			],
+			"source_size": [
+				256,
+				256
+			],
+			"pivot": [
+				0,
+				0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated seamless tile."
+		},
+		{
+			"id": "int.floor_concrete",
+			"name": "Interior floor (concrete, seamless tile)",
+			"template": "res://assets/templates/world/interior/template_floor_concrete.png",
+			"display_size": [
+				256,
+				256
+			],
+			"source_size": [
+				256,
+				256
+			],
+			"pivot": [
+				0,
+				0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated seamless tile."
+		},
+		{
+			"id": "int.floor_carpet",
+			"name": "Interior floor (carpet, seamless tile)",
+			"template": "res://assets/templates/world/interior/template_floor_carpet.png",
+			"display_size": [
+				256,
+				256
+			],
+			"source_size": [
+				256,
+				256
+			],
+			"pivot": [
+				0,
+				0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated seamless tile."
+		},
+		{
+			"id": "int.gondola_full",
+			"name": "Store aisle shelf (full)",
+			"template": "res://assets/templates/world/interior/template_gondola_full.png",
+			"display_size": [
+				230,
+				140
+			],
+			"source_size": [
+				460,
+				280
+			],
+			"pivot": [
+				0.5,
+				0.95
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_scavengers_circuit.py) - replace with tablet art."
+		},
+		{
+			"id": "int.gondola_sparse",
+			"name": "Store aisle shelf (sparse)",
+			"template": "res://assets/templates/world/interior/template_gondola_sparse.png",
+			"display_size": [
+				230,
+				140
+			],
+			"source_size": [
+				460,
+				280
+			],
+			"pivot": [
+				0.5,
+				0.95
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_scavengers_circuit.py) - replace with tablet art."
+		},
+		{
+			"id": "int.gondola_empty",
+			"name": "Store aisle shelf (empty)",
+			"template": "res://assets/templates/world/interior/template_gondola_empty.png",
+			"display_size": [
+				230,
+				140
+			],
+			"source_size": [
+				460,
+				280
+			],
+			"pivot": [
+				0.5,
+				0.95
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_scavengers_circuit.py) - replace with tablet art."
+		},
+		{
+			"id": "int.checkout",
+			"name": "Checkout counter",
+			"template": "res://assets/templates/world/interior/template_checkout.png",
+			"display_size": [
+				210,
+				110
+			],
+			"source_size": [
+				420,
+				220
+			],
+			"pivot": [
+				0.5,
+				0.9455
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_scavengers_circuit.py) - replace with tablet art."
+		},
+		{
+			"id": "int.freezer",
+			"name": "Glass-top freezer",
+			"template": "res://assets/templates/world/interior/template_freezer.png",
+			"display_size": [
+				180,
+				120
+			],
+			"source_size": [
+				360,
+				240
+			],
+			"pivot": [
+				0.5,
+				0.95
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_scavengers_circuit.py) - replace with tablet art."
+		},
+		{
+			"id": "int.freezer_open",
+			"name": "Glass-top freezer (lid up, emptied)",
+			"template": "res://assets/templates/world/interior/template_freezer_open.png",
+			"display_size": [
+				180,
+				120
+			],
+			"source_size": [
+				360,
+				240
+			],
+			"pivot": [
+				0.5,
+				0.95
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_scavengers_circuit.py) - replace with tablet art."
+		},
+		{
+			"id": "int.clothes_rack_full",
+			"name": "Clothes rack (full)",
+			"template": "res://assets/templates/world/interior/template_clothes_rack_full.png",
+			"display_size": [
+				160,
+				120
+			],
+			"source_size": [
+				320,
+				240
+			],
+			"pivot": [
+				0.5,
+				0.9583
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_scavengers_circuit.py) - replace with tablet art."
+		},
+		{
+			"id": "int.clothes_rack_empty",
+			"name": "Clothes rack (empty)",
+			"template": "res://assets/templates/world/interior/template_clothes_rack_empty.png",
+			"display_size": [
+				160,
+				120
+			],
+			"source_size": [
+				320,
+				240
+			],
+			"pivot": [
+				0.5,
+				0.9583
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_scavengers_circuit.py) - replace with tablet art."
+		},
+		{
+			"id": "int.display_table",
+			"name": "Display table with folded clothes",
+			"template": "res://assets/templates/world/interior/template_display_table.png",
+			"display_size": [
+				150,
+				80
+			],
+			"source_size": [
+				300,
+				160
+			],
+			"pivot": [
+				0.5,
+				0.9375
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_scavengers_circuit.py) - replace with tablet art."
+		},
+		{
+			"id": "int.pegboard",
+			"name": "Tool pegboard (most tools gone)",
+			"template": "res://assets/templates/world/interior/template_pegboard.png",
+			"display_size": [
+				200,
+				120
+			],
+			"source_size": [
+				400,
+				240
+			],
+			"pivot": [
+				0.5,
+				0.9833
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_scavengers_circuit.py) - replace with tablet art."
+		},
+		{
+			"id": "int.metal_shelf_full",
+			"name": "Metal shelving with bins (full)",
+			"template": "res://assets/templates/world/interior/template_metal_shelf_full.png",
+			"display_size": [
+				180,
+				150
+			],
+			"source_size": [
+				360,
+				300
+			],
+			"pivot": [
+				0.5,
+				0.9667
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_scavengers_circuit.py) - replace with tablet art."
+		},
+		{
+			"id": "int.metal_shelf_empty",
+			"name": "Metal shelving with bins (empty)",
+			"template": "res://assets/templates/world/interior/template_metal_shelf_empty.png",
+			"display_size": [
+				180,
+				150
+			],
+			"source_size": [
+				360,
+				300
+			],
+			"pivot": [
+				0.5,
+				0.9667
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_scavengers_circuit.py) - replace with tablet art."
+		},
+		{
+			"id": "int.pharm_counter",
+			"name": "Pharmacy counter",
+			"template": "res://assets/templates/world/interior/template_pharm_counter.png",
+			"display_size": [
+				220,
+				110
+			],
+			"source_size": [
+				440,
+				220
+			],
+			"pivot": [
+				0.5,
+				0.9455
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_scavengers_circuit.py) - replace with tablet art."
+		},
+		{
+			"id": "int.med_cabinet",
+			"name": "Medicine cabinet",
+			"template": "res://assets/templates/world/interior/template_med_cabinet.png",
+			"display_size": [
+				90,
+				130
+			],
+			"source_size": [
+				180,
+				260
+			],
+			"pivot": [
+				0.5,
+				0.9615
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_scavengers_circuit.py) - replace with tablet art."
+		},
+		{
+			"id": "int.med_cabinet_open",
+			"name": "Medicine cabinet (open, emptied)",
+			"template": "res://assets/templates/world/interior/template_med_cabinet_open.png",
+			"display_size": [
+				90,
+				130
+			],
+			"source_size": [
+				180,
+				260
+			],
+			"pivot": [
+				0.5,
+				0.9615
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_scavengers_circuit.py) - replace with tablet art."
+		},
+		{
+			"id": "int.tool_chest",
+			"name": "Rolling tool chest",
+			"template": "res://assets/templates/world/interior/template_tool_chest.png",
+			"display_size": [
+				90,
+				110
+			],
+			"source_size": [
+				180,
+				220
+			],
+			"pivot": [
+				0.5,
+				0.9545
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_scavengers_circuit.py) - replace with tablet art."
+		},
+		{
+			"id": "int.tool_chest_open",
+			"name": "Rolling tool chest (drawer open)",
+			"template": "res://assets/templates/world/interior/template_tool_chest_open.png",
+			"display_size": [
+				90,
+				110
+			],
+			"source_size": [
+				180,
+				220
+			],
+			"pivot": [
+				0.5,
+				0.9545
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_scavengers_circuit.py) - replace with tablet art."
+		},
+		{
+			"id": "int.car_lift",
+			"name": "Car lift (posts and arms)",
+			"template": "res://assets/templates/world/interior/template_car_lift.png",
+			"display_size": [
+				260,
+				100
+			],
+			"source_size": [
+				520,
+				200
+			],
+			"pivot": [
+				0.5,
+				0.95
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_scavengers_circuit.py) - replace with tablet art."
+		},
+		{
+			"id": "int.locker",
+			"name": "Metal locker",
+			"template": "res://assets/templates/world/interior/template_locker.png",
+			"display_size": [
+				70,
+				150
+			],
+			"source_size": [
+				140,
+				300
+			],
+			"pivot": [
+				0.5,
+				0.9667
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_scavengers_circuit.py) - replace with tablet art."
+		},
+		{
+			"id": "int.locker_open",
+			"name": "Metal locker (open)",
+			"template": "res://assets/templates/world/interior/template_locker_open.png",
+			"display_size": [
+				70,
+				150
+			],
+			"source_size": [
+				140,
+				300
+			],
+			"pivot": [
+				0.5,
+				0.9667
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_scavengers_circuit.py) - replace with tablet art."
+		},
+		{
+			"id": "int.crate",
+			"name": "Wooden crate",
+			"template": "res://assets/templates/world/interior/template_crate.png",
+			"display_size": [
+				100,
+				80
+			],
+			"source_size": [
+				200,
+				160
+			],
+			"pivot": [
+				0.5,
+				0.95
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_scavengers_circuit.py) - replace with tablet art."
+		},
+		{
+			"id": "int.crate_open",
+			"name": "Wooden crate (lid off)",
+			"template": "res://assets/templates/world/interior/template_crate_open.png",
+			"display_size": [
+				100,
+				80
+			],
+			"source_size": [
+				200,
+				160
+			],
+			"pivot": [
+				0.5,
+				0.95
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_scavengers_circuit.py) - replace with tablet art."
+		},
+		{
+			"id": "int.boxes",
+			"name": "Cardboard boxes",
+			"template": "res://assets/templates/world/interior/template_boxes.png",
+			"display_size": [
+				80,
+				70
+			],
+			"source_size": [
+				160,
+				140
+			],
+			"pivot": [
+				0.5,
+				0.9429
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_scavengers_circuit.py) - replace with tablet art."
+		},
+		{
+			"id": "int.sofa",
+			"name": "Sofa",
+			"template": "res://assets/templates/world/interior/template_sofa.png",
+			"display_size": [
+				180,
+				90
+			],
+			"source_size": [
+				360,
+				180
+			],
+			"pivot": [
+				0.5,
+				0.9444
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_scavengers_circuit.py) - replace with tablet art."
+		},
+		{
+			"id": "int.armchair",
+			"name": "Armchair",
+			"template": "res://assets/templates/world/interior/template_armchair.png",
+			"display_size": [
+				90,
+				85
+			],
+			"source_size": [
+				180,
+				170
+			],
+			"pivot": [
+				0.5,
+				0.9412
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_scavengers_circuit.py) - replace with tablet art."
+		},
+		{
+			"id": "int.dresser",
+			"name": "Chest of drawers",
+			"template": "res://assets/templates/world/interior/template_dresser.png",
+			"display_size": [
+				120,
+				110
+			],
+			"source_size": [
+				240,
+				220
+			],
+			"pivot": [
+				0.5,
+				0.9545
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_scavengers_circuit.py) - replace with tablet art."
+		},
+		{
+			"id": "int.dresser_open",
+			"name": "Chest of drawers (drawer pulled out)",
+			"template": "res://assets/templates/world/interior/template_dresser_open.png",
+			"display_size": [
+				120,
+				110
+			],
+			"source_size": [
+				240,
+				220
+			],
+			"pivot": [
+				0.5,
+				0.9545
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_scavengers_circuit.py) - replace with tablet art."
+		},
+		{
+			"id": "int.home_fridge",
+			"name": "Kitchen fridge",
+			"template": "res://assets/templates/world/interior/template_home_fridge.png",
+			"display_size": [
+				80,
+				150
+			],
+			"source_size": [
+				160,
+				300
+			],
+			"pivot": [
+				0.5,
+				0.9667
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_scavengers_circuit.py) - replace with tablet art."
+		},
+		{
+			"id": "int.home_fridge_open",
+			"name": "Kitchen fridge (open, emptied)",
+			"template": "res://assets/templates/world/interior/template_home_fridge_open.png",
+			"display_size": [
+				80,
+				150
+			],
+			"source_size": [
+				160,
+				300
+			],
+			"pivot": [
+				0.5,
+				0.9667
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_scavengers_circuit.py) - replace with tablet art."
+		},
+		{
+			"id": "int.kitchen_counter",
+			"name": "Kitchen counter with sink",
+			"template": "res://assets/templates/world/interior/template_kitchen_counter.png",
+			"display_size": [
+				200,
+				110
+			],
+			"source_size": [
+				400,
+				220
+			],
+			"pivot": [
+				0.5,
+				0.9455
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_scavengers_circuit.py) - replace with tablet art."
+		},
+		{
+			"id": "int.bookshelf",
+			"name": "Bookshelf",
+			"template": "res://assets/templates/world/interior/template_bookshelf.png",
+			"display_size": [
+				110,
+				150
+			],
+			"source_size": [
+				220,
+				300
+			],
+			"pivot": [
+				0.5,
+				0.9667
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_scavengers_circuit.py) - replace with tablet art."
+		},
+		{
+			"id": "int.meal_table",
+			"name": "Table laid for a meal nobody finished",
+			"template": "res://assets/templates/world/interior/template_meal_table.png",
+			"display_size": [
+				150,
+				110
+			],
+			"source_size": [
+				300,
+				220
+			],
+			"pivot": [
+				0.5,
+				0.9545
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_scavengers_circuit.py) - replace with tablet art."
+		},
+		{
+			"id": "int.barricade",
+			"name": "Improvised barricade (table, planks, chair)",
+			"template": "res://assets/templates/world/interior/template_barricade.png",
+			"display_size": [
+				160,
+				100
+			],
+			"source_size": [
+				320,
+				200
+			],
+			"pivot": [
+				0.5,
+				0.95
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_scavengers_circuit.py) - replace with tablet art."
+		},
+		{
+			"id": "int.partition",
+			"name": "Interior partition wall",
+			"template": "res://assets/templates/world/interior/template_partition.png",
+			"display_size": [
+				200,
+				150
+			],
+			"source_size": [
+				400,
+				300
+			],
+			"pivot": [
+				0.5,
+				1.0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_scavengers_circuit.py) - replace with tablet art."
+		},
+		{
+			"id": "build.stove",
+			"name": "Wood stove (bunker improvement, top-down)",
+			"template": "res://assets/templates/build/template_stove.png",
+			"display_size": [
+				100,
+				120
+			],
+			"source_size": [
+				200,
+				240
+			],
+			"pivot": [
+				0.5,
+				0.9583
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_scavengers_circuit.py) - replace with tablet art."
+		},
+		{
+			"id": "side.stove",
+			"name": "Side view: wood stove with its pipe through the ceiling",
+			"template": "res://assets/templates/side/template_stove.png",
+			"display_size": [
+				100,
+				260
+			],
+			"source_size": [
+				200,
+				520
+			],
+			"pivot": [
+				0.5,
+				0.9846
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_scavengers_circuit.py) - replace with tablet art."
+		},
+		{
+			"id": "item.stovepipe",
+			"name": "Stovepipe (item)",
+			"template": "res://assets/templates/items/template_stovepipe.png",
+			"display_size": [
+				60,
+				30
+			],
+			"source_size": [
+				120,
+				60
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_scavengers_circuit.py) - replace with tablet art."
+		}
+	]
+}
