@@ -76,7 +76,10 @@ func _process(_delta: float) -> void:
 	if me == null or me.region_id != region_id or not is_instance_valid(_anchor) or me.dead:
 		close_current()
 		return
-	if me.position.distance_to(_anchor.global_position) > 170.0:
+	# Measured where the player is drawn (also correct in the side-view bunker, iteration 012).
+	var avatar := get_tree().get_first_node_in_group("local_avatar") as Node2D
+	var at: Vector2 = avatar.global_position if avatar != null else me.position
+	if at.distance_to(_anchor.global_position) > 170.0:
 		close_current()
 		return
 	_refresh()

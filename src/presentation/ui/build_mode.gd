@@ -148,11 +148,17 @@ func _process(_delta: float) -> void:
 		return
 	var region := w.region(me.region_id)
 	var want: Vector2 = forced_pos if forced_pos != Vector2.INF else main.region_view.get_global_mouse_position()
+	var side: bool = main.region_view.side
+	if side and forced_pos == Vector2.INF:
+		# Side view (iteration 012): point at a column; the object goes on that column's floor.
+		want = SideSection.to_plan(region, want)
+		want.x = clampf(want.x, me.position.x - Build.BUILD_REACH + 24.0, me.position.x + Build.BUILD_REACH - 24.0)
+		want = SideSection.rest(region, Vector2(want.x, minf(want.y, SideSection.floor_y(region, want.x, me.position.y - 4.0))))
 	var off: Vector2 = want - me.position
-	if off.length() > Build.BUILD_REACH - 16.0:
+	if not side and off.length() > Build.BUILD_REACH - 16.0:
 		want = me.position + off.normalized() * (Build.BUILD_REACH - 16.0)
 	if placing == "support":
-		var cell := Terrain.cell_of(region, want)
+		var cell := Terrain.cell_of(region, want + Vector2(0, -8) if side else want)
 		ghost_pos = Terrain.cell_center(region, cell)
 		problem = Terrain.support_problem(region, cell) if Terrain.has_terrain(region) else "ACTION_BUILD_NOT_HERE"
 		var b := w.bunker_for_region(me.region_id)
@@ -171,8 +177,9 @@ func _process(_delta: float) -> void:
 		if problem == "" and not short.is_empty():
 			problem = "ACTION_NEED_MATERIALS"
 			problem_args = [Items.describe(short)]
-		Assets.apply_to_sprite(_ghost_sprite, StructureView.art_for(region, {"def": placing, "tier": 0}))
-	_ghost.position = ghost_pos
+		var art := StructureView.art_for(region, {"def": placing, "tier": 0})
+		Assets.apply_to_sprite(_ghost_sprite, SideArt.map(art) if side else art)
+	_ghost.position = SideArt.rest_screen(region, ghost_pos) if side else ghost_pos
 	_ghost_sprite.modulate = Color(0.7, 1.0, 0.7, 0.62) if problem == "" else Color(1.0, 0.55, 0.5, 0.55)
 	_ghost.queue_redraw()
 
@@ -189,6 +196,10 @@ func _draw_ghost() -> void:
 	else:
 		rect = Build.footprint_at(region, placing, ghost_pos)
 	var col := Color(0.55, 0.9, 0.5, 0.9) if problem == "" else Color(0.95, 0.4, 0.3, 0.9)
+	if main != null and main.region_view != null and main.region_view.side:
+		var sr := SideSection.screen_rect(region, rect)
+		_ghost.draw_rect(Rect2(sr.position - _ghost.position, sr.size), col, false, 2.0)
+		return
 	_ghost.draw_rect(Rect2(rect.position - ghost_pos, rect.size), col, false, 2.0)
 
 

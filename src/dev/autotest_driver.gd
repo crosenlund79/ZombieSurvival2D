@@ -459,6 +459,7 @@ func _state() -> Dictionary:
 	if v["exists"]:
 		v["instance_id"] = view.get_instance_id()
 		v["region"] = view.region_id
+		v["side"] = view.side
 		var stages := {}
 		for n in view.find_children("*", "EntityView", true, false):
 			var ev := n as EntityView

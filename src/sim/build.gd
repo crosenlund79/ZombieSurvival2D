@@ -187,6 +187,8 @@ static func placement_problem(world: WorldState, region_id: String, def_id: Stri
 		var t := str(ed.get("type", ""))
 		if not ed.has("interact_range") and t != "lamp":
 			continue
+		if t == "lamp" and cell_mode(region):
+			continue  # iteration 012: bunker lamps hang from the ceiling; they never block the floor
 		var r2 := clear * (1.15 if t == "portal" or t == "door" else 1.0)
 		if t == "lamp" or t == "tree":
 			r2 = 40.0

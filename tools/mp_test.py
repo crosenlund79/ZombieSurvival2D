@@ -399,6 +399,7 @@ def scenario_bunker_multi():
         i.wipe()
     try:
         host.start(); a.start()
+        host.cmd("set dev bunker_view top"); a.cmd("set dev bunker_view top")  # regresses the original top-down bunker
         host.cmd(f"host {PORT} new 99 Hosty")
         host.cmd("dev peaceful 1")
         go_inside(host)
@@ -644,6 +645,7 @@ def scenario_dig_multi():
         i.wipe()
     try:
         host.start(); c.start()
+        host.cmd("set dev bunker_view top"); c.cmd("set dev bunker_view top")  # regresses the original top-down bunker
         host.cmd(f"host {PORT} new 61 Hosty")
         host.cmd("dev peaceful 1")
         r = build_and_descend(host)
@@ -1907,9 +1909,10 @@ def scenario_side_multi():
         check("side: the client digs in the side view (host-validated)", host.state()["terrain_dug"] == d0 + 1, (d0, host.state()["terrain_dug"]))
         check("side: the dug cell reaches the client too", c.state()["terrain_dug"] == d0 + 1, c.state()["terrain_dug"])
         objs0 = len(host.state()["objects_here"]) if "objects_here" in host.state() else host.state()["view"].get("objects", 0)
+        host.cmd("set dev allow_client_dev_commands 1")
         c.cmd("dev grant wood:6")
         c.cmd("walk_to 700 0 8")
-        c.cmd("build crate 800 701"); c.cmd("wait 2.5")
+        c.cmd("build crate 600 701"); c.cmd("wait 2.5")
         o1 = host.state()["view"].get("objects", 0)
         check("side: the client builds a crate on the floor (seen by the top-down host)", o1 == objs0 + 1, (objs0, o1))
         check("side: and in its own side view", c.state()["view"].get("objects", 0) == o1, c.state()["view"].get("objects", 0))

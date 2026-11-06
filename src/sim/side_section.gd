@@ -214,6 +214,15 @@ static func walk(world: WorldState, region: RegionState, from: Vector2, dx: floa
 	var col := Terrain.cell_of(region, Vector2(probe_x, from.y)).x
 	if col == here.x:
 		return Vector2(to_x, from.y)
+	# Off the floor (on a ladder or scaffold): step sideways into open air at this
+	# height; the walker then drops to the floor below (no jumping, no climbing walls).
+	var here_run := run_of(region, here.x, here.y)
+	var on_floor := here_run.x < 0 or absf(Terrain.cell_rect(region, Vector2i(here.x, here_run.y)).end.y - FEET - from.y) < 6.0
+	if not on_floor:
+		var c0 := Vector2i(col, here.y)
+		if open_cell(region, c0) and not blocked_cell(world, region, c0):
+			return Vector2(to_x, from.y)
+		return from
 	for dr in [0, -1, 1]:
 		var row: int = here.y + dr
 		var c := Vector2i(col, row)
