@@ -75,6 +75,15 @@ func _ready() -> void:
 	# Apply on release so the panel does not resize under the cursor while dragging.
 	ui.drag_ended.connect(func(_changed: bool) -> void: Settings.set_value("display", "ui_scale", ui.value))
 	_row(v, "SETTINGS_UI_SCALE", ui)
+	# iteration 015: the screen-edge vignette of the player's view (0 = off)
+	var vig := HSlider.new()
+	vig.min_value = 0.0
+	vig.max_value = 1.0
+	vig.step = 0.05
+	vig.value = float(Settings.get_value("display", "vignette", 0.55))
+	vig.custom_minimum_size = Vector2(260, 24)
+	vig.value_changed.connect(func(x: float) -> void: Settings.set_value("display", "vignette", x))
+	_row(v, "SETTINGS_VIGNETTE", vig)
 	var lang := OptionButton.new()
 	for i in SettingsService.LANGUAGES.size():
 		lang.add_item("LANG_" + SettingsService.LANGUAGES[i].to_upper(), i)

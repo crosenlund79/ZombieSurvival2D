@@ -1,76 +1,136 @@
 class_name Hud
 extends Control
-## In-game overlay: connection/session line, interaction prompt, notices.
-## Reads state; never changes it.
+## In-game overlay (iteration 015 redesign): reads state, never changes it.
+##   top-left      where you are, the day and time, the weather (icons, one line)
+##   bottom-left   vitals as icon gauges (health, water, food, warmth) and the
+##                 threat around you
+##   bottom-right  status chips: what you carry (slots), what is in your hand
+##                 and its condition, rounds, the light; inside a shelter its power
+##   bottom-centre the interaction prompt on a key cap
+##   right         notices as small toasts with an icon, fading on their own
+## Long lists (what you carry, the shelter's stock) live in the inventory and
+## storage panels, not over the world.
 
-var _status: Label
+var _region: Label
+var _info: Label
+var _info_icon: TextureRect
+var _weather_icon: TextureRect
 var _prompt: Label
+var _prompt_panel: PanelContainer
 var _notices: VBoxContainer
-var _resources: Label
 var _vitals: Control
+var _vitals_panel: PanelContainer
 var _threat: Label
+var _threat_icon: TextureRect
+var _chips: HBoxContainer
+var _hint: Label
 var _down: Label
 var _banner: Label
 var _vote: PanelContainer
 var _vote_label: Label
 var _vote_id := -1
 var _vote_answered := -1
+var _chip_sig := ""
+var _status: Label  # kept for compatibility (the full status line, used in screenshots/tests)
+
+
+func _outline(l: Label, size: int = 4) -> Label:
+	l.add_theme_color_override("font_outline_color", Color(0, 0, 0, 0.85))
+	l.add_theme_constant_override("outline_size", size)
+	return l
 
 
 func _ready() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_status = UITheme.small("", 14)
-	_status.position = Vector2(14, 10)
-	_status.add_theme_color_override("font_outline_color", Color(0, 0, 0, 0.8))
-	_status.add_theme_constant_override("outline_size", 4)
+	# top-left: place and time
+	var top := VBoxContainer.new()
+	top.position = Vector2(18, 12)
+	top.add_theme_constant_override("separation", 0)
+	top.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(top)
+	_region = _outline(UITheme.heading("", 18), 5)
+	top.add_child(_region)
+	var row := HBoxContainer.new()
+	row.add_theme_constant_override("separation", 6)
+	top.add_child(row)
+	_info_icon = UITheme.icon_rect("clock", 18)
+	row.add_child(_info_icon)
+	_info = _outline(UITheme.small("", 14))
+	row.add_child(_info)
+	_weather_icon = UITheme.icon_rect("snow", 18)
+	row.add_child(_weather_icon)
+	_status = Label.new()
+	_status.visible = false
 	add_child(_status)
+	# bottom-centre prompt on a key cap panel
+	_prompt_panel = PanelContainer.new()
+	_prompt_panel.set_anchors_preset(Control.PRESET_CENTER_BOTTOM)
+	_prompt_panel.grow_horizontal = Control.GROW_DIRECTION_BOTH
+	_prompt_panel.offset_top = -132
+	_prompt_panel.offset_bottom = -92
+	_prompt_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_prompt_panel.add_theme_stylebox_override("panel", UITheme.panel_box(0.92))
+	add_child(_prompt_panel)
 	_prompt = Label.new()
-	_prompt.add_theme_font_size_override("font_size", 20)
-	_prompt.add_theme_color_override("font_outline_color", Color(0, 0, 0, 0.9))
-	_prompt.add_theme_constant_override("outline_size", 6)
+	_prompt.add_theme_font_size_override("font_size", 18)
 	_prompt.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_prompt.set_anchors_preset(Control.PRESET_CENTER_BOTTOM)
-	_prompt.offset_top = -110
-	_prompt.offset_bottom = -80
-	_prompt.offset_left = -300
-	_prompt.offset_right = 300
-	add_child(_prompt)
+	_prompt_panel.add_child(_prompt)
+	# right: notices as toasts
 	_notices = VBoxContainer.new()
-	_notices.set_anchors_preset(Control.PRESET_CENTER_TOP)
-	_notices.offset_left = -320
-	_notices.offset_right = 320
-	_notices.offset_top = 44
-	_notices.alignment = BoxContainer.ALIGNMENT_BEGIN
+	_notices.set_anchors_preset(Control.PRESET_TOP_RIGHT)
+	_notices.offset_left = -420
+	_notices.offset_right = -18
+	_notices.offset_top = 70
+	_notices.add_theme_constant_override("separation", 6)
 	_notices.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(_notices)
-	_resources = UITheme.small("", 15)
-	_resources.set_anchors_preset(Control.PRESET_TOP_RIGHT)
-	_resources.grow_horizontal = Control.GROW_DIRECTION_BEGIN
-	_resources.offset_right = -14
-	_resources.offset_top = 10
-	_resources.offset_left = -640  # wraps long lines instead of running into the left-hand HUD
-	_resources.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_resources.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-	_resources.add_theme_color_override("font_outline_color", Color(0, 0, 0, 0.8))
-	_resources.add_theme_constant_override("outline_size", 4)
-	add_child(_resources)
+	# bottom-left: vitals and threat
+	_vitals_panel = PanelContainer.new()
+	_vitals_panel.set_anchors_preset(Control.PRESET_BOTTOM_LEFT)
+	_vitals_panel.offset_left = 16
+	_vitals_panel.offset_top = -150
+	_vitals_panel.offset_bottom = -16
+	_vitals_panel.offset_right = 236
+	_vitals_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_vitals_panel.add_theme_stylebox_override("panel", UITheme.panel_box(0.88))
+	add_child(_vitals_panel)
+	var vbox := VBoxContainer.new()
+	_vitals_panel.add_child(vbox)
 	_vitals = Control.new()
-	_vitals.position = Vector2(14, 34)
-	_vitals.size = Vector2(220, 76)
+	_vitals.custom_minimum_size = Vector2(196, 92)
 	_vitals.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_vitals.draw.connect(_draw_vitals)
-	add_child(_vitals)
-	_threat = UITheme.small("", 15)
-	_threat.position = Vector2(14, 112)
-	_threat.add_theme_color_override("font_outline_color", Color(0, 0, 0, 0.85))
-	_threat.add_theme_constant_override("outline_size", 4)
-	add_child(_threat)
+	vbox.add_child(_vitals)
+	var trow := HBoxContainer.new()
+	trow.add_theme_constant_override("separation", 6)
+	vbox.add_child(trow)
+	_threat_icon = UITheme.icon_rect("quiet", 18)
+	trow.add_child(_threat_icon)
+	_threat = UITheme.small("", 13)
+	trow.add_child(_threat)
+	# bottom-right: status chips and a hint line
+	_chips = HBoxContainer.new()
+	_chips.set_anchors_preset(Control.PRESET_BOTTOM_RIGHT)
+	_chips.grow_horizontal = Control.GROW_DIRECTION_BEGIN
+	_chips.grow_vertical = Control.GROW_DIRECTION_BEGIN
+	_chips.offset_right = -16
+	_chips.offset_bottom = -34
+	_chips.add_theme_constant_override("separation", 8)
+	_chips.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(_chips)
+	_hint = _outline(UITheme.small("", 14))
+	_hint.set_anchors_preset(Control.PRESET_BOTTOM_RIGHT)
+	_hint.grow_horizontal = Control.GROW_DIRECTION_BEGIN
+	_hint.offset_right = -18
+	_hint.offset_bottom = -70
+	_hint.offset_top = -92
+	_hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	add_child(_hint)
 	_down = Label.new()
 	_down.add_theme_font_size_override("font_size", 30)
 	_down.add_theme_color_override("font_color", Color("#E2B9A8"))
-	_down.add_theme_color_override("font_outline_color", Color(0, 0, 0, 0.9))
-	_down.add_theme_constant_override("outline_size", 8)
+	_outline(_down, 8)
 	_down.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
 	_down.offset_left = -400
 	_down.offset_right = 400
@@ -79,53 +139,115 @@ func _ready() -> void:
 	_banner = Label.new()
 	_banner.add_theme_font_size_override("font_size", 19)
 	_banner.add_theme_color_override("font_color", Color("#E2B9A8"))
-	_banner.add_theme_color_override("font_outline_color", Color(0, 0, 0, 0.9))
-	_banner.add_theme_constant_override("outline_size", 6)
+	_outline(_banner, 6)
 	_banner.set_anchors_preset(Control.PRESET_CENTER_TOP)
 	_banner.offset_left = -420
 	_banner.offset_right = 420
-	_banner.offset_top = 150
+	_banner.offset_top = 64
 	_banner.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_banner.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(_banner)
-	_notices.offset_top = 44
 	Session.notice.connect(show_notice)
 	Session.combat_event.connect(_on_world_event)
 
 
 func _process(_delta: float) -> void:
-	if not Session.in_world():
-		_status.text = ""
-		_resources.text = ""
+	var on := Session.in_world()
+	for n in [_vitals_panel, _chips, _region, _info_icon, _weather_icon]:
+		(n as CanvasItem).visible = on
+	if not on:
+		_info.text = ""
 		_threat.text = ""
 		_down.text = ""
-		_prompt.text = ""
+		_prompt_panel.visible = false
+		_hint.text = ""
 		return
 	var w := Session.world
 	var me := Session.local_player()
-	_status.text = "%s · %s · %s %d · %s %s" % [
-		tr("MODE_" + Session.mode_name()), region_label(me.region_id),
-		tr("HUD_PLAYERS"), w.online_players().size(), UITheme.fmt("HUD_CLOCK", [EnvSim.day_number(w), EnvSim.clock_text(w)]),
-		weather_label(w)]
+	_region.text = region_label(me.region_id)
+	var info := "%s   " % UITheme.fmt("HUD_CLOCK", [EnvSim.day_number(w), EnvSim.clock_text(w)])
+	if w.online_players().size() > 1 or Session.mode != Session.Mode.SINGLE:
+		info += "%s %d   " % [tr("HUD_PLAYERS"), w.online_players().size()]
+	info += weather_label(w)
 	if not is_equal_approx(Session.time_scale, 1.0) and Session.mode == Session.Mode.SINGLE:
-		_status.text += "  ·  " + (tr("HUD_TIME_PAUSED") if Session.time_scale <= 0.0 else UITheme.fmt("HUD_TIME_SCALE", ["%.0f" % Session.time_scale]))
-	_resources.text = _resource_line(me)
+		info += "   " + (tr("HUD_TIME_PAUSED") if Session.time_scale <= 0.0 else UITheme.fmt("HUD_TIME_SCALE", ["%.0f" % Session.time_scale]))
+	_info.text = info
+	var wk := EnvSim.weather(w)
+	_weather_icon.texture = UITheme.icon("fog" if wk == "fog" else ("snow" if wk in ["snow", "blizzard"] else ("moon" if EnvSim.is_night(w) else "sun")))
+	_status.text = "%s · %s · %s" % [tr("MODE_" + Session.mode_name()), region_label(me.region_id), info]
 	_vitals.queue_redraw()
 	_threat.text = threat_label(me)
 	if w.region_def(me.region_id).has("zombies"):
 		_threat.text += " · " + tr("HUD_HEAT_%d" % EventSim.heat_level(w, me.region_id))
+	_threat_icon.texture = UITheme.icon("quiet" if _threat.text.begins_with(tr("HUD_THREAT_CALM")) or _threat.text.begins_with(tr("HUD_THREAT_SHELTERED")) else "noise")
+	_update_chips(me)
+	_hint.text = _hint_line(me)
 	_banner.text = siege_text(w)
 	if bool(w.meta.get("dev_world", false)) and _banner.text == "":
 		_banner.text = tr("HUD_DEV_WORLD")
 	_down.text = tr("HUD_DOWNED") if me.dead else ""
 	_update_vote(w, me)
 	var sensor := get_tree().get_first_node_in_group("local_sensor") as InteractionSensor
-	_prompt.text = sensor.focused.prompt_text() if sensor != null and sensor.focused != null and not PlayerAvatar.input_blocked else ""
+	var ptxt := sensor.focused.prompt_text() if sensor != null and sensor.focused != null and not PlayerAvatar.input_blocked else ""
 	var main := get_tree().root.get_node_or_null("Main")
 	if BuildMode.placing != "" and main != null and main.get("build_mode") != null:
-		_prompt.text = main.build_mode.hint_text()
+		ptxt = main.build_mode.hint_text()
 	if me.vehicle_id != "" and not PlayerAvatar.input_blocked:
-		_prompt.text = vehicle_hint(w, me)
+		ptxt = vehicle_hint(w, me)
+	_prompt.text = ptxt
+	_prompt_panel.visible = ptxt != ""
+
+
+## A status chip: icon + short text, on a small panel.
+func _chip(icon_name: String, text: String, tint: Color = Color.WHITE) -> PanelContainer:
+	var p := PanelContainer.new()
+	p.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	p.add_theme_stylebox_override("panel", UITheme.panel_box(0.88))
+	var h := HBoxContainer.new()
+	h.add_theme_constant_override("separation", 6)
+	p.add_child(h)
+	var ic := UITheme.icon_rect(icon_name, 22)
+	ic.modulate = tint
+	h.add_child(ic)
+	var l := UITheme.small(text, 14)
+	h.add_child(l)
+	return p
+
+
+func _update_chips(me: PlayerState) -> void:
+	var chips: Array = []
+	chips.append(["bag", "%d/%d" % [Inv.slots_used(me), Inv.capacity(me)], Color.WHITE])
+	var hand := me.equipped_gear("hand")
+	if not hand.is_empty():
+		var info := Items.info(str(hand["item"]))
+		var pct := roundi(float(hand.get("cond", 0)) / maxf(1.0, float(info.get("durability", 1))) * 100.0)
+		chips.append(["wrench", "%s %d%%" % [tr(Items.name_key(str(hand["item"]))), pct], Color.WHITE if pct > 25 else UITheme.WARN])
+		if Firearms.is_firearm(str(hand["item"])):
+			chips.append(["rounds", UITheme.fmt("HUD_AMMO_SHORT", [Firearms.loaded(hand), int(Firearms.spec(str(hand["item"])).get("capacity", 0)), Firearms.spare(me, hand)]), Color.WHITE])
+	if me.flashlight:
+		chips.append(["light", tr("HUD_LIGHT_ON"), Color.WHITE])
+	if not BunkerState.parse_region_id(me.region_id).is_empty():
+		chips.append(["shelter", tr("HUD_POWER_ON") if InfraSim.is_powered(Session.world, me.region_id) else tr("HUD_POWER_OFF"), Color.WHITE])
+	var sig := JSON.stringify(chips)
+	if sig == _chip_sig:
+		return
+	_chip_sig = sig
+	for c in _chips.get_children():
+		c.queue_free()
+	for c in chips:
+		_chips.add_child(_chip(c[0], c[1], c[2]))
+
+
+## One short line only when something needs doing (thirst, hunger) — with the key.
+func _hint_line(me: PlayerState) -> String:
+	var parts: Array[String] = []
+	if InfraSim.is_thirsty(me):
+		var water := me.carrying("water_clean") + me.carrying("water_bottle")
+		parts.append(UITheme.fmt("HUD_DRINK_HINT", [water]) if water > 0 else tr("HUD_THIRSTY"))
+	if InfraSim.is_hungry(me):
+		var food := Inv.best_food(me)
+		parts.append(UITheme.fmt("HUD_EAT_HINT", [tr(Items.name_key(food))]) if food != "" else tr("HUD_HUNGRY"))
+	return "   ".join(parts)
 
 
 static func _k(action: String) -> String:
@@ -266,20 +388,29 @@ func _draw_vitals() -> void:
 	var me := Session.local_player() if Session.in_world() else null
 	if me == null:
 		return
-	_bar(Vector2(0, 0), me.health / 100.0, Color("#B5543A"), tr("HUD_HEALTH"))
-	_bar(Vector2(0, 18), me.hydration / 100.0, Color("#4F8C9A"), tr("HUD_HYDRATION"))
-	_bar(Vector2(0, 36), me.hunger / 100.0, Color("#C9A23A"), tr("HUD_HUNGER"))
 	var wcol := Color("#9FC3D6") if not SurvivalSim.is_chilled(me) else (Color("#D9E8F2") if not SurvivalSim.is_freezing(me) else Color("#F2F6FA"))
-	_bar(Vector2(0, 54), me.warmth / 100.0, wcol, tr("HUD_WARMTH"))
+	_gauge(0, "health", me.health / 100.0, Color("#B5543A"))
+	_gauge(1, "water", me.hydration / 100.0, Color("#4F8C9A"))
+	_gauge(2, "food", me.hunger / 100.0, Color("#C9A23A"))
+	_gauge(3, "warmth", me.warmth / 100.0, wcol)
 
 
-func _bar(at: Vector2, frac: float, col: Color, label: String) -> void:
-	var r := Rect2(at + Vector2(86, 2), Vector2(130, 11))
-	_vitals.draw_rect(r.grow(2), Color(0.06, 0.05, 0.04, 0.8))
-	_vitals.draw_rect(Rect2(r.position, Vector2(r.size.x * clampf(frac, 0, 1), r.size.y)), col)
-	var font := _vitals.get_theme_default_font()
-	_vitals.draw_string_outline(font, at + Vector2(0, 13), label, HORIZONTAL_ALIGNMENT_LEFT, -1, 13, 4, Color(0, 0, 0, 0.8))
-	_vitals.draw_string(font, at + Vector2(0, 13), label, HORIZONTAL_ALIGNMENT_LEFT, -1, 13, UITheme.PAPER)
+## One vital: its icon and a worn bar (pulses red when low).
+func _gauge(row: int, icon_name: String, frac: float, col: Color) -> void:
+	var y := row * 23.0
+	var tex := UITheme.icon(icon_name)
+	if tex != null:
+		_vitals.draw_texture_rect(tex, Rect2(Vector2(0, y), Vector2(20, 20)), false)
+	var r := Rect2(Vector2(28, y + 6), Vector2(164, 9))
+	_vitals.draw_rect(r.grow(2), Color(0.05, 0.045, 0.04, 0.85))
+	var low := frac < 0.25
+	var c := col
+	if low:
+		c = col.lerp(Color("#E04A3A"), 0.5 + 0.5 * sin(Time.get_ticks_msec() / 160.0))
+	_vitals.draw_rect(Rect2(r.position, Vector2(r.size.x * clampf(frac, 0, 1), r.size.y)), c)
+	for k in range(1, 4):  # notches
+		var x := r.position.x + r.size.x * k / 4.0
+		_vitals.draw_line(Vector2(x, r.position.y), Vector2(x, r.end.y), Color(0, 0, 0, 0.35), 1.0)
 
 
 static func bag_text(bag: Dictionary) -> String:
@@ -361,24 +492,35 @@ func show_xp(text: String) -> void:
 
 
 func show_notice(key: String, args: Array) -> void:
-	var l := Label.new()
-	l.text = UITheme.fmt(key, args)
-	l.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	l.add_theme_color_override("font_outline_color", Color(0, 0, 0, 0.9))
-	l.add_theme_constant_override("outline_size", 5)
-	if key.begins_with("ACTION_") or key.ends_with("FAILED") or key == "DEV_HOST_ONLY":
-		l.add_theme_color_override("font_color", UITheme.WARN)
+	var refused := key.begins_with("ACTION_") or key.ends_with("FAILED") or key == "DEV_HOST_ONLY"
 	if key.begins_with("ACTION_") or (key.begins_with("VEHICLE_") and key != "VEHICLE_STATION_WAGON") or key in ["FLASHLIGHT_NONE", "SLEEP_DECLINED", "SLEEP_NOT_HERE"]:
 		Audio.play("ui.error")  # refused action (audio inbox clip)
-	_notices.add_child(l)
-	while _notices.get_child_count() > 5:
+	var icon_name := "warning" if refused else ("discovery" if key.begins_with("DISCOVER") else ("xp" if key.begins_with("SKILL") or key.begins_with("XP") else "info"))
+	var p := PanelContainer.new()
+	p.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	p.add_theme_stylebox_override("panel", UITheme.panel_box(0.9))
+	var h := HBoxContainer.new()
+	h.add_theme_constant_override("separation", 8)
+	p.add_child(h)
+	h.add_child(UITheme.icon_rect(icon_name, 22))
+	var l := Label.new()
+	l.text = UITheme.fmt(key, args)
+	l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	l.custom_minimum_size = Vector2(300, 0)
+	l.add_theme_font_size_override("font_size", 14)
+	if refused:
+		l.add_theme_color_override("font_color", UITheme.WARN)
+	h.add_child(l)
+	_notices.add_child(p)
+	while _notices.get_child_count() > 4:
 		var oldest := _notices.get_child(0)
 		_notices.remove_child(oldest)  # queue_free alone would not shrink the count this frame
 		oldest.queue_free()
-	var tw := l.create_tween()  # dies with the label if it is trimmed early
-	tw.tween_interval(3.5)
-	tw.tween_property(l, "modulate:a", 0.0, 0.8)
+	p.modulate.a = 0.0
+	var tw := p.create_tween()  # dies with the toast if it is trimmed early
+	tw.tween_property(p, "modulate:a", 1.0, 0.2)
+	tw.tween_interval(3.6)
+	tw.tween_property(p, "modulate:a", 0.0, 0.8)
 	tw.tween_callback(func() -> void:
-		if is_instance_valid(l):
-			l.queue_free())
+		if is_instance_valid(p):
+			p.queue_free())

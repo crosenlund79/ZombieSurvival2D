@@ -1,0 +1,996 @@
+{
+	"kind": "visual",
+	"category": "ui_015",
+	"assets": [
+		{
+			"id": "ui.panel",
+			"name": "Weathered charcoal panel (9-slice)",
+			"template": "res://assets/templates/ui/frames/template_panel.png",
+			"display_size": [
+				96,
+				96
+			],
+			"source_size": [
+				96,
+				96
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "9-slice: keep 20 px margins."
+		},
+		{
+			"id": "ui.panel_paper",
+			"name": "Paper panel (9-slice)",
+			"template": "res://assets/templates/ui/frames/template_panel_paper.png",
+			"display_size": [
+				96,
+				96
+			],
+			"source_size": [
+				96,
+				96
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "9-slice: keep 20 px margins."
+		},
+		{
+			"id": "ui.button",
+			"name": "Button (9-slice)",
+			"template": "res://assets/templates/ui/frames/template_button.png",
+			"display_size": [
+				64,
+				40
+			],
+			"source_size": [
+				64,
+				40
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "9-slice: keep 20 px margins."
+		},
+		{
+			"id": "ui.button_hover",
+			"name": "Button, hover (9-slice)",
+			"template": "res://assets/templates/ui/frames/template_button_hover.png",
+			"display_size": [
+				64,
+				40
+			],
+			"source_size": [
+				64,
+				40
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "9-slice: keep 20 px margins."
+		},
+		{
+			"id": "ui.button_pressed",
+			"name": "Button, pressed (9-slice)",
+			"template": "res://assets/templates/ui/frames/template_button_pressed.png",
+			"display_size": [
+				64,
+				40
+			],
+			"source_size": [
+				64,
+				40
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "9-slice: keep 20 px margins."
+		},
+		{
+			"id": "ui.button_disabled",
+			"name": "Button, disabled (9-slice)",
+			"template": "res://assets/templates/ui/frames/template_button_disabled.png",
+			"display_size": [
+				64,
+				40
+			],
+			"source_size": [
+				64,
+				40
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "9-slice: keep 20 px margins."
+		},
+		{
+			"id": "ui.tooltip",
+			"name": "Tooltip card (9-slice)",
+			"template": "res://assets/templates/ui/frames/template_tooltip.png",
+			"display_size": [
+				64,
+				64
+			],
+			"source_size": [
+				64,
+				64
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "9-slice: keep 20 px margins."
+		},
+		{
+			"id": "ui.slot",
+			"name": "Inventory slot",
+			"template": "res://assets/templates/ui/frames/template_slot.png",
+			"display_size": [
+				72,
+				72
+			],
+			"source_size": [
+				72,
+				72
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_ui.py) - replace with tablet art."
+		},
+		{
+			"id": "ui.slot_selected",
+			"name": "Inventory slot, selected",
+			"template": "res://assets/templates/ui/frames/template_slot_selected.png",
+			"display_size": [
+				72,
+				72
+			],
+			"source_size": [
+				72,
+				72
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_ui.py) - replace with tablet art."
+		},
+		{
+			"id": "ui.pointer",
+			"name": "Pointer under an object-anchored panel",
+			"template": "res://assets/templates/ui/frames/template_pointer.png",
+			"display_size": [
+				32,
+				24
+			],
+			"source_size": [
+				32,
+				24
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_ui.py) - replace with tablet art."
+		},
+		{
+			"id": "ui.keycap",
+			"name": "Key cap behind a prompt key",
+			"template": "res://assets/templates/ui/frames/template_keycap.png",
+			"display_size": [
+				48,
+				48
+			],
+			"source_size": [
+				48,
+				48
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "9-slice: 12 px margins."
+		},
+		{
+			"id": "ui.icon_health",
+			"name": "Health",
+			"template": "res://assets/templates/ui/icons/template_health.png",
+			"display_size": [
+				48,
+				48
+			],
+			"source_size": [
+				48,
+				48
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_ui.py) - replace with tablet art."
+		},
+		{
+			"id": "ui.icon_water",
+			"name": "Water",
+			"template": "res://assets/templates/ui/icons/template_water.png",
+			"display_size": [
+				48,
+				48
+			],
+			"source_size": [
+				48,
+				48
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_ui.py) - replace with tablet art."
+		},
+		{
+			"id": "ui.icon_food",
+			"name": "Food",
+			"template": "res://assets/templates/ui/icons/template_food.png",
+			"display_size": [
+				48,
+				48
+			],
+			"source_size": [
+				48,
+				48
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_ui.py) - replace with tablet art."
+		},
+		{
+			"id": "ui.icon_warmth",
+			"name": "Warmth",
+			"template": "res://assets/templates/ui/icons/template_warmth.png",
+			"display_size": [
+				48,
+				48
+			],
+			"source_size": [
+				48,
+				48
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_ui.py) - replace with tablet art."
+		},
+		{
+			"id": "ui.icon_noise",
+			"name": "Noise",
+			"template": "res://assets/templates/ui/icons/template_noise.png",
+			"display_size": [
+				48,
+				48
+			],
+			"source_size": [
+				48,
+				48
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_ui.py) - replace with tablet art."
+		},
+		{
+			"id": "ui.icon_quiet",
+			"name": "Quiet",
+			"template": "res://assets/templates/ui/icons/template_quiet.png",
+			"display_size": [
+				48,
+				48
+			],
+			"source_size": [
+				48,
+				48
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_ui.py) - replace with tablet art."
+		},
+		{
+			"id": "ui.icon_eye",
+			"name": "Seen",
+			"template": "res://assets/templates/ui/icons/template_eye.png",
+			"display_size": [
+				48,
+				48
+			],
+			"source_size": [
+				48,
+				48
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_ui.py) - replace with tablet art."
+		},
+		{
+			"id": "ui.icon_bag",
+			"name": "Bag / carrying",
+			"template": "res://assets/templates/ui/icons/template_bag.png",
+			"display_size": [
+				48,
+				48
+			],
+			"source_size": [
+				48,
+				48
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_ui.py) - replace with tablet art."
+		},
+		{
+			"id": "ui.icon_rounds",
+			"name": "Rounds",
+			"template": "res://assets/templates/ui/icons/template_rounds.png",
+			"display_size": [
+				48,
+				48
+			],
+			"source_size": [
+				48,
+				48
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_ui.py) - replace with tablet art."
+		},
+		{
+			"id": "ui.icon_light",
+			"name": "Light",
+			"template": "res://assets/templates/ui/icons/template_light.png",
+			"display_size": [
+				48,
+				48
+			],
+			"source_size": [
+				48,
+				48
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_ui.py) - replace with tablet art."
+		},
+		{
+			"id": "ui.icon_shelter",
+			"name": "Shelter",
+			"template": "res://assets/templates/ui/icons/template_shelter.png",
+			"display_size": [
+				48,
+				48
+			],
+			"source_size": [
+				48,
+				48
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_ui.py) - replace with tablet art."
+		},
+		{
+			"id": "ui.icon_clock",
+			"name": "Clock",
+			"template": "res://assets/templates/ui/icons/template_clock.png",
+			"display_size": [
+				48,
+				48
+			],
+			"source_size": [
+				48,
+				48
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_ui.py) - replace with tablet art."
+		},
+		{
+			"id": "ui.icon_snow",
+			"name": "Snow",
+			"template": "res://assets/templates/ui/icons/template_snow.png",
+			"display_size": [
+				48,
+				48
+			],
+			"source_size": [
+				48,
+				48
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_ui.py) - replace with tablet art."
+		},
+		{
+			"id": "ui.icon_fog",
+			"name": "Fog",
+			"template": "res://assets/templates/ui/icons/template_fog.png",
+			"display_size": [
+				48,
+				48
+			],
+			"source_size": [
+				48,
+				48
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_ui.py) - replace with tablet art."
+		},
+		{
+			"id": "ui.icon_moon",
+			"name": "Night",
+			"template": "res://assets/templates/ui/icons/template_moon.png",
+			"display_size": [
+				48,
+				48
+			],
+			"source_size": [
+				48,
+				48
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_ui.py) - replace with tablet art."
+		},
+		{
+			"id": "ui.icon_sun",
+			"name": "Day",
+			"template": "res://assets/templates/ui/icons/template_sun.png",
+			"display_size": [
+				48,
+				48
+			],
+			"source_size": [
+				48,
+				48
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_ui.py) - replace with tablet art."
+		},
+		{
+			"id": "ui.icon_xp",
+			"name": "Experience",
+			"template": "res://assets/templates/ui/icons/template_xp.png",
+			"display_size": [
+				48,
+				48
+			],
+			"source_size": [
+				48,
+				48
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_ui.py) - replace with tablet art."
+		},
+		{
+			"id": "ui.icon_discovery",
+			"name": "Discovery",
+			"template": "res://assets/templates/ui/icons/template_discovery.png",
+			"display_size": [
+				48,
+				48
+			],
+			"source_size": [
+				48,
+				48
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_ui.py) - replace with tablet art."
+		},
+		{
+			"id": "ui.icon_warning",
+			"name": "Warning",
+			"template": "res://assets/templates/ui/icons/template_warning.png",
+			"display_size": [
+				48,
+				48
+			],
+			"source_size": [
+				48,
+				48
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_ui.py) - replace with tablet art."
+		},
+		{
+			"id": "ui.icon_info",
+			"name": "Information",
+			"template": "res://assets/templates/ui/icons/template_info.png",
+			"display_size": [
+				48,
+				48
+			],
+			"source_size": [
+				48,
+				48
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_ui.py) - replace with tablet art."
+		},
+		{
+			"id": "ui.icon_lock",
+			"name": "Locked",
+			"template": "res://assets/templates/ui/icons/template_lock.png",
+			"display_size": [
+				48,
+				48
+			],
+			"source_size": [
+				48,
+				48
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_ui.py) - replace with tablet art."
+		},
+		{
+			"id": "ui.icon_key",
+			"name": "Key",
+			"template": "res://assets/templates/ui/icons/template_key.png",
+			"display_size": [
+				48,
+				48
+			],
+			"source_size": [
+				48,
+				48
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_ui.py) - replace with tablet art."
+		},
+		{
+			"id": "ui.icon_lockpick",
+			"name": "Lockpick",
+			"template": "res://assets/templates/ui/icons/template_lockpick.png",
+			"display_size": [
+				48,
+				48
+			],
+			"source_size": [
+				48,
+				48
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_ui.py) - replace with tablet art."
+		},
+		{
+			"id": "ui.icon_barter",
+			"name": "Trade",
+			"template": "res://assets/templates/ui/icons/template_barter.png",
+			"display_size": [
+				48,
+				48
+			],
+			"source_size": [
+				48,
+				48
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_ui.py) - replace with tablet art."
+		},
+		{
+			"id": "ui.icon_wrench",
+			"name": "Repair",
+			"template": "res://assets/templates/ui/icons/template_wrench.png",
+			"display_size": [
+				48,
+				48
+			],
+			"source_size": [
+				48,
+				48
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_ui.py) - replace with tablet art."
+		},
+		{
+			"id": "ui.icon_mission",
+			"name": "Mission",
+			"template": "res://assets/templates/ui/icons/template_mission.png",
+			"display_size": [
+				48,
+				48
+			],
+			"source_size": [
+				48,
+				48
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_ui.py) - replace with tablet art."
+		},
+		{
+			"id": "ui.icon_faction_friend",
+			"name": "Friendly faction",
+			"template": "res://assets/templates/ui/icons/template_faction_friend.png",
+			"display_size": [
+				48,
+				48
+			],
+			"source_size": [
+				48,
+				48
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_ui.py) - replace with tablet art."
+		},
+		{
+			"id": "ui.icon_faction_neutral",
+			"name": "Neutral faction",
+			"template": "res://assets/templates/ui/icons/template_faction_neutral.png",
+			"display_size": [
+				48,
+				48
+			],
+			"source_size": [
+				48,
+				48
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_ui.py) - replace with tablet art."
+		},
+		{
+			"id": "ui.icon_faction_hostile",
+			"name": "Hostile faction",
+			"template": "res://assets/templates/ui/icons/template_faction_hostile.png",
+			"display_size": [
+				48,
+				48
+			],
+			"source_size": [
+				48,
+				48
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_ui.py) - replace with tablet art."
+		},
+		{
+			"id": "ui.icon_map",
+			"name": "Map",
+			"template": "res://assets/templates/ui/icons/template_map.png",
+			"display_size": [
+				48,
+				48
+			],
+			"source_size": [
+				48,
+				48
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_ui.py) - replace with tablet art."
+		},
+		{
+			"id": "ui.icon_skills",
+			"name": "Skills",
+			"template": "res://assets/templates/ui/icons/template_skills.png",
+			"display_size": [
+				48,
+				48
+			],
+			"source_size": [
+				48,
+				48
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_ui.py) - replace with tablet art."
+		},
+		{
+			"id": "ui.icon_craft",
+			"name": "Craft",
+			"template": "res://assets/templates/ui/icons/template_craft.png",
+			"display_size": [
+				48,
+				48
+			],
+			"source_size": [
+				48,
+				48
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_ui.py) - replace with tablet art."
+		},
+		{
+			"id": "ui.icon_build",
+			"name": "Build",
+			"template": "res://assets/templates/ui/icons/template_build.png",
+			"display_size": [
+				48,
+				48
+			],
+			"source_size": [
+				48,
+				48
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_ui.py) - replace with tablet art."
+		},
+		{
+			"id": "ui.icon_search",
+			"name": "Search",
+			"template": "res://assets/templates/ui/icons/template_search.png",
+			"display_size": [
+				48,
+				48
+			],
+			"source_size": [
+				48,
+				48
+			],
+			"pivot": [
+				0.5,
+				0.5
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_ui.py) - replace with tablet art."
+		}
+	]
+}

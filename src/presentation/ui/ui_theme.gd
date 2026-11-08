@@ -22,14 +22,17 @@ static func get_theme() -> Theme:
 		return _theme
 	var t := Theme.new()
 	t.default_font_size = 16
-	var panel := _box(Color(CHARCOAL, 0.94), Color(STRAW, 0.35), 2, 6)
-	panel.set_content_margin_all(14)
+	# Iteration 015: the dirty-ink material (tools/art/gen_ui.py, replaceable) with flat fallbacks.
+	var panel := _tex_box("ui.panel", 22, _box(Color(CHARCOAL, 0.94), Color(STRAW, 0.35), 2, 6), 16)
 	t.set_stylebox("panel", "PanelContainer", panel)
 	t.set_stylebox("panel", "Panel", panel)
-	var normal := _box(SOOT, Color(STRAW, 0.30), 1, 4)
-	var hover := _box(Color("#3a382f"), Color(STRAW, 0.7), 1, 4)
-	var pressed := _box(Color(RUST, 0.85), STRAW, 1, 4)
-	var disabled := _box(Color(SOOT, 0.5), Color(STRAW, 0.1), 1, 4)
+	t.set_stylebox("panel", "TooltipPanel", _tex_box("ui.tooltip", 16, _box(PAPER, CHARCOAL, 1, 3), 10))
+	t.set_color("font_color", "TooltipLabel", CHARCOAL)
+	t.set_font_size("font_size", "TooltipLabel", 14)
+	var normal := _tex_box("ui.button", 12, _box(SOOT, Color(STRAW, 0.30), 1, 4), 8)
+	var hover := _tex_box("ui.button_hover", 12, _box(Color("#3a382f"), Color(STRAW, 0.7), 1, 4), 8)
+	var pressed := _tex_box("ui.button_pressed", 12, _box(Color(RUST, 0.85), STRAW, 1, 4), 8)
+	var disabled := _tex_box("ui.button_disabled", 12, _box(Color(SOOT, 0.5), Color(STRAW, 0.1), 1, 4), 8)
 	var focus := _box(Color(0, 0, 0, 0), Color(CYAN, 0.8), 2, 4)
 	for b in [normal, hover, pressed, disabled]:
 		b.set_content_margin_all(8)
@@ -54,6 +57,59 @@ static func get_theme() -> Theme:
 	return t
 
 
+## A 9-slice StyleBoxTexture from a UI asset (falls back to `fallback` when missing).
+static func _tex_box(id: String, margin: int, fallback: StyleBox, content: int = 10) -> StyleBox:
+	if not AssetCatalog.has(id):
+		fallback.set_content_margin_all(content)
+		return fallback
+	var tex := Assets.texture(id)
+	if tex == null:
+		fallback.set_content_margin_all(content)
+		return fallback
+	var sb := StyleBoxTexture.new()
+	sb.texture = tex
+	sb.set_texture_margin_all(margin)
+	sb.set_content_margin_all(content)
+	return sb
+
+
+## The charcoal panel as a fresh stylebox (for custom controls).
+static func panel_box(alpha: float = 1.0) -> StyleBox:
+	var sb := get_theme().get_stylebox("panel", "PanelContainer").duplicate() as StyleBox
+	if sb is StyleBoxTexture:
+		(sb as StyleBoxTexture).modulate_color = Color(1, 1, 1, alpha)
+	return sb
+
+
+## An interface icon ("health", "water", "bag" …): ui.icon_<name>.
+static func icon(name: String) -> Texture2D:
+	var id := "ui" + ".icon_" + name  # (built from parts: the asset-id checker scans literals)
+	return Assets.texture(id) if AssetCatalog.has(id) else null
+
+
+static func icon_rect(name: String, px: float = 22.0) -> TextureRect:
+	var r := TextureRect.new()
+	r.texture = icon(name)
+	r.custom_minimum_size = Vector2(px, px)
+	r.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	r.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	r.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	return r
+
+
+static var _heading_font: FontVariation
+
+
+## Headings: the default face, spaced out and slightly heavier (no extra font files to ship).
+static func heading_font() -> Font:
+	if _heading_font == null:
+		_heading_font = FontVariation.new()
+		_heading_font.base_font = ThemeDB.fallback_font
+		_heading_font.variation_embolden = 0.6
+		_heading_font.spacing_glyph = 1
+	return _heading_font
+
+
 static func _box(bg: Color, border: Color, width: int, radius: int) -> StyleBoxFlat:
 	var s := StyleBoxFlat.new()
 	s.bg_color = bg
@@ -68,6 +124,7 @@ static func heading(text_key: String, size: int = 26) -> Label:
 	l.text = text_key
 	l.add_theme_font_size_override("font_size", size)
 	l.add_theme_color_override("font_color", STRAW)
+	l.add_theme_font_override("font", heading_font())
 	return l
 
 

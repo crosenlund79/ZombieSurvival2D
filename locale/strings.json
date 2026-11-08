@@ -4794,5 +4794,21 @@
 	"DEV_VIGNETTE": {
 		"en": "Vignette 0 / ½ / 1",
 		"da": "Vignet 0 / ½ / 1"
+	},
+	"HUD_AMMO_SHORT": {
+		"en": "%s/%s  +%s",
+		"da": "%s/%s  +%s"
+	},
+	"HUD_LIGHT_ON": {
+		"en": "Light",
+		"da": "Lys"
+	},
+	"INV_SELECT_HINT": {
+		"en": "Select an item to see what it is good for. Hover any tile for details.",
+		"da": "Vælg en genstand for at se, hvad den kan bruges til. Hold musen over et felt for detaljer."
+	},
+	"SETTINGS_VIGNETTE": {
+		"en": "Vignette",
+		"da": "Vignet"
 	}
 }
