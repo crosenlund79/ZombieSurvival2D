@@ -167,9 +167,9 @@ func test_rain_fills_collectors_faster() -> void:
 func test_service_station_discovery_and_unique_loot() -> void:
 	var w := WorldState.create_new("w_poi", 27)
 	w.threat.enabled = false
-	var a := _player(w, PID, "homestead", Vector2(2350, 1400))
-	var r := WorldActions.request_interact(w, PID, "homestead.road_east", 0)
-	check(r["ok"], "road east: " + str(r["reason"]))
+	var a := _player(w, PID, "homestead", Vector2(2420, 1400))
+	var r := WorldActions.edge_travel(w, a)  # iteration 015: walk off the east edge
+	check(r.get("ok", false), "east edge: " + str(r.get("reason", "")))
 	eq(a.region_id, "service_station", "travelled")
 	check(w.meta.get("discoveries", {}).has("service_station"), "discovery recorded")
 	a.position = Vector2(2000, 570)

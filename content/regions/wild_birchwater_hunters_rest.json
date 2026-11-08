@@ -1,0 +1,207 @@
+{
+	"region_id": "wild.birchwater.hunters_rest",
+	"display_key": "REGION_WILD_BIRCHWATER_HUNTERS_REST",
+	"view": "side",
+	"style": "building",
+	"bounds": [
+		0,
+		0,
+		1536,
+		768
+	],
+	"excavation": {
+		"cell": 64,
+		"origin": [
+			0,
+			0
+		],
+		"cols": 24,
+		"rows": 12,
+		"fixed": true,
+		"initial_open": [
+			[
+				5,
+				4,
+				14,
+				4
+			]
+		],
+		"platforms": [],
+		"_comment": "Authored building cross-section (tools/build_side_interiors.py); fixed, never dug."
+	},
+	"section": {
+		"ground_row": 8,
+		"envelope": [
+			4,
+			3,
+			16,
+			6
+		],
+		"exterior": "side.ext_logs",
+		"basement": "",
+		"rooms": [
+			{
+				"rect": [
+					5,
+					4,
+					14,
+					4
+				],
+				"wall": "side.wall_cabin",
+				"floor": "side.floorboards"
+			}
+		],
+		"windows": [
+			[
+				576.0,
+				363.5
+			],
+			[
+				1024.0,
+				363.5,
+				"boarded"
+			]
+		],
+		"dividers": [],
+		"labels": []
+	},
+	"side_props": [
+		{
+			"asset": "world.furniture_stove",
+			"x": 486.4,
+			"y": 509
+		},
+		{
+			"asset": "world.furniture_table",
+			"x": 755.2,
+			"y": 509
+		},
+		{
+			"asset": "world.furniture_bed",
+			"x": 1088.0,
+			"y": 509,
+			"back": true
+		},
+		{
+			"asset": "int.armchair",
+			"x": 1024.0,
+			"y": 509
+		},
+		{
+			"asset": "side.clock",
+			"x": 392.3,
+			"y": 416,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.coat_hooks",
+			"x": 787.1,
+			"y": 398,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.lamp_hanging",
+			"x": 620.9,
+			"y": 260,
+			"hang": true,
+			"light": true
+		},
+		{
+			"asset": "side.cobweb",
+			"x": 1177.6,
+			"y": 260,
+			"hang": true
+		},
+		{
+			"asset": "side.curtains",
+			"x": 576.0,
+			"y": 423.5,
+			"back": true,
+			"wall": true
+		}
+	],
+	"spawn_points": [
+		[
+			422.4,
+			509
+		]
+	],
+	"entities": [
+		{
+			"id": "wild.birchwater.hunters_rest.exit",
+			"type": "portal",
+			"interact_range": 70,
+			"priority": 2,
+			"side_art": "side.door_ext",
+			"target": {
+				"region": "wild.birchwater",
+				"position": [
+					6400,
+					1105
+				]
+			},
+			"prompt_key": "PROMPT_EXIT_CABIN",
+			"position": [
+				364.8,
+				509
+			]
+		},
+		{
+			"id": "wild.birchwater.hunters_rest.cupboard",
+			"type": "container",
+			"kind": "cupboard",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_CUPBOARD",
+			"art": "world.furniture_cupboard",
+			"art_searched": "world.furniture_cupboard",
+			"loot": {},
+			"pool": "hunter_cabin",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				614.4,
+				509
+			]
+		},
+		{
+			"id": "wild.birchwater.hunters_rest.chest",
+			"type": "container",
+			"kind": "crate",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_CRATE",
+			"art": "int.crate",
+			"art_searched": "int.crate_open",
+			"loot": {},
+			"pool": "home_closet",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				883.2,
+				509
+			]
+		}
+	],
+	"surface": {
+		"region": "wild.birchwater",
+		"position": [
+			6400,
+			1045
+		]
+	},
+	"tint": [
+		0.55,
+		0.5,
+		0.46
+	],
+	"climate": {
+		"exposure": 1.0,
+		"fog": 0.0,
+		"shelter": 0.45
+	},
+	"interior": true,
+	"ambience": "amb.wind_muffled"
+}

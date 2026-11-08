@@ -10,60 +10,6 @@
 	],
 	"entities": [
 		{
-			"id": "junction.road_west",
-			"type": "portal",
-			"position": [
-				60,
-				1100
-			],
-			"interact_range": 80,
-			"priority": 2,
-			"target": {
-				"region": "town",
-				"position": [
-					3040,
-					1010
-				]
-			},
-			"prompt_key": "PROMPT_ROAD_ASHGROVE"
-		},
-		{
-			"id": "junction.road_east",
-			"type": "portal",
-			"position": [
-				3140,
-				1100
-			],
-			"interact_range": 80,
-			"priority": 2,
-			"target": {
-				"region": "stillwater",
-				"position": [
-					220,
-					1200
-				]
-			},
-			"prompt_key": "PROMPT_ROAD_STILLWATER"
-		},
-		{
-			"id": "junction.road_north",
-			"type": "portal",
-			"position": [
-				1600,
-				60
-			],
-			"interact_range": 80,
-			"priority": 2,
-			"target": {
-				"region": "greyhollow",
-				"position": [
-					1400,
-					2040
-				]
-			},
-			"prompt_key": "PROMPT_ROAD_GREYHOLLOW"
-		},
-		{
 			"id": "junction.machine_shop_entrance",
 			"type": "portal",
 			"position": [
@@ -244,56 +190,7 @@
 			}
 		}
 	],
-	"vehicle_exits": [
-		{
-			"rect": [
-				0,
-				1010,
-				40,
-				180
-			],
-			"target": {
-				"region": "town",
-				"position": [
-					3040,
-					1010
-				],
-				"rotation": 180
-			}
-		},
-		{
-			"rect": [
-				3160,
-				1010,
-				40,
-				180
-			],
-			"target": {
-				"region": "stillwater",
-				"position": [
-					220,
-					1200
-				],
-				"rotation": 0
-			}
-		},
-		{
-			"rect": [
-				1510,
-				0,
-				180,
-				40
-			],
-			"target": {
-				"region": "greyhollow",
-				"position": [
-					1400,
-					2040
-				],
-				"rotation": -90
-			}
-		}
-	],
+	"vehicle_exits": [],
 	"spawn_points": [
 		[
 			220,
@@ -397,8 +294,8 @@
 	},
 	"map": {
 		"offset": [
-			7840,
-			285
+			29800,
+			295
 		],
 		"areas": [
 			{
@@ -577,7 +474,7 @@
 					1400
 				],
 				"size": [
-					280,
+					320,
 					80
 				]
 			},
@@ -588,7 +485,7 @@
 					1400
 				],
 				"size": [
-					280,
+					310,
 					80
 				]
 			},
@@ -615,6 +512,50 @@
 					90
 				],
 				"label_key": "MAP_WATER_TOWER"
+			},
+			{
+				"kind": "building",
+				"position": [
+					2534,
+					599
+				],
+				"size": [
+					310,
+					70
+				]
+			},
+			{
+				"kind": "building",
+				"position": [
+					2849,
+					1687
+				],
+				"size": [
+					320,
+					70
+				]
+			},
+			{
+				"kind": "building",
+				"position": [
+					874,
+					497
+				],
+				"size": [
+					320,
+					70
+				]
+			},
+			{
+				"kind": "building",
+				"position": [
+					2034,
+					500
+				],
+				"size": [
+					360,
+					70
+				]
 			}
 		]
 	}

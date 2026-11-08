@@ -1,0 +1,578 @@
+{
+	"kind": "visual",
+	"category": "wilderness",
+	"assets": [
+		{
+			"id": "world.cabin_small",
+			"name": "Small hunting cabin",
+			"template": "res://assets/templates/world/cabins/template_cabin_small.png",
+			"display_size": [
+				260,
+				220
+			],
+			"source_size": [
+				520,
+				440
+			],
+			"pivot": [
+				0.5,
+				0.9409
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_wilderness.py) - replace with tablet art."
+		},
+		{
+			"id": "world.cabin_porch",
+			"name": "Log cabin with porch",
+			"template": "res://assets/templates/world/cabins/template_cabin_porch.png",
+			"display_size": [
+				320,
+				260
+			],
+			"source_size": [
+				640,
+				520
+			],
+			"pivot": [
+				0.5,
+				0.95
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_wilderness.py) - replace with tablet art."
+		},
+		{
+			"id": "world.cabin_large",
+			"name": "Large two-storey timber house",
+			"template": "res://assets/templates/world/cabins/template_cabin_large.png",
+			"display_size": [
+				360,
+				330
+			],
+			"source_size": [
+				720,
+				660
+			],
+			"pivot": [
+				0.5,
+				0.9606
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_wilderness.py) - replace with tablet art."
+		},
+		{
+			"id": "world.cabin_weathered",
+			"name": "Weathered log home",
+			"template": "res://assets/templates/world/cabins/template_cabin_weathered.png",
+			"display_size": [
+				310,
+				250
+			],
+			"source_size": [
+				620,
+				500
+			],
+			"pivot": [
+				0.5,
+				0.948
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_wilderness.py) - replace with tablet art."
+		},
+		{
+			"id": "world.cabin_ruin",
+			"name": "Ruined cabin",
+			"template": "res://assets/templates/world/cabins/template_cabin_ruin.png",
+			"display_size": [
+				300,
+				240
+			],
+			"source_size": [
+				600,
+				480
+			],
+			"pivot": [
+				0.5,
+				0.9458
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_wilderness.py) - replace with tablet art."
+		},
+		{
+			"id": "world.cabin_workshop",
+			"name": "Timber workshop shed",
+			"template": "res://assets/templates/world/cabins/template_cabin_workshop.png",
+			"display_size": [
+				280,
+				210
+			],
+			"source_size": [
+				560,
+				420
+			],
+			"pivot": [
+				0.5,
+				0.9381
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_wilderness.py) - replace with tablet art."
+		},
+		{
+			"id": "world.lean_to",
+			"name": "Woodland lean-to",
+			"template": "res://assets/templates/world/cabins/template_lean_to.png",
+			"display_size": [
+				180,
+				130
+			],
+			"source_size": [
+				360,
+				260
+			],
+			"pivot": [
+				0.5,
+				0.9231
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_wilderness.py) - replace with tablet art."
+		},
+		{
+			"id": "world.outhouse",
+			"name": "Outhouse",
+			"template": "res://assets/templates/world/cabins/template_outhouse.png",
+			"display_size": [
+				70,
+				130
+			],
+			"source_size": [
+				140,
+				260
+			],
+			"pivot": [
+				0.5,
+				0.9462
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_wilderness.py) - replace with tablet art."
+		},
+		{
+			"id": "env.rock_a",
+			"name": "Rock outcrop a",
+			"template": "res://assets/templates/env/wild/template_rock_a.png",
+			"display_size": [
+				100,
+				70
+			],
+			"source_size": [
+				200,
+				140
+			],
+			"pivot": [
+				0.5,
+				0.9
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_wilderness.py) - replace with tablet art."
+		},
+		{
+			"id": "env.rock_b",
+			"name": "Rock outcrop b",
+			"template": "res://assets/templates/env/wild/template_rock_b.png",
+			"display_size": [
+				100,
+				70
+			],
+			"source_size": [
+				200,
+				140
+			],
+			"pivot": [
+				0.5,
+				0.9
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_wilderness.py) - replace with tablet art."
+		},
+		{
+			"id": "env.rock_c",
+			"name": "Rock outcrop c",
+			"template": "res://assets/templates/env/wild/template_rock_c.png",
+			"display_size": [
+				160,
+				100
+			],
+			"source_size": [
+				320,
+				200
+			],
+			"pivot": [
+				0.5,
+				0.93
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_wilderness.py) - replace with tablet art."
+		},
+		{
+			"id": "env.fallen_tree",
+			"name": "Fallen tree",
+			"template": "res://assets/templates/env/wild/template_fallen_tree.png",
+			"display_size": [
+				210,
+				70
+			],
+			"source_size": [
+				420,
+				140
+			],
+			"pivot": [
+				0.5,
+				0.8857
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_wilderness.py) - replace with tablet art."
+		},
+		{
+			"id": "env.woodpile",
+			"name": "Woodpile",
+			"template": "res://assets/templates/env/wild/template_woodpile.png",
+			"display_size": [
+				110,
+				75
+			],
+			"source_size": [
+				220,
+				150
+			],
+			"pivot": [
+				0.5,
+				0.92
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_wilderness.py) - replace with tablet art."
+		},
+		{
+			"id": "env.road_sign",
+			"name": "Road sign (blank board)",
+			"template": "res://assets/templates/env/wild/template_road_sign.png",
+			"display_size": [
+				100,
+				110
+			],
+			"source_size": [
+				200,
+				220
+			],
+			"pivot": [
+				0.5,
+				0.9545
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_wilderness.py) - replace with tablet art."
+		},
+		{
+			"id": "env.power_pole",
+			"name": "Power pole",
+			"template": "res://assets/templates/env/wild/template_power_pole.png",
+			"display_size": [
+				80,
+				220
+			],
+			"source_size": [
+				160,
+				440
+			],
+			"pivot": [
+				0.5,
+				0.9773
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_wilderness.py) - replace with tablet art."
+		},
+		{
+			"id": "env.hunting_stand",
+			"name": "Hunting stand",
+			"template": "res://assets/templates/env/wild/template_hunting_stand.png",
+			"display_size": [
+				110,
+				230
+			],
+			"source_size": [
+				220,
+				460
+			],
+			"pivot": [
+				0.5,
+				0.9783
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_wilderness.py) - replace with tablet art."
+		},
+		{
+			"id": "env.buried_car",
+			"name": "Snow-buried car",
+			"template": "res://assets/templates/env/wild/template_buried_car.png",
+			"display_size": [
+				230,
+				120
+			],
+			"source_size": [
+				460,
+				240
+			],
+			"pivot": [
+				0.5,
+				0.9333
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_wilderness.py) - replace with tablet art."
+		},
+		{
+			"id": "env.radio_mast",
+			"name": "Radio mast",
+			"template": "res://assets/templates/env/wild/template_radio_mast.png",
+			"display_size": [
+				100,
+				350
+			],
+			"source_size": [
+				200,
+				700
+			],
+			"pivot": [
+				0.5,
+				0.9857
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_wilderness.py) - replace with tablet art."
+		},
+		{
+			"id": "env.fence_broken",
+			"name": "Broken fence",
+			"template": "res://assets/templates/env/wild/template_fence_broken.png",
+			"display_size": [
+				150,
+				70
+			],
+			"source_size": [
+				300,
+				140
+			],
+			"pivot": [
+				0.5,
+				0.9286
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_wilderness.py) - replace with tablet art."
+		},
+		{
+			"id": "env.bicycle",
+			"name": "Abandoned bicycle",
+			"template": "res://assets/templates/env/wild/template_bicycle.png",
+			"display_size": [
+				100,
+				60
+			],
+			"source_size": [
+				200,
+				120
+			],
+			"pivot": [
+				0.5,
+				0.9167
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_wilderness.py) - replace with tablet art."
+		},
+		{
+			"id": "env.barrels",
+			"name": "Barrels",
+			"template": "res://assets/templates/env/wild/template_barrels.png",
+			"display_size": [
+				80,
+				55
+			],
+			"source_size": [
+				160,
+				110
+			],
+			"pivot": [
+				0.5,
+				0.9091
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_wilderness.py) - replace with tablet art."
+		},
+		{
+			"id": "env.bench",
+			"name": "Porch bench",
+			"template": "res://assets/templates/env/wild/template_bench.png",
+			"display_size": [
+				90,
+				55
+			],
+			"source_size": [
+				180,
+				110
+			],
+			"pivot": [
+				0.5,
+				0.9091
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_wilderness.py) - replace with tablet art."
+		},
+		{
+			"id": "env.crates",
+			"name": "Stacked crates",
+			"template": "res://assets/templates/env/wild/template_crates.png",
+			"display_size": [
+				90,
+				75
+			],
+			"source_size": [
+				180,
+				150
+			],
+			"pivot": [
+				0.5,
+				0.9333
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_wilderness.py) - replace with tablet art."
+		},
+		{
+			"id": "env.stove_rusted",
+			"name": "Rusted stove left outside",
+			"template": "res://assets/templates/env/wild/template_stove_rusted.png",
+			"display_size": [
+				80,
+				90
+			],
+			"source_size": [
+				160,
+				180
+			],
+			"pivot": [
+				0.5,
+				0.9444
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_wilderness.py) - replace with tablet art."
+		},
+		{
+			"id": "env.belongings",
+			"name": "Abandoned belongings",
+			"template": "res://assets/templates/env/wild/template_belongings.png",
+			"display_size": [
+				100,
+				35
+			],
+			"source_size": [
+				200,
+				70
+			],
+			"pivot": [
+				0.5,
+				0.8571
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_wilderness.py) - replace with tablet art."
+		},
+		{
+			"id": "env.sign_wood",
+			"name": "Hand-painted wooden sign",
+			"template": "res://assets/templates/env/wild/template_sign_wood.png",
+			"display_size": [
+				80,
+				80
+			],
+			"source_size": [
+				160,
+				160
+			],
+			"pivot": [
+				0.5,
+				0.9375
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_wilderness.py) - replace with tablet art."
+		}
+	]
+}

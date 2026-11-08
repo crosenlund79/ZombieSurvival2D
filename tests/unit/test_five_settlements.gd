@@ -127,6 +127,8 @@ func _road_graph(w: WorldState) -> Dictionary:
 		var next: Array = []
 		for ex in def.get("vehicle_exits", []):
 			next.append(str(ex["target"]["region"]))
+		# iteration 015: outdoor regions connect along shared edges (WorldGeo)
+		next.append_array(_edge_neighbours(rid))
 		for eid in Content.entity_ids(rid):
 			var e := Content.entity_def(rid, eid)
 			if str(e.get("type", "")) == "portal" and e.get("target", {}).has("region"):
@@ -136,6 +138,26 @@ func _road_graph(w: WorldState) -> Dictionary:
 				seen[n] = true
 				todo.append(n)
 	return seen
+
+
+## Outdoor regions across this region's open edges (WorldGeo).
+func _edge_neighbours(rid: String) -> Array:
+	var out := []
+	var b := WorldGeo.local_bounds(rid)
+	var open := WorldGeo.open_edges(rid)
+	for side in open:
+		for span in open[side]:
+			var mid := (float(span[0]) + float(span[1])) * 0.5
+			var p := Vector2.ZERO
+			match side:
+				"west": p = Vector2(b.position.x - 40, mid)
+				"east": p = Vector2(b.end.x + 40, mid)
+				"north": p = Vector2(mid, b.position.y - 40)
+				"south": p = Vector2(mid, b.end.y + 40)
+			var n := WorldGeo.region_at(WorldGeo.to_world(rid, p), rid)
+			if n != "" and not (n in out):
+				out.append(n)
+	return out
 
 
 func _walk(w: WorldState, r: RegionState, from: Vector2, to_x: float) -> Vector2:

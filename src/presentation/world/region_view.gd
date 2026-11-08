@@ -56,6 +56,7 @@ func _ready() -> void:
 	Session.vitals_changed.connect(func(_p: String) -> void: _refresh_vitals())
 	Session.combat_event.connect(_on_combat_event)
 	Session.object_changed.connect(_on_object_changed)
+	_rebuild_walls()
 	_sync_avatars()
 	_sync_objects()
 	if Content.region_def(def_id).has("zombies"):
@@ -69,6 +70,29 @@ func _ready() -> void:
 	else:
 		Audio.stop_loop("ambience2", 1.0)
 	SessionLog.info("view", "region_view_built", {"region": region_id, "def": def_id})
+
+
+## Iteration 015: outdoor regions take their boundary walls from the world
+## geography — closed where nothing lies beyond, set back where a neighbouring
+## region continues (so you can walk or drive over the edge into it).
+func _rebuild_walls() -> void:
+	if side or not WorldGeo.is_outdoor(Content.region_def(def_id)):
+		return
+	var body := get_node_or_null("Bounds") as StaticBody2D
+	if body == null:
+		body = StaticBody2D.new()
+		body.name = "Bounds"
+		add_child(body)
+	for c in body.get_children():
+		body.remove_child(c)
+		c.queue_free()
+	for r in WorldGeo.walls(def_id):
+		var cs := CollisionShape2D.new()
+		var rs := RectangleShape2D.new()
+		rs.size = (r as Rect2).size
+		cs.shape = rs
+		cs.position = (r as Rect2).get_center()
+		body.add_child(cs)
 
 
 func region_state() -> RegionState:

@@ -277,32 +277,26 @@ entity_id = "service_station.house_pantry"
 script = ExtResource("machinev")
 entity_id = "service_station.house_wardrobe"
 
-[node name="RoadWest" type="Node2D" parent="YSort"]
-script = ExtResource("portalv")
-entity_id = "service_station.road_west"
 
-[node name="RoadEast" type="Node2D" parent="YSort"]
-script = ExtResource("portalv")
-entity_id = "service_station.road_east"
 
 [node name="HouseA" type="Node2D" parent="YSort"]
 script = ExtResource("prop")
 position = Vector2(1000, 1050)
-asset_id = "world.house_a"
+asset_id = "world.cabin_porch"
 footprint = Vector2(300, 40)
 occlude = true
 
 [node name="HouseB" type="Node2D" parent="YSort"]
 script = ExtResource("prop")
 position = Vector2(1350, 1060)
-asset_id = "world.house_b"
+asset_id = "world.cabin_large"
 footprint = Vector2(280, 36)
 occlude = true
 
 [node name="HouseC" type="Node2D" parent="YSort"]
 script = ExtResource("prop")
 position = Vector2(1900, 1080)
-asset_id = "world.house_a"
+asset_id = "world.cabin_porch"
 footprint = Vector2(300, 40)
 occlude = true
 flip_h = true
@@ -310,7 +304,7 @@ flip_h = true
 [node name="CollapsedHouse" type="Node2D" parent="YSort"]
 script = ExtResource("prop")
 position = Vector2(420, 600)
-asset_id = "world.house_collapsed"
+asset_id = "world.cabin_ruin"
 footprint = Vector2(240, 22)
 footprint_offset = Vector2(0, -22)
 occlude = true
@@ -539,3 +533,34 @@ min_spacing = 34.0
 [node name="Atmosphere" type="Node2D" parent="."]
 script = ExtResource("atmo")
 area = Rect2(0, 0, 2200, 1400)
+
+[node name="D15_0" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(1720, 640)
+asset_id = "env.barrels"
+footprint = Vector2(110, 30)
+occlude = true
+
+[node name="D15_1" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(2050, 650)
+asset_id = "env.crates"
+footprint = Vector2(130, 30)
+occlude = true
+
+[node name="D15_2" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(820, 1070)
+asset_id = "env.woodpile"
+footprint = Vector2(150, 30)
+occlude = true
+
+[node name="D15_3" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(1250, 1100)
+asset_id = "env.fence_broken"
+
+[node name="D15_4" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(1600, 1080)
+asset_id = "env.bicycle"

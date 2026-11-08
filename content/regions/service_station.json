@@ -238,24 +238,6 @@
 	},
 	"entities": [
 		{
-			"id": "service_station.road_west",
-			"type": "portal",
-			"position": [
-				60,
-				710
-			],
-			"interact_range": 80,
-			"priority": 2,
-			"target": {
-				"region": "homestead",
-				"position": [
-					2290,
-					1400
-				]
-			},
-			"prompt_key": "PROMPT_ROAD_HOME"
-		},
-		{
 			"id": "service_station.pump",
 			"type": "loot",
 			"position": [
@@ -398,24 +380,6 @@
 			"initial": {
 				"looted_at": -1
 			}
-		},
-		{
-			"id": "service_station.road_east",
-			"type": "portal",
-			"position": [
-				2140,
-				710
-			],
-			"interact_range": 80,
-			"priority": 2,
-			"target": {
-				"region": "town",
-				"position": [
-					150,
-					1010
-				]
-			},
-			"prompt_key": "PROMPT_ROAD_TOWN"
 		}
 	],
 	"discovery": "service_station",
@@ -525,38 +489,5 @@
 			"rotation": 200
 		}
 	],
-	"vehicle_exits": [
-		{
-			"rect": [
-				0,
-				620,
-				40,
-				180
-			],
-			"target": {
-				"region": "homestead",
-				"position": [
-					2200,
-					1400
-				],
-				"rotation": 180
-			}
-		},
-		{
-			"rect": [
-				2160,
-				620,
-				40,
-				180
-			],
-			"target": {
-				"region": "town",
-				"position": [
-					220,
-					1010
-				],
-				"rotation": 0
-			}
-		}
-	]
+	"vehicle_exits": []
 }

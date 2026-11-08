@@ -1,0 +1,710 @@
+{
+	"kind": "visual",
+	"category": "interior_dressing",
+	"assets": [
+		{
+			"id": "side.frame",
+			"name": "Picture frame",
+			"template": "res://assets/templates/side/dress/template_frame.png",
+			"display_size": [
+				60,
+				50
+			],
+			"source_size": [
+				120,
+				100
+			],
+			"pivot": [
+				0.5,
+				1.0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_interior_dressing.py) - replace with tablet art."
+		},
+		{
+			"id": "side.frame_tilt",
+			"name": "Tilted picture frame (cracked)",
+			"template": "res://assets/templates/side/dress/template_frame_tilt.png",
+			"display_size": [
+				60,
+				50
+			],
+			"source_size": [
+				120,
+				100
+			],
+			"pivot": [
+				0.5,
+				1.0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_interior_dressing.py) - replace with tablet art."
+		},
+		{
+			"id": "side.clock",
+			"name": "Stopped wall clock",
+			"template": "res://assets/templates/side/dress/template_clock.png",
+			"display_size": [
+				45,
+				45
+			],
+			"source_size": [
+				90,
+				90
+			],
+			"pivot": [
+				0.5,
+				1.0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_interior_dressing.py) - replace with tablet art."
+		},
+		{
+			"id": "side.coat_hooks",
+			"name": "Coat hooks with coats",
+			"template": "res://assets/templates/side/dress/template_coat_hooks.png",
+			"display_size": [
+				100,
+				100
+			],
+			"source_size": [
+				200,
+				200
+			],
+			"pivot": [
+				0.5,
+				1.0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_interior_dressing.py) - replace with tablet art."
+		},
+		{
+			"id": "side.calendar",
+			"name": "Calendar, days crossed off",
+			"template": "res://assets/templates/side/dress/template_calendar.png",
+			"display_size": [
+				60,
+				75
+			],
+			"source_size": [
+				120,
+				150
+			],
+			"pivot": [
+				0.5,
+				1.0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_interior_dressing.py) - replace with tablet art."
+		},
+		{
+			"id": "side.poster",
+			"name": "Torn poster",
+			"template": "res://assets/templates/side/dress/template_poster.png",
+			"display_size": [
+				65,
+				90
+			],
+			"source_size": [
+				130,
+				180
+			],
+			"pivot": [
+				0.5,
+				1.0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_interior_dressing.py) - replace with tablet art."
+		},
+		{
+			"id": "side.pegboard",
+			"name": "Pegboard with tools",
+			"template": "res://assets/templates/side/dress/template_pegboard.png",
+			"display_size": [
+				110,
+				70
+			],
+			"source_size": [
+				220,
+				140
+			],
+			"pivot": [
+				0.5,
+				1.0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_interior_dressing.py) - replace with tablet art."
+		},
+		{
+			"id": "side.jar_shelf",
+			"name": "Shelf of jars",
+			"template": "res://assets/templates/side/dress/template_jar_shelf.png",
+			"display_size": [
+				110,
+				45
+			],
+			"source_size": [
+				220,
+				90
+			],
+			"pivot": [
+				0.5,
+				1.0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_interior_dressing.py) - replace with tablet art."
+		},
+		{
+			"id": "side.curtains",
+			"name": "Curtains",
+			"template": "res://assets/templates/side/dress/template_curtains.png",
+			"display_size": [
+				75,
+				75
+			],
+			"source_size": [
+				150,
+				150
+			],
+			"pivot": [
+				0.5,
+				1.0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_interior_dressing.py) - replace with tablet art."
+		},
+		{
+			"id": "side.crack",
+			"name": "Wall crack",
+			"template": "res://assets/templates/side/dress/template_crack.png",
+			"display_size": [
+				60,
+				100
+			],
+			"source_size": [
+				120,
+				200
+			],
+			"pivot": [
+				0.5,
+				1.0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_interior_dressing.py) - replace with tablet art."
+		},
+		{
+			"id": "side.stain",
+			"name": "Water stain",
+			"template": "res://assets/templates/side/dress/template_stain.png",
+			"display_size": [
+				80,
+				80
+			],
+			"source_size": [
+				160,
+				160
+			],
+			"pivot": [
+				0.5,
+				1.0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_interior_dressing.py) - replace with tablet art."
+		},
+		{
+			"id": "side.cobweb",
+			"name": "Cobweb (corner)",
+			"template": "res://assets/templates/side/dress/template_cobweb.png",
+			"display_size": [
+				45,
+				45
+			],
+			"source_size": [
+				90,
+				90
+			],
+			"pivot": [
+				0.5,
+				1.0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_interior_dressing.py) - replace with tablet art."
+		},
+		{
+			"id": "side.lamp_hanging",
+			"name": "Hanging ceiling lamp",
+			"template": "res://assets/templates/side/dress/template_lamp_hanging.png",
+			"display_size": [
+				55,
+				80
+			],
+			"source_size": [
+				110,
+				160
+			],
+			"pivot": [
+				0.5,
+				0.0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_interior_dressing.py) - replace with tablet art."
+		},
+		{
+			"id": "side.pipes",
+			"name": "Exposed pipes",
+			"template": "res://assets/templates/side/dress/template_pipes.png",
+			"display_size": [
+				200,
+				30
+			],
+			"source_size": [
+				400,
+				60
+			],
+			"pivot": [
+				0.5,
+				0.0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_interior_dressing.py) - replace with tablet art."
+		},
+		{
+			"id": "side.rug",
+			"name": "Rug",
+			"template": "res://assets/templates/side/dress/template_rug.png",
+			"display_size": [
+				130,
+				18
+			],
+			"source_size": [
+				260,
+				36
+			],
+			"pivot": [
+				0.5,
+				1.0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_interior_dressing.py) - replace with tablet art."
+		},
+		{
+			"id": "side.side_table_lamp",
+			"name": "Side table with lamp",
+			"template": "res://assets/templates/side/dress/template_side_table_lamp.png",
+			"display_size": [
+				60,
+				80
+			],
+			"source_size": [
+				120,
+				160
+			],
+			"pivot": [
+				0.5,
+				1.0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_interior_dressing.py) - replace with tablet art."
+		},
+		{
+			"id": "side.chair",
+			"name": "Chair",
+			"template": "res://assets/templates/side/dress/template_chair.png",
+			"display_size": [
+				45,
+				70
+			],
+			"source_size": [
+				90,
+				140
+			],
+			"pivot": [
+				0.5,
+				1.0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_interior_dressing.py) - replace with tablet art."
+		},
+		{
+			"id": "side.chair_fallen",
+			"name": "Knocked-over chair",
+			"template": "res://assets/templates/side/dress/template_chair_fallen.png",
+			"display_size": [
+				70,
+				45
+			],
+			"source_size": [
+				140,
+				90
+			],
+			"pivot": [
+				0.5,
+				1.0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_interior_dressing.py) - replace with tablet art."
+		},
+		{
+			"id": "side.boots",
+			"name": "Pair of boots",
+			"template": "res://assets/templates/side/dress/template_boots.png",
+			"display_size": [
+				50,
+				30
+			],
+			"source_size": [
+				100,
+				60
+			],
+			"pivot": [
+				0.5,
+				1.0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_interior_dressing.py) - replace with tablet art."
+		},
+		{
+			"id": "side.bottles",
+			"name": "Bottles on the floor",
+			"template": "res://assets/templates/side/dress/template_bottles.png",
+			"display_size": [
+				55,
+				30
+			],
+			"source_size": [
+				110,
+				60
+			],
+			"pivot": [
+				0.5,
+				1.0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_interior_dressing.py) - replace with tablet art."
+		},
+		{
+			"id": "side.books",
+			"name": "Pile of books",
+			"template": "res://assets/templates/side/dress/template_books.png",
+			"display_size": [
+				65,
+				35
+			],
+			"source_size": [
+				130,
+				70
+			],
+			"pivot": [
+				0.5,
+				1.0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_interior_dressing.py) - replace with tablet art."
+		},
+		{
+			"id": "side.debris",
+			"name": "Debris on the floor",
+			"template": "res://assets/templates/side/dress/template_debris.png",
+			"display_size": [
+				110,
+				20
+			],
+			"source_size": [
+				220,
+				40
+			],
+			"pivot": [
+				0.5,
+				1.0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_interior_dressing.py) - replace with tablet art."
+		},
+		{
+			"id": "side.plant_dead",
+			"name": "Dead pot plant",
+			"template": "res://assets/templates/side/dress/template_plant_dead.png",
+			"display_size": [
+				55,
+				60
+			],
+			"source_size": [
+				110,
+				120
+			],
+			"pivot": [
+				0.5,
+				1.0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_interior_dressing.py) - replace with tablet art."
+		},
+		{
+			"id": "side.radiator",
+			"name": "Radiator",
+			"template": "res://assets/templates/side/dress/template_radiator.png",
+			"display_size": [
+				80,
+				45
+			],
+			"source_size": [
+				160,
+				90
+			],
+			"pivot": [
+				0.5,
+				1.0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_interior_dressing.py) - replace with tablet art."
+		},
+		{
+			"id": "side.register",
+			"name": "Cash register",
+			"template": "res://assets/templates/side/dress/template_register.png",
+			"display_size": [
+				60,
+				40
+			],
+			"source_size": [
+				120,
+				80
+			],
+			"pivot": [
+				0.5,
+				1.0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_interior_dressing.py) - replace with tablet art."
+		},
+		{
+			"id": "side.mannequin",
+			"name": "Mannequin",
+			"template": "res://assets/templates/side/dress/template_mannequin.png",
+			"display_size": [
+				60,
+				120
+			],
+			"source_size": [
+				120,
+				240
+			],
+			"pivot": [
+				0.5,
+				1.0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_interior_dressing.py) - replace with tablet art."
+		},
+		{
+			"id": "side.boot_rack",
+			"name": "Boot rack",
+			"template": "res://assets/templates/side/dress/template_boot_rack.png",
+			"display_size": [
+				90,
+				100
+			],
+			"source_size": [
+				180,
+				200
+			],
+			"pivot": [
+				0.5,
+				1.0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_interior_dressing.py) - replace with tablet art."
+		},
+		{
+			"id": "side.coat_rail",
+			"name": "Coat rail (full)",
+			"template": "res://assets/templates/side/dress/template_coat_rail.png",
+			"display_size": [
+				110,
+				110
+			],
+			"source_size": [
+				220,
+				220
+			],
+			"pivot": [
+				0.5,
+				1.0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_interior_dressing.py) - replace with tablet art."
+		},
+		{
+			"id": "side.coat_rail_empty",
+			"name": "Coat rail (picked over)",
+			"template": "res://assets/templates/side/dress/template_coat_rail_empty.png",
+			"display_size": [
+				110,
+				110
+			],
+			"source_size": [
+				220,
+				220
+			],
+			"pivot": [
+				0.5,
+				1.0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_interior_dressing.py) - replace with tablet art."
+		},
+		{
+			"id": "side.stock_crates",
+			"name": "Crates of stock",
+			"template": "res://assets/templates/side/dress/template_stock_crates.png",
+			"display_size": [
+				95,
+				85
+			],
+			"source_size": [
+				190,
+				170
+			],
+			"pivot": [
+				0.5,
+				1.0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_interior_dressing.py) - replace with tablet art."
+		},
+		{
+			"id": "side.counter",
+			"name": "Shop counter",
+			"template": "res://assets/templates/side/dress/template_counter.png",
+			"display_size": [
+				160,
+				55
+			],
+			"source_size": [
+				320,
+				110
+			],
+			"pivot": [
+				0.5,
+				1.0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_interior_dressing.py) - replace with tablet art."
+		},
+		{
+			"id": "side.shelf_goods",
+			"name": "Shelf of goods (picked over)",
+			"template": "res://assets/templates/side/dress/template_shelf_goods.png",
+			"display_size": [
+				100,
+				115
+			],
+			"source_size": [
+				200,
+				230
+			],
+			"pivot": [
+				0.5,
+				1.0
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "simple",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_interior_dressing.py) - replace with tablet art."
+		}
+	]
+}

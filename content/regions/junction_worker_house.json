@@ -92,6 +92,55 @@
 			"asset": "int.meal_table",
 			"x": 870.4,
 			"y": 509
+		},
+		{
+			"asset": "side.stain",
+			"x": 441.6,
+			"y": 422,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.stain",
+			"x": 655.4,
+			"y": 408,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.frame_tilt",
+			"x": 846.7,
+			"y": 403,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.frame",
+			"x": 1050.8,
+			"y": 411,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.clock",
+			"x": 1248.7,
+			"y": 407,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.lamp_hanging",
+			"x": 873.3,
+			"y": 260,
+			"hang": true,
+			"light": true
+		},
+		{
+			"asset": "side.cobweb",
+			"x": 1305.6,
+			"y": 260,
+			"hang": true,
+			"flip": true
 		}
 	],
 	"spawn_points": [

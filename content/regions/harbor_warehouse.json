@@ -70,6 +70,78 @@
 			"asset": "int.boxes",
 			"x": 1216.0,
 			"y": 509
+		},
+		{
+			"asset": "side.books",
+			"x": 681.6,
+			"y": 509
+		},
+		{
+			"asset": "side.chair_fallen",
+			"x": 1770.9,
+			"y": 509
+		},
+		{
+			"asset": "side.clock",
+			"x": 610.3,
+			"y": 405,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.stain",
+			"x": 841.7,
+			"y": 421,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.stain",
+			"x": 1232.2,
+			"y": 405,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.clock",
+			"x": 1629.8,
+			"y": 426,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.stain",
+			"x": 1799.2,
+			"y": 417,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.frame_tilt",
+			"x": 2133.8,
+			"y": 399,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.lamp_hanging",
+			"x": 1500.1,
+			"y": 260,
+			"hang": true
+		},
+		{
+			"asset": "side.cobweb",
+			"x": 2201.6,
+			"y": 260,
+			"hang": true,
+			"flip": true
+		},
+		{
+			"asset": "side.curtains",
+			"x": 1920.0,
+			"y": 423.5,
+			"back": true,
+			"wall": true
 		}
 	],
 	"spawn_points": [

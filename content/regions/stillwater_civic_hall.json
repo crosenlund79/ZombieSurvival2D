@@ -229,6 +229,174 @@
 			"asset": "int.boxes",
 			"x": 1408.0,
 			"y": 509
+		},
+		{
+			"asset": "side.plant_dead",
+			"x": 432.0,
+			"y": 1149
+		},
+		{
+			"asset": "side.books",
+			"x": 1075.7,
+			"y": 1149,
+			"flip": true
+		},
+		{
+			"asset": "side.poster",
+			"x": 823.2,
+			"y": 1047,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.calendar",
+			"x": 1132.8,
+			"y": 1064,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.stain",
+			"x": 1723.4,
+			"y": 1039,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.lamp_hanging",
+			"x": 1335.1,
+			"y": 900,
+			"hang": true,
+			"light": true
+		},
+		{
+			"asset": "side.cobweb",
+			"x": 358.4,
+			"y": 900,
+			"hang": true,
+			"flip": true
+		},
+		{
+			"asset": "side.debris",
+			"x": 596.6,
+			"y": 829
+		},
+		{
+			"asset": "side.plant_dead",
+			"x": 1640.0,
+			"y": 829
+		},
+		{
+			"asset": "side.chair_fallen",
+			"x": 1792.1,
+			"y": 829
+		},
+		{
+			"asset": "side.poster",
+			"x": 601.8,
+			"y": 732,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.crack",
+			"x": 796.1,
+			"y": 738,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.clock",
+			"x": 1009.2,
+			"y": 731,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.crack",
+			"x": 1572.5,
+			"y": 726,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.lamp_hanging",
+			"x": 940.1,
+			"y": 580,
+			"hang": true,
+			"light": true
+		},
+		{
+			"asset": "side.cobweb",
+			"x": 1817.6,
+			"y": 580,
+			"hang": true
+		},
+		{
+			"asset": "side.chair",
+			"x": 428.8,
+			"y": 509,
+			"flip": true
+		},
+		{
+			"asset": "side.radiator",
+			"x": 555.8,
+			"y": 509
+		},
+		{
+			"asset": "side.books",
+			"x": 814.1,
+			"y": 509,
+			"flip": true
+		},
+		{
+			"asset": "side.clock",
+			"x": 431.0,
+			"y": 407,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.clock",
+			"x": 586.4,
+			"y": 411,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.poster",
+			"x": 1039.2,
+			"y": 407,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.frame",
+			"x": 1197.1,
+			"y": 405,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.crack",
+			"x": 1576.0,
+			"y": 405,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.lamp_hanging",
+			"x": 1386.0,
+			"y": 260,
+			"hang": true,
+			"light": true
+		},
+		{
+			"asset": "side.curtains",
+			"x": 640.0,
+			"y": 743.5,
+			"back": true,
+			"wall": true
 		}
 	],
 	"spawn_points": [

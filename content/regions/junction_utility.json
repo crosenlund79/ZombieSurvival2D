@@ -113,6 +113,72 @@
 			"asset": "int.boxes",
 			"x": 985.6,
 			"y": 829
+		},
+		{
+			"asset": "side.stain",
+			"x": 417.8,
+			"y": 731,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.stain",
+			"x": 668.5,
+			"y": 744,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.poster",
+			"x": 898.2,
+			"y": 721,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.poster",
+			"x": 1290.7,
+			"y": 723,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.lamp_hanging",
+			"x": 1025.2,
+			"y": 580,
+			"hang": true,
+			"light": true
+		},
+		{
+			"asset": "side.chair_fallen",
+			"x": 1168.9,
+			"y": 509,
+			"flip": true
+		},
+		{
+			"asset": "side.debris",
+			"x": 1328.8,
+			"y": 509
+		},
+		{
+			"asset": "side.clock",
+			"x": 555.3,
+			"y": 414,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.stain",
+			"x": 1152.6,
+			"y": 416,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.lamp_hanging",
+			"x": 719.9,
+			"y": 260,
+			"hang": true
 		}
 	],
 	"spawn_points": [

@@ -87,7 +87,75 @@
 			]
 		]
 	},
-	"side_props": [],
+	"side_props": [
+		{
+			"asset": "side.bottles",
+			"x": 1270.0,
+			"y": 509,
+			"flip": true
+		},
+		{
+			"asset": "side.debris",
+			"x": 1853.3,
+			"y": 509
+		},
+		{
+			"asset": "side.calendar",
+			"x": 409.5,
+			"y": 398,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.calendar",
+			"x": 561.1,
+			"y": 407,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.poster",
+			"x": 969.4,
+			"y": 404,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.pegboard",
+			"x": 1144.1,
+			"y": 402,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.jar_shelf",
+			"x": 1302.0,
+			"y": 416,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.poster",
+			"x": 1461.7,
+			"y": 411,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.poster",
+			"x": 1675.0,
+			"y": 418,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.lamp_hanging",
+			"x": 1172.9,
+			"y": 260,
+			"hang": true,
+			"light": true
+		}
+	],
 	"spawn_points": [
 		[
 			422.4,

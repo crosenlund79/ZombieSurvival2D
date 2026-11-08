@@ -150,6 +150,105 @@
 			"asset": "int.bookshelf",
 			"x": 1113.6,
 			"y": 509
+		},
+		{
+			"asset": "side.boots",
+			"x": 787.1,
+			"y": 829
+		},
+		{
+			"asset": "side.frame_tilt",
+			"x": 1100.4,
+			"y": 724,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.calendar",
+			"x": 1399.8,
+			"y": 735,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.lamp_hanging",
+			"x": 851.9,
+			"y": 580,
+			"hang": true
+		},
+		{
+			"asset": "side.cobweb",
+			"x": 358.4,
+			"y": 580,
+			"hang": true
+		},
+		{
+			"asset": "side.radiator",
+			"x": 1415.3,
+			"y": 509,
+			"flip": true
+		},
+		{
+			"asset": "side.stain",
+			"x": 433.1,
+			"y": 399,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.crack",
+			"x": 789.4,
+			"y": 419,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.frame",
+			"x": 970.0,
+			"y": 410,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.stain",
+			"x": 1130.2,
+			"y": 419,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.coat_hooks",
+			"x": 1318.3,
+			"y": 409,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.lamp_hanging",
+			"x": 1060.4,
+			"y": 260,
+			"hang": true,
+			"light": true
+		},
+		{
+			"asset": "side.cobweb",
+			"x": 358.4,
+			"y": 260,
+			"hang": true
+		},
+		{
+			"asset": "side.curtains",
+			"x": 576.0,
+			"y": 743.5,
+			"back": true,
+			"wall": true
+		},
+		{
+			"asset": "side.curtains",
+			"x": 704.0,
+			"y": 423.5,
+			"back": true,
+			"wall": true
 		}
 	],
 	"spawn_points": [

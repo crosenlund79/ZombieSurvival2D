@@ -87,7 +87,81 @@
 			]
 		]
 	},
-	"side_props": [],
+	"side_props": [
+		{
+			"asset": "side.bottles",
+			"x": 1203.9,
+			"y": 509
+		},
+		{
+			"asset": "side.chair_fallen",
+			"x": 1354.9,
+			"y": 509,
+			"flip": true
+		},
+		{
+			"asset": "side.plant_dead",
+			"x": 1894.6,
+			"y": 509,
+			"flip": true
+		},
+		{
+			"asset": "side.stain",
+			"x": 413.6,
+			"y": 413,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.crack",
+			"x": 596.8,
+			"y": 398,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.poster",
+			"x": 1057.8,
+			"y": 413,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.poster",
+			"x": 1274.3,
+			"y": 423,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.clock",
+			"x": 1425.0,
+			"y": 405,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.lamp_hanging",
+			"x": 858.4,
+			"y": 260,
+			"hang": true,
+			"light": true
+		},
+		{
+			"asset": "side.cobweb",
+			"x": 358.4,
+			"y": 260,
+			"hang": true,
+			"flip": true
+		},
+		{
+			"asset": "side.curtains",
+			"x": 832.0,
+			"y": 423.5,
+			"back": true,
+			"wall": true
+		}
+	],
 	"spawn_points": [
 		[
 			422.4,

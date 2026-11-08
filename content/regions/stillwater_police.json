@@ -113,6 +113,99 @@
 			"asset": "int.boxes",
 			"x": 985.6,
 			"y": 829
+		},
+		{
+			"asset": "side.calendar",
+			"x": 436.8,
+			"y": 739,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.frame",
+			"x": 853.6,
+			"y": 734,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.stain",
+			"x": 1257.7,
+			"y": 720,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.lamp_hanging",
+			"x": 971.6,
+			"y": 580,
+			"hang": true,
+			"light": true
+		},
+		{
+			"asset": "side.cobweb",
+			"x": 358.4,
+			"y": 580,
+			"hang": true,
+			"flip": true
+		},
+		{
+			"asset": "side.chair_fallen",
+			"x": 441.6,
+			"y": 509,
+			"flip": true
+		},
+		{
+			"asset": "side.chair_fallen",
+			"x": 892.0,
+			"y": 509
+		},
+		{
+			"asset": "side.debris",
+			"x": 1393.1,
+			"y": 509,
+			"flip": true
+		},
+		{
+			"asset": "side.calendar",
+			"x": 549.2,
+			"y": 401,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.stain",
+			"x": 1112.2,
+			"y": 418,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.poster",
+			"x": 1312.1,
+			"y": 420,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.lamp_hanging",
+			"x": 732.7,
+			"y": 260,
+			"hang": true,
+			"light": true
+		},
+		{
+			"asset": "side.cobweb",
+			"x": 1433.6,
+			"y": 260,
+			"hang": true
+		},
+		{
+			"asset": "side.curtains",
+			"x": 960.0,
+			"y": 423.5,
+			"back": true,
+			"wall": true
 		}
 	],
 	"spawn_points": [

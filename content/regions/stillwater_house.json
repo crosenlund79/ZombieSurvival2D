@@ -56,7 +56,7 @@
 			20,
 			11
 		],
-		"exterior": "side.ext_siding",
+		"exterior": "side.ext_logs",
 		"basement": "",
 		"rooms": [
 			{
@@ -150,6 +150,92 @@
 			"asset": "int.bookshelf",
 			"x": 1113.6,
 			"y": 509
+		},
+		{
+			"asset": "side.clock",
+			"x": 686.6,
+			"y": 720,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.frame",
+			"x": 1142.5,
+			"y": 742,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.stain",
+			"x": 1318.4,
+			"y": 744,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.lamp_hanging",
+			"x": 834.9,
+			"y": 580,
+			"hang": true,
+			"light": true
+		},
+		{
+			"asset": "side.cobweb",
+			"x": 1433.6,
+			"y": 580,
+			"hang": true
+		},
+		{
+			"asset": "side.side_table_lamp",
+			"x": 1318.5,
+			"y": 509
+		},
+		{
+			"asset": "side.coat_hooks",
+			"x": 385.9,
+			"y": 408,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.frame",
+			"x": 748.8,
+			"y": 399,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.lamp_hanging",
+			"x": 897.3,
+			"y": 260,
+			"hang": true
+		},
+		{
+			"asset": "side.cobweb",
+			"x": 358.4,
+			"y": 260,
+			"hang": true
+		},
+		{
+			"asset": "side.curtains",
+			"x": 576.0,
+			"y": 743.5,
+			"back": true,
+			"wall": true
+		},
+		{
+			"asset": "side.curtains",
+			"x": 704.0,
+			"y": 423.5,
+			"back": true,
+			"wall": true
+		},
+		{
+			"asset": "side.curtains",
+			"x": 1088.0,
+			"y": 423.5,
+			"back": true,
+			"wall": true
 		}
 	],
 	"spawn_points": [

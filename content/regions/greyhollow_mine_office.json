@@ -113,6 +113,73 @@
 			"asset": "int.boxes",
 			"x": 985.6,
 			"y": 829
+		},
+		{
+			"asset": "side.books",
+			"x": 1103.3,
+			"y": 829,
+			"flip": true
+		},
+		{
+			"asset": "side.frame",
+			"x": 451.1,
+			"y": 727,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.lamp_hanging",
+			"x": 938.6,
+			"y": 580,
+			"hang": true,
+			"light": true
+		},
+		{
+			"asset": "side.cobweb",
+			"x": 358.4,
+			"y": 580,
+			"hang": true,
+			"flip": true
+		},
+		{
+			"asset": "side.books",
+			"x": 1335.9,
+			"y": 509
+		},
+		{
+			"asset": "side.frame",
+			"x": 472.1,
+			"y": 417,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.stain",
+			"x": 702.3,
+			"y": 414,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.poster",
+			"x": 1246.5,
+			"y": 425,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.lamp_hanging",
+			"x": 1117.3,
+			"y": 260,
+			"hang": true,
+			"light": true
+		},
+		{
+			"asset": "side.cobweb",
+			"x": 1433.6,
+			"y": 260,
+			"hang": true,
+			"flip": true
 		}
 	],
 	"spawn_points": [

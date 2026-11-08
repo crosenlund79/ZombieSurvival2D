@@ -92,6 +92,73 @@
 			"asset": "int.boxes",
 			"x": 1785.6,
 			"y": 509
+		},
+		{
+			"asset": "side.bottles",
+			"x": 910.5,
+			"y": 509
+		},
+		{
+			"asset": "side.crack",
+			"x": 627.1,
+			"y": 404,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.poster",
+			"x": 823.3,
+			"y": 401,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.stain",
+			"x": 1046.1,
+			"y": 411,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.poster",
+			"x": 1211.4,
+			"y": 406,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.stain",
+			"x": 1463.3,
+			"y": 406,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.crack",
+			"x": 1679.4,
+			"y": 425,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.stain",
+			"x": 1913.1,
+			"y": 405,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.poster",
+			"x": 2071.9,
+			"y": 412,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.lamp_hanging",
+			"x": 1269.8,
+			"y": 260,
+			"hang": true
 		}
 	],
 	"spawn_points": [

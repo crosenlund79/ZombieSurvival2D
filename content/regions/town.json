@@ -19,40 +19,7 @@
 		"fog": 1.1
 	},
 	"discovery": "town",
-	"vehicle_exits": [
-		{
-			"rect": [
-				0,
-				920,
-				40,
-				180
-			],
-			"target": {
-				"region": "service_station",
-				"position": [
-					1990,
-					710
-				],
-				"rotation": 180
-			}
-		},
-		{
-			"rect": [
-				3160,
-				920,
-				40,
-				180
-			],
-			"target": {
-				"region": "junction",
-				"position": [
-					220,
-					1100
-				],
-				"rotation": 0
-			}
-		}
-	],
+	"vehicle_exits": [],
 	"zombies": {
 		"base_population": 4,
 		"spawns": [
@@ -176,24 +143,6 @@
 		]
 	},
 	"entities": [
-		{
-			"id": "town.road_west",
-			"type": "portal",
-			"position": [
-				60,
-				1010
-			],
-			"interact_range": 80,
-			"priority": 2,
-			"target": {
-				"region": "service_station",
-				"position": [
-					2050,
-					710
-				]
-			},
-			"prompt_key": "PROMPT_ROAD_STATION"
-		},
 		{
 			"id": "town.house_ruin",
 			"type": "loot",
@@ -409,29 +358,11 @@
 				]
 			},
 			"prompt_key": "PROMPT_ENTER_HOME"
-		},
-		{
-			"id": "town.road_east",
-			"type": "portal",
-			"position": [
-				3140,
-				1010
-			],
-			"interact_range": 80,
-			"priority": 2,
-			"target": {
-				"region": "junction",
-				"position": [
-					220,
-					1100
-				]
-			},
-			"prompt_key": "PROMPT_ROAD_JUNCTION"
 		}
 	],
 	"map": {
 		"offset": [
-			4640,
+			12600,
 			385
 		],
 		"areas": [

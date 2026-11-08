@@ -10,24 +10,6 @@
 	],
 	"entities": [
 		{
-			"id": "greyhollow.road_south",
-			"type": "portal",
-			"position": [
-				1400,
-				2140
-			],
-			"interact_range": 80,
-			"priority": 2,
-			"target": {
-				"region": "junction",
-				"position": [
-					1600,
-					220
-				]
-			},
-			"prompt_key": "PROMPT_ROAD_JUNCTION"
-		},
-		{
 			"id": "greyhollow.mine_entrance",
 			"type": "portal",
 			"position": [
@@ -190,24 +172,7 @@
 			}
 		}
 	],
-	"vehicle_exits": [
-		{
-			"rect": [
-				1310,
-				2160,
-				180,
-				40
-			],
-			"target": {
-				"region": "junction",
-				"position": [
-					1600,
-					220
-				],
-				"rotation": 90
-			}
-		}
-	],
+	"vehicle_exits": [],
 	"spawn_points": [
 		[
 			1400,
@@ -297,8 +262,8 @@
 	},
 	"map": {
 		"offset": [
-			8240,
-			-2215
+			30000,
+			-13905
 		],
 		"areas": [
 			{
@@ -498,7 +463,7 @@
 					1640
 				],
 				"size": [
-					420,
+					360,
 					80
 				],
 				"label_key": "MAP_ROWHOUSES"
@@ -510,7 +475,7 @@
 					1640
 				],
 				"size": [
-					420,
+					320,
 					80
 				]
 			},
@@ -521,10 +486,43 @@
 					1150
 				],
 				"size": [
-					380,
+					280,
 					80
 				],
 				"label_key": "MAP_STORAGE"
+			},
+			{
+				"kind": "building",
+				"position": [
+					317,
+					523
+				],
+				"size": [
+					300,
+					70
+				]
+			},
+			{
+				"kind": "building",
+				"position": [
+					783,
+					489
+				],
+				"size": [
+					310,
+					70
+				]
+			},
+			{
+				"kind": "building",
+				"position": [
+					210,
+					1762
+				],
+				"size": [
+					300,
+					70
+				]
 			}
 		]
 	}

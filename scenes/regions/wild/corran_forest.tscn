@@ -1,0 +1,22 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://src/presentation/world/region_view.gd" id="region"]
+[ext_resource type="Script" path="res://src/presentation/world/wild_terrain.gd" id="wild"]
+[ext_resource type="Script" path="res://src/presentation/world/atmosphere.gd" id="atmo"]
+
+[node name="CorranForest" type="Node2D"]
+script = ExtResource("region")
+region_id = "wild.corran_forest"
+ambience_id = "amb.cold_wind"
+
+[node name="Terrain" type="Node2D" parent="."]
+script = ExtResource("wild")
+
+[node name="Bounds" type="StaticBody2D" parent="."]
+
+[node name="YSort" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="Atmosphere" type="Node2D" parent="."]
+script = ExtResource("atmo")
+area = Rect2(0, 0, 14000, 6600)

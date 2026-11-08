@@ -65,7 +65,52 @@
 		"dividers": [],
 		"labels": []
 	},
-	"side_props": [],
+	"side_props": [
+		{
+			"asset": "side.bottles",
+			"x": 643.3,
+			"y": 509
+		},
+		{
+			"asset": "side.chair",
+			"x": 1133.1,
+			"y": 509,
+			"flip": true
+		},
+		{
+			"asset": "side.bottles",
+			"x": 1289.5,
+			"y": 509,
+			"flip": true
+		},
+		{
+			"asset": "side.calendar",
+			"x": 438.1,
+			"y": 420,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.stain",
+			"x": 631.6,
+			"y": 398,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.jar_shelf",
+			"x": 1250.1,
+			"y": 411,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.lamp_hanging",
+			"x": 731.3,
+			"y": 260,
+			"hang": true
+		}
+	],
 	"spawn_points": [
 		[
 			422.4,

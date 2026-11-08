@@ -10,42 +10,6 @@
 	],
 	"entities": [
 		{
-			"id": "stillwater.road_west",
-			"type": "portal",
-			"position": [
-				60,
-				1200
-			],
-			"interact_range": 80,
-			"priority": 2,
-			"target": {
-				"region": "junction",
-				"position": [
-					3000,
-					1100
-				]
-			},
-			"prompt_key": "PROMPT_ROAD_JUNCTION"
-		},
-		{
-			"id": "stillwater.road_east",
-			"type": "portal",
-			"position": [
-				3540,
-				1200
-			],
-			"interact_range": 80,
-			"priority": 2,
-			"target": {
-				"region": "harbor",
-				"position": [
-					220,
-					900
-				]
-			},
-			"prompt_key": "PROMPT_ROAD_HARBOR"
-		},
-		{
 			"id": "stillwater.market_entrance",
 			"type": "portal",
 			"position": [
@@ -76,7 +40,7 @@
 				"region": "stillwater.outfitters",
 				"position": [
 					422.4,
-					509
+					829
 				]
 			},
 			"prompt_key": "PROMPT_ENTER_STORE"
@@ -226,40 +190,7 @@
 			}
 		}
 	],
-	"vehicle_exits": [
-		{
-			"rect": [
-				0,
-				1110,
-				40,
-				180
-			],
-			"target": {
-				"region": "junction",
-				"position": [
-					3000,
-					1100
-				],
-				"rotation": 180
-			}
-		},
-		{
-			"rect": [
-				3560,
-				1110,
-				40,
-				180
-			],
-			"target": {
-				"region": "harbor",
-				"position": [
-					220,
-					900
-				],
-				"rotation": 0
-			}
-		}
-	],
+	"vehicle_exits": [],
 	"spawn_points": [
 		[
 			220,
@@ -363,8 +294,8 @@
 	},
 	"map": {
 		"offset": [
-			10840,
-			185
+			45000,
+			195
 		],
 		"areas": [
 			{
@@ -565,7 +496,7 @@
 					1680
 				],
 				"size": [
-					280,
+					360,
 					80
 				]
 			},
@@ -576,7 +507,7 @@
 					1680
 				],
 				"size": [
-					290,
+					310,
 					80
 				]
 			},
@@ -587,8 +518,63 @@
 					1680
 				],
 				"size": [
-					280,
+					320,
 					80
+				]
+			},
+			{
+				"kind": "building",
+				"position": [
+					1477,
+					584
+				],
+				"size": [
+					280,
+					70
+				]
+			},
+			{
+				"kind": "building",
+				"position": [
+					1559,
+					1892
+				],
+				"size": [
+					260,
+					70
+				]
+			},
+			{
+				"kind": "building",
+				"position": [
+					2349,
+					582
+				],
+				"size": [
+					310,
+					70
+				]
+			},
+			{
+				"kind": "building",
+				"position": [
+					957,
+					591
+				],
+				"size": [
+					300,
+					70
+				]
+			},
+			{
+				"kind": "building",
+				"position": [
+					491,
+					582
+				],
+				"size": [
+					320,
+					70
 				]
 			}
 		]

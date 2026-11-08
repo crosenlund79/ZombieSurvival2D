@@ -33,6 +33,12 @@ def dump_json(path, d):
         f.write("\n")
 
 
+# Iteration 015 B: the Ashgrove interiors and the cabin get lived-in dressing (tools/interior_dressing.py).
+DRESS = {"homestead.farmhouse": ("cabin", 0.5), "town.house": ("home", 1.0), "town.house_west": ("home", 1.0),
+         "town.house_east": ("home", 1.0), "town.grocery": ("store", 1.0), "town.pharmacy": ("shop", 1.0),
+         "town.hardware": ("workshop", 1.0), "town.clothing": ("outfitters", 1.0), "town.garage": ("workshop", 1.0)}
+
+
 class Section:
     """A building cross-section. width = interior cells; storeys = levels, e.g. [-1, 0, 1, 2]."""
 
@@ -157,6 +163,11 @@ class Section:
         return [self.x(cell), self.y(0)]
 
     def definition(self, extra):
+        if self.rid in DRESS and not getattr(self, "_dressed", False):
+            import interior_dressing  # iteration 015 B (imported here: it imports this module)
+            theme, density = DRESS[self.rid]
+            interior_dressing.dress(self, theme, seed=sum(map(ord, self.rid)), density=density)
+            self._dressed = True
         env = [MARGIN, SKY, self.width + 2, self.floor_row(min(self.storeys)) + 1 - SKY]
         d = {
             "region_id": self.rid,
@@ -225,7 +236,7 @@ def cabin():
 
 # ====================================================================== the House on Main Street (cellar)
 def town_house():
-    s = Section("town.house", 13, (0,), "REGION_TOWN_HOUSE", exterior="side.ext_siding")
+    s = Section("town.house", 13, (0,), "REGION_TOWN_HOUSE", exterior="side.ext_logs")
     s.room(0, 0, 13, wall="side.wall_house")
     s.exit(0.7, "town", [1240, 1510])
     s.window(0, 4.0)
@@ -247,7 +258,7 @@ def town_house():
 
 # ====================================================================== two Ashgrove houses (two storeys)
 def house_west():
-    s = Section("town.house_west", 16, (0, 1), "REGION_TOWN_HOUSE_WEST", exterior="side.ext_siding")
+    s = Section("town.house_west", 16, (0, 1), "REGION_TOWN_HOUSE_WEST", exterior="side.ext_logs")
     s.room(0, 0, 9, wall="side.wall_house", floor="side.floor_linoleum")   # kitchen
     s.room(0, 9, 16, wall="side.wall_house_b")                            # living room
     s.room(1, 0, 16, wall="side.wall_house")                              # upstairs bedroom + landing
@@ -273,7 +284,7 @@ def house_west():
 
 
 def house_east():
-    s = Section("town.house_east", 16, (0, 1), "REGION_TOWN_HOUSE_EAST", exterior="side.ext_siding")
+    s = Section("town.house_east", 16, (0, 1), "REGION_TOWN_HOUSE_EAST", exterior="side.ext_logs")
     s.room(0, 0, 16, wall="side.wall_house_b")
     s.room(1, 0, 16, wall="side.wall_house")
     s.divider(0, 8)

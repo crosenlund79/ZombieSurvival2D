@@ -90,6 +90,32 @@
 			"x": 1126.4,
 			"y": 509,
 			"back": true
+		},
+		{
+			"asset": "side.clock",
+			"x": 398.6,
+			"y": 413,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.lamp_hanging",
+			"x": 681.6,
+			"y": 260,
+			"hang": true
+		},
+		{
+			"asset": "side.cobweb",
+			"x": 358.4,
+			"y": 260,
+			"hang": true
+		},
+		{
+			"asset": "side.curtains",
+			"x": 608.0,
+			"y": 423.5,
+			"back": true,
+			"wall": true
 		}
 	],
 	"spawn_points": [

@@ -1178,7 +1178,7 @@ def scenario_world_multi():
         st = c.state()
         check("world: client dev teleport refused (dev is host-only)", st["me_x"] < 2000, st["me_x"])
         c.cmd("walk_to 1150 1400"); c.cmd("walk_to 2340 1400 10")
-        r = c.cmd("interact homestead.road_east")
+        r = c.cmd("walk_to 2460 1400 10")  # iteration 015: across the east edge
         check("world: client travels to the service station", r["state"]["region"] == "service_station", r["state"].get("region"))
         time.sleep(0.3)
         check("world: discovery recorded for everyone", "service_station" in host.state()["meta"].get("discoveries", {}), host.state()["meta"])
@@ -1243,7 +1243,7 @@ def scenario_settlement_multi():
         host.cmd("walk_to 930 610 6"); host.cmd("entity_action generator fuel"); host.cmd("entity_action generator fuel"); host.cmd("entity_action generator toggle")
         # Host travels to the service station to find the survivor.
         host.cmd("walk_to 540 296 4"); host.cmd("press_interact"); host.cmd("walk_to 365 0 6"); host.cmd("press_interact")
-        host.cmd("dev teleport 2340 1400"); r = host.cmd("interact homestead.road_east")
+        host.cmd("dev teleport 2340 1400"); r = host.cmd("walk_to 2460 1400 10")
         check("settle: host reaches the station", r["state"]["region"] == "service_station", r["state"].get("region"))
         host.cmd("walk_to 372 664 10")   # Red Thaw: she hides in the collapsed house
         r = host.cmd("npc mara talk")
@@ -1410,7 +1410,7 @@ def scenario_slice():
         # 13-14. Explore the service station and its discovery.
         leave_bunker(s)
         s.cmd("walk_to 1150 960"); s.cmd("walk_to 1150 1400"); s.cmd("walk_to 2340 1400 10"); heal_if_low(s)
-        r = s.cmd("interact homestead.road_east")
+        r = s.cmd("walk_to 2460 1400 10")
         check("slice 13: reached the service station", r["state"]["region"] == "service_station", r["state"].get("region"))
         s.cmd("dev heal")
         s.cmd("walk_to 600 870 10"); s.cmd("interact service_station.wreck"); heal_if_low(s)
@@ -1421,7 +1421,7 @@ def scenario_slice():
         s.cmd("walk_to 1700 720"); s.cmd("walk_to 600 720"); s.cmd("walk_to 372 664 10"); s.cmd("npc mara talk")
         r = s.cmd("npc mara talk")
         check("slice 17: survivor recruited (food + clean water handed over)", r["state"]["npcs"]["mara"]["recruit"] == "travelling", (r["state"]["npcs"]["mara"], r["state"]["carried"]))
-        s.cmd("walk_to 150 710"); s.cmd("walk_to 80 710 8"); s.cmd("interact service_station.road_west"); heal_if_low(s)
+        s.cmd("walk_to 150 710"); s.cmd("walk_to -60 710 8"); heal_if_low(s)
         # 15. Prepare defences in the yard; craft a spike kit and a grow light at home.
         s.cmd("walk_to 1150 1400"); s.cmd("walk_to 1150 960"); s.cmd("walk_to 1150 760")
         st0 = enter_bunker(s)
@@ -1505,7 +1505,7 @@ def scenario_slice():
 def _to_settlement_on_foot(inst):
     """From the burned-shed opening to the settlement, the way a player walks it."""
     inst.cmd("walk_to 700 1180"); inst.cmd("walk_to 1150 1400"); inst.cmd("walk_to 2340 1400 10")
-    return inst.cmd("interact homestead.road_east")
+    return inst.cmd("walk_to 2460 1400 10")  # iteration 015: walk off the east edge into the station
 
 
 def scenario_red_thaw_multi():
@@ -1553,7 +1553,7 @@ def scenario_red_thaw_multi():
         host.cmd("dev heal"); c.cmd("wait 0.1")
         host.cmd("dev peaceful 1"); host.cmd("dev peaceful 0")   # clear the hunter
         # the host walks to the settlement too; both stand by the houses and listen
-        host.cmd("dev teleport 2300 1400"); host.cmd("walk_to 2340 1400 10"); host.cmd("interact homestead.road_east")
+        host.cmd("dev teleport 2300 1400"); host.cmd("walk_to 2340 1400 10"); host.cmd("walk_to 2460 1400 10")
         host.cmd("dev teleport 1350 800"); c.cmd("walk_to 1300 820")
         host.cmd("dev time 11")
         # laughter is rare by design (RX-04): allow several slots
@@ -1712,12 +1712,13 @@ def scenario_vehicle_multi():
         host.cmd("hold move_up 3.0")
         time.sleep(1.0)
         sh, sc = host.state(), c.state()
-        check("veh: the road exit takes the car to Ashgrove", _veh(sh)["wagon"]["region"] == "town", _veh(sh)["wagon"])
-        check("veh: driver and passenger arrive together (host)", player(sh, "Hosty")["region"] == "town" and player(sh, "Cleo")["region"] == "town",
+        W1 = "wild.birchwater"  # iteration 015: the station's east edge leads into the Birchwater Road wilderness
+        check("veh: driving off the edge takes the car on to the Birchwater Road", _veh(sh)["wagon"]["region"] == W1, _veh(sh)["wagon"])
+        check("veh: driver and passenger arrive together (host)", player(sh, "Hosty")["region"] == W1 and player(sh, "Cleo")["region"] == W1,
               (player(sh, "Hosty")["region"], player(sh, "Cleo")["region"]))
-        check("veh: the client is in Ashgrove too", sc.get("region") == "town", sc.get("region"))
+        check("veh: the client is there too", sc.get("region") == W1, sc.get("region"))
         check("veh: the trunk came along", _veh(sc)["wagon"]["cargo"]["items"].get("scrap_metal") == 2, _veh(sc)["wagon"]["cargo"])
-        check("veh: Ashgrove was discovered", "town" in sh["meta"].get("discoveries", {}), list(sh["meta"].get("discoveries", {})))
+        check("veh: the wilderness road was discovered", "wild_birchwater" in sh["meta"].get("discoveries", {}), list(sh["meta"].get("discoveries", {})))
         r = c.cmd("vehicle wagon exit")
         check("veh: nobody jumps out while the car is still rolling", player(host.state(), "Cleo")["vehicle"] == "wagon", r["state"]["notices"][-1:])
         host.cmd("hold move_down 1.2"); host.cmd("wait 0.6")
@@ -1739,7 +1740,7 @@ def scenario_vehicle_multi():
         host.cmd("single continue Hosty")
         time.sleep(0.5)
         v2 = _veh(host.state()).get("wagon", {})
-        check("veh: the wagon is still in Ashgrove after a restart", v2.get("region") == "town" and abs(v2.get("x", 0) - vx["x"]) < 1.0, v2)
+        check("veh: the wagon is still on the Birchwater Road after a restart", v2.get("region") == "wild.birchwater" and abs(v2.get("x", 0) - vx["x"]) < 1.0, v2)
         check("veh: the trunk survived the restart", v2.get("cargo", {}).get("items", {}).get("scrap_metal") == 2, v2.get("cargo"))
         check("veh: still exactly one wagon", len(host.state().get("vehicles", [])) == 1, len(host.state().get("vehicles", [])))
     finally:
@@ -2163,7 +2164,7 @@ def scenario_expedition_multi():
             i.cmd("dev goto service_station"); i.cmd("wait 0.6")
         host.cmd("dev teleport 1400 700"); c.cmd("dev teleport 1430 760"); host.cmd("dev vehicle_here"); time.sleep(0.4)
         host.cmd("vehicle wagon enter"); c.cmd("vehicle wagon enter"); host.cmd("press_key vehicle_engine")
-        host.cmd("hold move_up 4.0"); time.sleep(1.0)
+        host.cmd("drive_to_region town 120", timeout=140); time.sleep(1.0)  # iteration 015: through the Birchwater Road wilderness
         check("exp: both drive into Ashgrove", player(host.state(), "Hosty")["region"] == "town" and player(host.state(), "Cleo")["region"] == "town", "")
         host.cmd("hold move_down 1.0"); host.cmd("wait 0.8"); host.cmd("press_key vehicle_engine")
         host.cmd("vehicle wagon exit"); c.cmd("vehicle wagon exit"); time.sleep(0.4)
@@ -2196,9 +2197,9 @@ def scenario_expedition_multi():
         c.cmd("dev teleport 430 1100"); host.cmd("dev teleport 430 1090"); time.sleep(0.3)
         check("exp: re-parking keeps the cargo", _veh(host.state())["wagon"]["cargo"] == cargo, _veh(host.state())["wagon"]["cargo"])
         host.cmd("vehicle wagon enter"); c.cmd("vehicle wagon enter"); host.cmd("press_key vehicle_engine")
-        host.cmd("hold move_up 2.5"); time.sleep(1.0)
+        host.cmd("drive_to_region service_station 120", timeout=140); time.sleep(1.0)
         check("exp: back at the station", player(host.state(), "Hosty")["region"] == "service_station", player(host.state(), "Hosty")["region"])
-        host.cmd("hold move_up 7.5"); time.sleep(1.0)
+        host.cmd("drive_to_region homestead 60", timeout=80); host.cmd("hold move_up 1.0"); time.sleep(1.0)
         hs = host.state()
         check("exp: home at the cabin's road, both aboard", player(hs, "Hosty")["region"] == "homestead" and player(hs, "Cleo")["region"] == "homestead", "")
         check("exp: the cargo came home intact", _veh(hs)["wagon"]["cargo"] == cargo, _veh(hs)["wagon"]["cargo"])

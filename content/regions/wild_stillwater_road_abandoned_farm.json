@@ -1,0 +1,303 @@
+{
+	"region_id": "wild.stillwater_road.abandoned_farm",
+	"display_key": "REGION_WILD_STILLWATER_ROAD_ABANDONED_FARM",
+	"view": "side",
+	"style": "building",
+	"bounds": [
+		0,
+		0,
+		1600,
+		1088
+	],
+	"excavation": {
+		"cell": 64,
+		"origin": [
+			0,
+			0
+		],
+		"cols": 25,
+		"rows": 17,
+		"fixed": true,
+		"initial_open": [
+			[
+				5,
+				9,
+				15,
+				4
+			],
+			[
+				5,
+				4,
+				15,
+				4
+			],
+			[
+				18,
+				8,
+				1,
+				1
+			]
+		],
+		"platforms": [
+			[
+				18,
+				7,
+				1,
+				1
+			]
+		],
+		"_comment": "Authored building cross-section (tools/build_side_interiors.py); fixed, never dug."
+	},
+	"section": {
+		"ground_row": 13,
+		"envelope": [
+			4,
+			3,
+			17,
+			11
+		],
+		"exterior": "side.ext_logs",
+		"basement": "",
+		"rooms": [
+			{
+				"rect": [
+					5,
+					9,
+					15,
+					4
+				],
+				"wall": "side.wall_cabin",
+				"floor": "side.floorboards"
+			},
+			{
+				"rect": [
+					5,
+					4,
+					15,
+					4
+				],
+				"wall": "side.wall_cabin",
+				"floor": "side.floorboards"
+			}
+		],
+		"windows": [
+			[
+				576.0,
+				683.5
+			],
+			[
+				1088.0,
+				683.5,
+				"boarded"
+			],
+			[
+				704.0,
+				363.5
+			]
+		],
+		"dividers": [],
+		"labels": []
+	},
+	"side_props": [
+		{
+			"asset": "world.furniture_stove",
+			"x": 486.4,
+			"y": 829
+		},
+		{
+			"asset": "world.furniture_table",
+			"x": 755.2,
+			"y": 829
+		},
+		{
+			"asset": "world.furniture_bed",
+			"x": 576.0,
+			"y": 509,
+			"back": true
+		},
+		{
+			"asset": "side.bottles",
+			"x": 1019.6,
+			"y": 829,
+			"flip": true
+		},
+		{
+			"asset": "side.clock",
+			"x": 677.1,
+			"y": 729,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.clock",
+			"x": 1098.4,
+			"y": 739,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.lamp_hanging",
+			"x": 745.0,
+			"y": 580,
+			"hang": true,
+			"light": true
+		},
+		{
+			"asset": "side.cobweb",
+			"x": 358.4,
+			"y": 580,
+			"hang": true,
+			"flip": true
+		},
+		{
+			"asset": "side.rug",
+			"x": 1097.8,
+			"y": 509
+		},
+		{
+			"asset": "side.clock",
+			"x": 597.6,
+			"y": 406,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.coat_hooks",
+			"x": 1210.0,
+			"y": 402,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.lamp_hanging",
+			"x": 658.4,
+			"y": 260,
+			"hang": true,
+			"light": true
+		},
+		{
+			"asset": "side.cobweb",
+			"x": 1241.6,
+			"y": 260,
+			"hang": true,
+			"flip": true
+		},
+		{
+			"asset": "side.curtains",
+			"x": 704.0,
+			"y": 423.5,
+			"back": true,
+			"wall": true
+		}
+	],
+	"spawn_points": [
+		[
+			422.4,
+			829
+		]
+	],
+	"entities": [
+		{
+			"id": "wild.stillwater_road.abandoned_farm.exit",
+			"type": "portal",
+			"interact_range": 70,
+			"priority": 2,
+			"side_art": "side.door_ext",
+			"target": {
+				"region": "wild.stillwater_road",
+				"position": [
+					9600,
+					4660
+				]
+			},
+			"prompt_key": "PROMPT_EXIT_CABIN",
+			"position": [
+				364.8,
+				829
+			]
+		},
+		{
+			"id": "wild.stillwater_road.abandoned_farm.cupboard",
+			"type": "container",
+			"kind": "cupboard",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_CUPBOARD",
+			"art": "world.furniture_cupboard",
+			"art_searched": "world.furniture_cupboard",
+			"loot": {},
+			"pool": "home_kitchen",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				614.4,
+				829
+			]
+		},
+		{
+			"id": "wild.stillwater_road.abandoned_farm.chest",
+			"type": "container",
+			"kind": "crate",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_CRATE",
+			"art": "int.crate",
+			"art_searched": "int.crate_open",
+			"loot": {},
+			"pool": "home_closet",
+			"initial": {
+				"searched": true
+			},
+			"position": [
+				883.2,
+				829
+			]
+		},
+		{
+			"id": "wild.stillwater_road.abandoned_farm.stairs_0",
+			"type": "stairs",
+			"position": [
+				1184.0,
+				829
+			],
+			"top": 509,
+			"flip": false
+		},
+		{
+			"id": "wild.stillwater_road.abandoned_farm.dresser",
+			"type": "container",
+			"kind": "drawer",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_DRAWER",
+			"art": "int.dresser",
+			"art_searched": "int.dresser_open",
+			"loot": {},
+			"pool": "attic",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				832.0,
+				509
+			]
+		}
+	],
+	"surface": {
+		"region": "wild.stillwater_road",
+		"position": [
+			9600,
+			4600
+		]
+	},
+	"tint": [
+		0.55,
+		0.5,
+		0.46
+	],
+	"climate": {
+		"exposure": 1.0,
+		"fog": 0.0,
+		"shelter": 0.45
+	},
+	"interior": true,
+	"ambience": "amb.wind_muffled"
+}

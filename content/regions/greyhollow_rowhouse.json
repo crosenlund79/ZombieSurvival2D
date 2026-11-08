@@ -147,6 +147,94 @@
 			"x": 960.0,
 			"y": 509,
 			"back": true
+		},
+		{
+			"asset": "side.crack",
+			"x": 395.6,
+			"y": 745,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.calendar",
+			"x": 547.9,
+			"y": 724,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.stain",
+			"x": 775.8,
+			"y": 746,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.lamp_hanging",
+			"x": 628.6,
+			"y": 580,
+			"hang": true,
+			"light": true
+		},
+		{
+			"asset": "side.cobweb",
+			"x": 1305.6,
+			"y": 580,
+			"hang": true
+		},
+		{
+			"asset": "side.plant_dead",
+			"x": 432.0,
+			"y": 509,
+			"flip": true
+		},
+		{
+			"asset": "side.stain",
+			"x": 473.8,
+			"y": 398,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.stain",
+			"x": 652.6,
+			"y": 422,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.frame",
+			"x": 1020.8,
+			"y": 406,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.clock",
+			"x": 1242.1,
+			"y": 413,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.lamp_hanging",
+			"x": 659.8,
+			"y": 260,
+			"hang": true
+		},
+		{
+			"asset": "side.curtains",
+			"x": 1088.0,
+			"y": 743.5,
+			"back": true,
+			"wall": true
+		},
+		{
+			"asset": "side.curtains",
+			"x": 1184.0,
+			"y": 423.5,
+			"back": true,
+			"wall": true
 		}
 	],
 	"spawn_points": [

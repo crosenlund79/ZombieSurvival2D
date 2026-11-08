@@ -364,11 +364,11 @@ func test_road_exit_moves_car_occupants_and_trunk_together() -> void:
 	VehicleSim.request(w, PID2, "wagon", "enter")
 	eq(VehicleSim.request(w, PID, "wagon", "take", "scrap_metal")["reason"], "VEHICLE_FROM_OUTSIDE", "the trunk is reached from outside")
 	VehicleSim.request(w, PID, "wagon", "engine")
-	# drive up to the west exit in plausible steps
-	v.position = Vector2(140, 710)
+	# drive off the west edge (iteration 015: any edge with a neighbour, not a road exit) in plausible steps
+	v.position = Vector2(110, 710)
 	v.rotation = PI
-	var r := VehicleSim.submit_pose(w, PID, "wagon", Vector2(120, 710), PI, -300.0, 0.0, 0.1)
-	check(r["ok"], "pose into the road exit accepted")
+	var r := VehicleSim.submit_pose(w, PID, "wagon", Vector2(80, 710), PI, -300.0, 0.0, 0.1)
+	check(r["ok"], "pose over the edge accepted")
 	eq(v.region_id, "homestead", "the car arrives in the next region")
 	eq(a.region_id, "homestead", "the driver arrives with it")
 	eq(b.region_id, "homestead", "the passenger arrives with it")
@@ -463,11 +463,11 @@ func test_map_marks_unexplored_road_exits() -> void:
 	var w := WorldState.create_new("w_map", 69)
 	var shown := ["homestead", "service_station"]
 	var ex := MapPanel.unexplored_exits(w, shown)
-	eq(ex.size(), 1, "one road leads somewhere unexplored")
+	eq(ex.size(), 1, "one way leads somewhere unexplored (iteration 015: the station's east edge)")
 	eq(str(ex[0]["region_id"]), "service_station", "it leaves the settlement")
 	eq(ex[0]["dir"], Vector2.RIGHT, "heading east")
-	var past := MapPanel.unexplored_exits(w, ["homestead", "service_station", "town"])
-	eq(past.size(), 1, "once Ashgrove is found, only its road east is unexplored (iteration 014)")
+	var past := MapPanel.unexplored_exits(w, ["homestead", "service_station", "wild.birchwater", "town"])
+	eq(past.size(), 1, "once Ashgrove is found, only its east edge (the Corran Forest) is unexplored")
 	eq(str(past[0]["region_id"]), "town", "leaving Ashgrove")
 
 

@@ -87,7 +87,45 @@
 			]
 		]
 	},
-	"side_props": [],
+	"side_props": [
+		{
+			"asset": "side.radiator",
+			"x": 1356.8,
+			"y": 509
+		},
+		{
+			"asset": "side.radiator",
+			"x": 1818.6,
+			"y": 509
+		},
+		{
+			"asset": "side.stain",
+			"x": 871.2,
+			"y": 408,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.poster",
+			"x": 1053.7,
+			"y": 425,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.frame",
+			"x": 1296.5,
+			"y": 421,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.lamp_hanging",
+			"x": 1232.0,
+			"y": 260,
+			"hang": true
+		}
+	],
 	"spawn_points": [
 		[
 			422.4,

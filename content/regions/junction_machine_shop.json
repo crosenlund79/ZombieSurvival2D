@@ -70,6 +70,44 @@
 			"asset": "int.pegboard",
 			"x": 896.0,
 			"y": 509
+		},
+		{
+			"asset": "side.bottles",
+			"x": 616.6,
+			"y": 509,
+			"flip": true
+		},
+		{
+			"asset": "side.chair",
+			"x": 1323.7,
+			"y": 509,
+			"flip": true
+		},
+		{
+			"asset": "side.debris",
+			"x": 1648.8,
+			"y": 509,
+			"flip": true
+		},
+		{
+			"asset": "side.poster",
+			"x": 400.3,
+			"y": 415,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.calendar",
+			"x": 1530.7,
+			"y": 425,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.lamp_hanging",
+			"x": 1294.3,
+			"y": 260,
+			"hang": true
 		}
 	],
 	"spawn_points": [

@@ -87,7 +87,52 @@
 			]
 		]
 	},
-	"side_props": [],
+	"side_props": [
+		{
+			"asset": "side.stock_crates",
+			"x": 1747.6,
+			"y": 509,
+			"flip": true
+		},
+		{
+			"asset": "side.plant_dead",
+			"x": 2240.8,
+			"y": 509
+		},
+		{
+			"asset": "side.clock",
+			"x": 1547.8,
+			"y": 411,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.calendar",
+			"x": 1761.5,
+			"y": 423,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.poster",
+			"x": 2215.1,
+			"y": 414,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.lamp_hanging",
+			"x": 1529.7,
+			"y": 260,
+			"hang": true
+		},
+		{
+			"asset": "side.cobweb",
+			"x": 2329.6,
+			"y": 260,
+			"hang": true
+		}
+	],
 	"spawn_points": [
 		[
 			422.4,

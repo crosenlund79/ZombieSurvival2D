@@ -500,8 +500,8 @@
 		"en": "Shed"
 	},
 	"MAP_SHELTER": {
-		"da": "Tilflugtsrum (%s niveauer)",
-		"en": "Shelter (%s levels)"
+		"en": "Shelter (%s levels)",
+		"da": "Tilflugtsrum (%s niveauer)"
 	},
 	"MAP_SIGN": {
 		"da": "Skilt",
@@ -4650,5 +4650,141 @@
 	"PROMPT_SEARCH_HUNTING_CAMP": {
 		"en": "Search the hunting camp",
 		"da": "Gennemsøg jagtlejren"
+	},
+	"MAP_BOATHOUSE": {
+		"en": "Boathouse",
+		"da": "Bådhus"
+	},
+	"MAP_CABIN": {
+		"en": "Cabin",
+		"da": "Hytte"
+	},
+	"MAP_HUNTING_STAND": {
+		"en": "Hunting stand",
+		"da": "Jagttårn"
+	},
+	"MAP_LOGGING_CAMP": {
+		"en": "Logging camp",
+		"da": "Skovhuggerlejr"
+	},
+	"MAP_PASS_HUT": {
+		"en": "Pass hut",
+		"da": "Pashytte"
+	},
+	"MAP_RADIO_MAST": {
+		"en": "Radio mast",
+		"da": "Radiomast"
+	},
+	"MAP_ROADHOUSE": {
+		"en": "Roadhouse",
+		"da": "Vejkro"
+	},
+	"MAP_RUIN": {
+		"en": "Ruin",
+		"da": "Ruin"
+	},
+	"MAP_TIMBER_HOUSE": {
+		"en": "Timber house",
+		"da": "Tømmerhus"
+	},
+	"PROMPT_ENTER_CABIN": {
+		"en": "Enter the cabin",
+		"da": "Gå ind i hytten"
+	},
+	"PROMPT_EXIT_CABIN": {
+		"en": "Go outside",
+		"da": "Gå udenfor"
+	},
+	"REGION_WILD_BIRCHWATER": {
+		"en": "Birchwater Road",
+		"da": "Birkevandsvejen"
+	},
+	"REGION_WILD_BIRCHWATER_HUNTERS_REST": {
+		"en": "Hunter's Rest",
+		"da": "Jægerhvilet"
+	},
+	"REGION_WILD_BIRCHWATER_LAKESIDE": {
+		"en": "Lakeside Cabin",
+		"da": "Hytten ved søen"
+	},
+	"REGION_WILD_CORRAN": {
+		"en": "The Corran Forest",
+		"da": "Corran-skoven"
+	},
+	"REGION_WILD_CORRAN_FOREST_HOLLOW_HOUSE": {
+		"en": "The Hollow House",
+		"da": "Huset i hulningen"
+	},
+	"REGION_WILD_CORRAN_FOREST_LOGGING_CAMP": {
+		"en": "Logging Camp Workshop",
+		"da": "Skovhuggerlejrens værksted"
+	},
+	"REGION_WILD_CORRAN_FOREST_TRAPPER": {
+		"en": "Trapper's Cabin",
+		"da": "Fangstmandens hytte"
+	},
+	"REGION_WILD_GREYHOLLOW_PASS": {
+		"en": "The Greyhollow Pass",
+		"da": "Greyhollow-passet"
+	},
+	"REGION_WILD_GREYHOLLOW_PASS_MINERS_REST": {
+		"en": "Miners' Rest",
+		"da": "Minearbejdernes hvil"
+	},
+	"REGION_WILD_GREYHOLLOW_PASS_PASS_HUT": {
+		"en": "Pass Hut",
+		"da": "Pashytten"
+	},
+	"REGION_WILD_HALDEN_COAST": {
+		"en": "The Halden Coast",
+		"da": "Halden-kysten"
+	},
+	"REGION_WILD_HALDEN_COAST_BOATHOUSE": {
+		"en": "Boathouse",
+		"da": "Bådhuset"
+	},
+	"REGION_WILD_STILLWATER_ROAD": {
+		"en": "Stillwater Road",
+		"da": "Stillwater-vejen"
+	},
+	"REGION_WILD_STILLWATER_ROAD_ABANDONED_FARM": {
+		"en": "Abandoned Farmhouse",
+		"da": "Forladt gård"
+	},
+	"REGION_WILD_STILLWATER_ROAD_FISHER": {
+		"en": "Fisher's Cabin",
+		"da": "Fiskerens hytte"
+	},
+	"REGION_WILD_STILLWATER_ROAD_ROADHOUSE": {
+		"en": "The Roadhouse",
+		"da": "Vejkroen"
+	},
+	"MAP_MODE_WORLD": {
+		"en": "World",
+		"da": "Verden"
+	},
+	"MAP_MODE_LOCAL": {
+		"en": "Local area",
+		"da": "Lokalområde"
+	},
+	"MAP_CONTROLS": {
+		"en": "Tab: world / local · wheel: zoom · drag: move · C: centre",
+		"da": "Tab: verden / lokalt · hjul: zoom · træk: flyt · C: centrér"
+	},
+	"MAP_SCALE_WALK": {
+		"en": "≈ %s min on foot",
+		"da": "≈ %s min til fods"
+	},
+	"MAP_LEAN_TO": {
+		"en": "Lean-to",
+		"da": "Læskur"
+	},
+	"SIDE_FITTING": {
+		"en": "Fitting room",
+		"da": "Prøverum"
+	},
+	"SIDE_OUTDOOR_GEAR": {
+		"en": "Outdoor gear",
+		"da": "Friluftsudstyr"
 	}
 }

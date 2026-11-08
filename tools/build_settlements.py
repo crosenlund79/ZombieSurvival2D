@@ -26,6 +26,7 @@ import json, os, random, sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from build_side_interiors import Section, dump_json, ROOT  # noqa: E402
+import world_layout as WL  # noqa: E402
 
 # facade display widths (world px) = (source w + 120) / 2 — see gen_five_settlements.BUILDINGS
 FACADE_W = {"harbor_office": 340, "warehouse_a": 510, "cannery": 470, "chandlery": 320, "net_shed": 250, "harbor_house": 270,
@@ -33,6 +34,8 @@ FACADE_W = {"harbor_office": 340, "warehouse_a": 510, "cannery": 470, "chandlery
             "factory": 560, "machine_shop": 370, "utility": 340, "corner_store": 300, "worker_house": 280, "warehouse_b": 490,
             "civic_hall": 440, "clinic": 360, "police": 370, "market": 380, "outfitters": 340, "apartments": 400,
             "church": 310, "town_house_a": 280, "quiet_house": 290}
+# iteration 015: rural and residential buildings are timber / log cabins (gen_wilderness.py art)
+CABIN_W = {"cabin_small": 260, "cabin_porch": 320, "cabin_large": 360, "cabin_weathered": 310, "cabin_ruin": 300, "cabin_workshop": 280}
 INTERIOR = {"climate": {"exposure": 1.0, "fog": 0.0, "shelter": 0.35}, "interior": True, "ambience": "amb.wind_muffled"}
 
 
@@ -78,8 +81,8 @@ class Outdoor:
 
     def building(self, kind, x, base, label_key=None, flip=False, enter=None):
         """A facade with collision; enter = (interior region id, interior spawn) adds a door portal."""
-        fw = FACADE_W[kind]
-        self.prop((x, base), "set." + kind, (fw - 24, 46), flip=flip, name=f"B_{kind}_{x}")
+        fw = CABIN_W[kind] if kind in CABIN_W else FACADE_W[kind]
+        self.prop((x, base), ("world." if kind in CABIN_W else "set.") + kind, (fw - 40, 46), flip=flip, name=f"B_{kind}_{x}")
         self.avoid.append((x - fw / 2 - 20, base - 300, fw + 40, 340))
         self.map_landmarks.append({"kind": "building", "position": [x, base - 40], "size": [fw, 80], **({"label_key": label_key} if label_key else {})})
         if enter:
@@ -88,10 +91,60 @@ class Outdoor:
                                   "interact_range": 52, "priority": 2, "target": {"region": rid, "position": spawn}, "prompt_key": prompt})
         return (x, base)
 
+    def dress(self, theme, seed=11):
+        """Iteration 015 B: signs of former life around every building: a trodden footpath to its door
+        and contextual clutter (woodpiles, barrels, crates, broken fences, a bicycle, a bench, belongings)."""
+        R = random.Random(seed)
+        sets = {"residential": ["env.woodpile", "env.bicycle", "env.fence_broken", "env.bench", "env.belongings", "env.barrels"],
+                "industrial": ["env.barrels", "env.crates", "env.stove_rusted", "env.fence_broken", "env.woodpile"],
+                "harbor": ["env.crates", "env.barrels", "set.fish_crates", "env.belongings", "env.fence_broken"],
+                "mining": ["env.crates", "env.barrels", "env.woodpile", "env.stove_rusted", "env.fence_broken"],
+                "civic": ["env.bench", "env.barrels", "env.belongings", "env.sign_wood"]}
+        for (name, pos, asset, foot, occlude, flip, sway, nav, foff) in list(self.props):
+            if not name.startswith("B_"):
+                continue
+            kind = asset.split(".")[-1]
+            fw = CABIN_W.get(kind, FACADE_W.get(kind, 300))
+            x, base = pos
+            # footpath from the door straight to the nearest road edge
+            self.ground.append((self._name("Path"), [(x - 22, base + 4), (x + 22, base + 4), (x + 26, base + 150), (x - 26, base + 150)],
+                                "env.ground_frozen_mud", None))
+            pool = sets["residential" if kind in CABIN_W else theme]
+            for k in range(R.randint(1, 3)):
+                side = -1 if (k + R.randint(0, 1)) % 2 == 0 else 1
+                px = x + side * (fw / 2 + R.uniform(30, 80))
+                py = base + R.uniform(-10, 40)
+                if any(ax < px < ax + aw and ay < py < ay + ah for (ax, ay, aw, ah) in self.avoid if ah < 300):
+                    continue
+                a2 = R.choice(pool)
+                ft = {"env.woodpile": (150, 30), "env.barrels": (110, 30), "env.crates": (130, 30), "env.stove_rusted": (90, 24),
+                      "env.bench": (130, 16), "set.fish_crates": (90, 30)}.get(a2)
+                self.prop((int(px), int(py)), a2, ft, flip=R.random() < 0.5)
+
+    def extra_cabins(self, bands, n, seed=21, enter_fn=None):
+        """Residential clusters: a few more timber homes in free ground along the given bands."""
+        R = random.Random(seed)
+        kinds = ["cabin_small", "cabin_porch", "cabin_weathered", "cabin_large", "cabin_ruin", "cabin_workshop"]
+        placed = 0
+        for attempt in range(80):
+            if placed >= n:
+                break
+            x0, x1, y0, y1 = R.choice(bands)
+            x, y = R.uniform(x0, x1), R.uniform(y0, y1)
+            kind = R.choice(kinds)
+            fw = CABIN_W[kind]
+            box = (x - fw / 2 - 60, y - 300, fw + 120, 380)
+            if any(not (box[0] + box[2] < ax or ax + aw < box[0] or box[1] + box[3] < ay or ay + ah < box[1]) for (ax, ay, aw, ah) in self.avoid):
+                continue
+            self.prop((int(x), int(y)), "world." + kind, (fw - 40, 46), flip=R.random() < 0.5, name=f"B_{kind}_{int(x)}")
+            self.avoid.append(box)
+            self.map_landmarks.append({"kind": "building", "position": [int(x), int(y) - 40], "size": [fw, 70]})
+            placed += 1
+
     def exit(self, key, pos, rect, target_region, target_pos, rotation, prompt):
-        self.entities.append({"id": f"{self.rid}.{key}", "type": "portal", "position": list(pos), "interact_range": 80, "priority": 2,
-                              "target": {"region": target_region, "position": list(target_pos)}, "prompt_key": prompt})
-        self.exits.append({"rect": list(rect), "target": {"region": target_region, "position": list(target_pos), "rotation": rotation}})
+        """Iteration 015: outdoor regions connect along their shared edges (WorldGeo, tools/world_layout.py),
+        on foot or by car, on or off the road — no road-end portals or vehicle exits any more."""
+        return None
 
     def vehicle_container(self, key, pos, asset, pool, flip=False):
         self.prop(pos, asset, (190, 30), flip=flip, name=f"V_{key}")
@@ -112,7 +165,9 @@ class Outdoor:
             x = x0
             while x < x1:
                 y = R.uniform(y0, y1)
-                self.prop((int(x), int(y)), R.choice(["env.pine_a", "env.pine_b"]), (30, 12), flip=R.random() < 0.5, sway=True, nav=False)
+                # iteration 015: never on a road or in front of a building (the Greyhollow south road was blocked)
+                if not any(ax - 70 < x < ax + aw + 70 and ay - 40 < y < ay + ah + 260 for (ax, ay, aw, ah) in self.avoid):
+                    self.prop((int(x), int(y)), R.choice(["env.pine_a", "env.pine_b"]), (30, 12), flip=R.random() < 0.5, sway=True, nav=False)
                 x += R.uniform(90, 170)
             self.map_areas.append({"kind": "woods", "polygon": [[x0, y0 - 60], [x1, y0 - 60], [x1, y1 + 60], [x0, y1 + 60]]})
 
@@ -231,6 +286,54 @@ def shop(rid, display, town, x, base, ext, wall, floor, front, back, labels=("SI
     return s
 
 
+def outfitters(rid, display, town, x, base):
+    """Iteration 015 B: Stillwater Outfitters reworked — a two-storey timber shop. Ground floor: the sales
+    floor (coat rails, a mannequin in the window, the boot rack, the counter and till) and a fitting corner;
+    upstairs: outdoor gear and the stockroom under the roof. Container ids are those of iteration 014."""
+    s = Section(rid, 20, (0, 1), display, exterior="side.ext_logs")
+    s.room(0, 0, 14, wall="side.wall_house_b", floor="side.floorboards")
+    s.room(0, 14, 20, wall="side.wall_cabin", floor="side.floorboards")
+    s.divider(0, 14)
+    s.exit(0.7, town, _door_target(town, x, base))
+    s.window(0, 3.4)
+    s.window(0, 9.0)
+    s.prop("side.mannequin", 3.4, 0)
+    s.container("rack_coats", "rack", 5.8, 0, "int.clothes_rack_full", "int.clothes_rack_empty", {}, pool="clothing_rack")
+    s.prop("side.coat_rail_empty", 8.0, 0)
+    s.container("boots", "shelf", 10.2, 0, "int.display_table", "int.display_table", {}, pool="clothing_shoes")
+    s.prop("side.boot_rack", 12.2, 0)
+    s.prop("side.counter", 16.4, 0)
+    s.prop("side.register", 16.0, 0, dy=-52)
+    s.label(0, 14.4, "SIDE_FITTING")
+    s.container("rack_b", "rack", 18.6, 0, "int.clothes_rack_empty", "int.clothes_rack_empty", {}, searched=True, pool="clothing_rack")
+    s.room(1, 0, 20, wall="side.wall_cabin", floor="side.floorboards")
+    s.stairs(1.5, 0, 1, flip=True)
+    s.window(1, 7.0)
+    s.window(1, 15.0, boarded=True)
+    s.label(1, 4.0, "SIDE_OUTDOOR_GEAR")
+    s.container("packs", "shelf", 6.0, 1, "int.gondola_sparse", "int.gondola_empty", {}, pool="clothing_gear")
+    s.prop("side.shelf_goods", 8.6, 1)
+    s.prop("side.mannequin", 11.0, 1, flip=True)
+    s.label(1, 13.4, "SIDE_STOCKROOM")
+    s.container("stock", "crate", 15.6, 1, "int.crate", "int.crate_open", {}, pool="clothing_stock")
+    s.prop("side.stock_crates", 18.2, 1)
+    return s
+
+
+INTERIOR_THEME = [("outfitters", "outfitters"), ("house", "home"), ("cottage", "home"), ("apartments", "home"), ("rowhouse", "home"),
+                  ("worker_house", "home"), ("quiet_house", "home"), ("market", "shop"), ("general_store", "shop"), ("corner_store", "shop"),
+                  ("chandlery", "shop"), ("office", "office"), ("utility", "office"), ("clinic", "office"), ("police", "office"),
+                  ("civic_hall", "office"), ("machine_shop", "workshop"), ("mine_supply", "workshop"), ("store_shed", "workshop"),
+                  ("net_shed", "workshop"), ("warehouse", "store"), ("cannery", "store")]
+
+
+def interior_theme(rid):
+    for key, theme in INTERIOR_THEME:
+        if key in rid:
+            return theme
+    return "home"
+
+
 def _c(c, cx):
     """(key, kind, art, art_searched, pool[, searched]) → container() args at column cx."""
     key, kind, art, art_s, pool = c[:5]
@@ -239,7 +342,7 @@ def _c(c, cx):
 
 
 def house(rid, display, town, x, base, wall_a="side.wall_house", wall_b="side.wall_house_b", pool_prefix="home", storeys=2, extra=None,
-          layout="a", ext="side.ext_siding"):
+          layout="a", ext="side.ext_logs"):
     """A home in three layouts (same container ids in each, so saves and pools stay put):
     a = kitchen by the door, stairs on the right; b = mirrored, living room first, stairs
     on the left; c = a wider flat with a reading corner and the bedroom up front."""
@@ -397,8 +500,8 @@ def junction(interiors):
     sp = interiors("junction.corner_store", "REGION_JUNCTION_CORNER_STORE", 500, SB, "junction")
     o.building("corner_store", 500, SB, "MAP_CORNER_STORE", enter=("junction.corner_store", sp, "PROMPT_ENTER_STORE"))
     sp = interiors("junction.worker_house", "REGION_JUNCTION_HOUSE", 900, SB, "junction")
-    o.building("worker_house", 900, SB, None, enter=("junction.worker_house", sp, "PROMPT_ENTER_HOME"))
-    o.building("worker_house", 1250, SB, None, flip=True)
+    o.building("cabin_porch", 900, SB, None, enter=("junction.worker_house", sp, "PROMPT_ENTER_HOME"))
+    o.building("cabin_weathered", 1250, SB, None, flip=True)
     sp = interiors("junction.utility", "REGION_JUNCTION_UTILITY", 2000, SB, "junction")
     o.building("utility", 2000, SB, "MAP_UTILITY", enter=("junction.utility", sp, "PROMPT_ENTER_BUILDING"))
     o.prop((2450, SB), "set.substation", (170, 30), name="Substation")
@@ -410,13 +513,15 @@ def junction(interiors):
     o.cache("hunting_camp", (3010, 1610), "build.crate", "hunter_cabin", "PROMPT_SEARCH_HUNTING_CAMP", foot=(80, 20))
     for xl in (300, 1000, 1900, 2700):
         o.prop((xl, NB + 58), "world.town_streetlamp", (10, 8))
+    o.extra_cabins([(150, 3050, 520, 640), (150, 3050, 1700, 1760)], 4, seed=71)
+    o.dress("industrial", seed=73)
     o.pines([(40, 3160, 60, 380), (40, 3160, 1780, 2160)], seed=72)
     o.write({"spawn_points": [[220, RY]], "climate": {"exposure": 1.1, "fog": 1.0}, "discovery": "junction",
              "zombies": {"base_population": 4, "spawns": [[700, 700], [1800, 650], [2600, 1600], [400, 1700], [1300, 1600]],
                          "entries": [[20, 400], [20, 1800], [3180, 400], [3180, 1800], [1600, 20], [800, 2180]]},
              "omens": {"laugh_spots": [[420, 900], [2050, 900], [2860, 1400]], "laugh_radius": 700,
                        "shadow_paths": [[[1700, 1500], [1820, 1520]], [[2700, 900], [2840, 880]]]},
-             "map": {"offset": [7840, 285], "areas": [{"kind": "yard", "polygon": [[120, 620], [2900, 620], [2900, 990], [120, 990]]}]}})
+             "map": {"offset": WL.offset("junction"), "areas": [{"kind": "yard", "polygon": [[120, 620], [2900, 620], [2900, 990], [120, 990]]}]}})
 
 
 def junction_interiors(rid, display, x, base, town):
@@ -472,22 +577,24 @@ def greyhollow(interiors):
     sp = interiors("greyhollow.mine_supply", "REGION_GREYHOLLOW_MINE_SUPPLY", 700, SB, "greyhollow")
     o.building("mine_supply", 700, SB, "MAP_MINE_SUPPLY", enter=("greyhollow.mine_supply", sp, "PROMPT_ENTER_STORE"))
     sp = interiors("greyhollow.rowhouse", "REGION_GREYHOLLOW_ROWHOUSE", 2000, SB, "greyhollow")
-    o.building("rowhouse", 2000, SB, "MAP_ROWHOUSES", enter=("greyhollow.rowhouse", sp, "PROMPT_ENTER_HOME"))
-    o.building("rowhouse", 2480, SB, None, flip=True)
+    o.building("cabin_large", 2000, SB, "MAP_ROWHOUSES", enter=("greyhollow.rowhouse", sp, "PROMPT_ENTER_HOME"))
+    o.building("cabin_porch", 2480, SB, None, flip=True)
     sp = interiors("greyhollow.store_shed", "REGION_GREYHOLLOW_STORE_SHED", 2350, NB, "greyhollow")
-    o.building("store_shed", 2350, NB + 20, "MAP_STORAGE", enter=("greyhollow.store_shed", sp, "PROMPT_ENTER_BUILDING"))
+    o.building("cabin_workshop", 2350, NB + 20, "MAP_STORAGE", enter=("greyhollow.store_shed", sp, "PROMPT_ENTER_BUILDING"))
     o.vehicle_container("ore_truck", (1100, RY + 150), "prop.truck_wreck", "vehicle_truck")
     o.cache("hunting_camp", (560, 420), "build.crate", "hunter_cabin", "PROMPT_SEARCH_HUNTING_CAMP", foot=(80, 20))
     o.cache("sled", (2820, 1640), "prop.sled", "wilderness_frozen", "PROMPT_SEARCH_SLED")
     for xl in (400, 900, 1900, 2600):
         o.prop((xl, NB + 58), "world.town_streetlamp", (10, 8))
+    o.extra_cabins([(150, 1200, 500, 640), (150, 2900, 1780, 1860)], 4, seed=81)
+    o.dress("mining", seed=83)
     o.pines([(40, 1250, 60, 380), (40, 2960, 1900, 2160), (2950, 2990, 60, 2100)], seed=82)
     o.write({"spawn_points": [[1400, 2040]], "climate": {"exposure": 1.25, "fog": 1.2}, "discovery": "greyhollow",
              "zombies": {"base_population": 4, "spawns": [[600, 900], [2300, 1500], [2600, 700], [900, 1900]],
                          "entries": [[20, 600], [20, 1800], [2980, 900], [2980, 1700], [800, 20], [2400, 20]]},
              "omens": {"laugh_spots": [[1700, 760], [2250, 860], [2480, 1640]], "laugh_radius": 700,
                        "shadow_paths": [[[1500, 900], [1620, 880]]]},
-             "map": {"offset": [8240, -2215]}})
+             "map": {"offset": WL.offset("greyhollow")}})
 
 
 def greyhollow_interiors(rid, display, x, base, town):
@@ -538,21 +645,23 @@ def stillwater(interiors):
     sp = interiors("stillwater.apartments", "REGION_STILLWATER_APARTMENTS", 1050, SB, "stillwater")
     o.building("apartments", 1050, SB, "MAP_APARTMENTS", enter=("stillwater.apartments", sp, "PROMPT_ENTER_BUILDING"))
     sp = interiors("stillwater.house", "REGION_STILLWATER_HOUSE", 2300, SB, "stillwater")
-    o.building("town_house_a", 2300, SB, None, enter=("stillwater.house", sp, "PROMPT_ENTER_HOME"))
+    o.building("cabin_large", 2300, SB, None, enter=("stillwater.house", sp, "PROMPT_ENTER_HOME"))
     sp = interiors("stillwater.quiet_house", "REGION_STILLWATER_QUIET_HOUSE", 2800, SB, "stillwater")
-    o.building("quiet_house", 2800, SB, None, enter=("stillwater.quiet_house", sp, "PROMPT_ENTER_HOME"))
-    o.building("town_house_a", 3250, SB, None, flip=True)
+    o.building("cabin_weathered", 2800, SB, None, enter=("stillwater.quiet_house", sp, "PROMPT_ENTER_HOME"))
+    o.building("cabin_porch", 3250, SB, None, flip=True)
     o.vehicle_container("sedan", (1300, RY + 130), "prop.car_sedan", "vehicle_car")
     o.vehicle_container("police_car", (2850, RY - 140), "prop.car_sedan", "vehicle_police", flip=True)
     for xl in (300, 750, 1350, 2250, 2800, 3300):
         o.prop((xl, NB + 58), "world.town_streetlamp", (10, 8))
+    o.extra_cabins([(150, 3450, 560, 700), (150, 3450, 1900, 1960)], 5, seed=91)
+    o.dress("civic", seed=93)
     o.pines([(40, 3560, 60, 420), (40, 3560, 2000, 2360)], seed=92)
     o.write({"spawn_points": [[220, RY]], "climate": {"exposure": 1.0, "fog": 1.0}, "discovery": "stillwater",
              "zombies": {"base_population": 5, "spawns": [[700, 800], [2000, 760], [3100, 1500], [1500, 1900], [600, 1950]],
                          "entries": [[20, 500], [20, 1900], [3580, 500], [3580, 1900], [1800, 20], [1800, 2380]]},
              "omens": {"laugh_spots": [[1800, 1000], [2800, 1680], [500, 1680]], "laugh_radius": 700,
                        "shadow_paths": [[[2700, 1800], [2860, 1790]], [[1000, 900], [1150, 920]]]},
-             "map": {"offset": [10840, 185], "areas": [{"kind": "yard", "polygon": [[200, 760], [3400, 760], [3400, 1110], [200, 1110]]}]}})
+             "map": {"offset": WL.offset("stillwater"), "areas": [{"kind": "yard", "polygon": [[200, 760], [3400, 760], [3400, 1110], [200, 1110]]}]}})
 
 
 def stillwater_interiors(rid, display, x, base, town):
@@ -563,10 +672,7 @@ def stillwater_interiors(rid, display, x, base, town):
                      C("drinks", "fridge", FREEZER, "grocery_cooler"), C("household", "shelf", SPARSE, "household")],
                     [C("stock_a", "shelf", METAL, "grocery_stock"), C("stock_b", "crate", CRATE, "grocery_stock")])
     if rid == "stillwater.outfitters":
-        return shop(rid, display, town, x, base, "side.ext_siding", "side.wall_house_b", "side.floorboards",
-                    [C("rack_coats", "rack", RACK, "clothing_rack"), C("rack_b", "rack", ("int.clothes_rack_empty", "int.clothes_rack_empty"), "clothing_rack", True),
-                     C("boots", "shelf", ("int.display_table", "int.display_table"), "clothing_shoes"), C("packs", "shelf", SPARSE, "clothing_gear")],
-                    [C("stock", "crate", CRATE, "clothing_stock")], labels=("SIDE_STOCKROOM",))
+        return outfitters(rid, display, town, x, base)
     if rid == "stillwater.clinic":
         return shop(rid, display, town, x, base, "side.ext_concrete", "side.wall_office", "side.floor_linoleum",
                     [C("reception", "drawer", ("int.pharm_counter", "int.pharm_counter"), "clinic_desk"), C("exam_a", "medical", MED, "clinic_medical"),
@@ -639,8 +745,8 @@ def harbor(interiors):
     o.map_landmarks.append({"kind": "building", "position": [3350, 600], "size": [110, 90], "label_key": "MAP_LIGHTHOUSE"})
     # buildings: north of the road and on the quay
     sp = interiors("harbor.cottage", "REGION_HARBOR_COTTAGE", 500, NB, "harbor")
-    o.building("harbor_house", 500, NB, None, enter=("harbor.cottage", sp, "PROMPT_ENTER_HOME"))
-    o.building("harbor_house", 850, NB, None, flip=True)
+    o.building("cabin_weathered", 500, NB, None, enter=("harbor.cottage", sp, "PROMPT_ENTER_HOME"))
+    o.building("cabin_small", 850, NB, None, flip=True)
     sp = interiors("harbor.chandlery", "REGION_HARBOR_CHANDLERY", 1450, NB, "harbor")
     o.building("chandlery", 1450, NB, "MAP_CHANDLERY", enter=("harbor.chandlery", sp, "PROMPT_ENTER_STORE"))
     sp = interiors("harbor.office", "REGION_HARBOR_OFFICE", 2150, NB, "harbor")
@@ -654,6 +760,8 @@ def harbor(interiors):
     o.vehicle_container("pickup", (2700, RY + 120), "prop.truck_wreck", "vehicle_truck")
     for xl in (300, 1100, 1800, 2500, 3100):
         o.prop((xl, NB + 58), "world.town_streetlamp", (10, 8))
+    o.extra_cabins([(150, 3100, 470, 600)], 3, seed=101)
+    o.dress("harbor", seed=103)
     o.pines([(40, 3200, 60, 380)], seed=102)
     o.write({"spawn_points": [[220, RY]], "climate": {"exposure": 1.35, "fog": 1.4}, "discovery": "harbor",
              "ambience2": "amb.harbor_ice",
@@ -661,7 +769,7 @@ def harbor(interiors):
                          "entries": [[20, 500], [20, 1300], [3580, 500], [3580, 1300], [1700, 20]]},
              "omens": {"laugh_spots": [[1400, 1250], [3350, 700], [1700, 1600]], "laugh_radius": 700,
                        "shadow_paths": [[[2300, 1500], [2300, 1640]], [[600, 1350], [760, 1360]]]},
-             "map": {"offset": [14440, 85]}},
+             "map": {"offset": WL.offset("harbor")}},
             extra_nodes="")
 
 
@@ -693,27 +801,22 @@ def harbor_interiors(rid, display, x, base, town):
 
 # ====================================================================== Ashgrove: the road east opens
 def open_ashgrove_east():
+    """The jackknifed trailer was dragged to the verge: the road east out of Ashgrove is open.
+    (Iteration 015: the road continues into the Corran Forest across the region edge — no portal.)"""
     p = os.path.join(ROOT, "content", "regions", "town.json")
     d = json.load(open(p))
-    d["vehicle_exits"] = [e for e in d.get("vehicle_exits", []) if e["target"]["region"] != "junction"]
-    d["vehicle_exits"].append({"rect": [3160, 920, 40, 180], "target": {"region": "junction", "position": [220, 1100], "rotation": 0}})
-    d["entities"] = [e for e in d["entities"] if e["id"] != "town.road_east"]
-    d["entities"].append({"id": "town.road_east", "type": "portal", "position": [3140, 1010], "interact_range": 80, "priority": 2,
-                          "target": {"region": "junction", "position": [220, 1100]}, "prompt_key": "PROMPT_ROAD_JUNCTION"})
     lm = d.get("map", {}).get("landmarks", [])
     d["map"]["landmarks"] = [l for l in lm if l.get("label_key") != "MAP_ROAD_BLOCKED"]
-    roads = d["map"].get("roads", [])
-    for r in roads:
+    for r in d["map"].get("roads", []):
         if r.get("points") == [[0, 1010], [3000, 1010]]:
             r["points"] = [[0, 1010], [3200, 1010]]
     dump_json(p, d)
     sp = os.path.join(ROOT, "scenes", "regions", "town", "town.tscn")
     s = open(sp).read()
-    # the jackknifed trailer was dragged to the verge: the road east is passable now
-    s = s.replace('[node name="Roadblock" type="Node2D" parent="YSort"]\nscript = ExtResource("prop")\nposition = Vector2(3080, 1100)',
-                  '[node name="Roadblock" type="Node2D" parent="YSort"]\nscript = ExtResource("prop")\nposition = Vector2(3080, 1330)')
-    if 'entity_id = "town.road_east"' not in s:
-        s = s.rstrip("\n") + '\n\n[node name="RoadEast" type="Node2D" parent="YSort"]\nscript = ExtResource("portalv")\nentity_id = "town.road_east"\n'
+    # iteration 015: dragged right off the road (its collision reaches 230 px above its base)
+    for was in ("Vector2(3080, 1100)", "Vector2(3080, 1330)"):
+        s = s.replace('[node name="Roadblock" type="Node2D" parent="YSort"]\nscript = ExtResource("prop")\nposition = ' + was,
+                      '[node name="Roadblock" type="Node2D" parent="YSort"]\nscript = ExtResource("prop")\nposition = Vector2(3000, 1560)')
     open(sp, "w").write(s)
 
 
@@ -724,6 +827,8 @@ def build():
     def maker(fn):
         def interiors(rid, display, x, base, town):
             s = fn(rid, display, x, base, town)
+            import interior_dressing  # iteration 015 B: lived-in, abandoned rooms
+            interior_dressing.dress(s, interior_theme(rid), seed=sum(map(ord, rid)), density=1.2 if "outfitters" in rid else 1.0)
             d = s.definition({"surface": {"region": town, "position": [x, base]}, "tint": [0.5, 0.5, 0.53], **INTERIOR})
             dump_json(os.path.join(ROOT, "content", "regions", rid.replace(".", "_") + ".json"), d)
             made.append(rid)

@@ -170,21 +170,21 @@ occlude = true
 [node name="HouseA" type="Node2D" parent="YSort"]
 script = ExtResource("prop")
 position = Vector2(520, 1460)
-asset_id = "world.house_a"
+asset_id = "world.cabin_porch"
 footprint = Vector2(300, 40)
 occlude = true
 
 [node name="TownHouse" type="Node2D" parent="YSort"]
 script = ExtResource("prop")
 position = Vector2(1240, 1460)
-asset_id = "world.house_b"
+asset_id = "world.cabin_large"
 footprint = Vector2(280, 36)
 occlude = true
 
 [node name="HouseC" type="Node2D" parent="YSort"]
 script = ExtResource("prop")
 position = Vector2(1980, 1460)
-asset_id = "world.house_a"
+asset_id = "world.cabin_porch"
 footprint = Vector2(300, 40)
 occlude = true
 flip_h = true
@@ -192,7 +192,7 @@ flip_h = true
 [node name="Ruin" type="Node2D" parent="YSort"]
 script = ExtResource("prop")
 position = Vector2(2620, 1440)
-asset_id = "world.house_collapsed"
+asset_id = "world.cabin_ruin"
 footprint = Vector2(240, 22)
 footprint_offset = Vector2(0, -22)
 occlude = true
@@ -214,7 +214,7 @@ flip_h = true
 
 [node name="Roadblock" type="Node2D" parent="YSort"]
 script = ExtResource("prop")
-position = Vector2(3080, 1330)
+position = Vector2(3000, 1560)
 asset_id = "world.town_roadblock"
 footprint = Vector2(480, 220)
 footprint_offset = Vector2(0, -100)
@@ -766,9 +766,6 @@ entity_id = "town.house_ruin"
 script = ExtResource("machinev")
 entity_id = "town.car_glovebox"
 
-[node name="RoadWest" type="Node2D" parent="YSort"]
-script = ExtResource("portalv")
-entity_id = "town.road_west"
 
 [node name="TownHouseDoor" type="Node2D" parent="YSort"]
 script = ExtResource("door")
@@ -848,6 +845,85 @@ prompt_close_key = "PROMPT_CLOSE_DOOR"
 script = ExtResource("portalv")
 entity_id = "town.house_east_entrance"
 
-[node name="RoadEast" type="Node2D" parent="YSort"]
-script = ExtResource("portalv")
-entity_id = "town.road_east"
+[node name="D15_0" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(330, 1440)
+asset_id = "env.woodpile"
+footprint = Vector2(150, 30)
+occlude = true
+
+[node name="D15_1" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(700, 1460)
+asset_id = "env.bicycle"
+
+[node name="D15_2" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(820, 1530)
+asset_id = "env.fence_broken"
+
+[node name="D15_3" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(1060, 1450)
+asset_id = "env.bench"
+footprint = Vector2(130, 16)
+occlude = true
+
+[node name="D15_4" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(1420, 1450)
+asset_id = "env.barrels"
+footprint = Vector2(110, 30)
+occlude = true
+
+[node name="D15_5" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(1500, 1560)
+asset_id = "env.belongings"
+
+[node name="D15_6" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(1780, 1440)
+asset_id = "env.woodpile"
+footprint = Vector2(150, 30)
+occlude = true
+
+[node name="D15_7" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(2170, 1455)
+asset_id = "env.stove_rusted"
+footprint = Vector2(90, 24)
+occlude = true
+
+[node name="D15_8" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(2280, 935)
+asset_id = "env.crates"
+footprint = Vector2(130, 30)
+occlude = true
+
+[node name="D15_9" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(2760, 960)
+asset_id = "env.barrels"
+footprint = Vector2(110, 30)
+occlude = true
+
+[node name="D15_10" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(140, 920)
+asset_id = "env.sign_wood"
+footprint = Vector2(20, 10)
+occlude = true
+
+[node name="D15_11" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(2420, 1530)
+asset_id = "env.fence_broken"
+
+[node name="D15_12" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(2050, 1180)
+asset_id = "env.buried_car"
+footprint = Vector2(380, 50)
+occlude = true

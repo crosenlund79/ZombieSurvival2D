@@ -38,6 +38,9 @@ static func build(def_id: String) -> NavGrid:
 	g.w = int(ceil(float(b[2]) / CELL))
 	g.h = int(ceil(float(b[3]) / CELL))
 	g.blocked.resize(g.w * g.h)
+	# Iteration 015: generated wilderness regions list their obstacles as data.
+	for o in def.get("obstacles", []):
+		g.block_rect(Rect2(float(o[0]), float(o[1]), float(o[2]), float(o[3])))
 	var scene_path := str(def.get("scene", ""))
 	if ResourceLoader.exists(scene_path):
 		var root := (load(scene_path) as PackedScene).instantiate()

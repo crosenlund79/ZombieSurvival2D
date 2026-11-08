@@ -95,6 +95,13 @@ func _run(line: String) -> void:
 			await get_tree().create_timer(float(a[2])).timeout
 			Input.action_release(a[0])
 			Input.action_release(a[1])
+		"drive_to_region":
+			# Iteration 015: drive the car you are driving along the mapped roads until
+			# you arrive in <region> (crossing as many region edges as it takes).
+			# drive_to_region <region_id> [max_seconds]
+			ok = await _drive_to_region(a[0], float(a[1]) if a.size() > 1 else 240.0)
+			if not ok:
+				err = "did not arrive in " + a[0]
 		"flash":
 			# Presentation test: a lightning flash right now (the real ones are seeded by the world).
 			var atm: Node = main.region_view.get_node_or_null("Atmosphere") if main.region_view != null else null
@@ -281,6 +288,9 @@ func _run(line: String) -> void:
 					main.map_panel.visible = on
 				"inventory":
 					main.inventory_panel.visible = on
+				"map_local":
+					main.map_panel.visible = true
+					main.map_panel.set_mode("local" if on else "world")
 				"settings":
 					if on:
 						main.open_settings()
@@ -308,13 +318,123 @@ func _run(line: String) -> void:
 	_busy = false
 
 
+## Steering along a region's mapped road toward the road end nearest the destination.
+func _drive_to_region(dest: String, max_seconds: float) -> bool:
+	var keys := ["move_up", "move_down", "move_left", "move_right"]
+	var t := 0.0
+	var region := ""
+	var route: Array = []
+	var dir := 1
+	var dest_c := WorldGeo.world_rect(dest).get_center()
+	var arrived := false
+	var stall := 0.0
+	var reverse_t := 0.0
+	while t < max_seconds:
+		var me := Session.local_player()
+		if me == null or me.vehicle_id == "":
+			break
+		if me.region_id == dest:
+			arrived = true
+			break
+		var v: VehicleState = Session.world.vehicles.get(me.vehicle_id)
+		if v == null:
+			break
+		if me.region_id != region:
+			region = me.region_id
+			route = _best_road(region, dest_c)
+			dir = 1
+			if route.size() > 1:
+				var off := WorldGeo.offset(region)
+				var a0 := (route[0] as Vector2) + off
+				var a1 := (route[route.size() - 1] as Vector2) + off
+				dir = 1 if a1.distance_to(dest_c) < a0.distance_to(dest_c) else -1
+		var pos := v.position
+		var target := pos + Vector2.from_angle(v.rotation) * 200.0
+		if route.size() > 1:
+			var best := 0
+			for i in route.size():
+				if (route[i] as Vector2).distance_to(pos) < (route[best] as Vector2).distance_to(pos):
+					best = i
+			var ahead := clampi(best + dir * 2, 0, route.size() - 1)
+			if (route[best] as Vector2).distance_to(pos) > 160.0:
+				ahead = best  # off the road (arriving at a junction): get onto it first
+			target = route[ahead]
+			if ahead == best:  # at the road's end: keep going straight off the edge
+				target = pos + ((route[ahead] as Vector2) - (route[clampi(ahead - dir, 0, route.size() - 1)] as Vector2)).normalized() * 400.0
+		var want := (target - pos).angle()
+		var diff := wrapf(want - v.rotation, -PI, PI)
+		for k in keys:
+			Input.action_release(k)
+		# stalled against something: back off for a moment, steering the other way
+		stall = stall + get_physics_process_delta_time() if absf(v.speed) < 25.0 else 0.0
+		if stall > 1.2:
+			reverse_t = 1.0
+			stall = 0.0
+		if reverse_t > 0.0:
+			reverse_t -= get_physics_process_delta_time()
+			Input.action_press("move_down")
+			Input.action_press("move_left" if diff > 0.0 else "move_right")
+			await get_tree().physics_frame
+			t += get_physics_process_delta_time()
+			continue
+		if absf(diff) > 0.9 and absf(v.speed) > 180.0:
+			Input.action_press("move_down")
+		else:
+			Input.action_press("move_up")
+		if diff > 0.06:
+			Input.action_press("move_right")
+		elif diff < -0.06:
+			Input.action_press("move_left")
+		await get_tree().physics_frame
+		t += get_physics_process_delta_time()
+	for k in keys:
+		Input.action_release(k)
+	await get_tree().create_timer(0.3).timeout
+	return arrived
+
+
+## The mapped road of a region whose far end lies nearest a world point (local points).
+func _best_road(region_id: String, toward: Vector2) -> Array:
+	var off := WorldGeo.offset(region_id)
+	var best: Array = []
+	var best_d := INF
+	for road in Content.region_def(region_id).get("map", {}).get("roads", []):
+		if str(road.get("kind", "road")) != "road":
+			continue
+		var pts: Array = []
+		for p in road.get("points", []):
+			pts.append(Vector2(float(p[0]), float(p[1])))
+		if pts.size() < 2:
+			continue
+		var d := minf(((pts[0] as Vector2) + off).distance_to(toward), ((pts[pts.size() - 1] as Vector2) + off).distance_to(toward))
+		if d < best_d:
+			best_d = d
+			best = pts
+	# densify straight settlement roads so steering has waypoints every ~200 px
+	var dense: Array = []
+	for i in best.size() - 1:
+		var a: Vector2 = best[i]
+		var b: Vector2 = best[i + 1]
+		var n := maxi(1, int(a.distance_to(b) / 200.0))
+		for k in n:
+			dense.append(a.lerp(b, float(k) / n))
+	if not best.is_empty():
+		dense.append(best[best.size() - 1])
+	return dense
+
+
 func _walk_to(target: Vector2, limit: float) -> bool:
 	var t := 0.0
 	var actions := ["move_left", "move_right", "move_up", "move_down"]
 	var result := false
+	var start_region := Session.local_player().region_id if Session.local_player() != null else ""
 	while t < 15.0:
 		var view: RegionView = main.region_view
 		if view == null or view.local_avatar == null:
+			break
+		# iteration 015: walking off a region edge carries you across — stop there
+		if Session.local_player() != null and Session.local_player().region_id != start_region:
+			result = true
 			break
 		var d := target - view.local_avatar.global_position
 		if view.side:  # side-view bunker: walk along the floor toward the target's x

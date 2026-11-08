@@ -93,9 +93,6 @@ prompt_open_key = "PROMPT_OPEN_DOOR"
 prompt_close_key = "PROMPT_CLOSE_DOOR"
 fade_with = NodePath("../Farmhouse")
 
-[node name="RoadEast" type="Node2D" parent="YSort"]
-script = ExtResource("portalv")
-entity_id = "homestead.road_east"
 
 [node name="FarmhouseEntry" type="Node2D" parent="YSort"]
 script = ExtResource("portalv")

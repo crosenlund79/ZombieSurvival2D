@@ -56,7 +56,7 @@
 			18,
 			11
 		],
-		"exterior": "side.ext_siding",
+		"exterior": "side.ext_logs",
 		"basement": "",
 		"rooms": [
 			{
@@ -131,6 +131,60 @@
 			"asset": "int.barricade",
 			"x": 512.0,
 			"y": 509
+		},
+		{
+			"asset": "side.calendar",
+			"x": 653.8,
+			"y": 725,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.coat_hooks",
+			"x": 1114.6,
+			"y": 735,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.lamp_hanging",
+			"x": 847.2,
+			"y": 580,
+			"hang": true
+		},
+		{
+			"asset": "side.cobweb",
+			"x": 1305.6,
+			"y": 580,
+			"hang": true,
+			"flip": true
+		},
+		{
+			"asset": "side.coat_hooks",
+			"x": 476.5,
+			"y": 423,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.coat_hooks",
+			"x": 627.5,
+			"y": 409,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.frame_tilt",
+			"x": 942.8,
+			"y": 408,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.lamp_hanging",
+			"x": 951.4,
+			"y": 260,
+			"hang": true
 		}
 	],
 	"spawn_points": [

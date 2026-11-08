@@ -6,8 +6,8 @@
 	"bounds": [
 		0,
 		0,
-		2112,
-		768
+		1920,
+		1088
 	],
 	"excavation": {
 		"cell": 64,
@@ -15,36 +15,55 @@
 			0,
 			0
 		],
-		"cols": 33,
-		"rows": 12,
+		"cols": 30,
+		"rows": 17,
 		"fixed": true,
 		"initial_open": [
 			[
 				5,
-				4,
-				23,
+				9,
+				20,
 				4
+			],
+			[
+				5,
+				4,
+				20,
+				4
+			],
+			[
+				6,
+				8,
+				1,
+				1
 			]
 		],
-		"platforms": [],
+		"platforms": [
+			[
+				6,
+				7,
+				1,
+				1
+			]
+		],
 		"_comment": "Authored building cross-section (tools/build_side_interiors.py); fixed, never dug."
 	},
 	"section": {
-		"ground_row": 8,
+		"ground_row": 13,
 		"envelope": [
 			4,
 			3,
-			25,
-			6
+			22,
+			11
 		],
-		"exterior": "side.ext_siding",
+		"exterior": "side.ext_logs",
 		"basement": "",
 		"rooms": [
 			{
 				"rect": [
 					5,
-					4,
-					17,
+					9,
+					14,
 					4
 				],
 				"wall": "side.wall_house_b",
@@ -52,46 +71,213 @@
 			},
 			{
 				"rect": [
-					22,
-					4,
+					19,
+					9,
 					6,
 					4
 				],
-				"wall": "side.wall_brick_in",
-				"floor": "side.floor_concrete"
+				"wall": "side.wall_cabin",
+				"floor": "side.floorboards"
+			},
+			{
+				"rect": [
+					5,
+					4,
+					20,
+					4
+				],
+				"wall": "side.wall_cabin",
+				"floor": "side.floorboards"
 			}
 		],
 		"windows": [
 			[
-				512.0,
+				537.6,
+				683.5
+			],
+			[
+				896.0,
+				683.5
+			],
+			[
+				768.0,
 				363.5
 			],
 			[
-				832.0,
-				363.5
+				1280.0,
+				363.5,
+				"boarded"
 			]
 		],
 		"dividers": [
 			[
-				1408,
-				256,
-				345.6,
-				512
+				1216,
+				576,
+				665.6,
+				832
 			]
 		],
 		"labels": [
 			[
-				1433.6,
+				1241.6,
+				604,
+				"SIDE_FITTING"
+			],
+			[
+				576.0,
+				284,
+				"SIDE_OUTDOOR_GEAR"
+			],
+			[
+				1177.6,
 				284,
 				"SIDE_STOCKROOM"
 			]
 		]
 	},
-	"side_props": [],
+	"side_props": [
+		{
+			"asset": "side.mannequin",
+			"x": 537.6,
+			"y": 829
+		},
+		{
+			"asset": "side.coat_rail_empty",
+			"x": 832.0,
+			"y": 829
+		},
+		{
+			"asset": "side.boot_rack",
+			"x": 1100.8,
+			"y": 829
+		},
+		{
+			"asset": "side.counter",
+			"x": 1369.6,
+			"y": 829
+		},
+		{
+			"asset": "side.register",
+			"x": 1344.0,
+			"y": 777
+		},
+		{
+			"asset": "side.shelf_goods",
+			"x": 870.4,
+			"y": 509
+		},
+		{
+			"asset": "side.mannequin",
+			"x": 1024.0,
+			"y": 509,
+			"flip": true
+		},
+		{
+			"asset": "side.stock_crates",
+			"x": 1484.8,
+			"y": 509
+		},
+		{
+			"asset": "side.calendar",
+			"x": 405.3,
+			"y": 724,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.poster",
+			"x": 825.1,
+			"y": 732,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.coat_hooks",
+			"x": 985.3,
+			"y": 736,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.poster",
+			"x": 1211.9,
+			"y": 724,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.clock",
+			"x": 1416.2,
+			"y": 738,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.lamp_hanging",
+			"x": 708.8,
+			"y": 580,
+			"hang": true
+		},
+		{
+			"asset": "side.cobweb",
+			"x": 1561.6,
+			"y": 580,
+			"hang": true
+		},
+		{
+			"asset": "side.clock",
+			"x": 442.1,
+			"y": 413,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.coat_hooks",
+			"x": 613.4,
+			"y": 422,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.poster",
+			"x": 833.2,
+			"y": 399,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.coat_hooks",
+			"x": 1188.0,
+			"y": 424,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.clock",
+			"x": 1438.1,
+			"y": 420,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.lamp_hanging",
+			"x": 1144.7,
+			"y": 260,
+			"hang": true,
+			"light": true
+		},
+		{
+			"asset": "side.cobweb",
+			"x": 358.4,
+			"y": 260,
+			"hang": true,
+			"flip": true
+		}
+	],
 	"spawn_points": [
 		[
 			422.4,
-			509
+			829
 		]
 	],
 	"entities": [
@@ -111,7 +297,7 @@
 			"prompt_key": "PROMPT_EXIT_HOUSE",
 			"position": [
 				364.8,
-				509
+				829
 			]
 		},
 		{
@@ -128,26 +314,8 @@
 				"searched": false
 			},
 			"position": [
-				512.0,
-				509
-			]
-		},
-		{
-			"id": "stillwater.outfitters.rack_b",
-			"type": "container",
-			"kind": "rack",
-			"interact_range": 72,
-			"prompt_key": "PROMPT_SEARCH_RACK",
-			"art": "int.clothes_rack_empty",
-			"art_searched": "int.clothes_rack_empty",
-			"loot": {},
-			"pool": "clothing_rack",
-			"initial": {
-				"searched": true
-			},
-			"position": [
-				704.0,
-				509
+				691.2,
+				829
 			]
 		},
 		{
@@ -164,9 +332,37 @@
 				"searched": false
 			},
 			"position": [
-				896.0,
-				509
+				972.8,
+				829
 			]
+		},
+		{
+			"id": "stillwater.outfitters.rack_b",
+			"type": "container",
+			"kind": "rack",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_RACK",
+			"art": "int.clothes_rack_empty",
+			"art_searched": "int.clothes_rack_empty",
+			"loot": {},
+			"pool": "clothing_rack",
+			"initial": {
+				"searched": true
+			},
+			"position": [
+				1510.4,
+				829
+			]
+		},
+		{
+			"id": "stillwater.outfitters.stairs_0",
+			"type": "stairs",
+			"position": [
+				416.0,
+				829
+			],
+			"top": 509,
+			"flip": true
 		},
 		{
 			"id": "stillwater.outfitters.packs",
@@ -182,7 +378,7 @@
 				"searched": false
 			},
 			"position": [
-				1088.0,
+				704.0,
 				509
 			]
 		},
@@ -200,7 +396,7 @@
 				"searched": false
 			},
 			"position": [
-				1510.4,
+				1318.4,
 				509
 			]
 		}

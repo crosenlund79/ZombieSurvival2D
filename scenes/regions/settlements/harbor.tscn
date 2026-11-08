@@ -58,6 +58,46 @@ script = ExtResource("ground")
 polygon = PackedVector2Array(2940, 1450, 3060, 1450, 3060, 1760, 2940, 1760)
 asset_id = "set.pier"
 
+[node name="Path19" type="Polygon2D" parent="Ground"]
+script = ExtResource("ground")
+polygon = PackedVector2Array(478, 784, 522, 784, 526, 930, 474, 930)
+asset_id = "env.ground_frozen_mud"
+
+[node name="Path23" type="Polygon2D" parent="Ground"]
+script = ExtResource("ground")
+polygon = PackedVector2Array(828, 784, 872, 784, 876, 930, 824, 930)
+asset_id = "env.ground_frozen_mud"
+
+[node name="Path25" type="Polygon2D" parent="Ground"]
+script = ExtResource("ground")
+polygon = PackedVector2Array(1428, 784, 1472, 784, 1476, 930, 1424, 930)
+asset_id = "env.ground_frozen_mud"
+
+[node name="Path28" type="Polygon2D" parent="Ground"]
+script = ExtResource("ground")
+polygon = PackedVector2Array(2128, 784, 2172, 784, 2176, 930, 2124, 930)
+asset_id = "env.ground_frozen_mud"
+
+[node name="Path31" type="Polygon2D" parent="Ground"]
+script = ExtResource("ground")
+polygon = PackedVector2Array(578, 1304, 622, 1304, 626, 1450, 574, 1450)
+asset_id = "env.ground_frozen_mud"
+
+[node name="Path34" type="Polygon2D" parent="Ground"]
+script = ExtResource("ground")
+polygon = PackedVector2Array(1378, 1304, 1422, 1304, 1426, 1450, 1374, 1450)
+asset_id = "env.ground_frozen_mud"
+
+[node name="Path37" type="Polygon2D" parent="Ground"]
+script = ExtResource("ground")
+polygon = PackedVector2Array(1978, 1304, 2022, 1304, 2026, 1450, 1974, 1450)
+asset_id = "env.ground_frozen_mud"
+
+[node name="Path40" type="Polygon2D" parent="Ground"]
+script = ExtResource("ground")
+polygon = PackedVector2Array(2807, 544, 2851, 544, 2855, 690, 2803, 690)
+asset_id = "env.ground_frozen_mud"
+
 [node name="Bounds" type="StaticBody2D" parent="."]
 
 [node name="Edge0" type="CollisionPolygon2D" parent="Bounds"]
@@ -155,18 +195,18 @@ asset_id = "set.lighthouse"
 footprint = Vector2(110, 40)
 occlude = true
 
-[node name="B_harbor_house_500" type="Node2D" parent="YSort"]
+[node name="B_cabin_weathered_500" type="Node2D" parent="YSort"]
 script = ExtResource("prop")
 position = Vector2(500, 780)
-asset_id = "set.harbor_house"
-footprint = Vector2(246, 46)
+asset_id = "world.cabin_weathered"
+footprint = Vector2(270, 46)
 occlude = true
 
-[node name="B_harbor_house_850" type="Node2D" parent="YSort"]
+[node name="B_cabin_small_850" type="Node2D" parent="YSort"]
 script = ExtResource("prop")
 position = Vector2(850, 780)
-asset_id = "set.harbor_house"
-footprint = Vector2(246, 46)
+asset_id = "world.cabin_small"
+footprint = Vector2(220, 46)
 occlude = true
 flip_h = true
 
@@ -174,35 +214,35 @@ flip_h = true
 script = ExtResource("prop")
 position = Vector2(1450, 780)
 asset_id = "set.chandlery"
-footprint = Vector2(296, 46)
+footprint = Vector2(280, 46)
 occlude = true
 
 [node name="B_harbor_office_2150" type="Node2D" parent="YSort"]
 script = ExtResource("prop")
 position = Vector2(2150, 780)
 asset_id = "set.harbor_office"
-footprint = Vector2(316, 46)
+footprint = Vector2(300, 46)
 occlude = true
 
 [node name="B_cannery_600" type="Node2D" parent="YSort"]
 script = ExtResource("prop")
 position = Vector2(600, 1300)
 asset_id = "set.cannery"
-footprint = Vector2(446, 46)
+footprint = Vector2(430, 46)
 occlude = true
 
 [node name="B_warehouse_a_1400" type="Node2D" parent="YSort"]
 script = ExtResource("prop")
 position = Vector2(1400, 1300)
 asset_id = "set.warehouse_a"
-footprint = Vector2(486, 46)
+footprint = Vector2(470, 46)
 occlude = true
 
 [node name="B_net_shed_2000" type="Node2D" parent="YSort"]
 script = ExtResource("prop")
 position = Vector2(2000, 1300)
 asset_id = "set.net_shed"
-footprint = Vector2(226, 46)
+footprint = Vector2(210, 46)
 occlude = true
 
 [node name="V_pickup" type="Node2D" parent="YSort"]
@@ -247,7 +287,115 @@ asset_id = "world.town_streetlamp"
 footprint = Vector2(10, 8)
 occlude = true
 
-[node name="P19" type="Node2D" parent="YSort"]
+[node name="B_cabin_weathered_2829" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(2829, 540)
+asset_id = "world.cabin_weathered"
+footprint = Vector2(270, 46)
+occlude = true
+flip_h = true
+
+[node name="P20" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(731, 804)
+asset_id = "env.bicycle"
+occlude = true
+
+[node name="P21" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(717, 793)
+asset_id = "env.fence_broken"
+occlude = true
+
+[node name="P22" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(290, 776)
+asset_id = "env.belongings"
+occlude = true
+
+[node name="P24" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(678, 775)
+asset_id = "env.bicycle"
+occlude = true
+
+[node name="P26" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(1222, 813)
+asset_id = "env.fence_broken"
+occlude = true
+
+[node name="P27" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(1248, 802)
+asset_id = "env.fence_broken"
+occlude = true
+flip_h = true
+
+[node name="P29" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(1920, 817)
+asset_id = "env.fence_broken"
+occlude = true
+
+[node name="P30" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(1914, 815)
+asset_id = "env.fence_broken"
+occlude = true
+
+[node name="P32" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(299, 1304)
+asset_id = "env.belongings"
+occlude = true
+
+[node name="P33" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(886, 1302)
+asset_id = "env.crates"
+footprint = Vector2(130, 30)
+occlude = true
+flip_h = true
+
+[node name="P35" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(1072, 1322)
+asset_id = "env.crates"
+footprint = Vector2(130, 30)
+occlude = true
+flip_h = true
+
+[node name="P36" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(1734, 1318)
+asset_id = "env.crates"
+footprint = Vector2(130, 30)
+occlude = true
+
+[node name="P38" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(1817, 1319)
+asset_id = "env.belongings"
+occlude = true
+flip_h = true
+
+[node name="P39" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(1831, 1334)
+asset_id = "env.barrels"
+footprint = Vector2(110, 30)
+occlude = true
+flip_h = true
+
+[node name="P41" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(3046, 573)
+asset_id = "env.belongings"
+occlude = true
+flip_h = true
+
+[node name="P42" type="Node2D" parent="YSort"]
 script = ExtResource("prop")
 position = Vector2(40, 107)
 asset_id = "env.pine_b"
@@ -257,7 +405,7 @@ occlude = true
 sway = true
 flip_h = true
 
-[node name="P20" type="Node2D" parent="YSort"]
+[node name="P43" type="Node2D" parent="YSort"]
 script = ExtResource("prop")
 position = Vector2(187, 254)
 asset_id = "env.pine_b"
@@ -267,7 +415,7 @@ occlude = true
 sway = true
 flip_h = true
 
-[node name="P21" type="Node2D" parent="YSort"]
+[node name="P44" type="Node2D" parent="YSort"]
 script = ExtResource("prop")
 position = Vector2(311, 246)
 asset_id = "env.pine_a"
@@ -276,7 +424,7 @@ nav_block = false
 occlude = true
 sway = true
 
-[node name="P22" type="Node2D" parent="YSort"]
+[node name="P45" type="Node2D" parent="YSort"]
 script = ExtResource("prop")
 position = Vector2(431, 132)
 asset_id = "env.pine_a"
@@ -286,7 +434,7 @@ occlude = true
 sway = true
 flip_h = true
 
-[node name="P23" type="Node2D" parent="YSort"]
+[node name="P46" type="Node2D" parent="YSort"]
 script = ExtResource("prop")
 position = Vector2(525, 118)
 asset_id = "env.pine_b"
@@ -295,7 +443,7 @@ nav_block = false
 occlude = true
 sway = true
 
-[node name="P24" type="Node2D" parent="YSort"]
+[node name="P47" type="Node2D" parent="YSort"]
 script = ExtResource("prop")
 position = Vector2(682, 288)
 asset_id = "env.pine_a"
@@ -305,7 +453,7 @@ occlude = true
 sway = true
 flip_h = true
 
-[node name="P25" type="Node2D" parent="YSort"]
+[node name="P48" type="Node2D" parent="YSort"]
 script = ExtResource("prop")
 position = Vector2(805, 213)
 asset_id = "env.pine_a"
@@ -315,7 +463,7 @@ occlude = true
 sway = true
 flip_h = true
 
-[node name="P26" type="Node2D" parent="YSort"]
+[node name="P49" type="Node2D" parent="YSort"]
 script = ExtResource("prop")
 position = Vector2(903, 166)
 asset_id = "env.pine_a"
@@ -324,7 +472,7 @@ nav_block = false
 occlude = true
 sway = true
 
-[node name="P27" type="Node2D" parent="YSort"]
+[node name="P50" type="Node2D" parent="YSort"]
 script = ExtResource("prop")
 position = Vector2(1052, 197)
 asset_id = "env.pine_b"
@@ -334,7 +482,7 @@ occlude = true
 sway = true
 flip_h = true
 
-[node name="P28" type="Node2D" parent="YSort"]
+[node name="P51" type="Node2D" parent="YSort"]
 script = ExtResource("prop")
 position = Vector2(1207, 176)
 asset_id = "env.pine_a"
@@ -343,7 +491,7 @@ nav_block = false
 occlude = true
 sway = true
 
-[node name="P29" type="Node2D" parent="YSort"]
+[node name="P52" type="Node2D" parent="YSort"]
 script = ExtResource("prop")
 position = Vector2(1347, 198)
 asset_id = "env.pine_b"
@@ -352,7 +500,7 @@ nav_block = false
 occlude = true
 sway = true
 
-[node name="P30" type="Node2D" parent="YSort"]
+[node name="P53" type="Node2D" parent="YSort"]
 script = ExtResource("prop")
 position = Vector2(1499, 145)
 asset_id = "env.pine_b"
@@ -361,7 +509,7 @@ nav_block = false
 occlude = true
 sway = true
 
-[node name="P31" type="Node2D" parent="YSort"]
+[node name="P54" type="Node2D" parent="YSort"]
 script = ExtResource("prop")
 position = Vector2(1626, 363)
 asset_id = "env.pine_b"
@@ -370,7 +518,7 @@ nav_block = false
 occlude = true
 sway = true
 
-[node name="P32" type="Node2D" parent="YSort"]
+[node name="P55" type="Node2D" parent="YSort"]
 script = ExtResource("prop")
 position = Vector2(1795, 223)
 asset_id = "env.pine_a"
@@ -380,7 +528,7 @@ occlude = true
 sway = true
 flip_h = true
 
-[node name="P33" type="Node2D" parent="YSort"]
+[node name="P56" type="Node2D" parent="YSort"]
 script = ExtResource("prop")
 position = Vector2(1945, 252)
 asset_id = "env.pine_a"
@@ -389,7 +537,7 @@ nav_block = false
 occlude = true
 sway = true
 
-[node name="P34" type="Node2D" parent="YSort"]
+[node name="P57" type="Node2D" parent="YSort"]
 script = ExtResource("prop")
 position = Vector2(2113, 228)
 asset_id = "env.pine_b"
@@ -399,7 +547,7 @@ occlude = true
 sway = true
 flip_h = true
 
-[node name="P35" type="Node2D" parent="YSort"]
+[node name="P58" type="Node2D" parent="YSort"]
 script = ExtResource("prop")
 position = Vector2(2241, 339)
 asset_id = "env.pine_b"
@@ -409,7 +557,7 @@ occlude = true
 sway = true
 flip_h = true
 
-[node name="P36" type="Node2D" parent="YSort"]
+[node name="P59" type="Node2D" parent="YSort"]
 script = ExtResource("prop")
 position = Vector2(2399, 342)
 asset_id = "env.pine_b"
@@ -418,7 +566,7 @@ nav_block = false
 occlude = true
 sway = true
 
-[node name="P37" type="Node2D" parent="YSort"]
+[node name="P60" type="Node2D" parent="YSort"]
 script = ExtResource("prop")
 position = Vector2(2523, 344)
 asset_id = "env.pine_a"
@@ -428,28 +576,18 @@ occlude = true
 sway = true
 flip_h = true
 
-[node name="P38" type="Node2D" parent="YSort"]
+[node name="P61" type="Node2D" parent="YSort"]
 script = ExtResource("prop")
-position = Vector2(2648, 272)
+position = Vector2(2756, 192)
 asset_id = "env.pine_a"
 footprint = Vector2(30, 12)
 nav_block = false
 occlude = true
 sway = true
 
-[node name="P39" type="Node2D" parent="YSort"]
+[node name="P62" type="Node2D" parent="YSort"]
 script = ExtResource("prop")
-position = Vector2(2749, 252)
-asset_id = "env.pine_a"
-footprint = Vector2(30, 12)
-nav_block = false
-occlude = true
-sway = true
-flip_h = true
-
-[node name="P40" type="Node2D" parent="YSort"]
-script = ExtResource("prop")
-position = Vector2(2859, 148)
+position = Vector2(2889, 63)
 asset_id = "env.pine_a"
 footprint = Vector2(30, 12)
 nav_block = false
@@ -457,29 +595,25 @@ occlude = true
 sway = true
 flip_h = true
 
-[node name="P41" type="Node2D" parent="YSort"]
+[node name="P63" type="Node2D" parent="YSort"]
 script = ExtResource("prop")
-position = Vector2(2961, 193)
+position = Vector2(2991, 98)
+asset_id = "env.pine_a"
+footprint = Vector2(30, 12)
+nav_block = false
+occlude = true
+sway = true
+flip_h = true
+
+[node name="P64" type="Node2D" parent="YSort"]
+script = ExtResource("prop")
+position = Vector2(3103, 145)
 asset_id = "env.pine_b"
 footprint = Vector2(30, 12)
 nav_block = false
 occlude = true
 sway = true
 flip_h = true
-
-[node name="P42" type="Node2D" parent="YSort"]
-script = ExtResource("prop")
-position = Vector2(3086, 297)
-asset_id = "env.pine_b"
-footprint = Vector2(30, 12)
-nav_block = false
-occlude = true
-sway = true
-flip_h = true
-
-[node name="E_road_west" type="Node2D" parent="YSort"]
-script = ExtResource("portalv")
-entity_id = "harbor.road_west"
 
 [node name="E_trawler_hold" type="Node2D" parent="YSort"]
 script = ExtResource("containerv")
@@ -547,7 +681,7 @@ lane_seed = 37
 [node name="Grass" type="Node2D" parent="YSort"]
 script = ExtResource("scatter")
 area = Rect2(20, 20, 3560, 2560)
-avoid = Array[Rect2]([Rect2(-70, 830, 3640, 140), Rect2(-400, 1300, 4400, 2000), Rect2(345, 480, 310, 340), Rect2(695, 480, 310, 340), Rect2(1270, 480, 360, 340), Rect2(1960, 480, 380, 340), Rect2(345, 1000, 510, 340), Rect2(1125, 1000, 550, 340), Rect2(1855, 1000, 290, 340)])
+avoid = Array[Rect2]([Rect2(-70, 830, 3640, 140), Rect2(-400, 1300, 4400, 2000), Rect2(325, 480, 350, 340), Rect2(700, 480, 300, 340), Rect2(1270, 480, 360, 340), Rect2(1960, 480, 380, 340), Rect2(345, 1000, 510, 340), Rect2(1125, 1000, 550, 340), Rect2(1855, 1000, 290, 340), Rect2(2615, 240, 430, 380)])
 asset_ids = Array[String](["env.dead_grass_a", "env.dead_grass_b", "env.dead_grass_c"])
 count = 90
 layout_seed = 78

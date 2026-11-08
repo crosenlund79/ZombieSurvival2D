@@ -1,0 +1,203 @@
+{
+	"region_id": "wild.birchwater.lakeside",
+	"display_key": "REGION_WILD_BIRCHWATER_LAKESIDE",
+	"view": "side",
+	"style": "building",
+	"bounds": [
+		0,
+		0,
+		1344,
+		768
+	],
+	"excavation": {
+		"cell": 64,
+		"origin": [
+			0,
+			0
+		],
+		"cols": 21,
+		"rows": 12,
+		"fixed": true,
+		"initial_open": [
+			[
+				5,
+				4,
+				11,
+				4
+			]
+		],
+		"platforms": [],
+		"_comment": "Authored building cross-section (tools/build_side_interiors.py); fixed, never dug."
+	},
+	"section": {
+		"ground_row": 8,
+		"envelope": [
+			4,
+			3,
+			13,
+			6
+		],
+		"exterior": "side.ext_logs",
+		"basement": "",
+		"rooms": [
+			{
+				"rect": [
+					5,
+					4,
+					11,
+					4
+				],
+				"wall": "side.wall_cabin",
+				"floor": "side.floorboards"
+			}
+		],
+		"windows": [
+			[
+				576.0,
+				363.5
+			],
+			[
+				832.0,
+				363.5,
+				"boarded"
+			]
+		],
+		"dividers": [],
+		"labels": []
+	},
+	"side_props": [
+		{
+			"asset": "world.furniture_stove",
+			"x": 486.4,
+			"y": 509
+		},
+		{
+			"asset": "world.furniture_table",
+			"x": 755.2,
+			"y": 509
+		},
+		{
+			"asset": "world.furniture_bed",
+			"x": 896.0,
+			"y": 509,
+			"back": true
+		},
+		{
+			"asset": "side.jar_shelf",
+			"x": 440.8,
+			"y": 411,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.calendar",
+			"x": 607.3,
+			"y": 419,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.calendar",
+			"x": 816.8,
+			"y": 418,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.lamp_hanging",
+			"x": 685.9,
+			"y": 260,
+			"hang": true,
+			"light": true
+		},
+		{
+			"asset": "side.cobweb",
+			"x": 985.6,
+			"y": 260,
+			"hang": true,
+			"flip": true
+		}
+	],
+	"spawn_points": [
+		[
+			422.4,
+			509
+		]
+	],
+	"entities": [
+		{
+			"id": "wild.birchwater.lakeside.exit",
+			"type": "portal",
+			"interact_range": 70,
+			"priority": 2,
+			"side_art": "side.door_ext",
+			"target": {
+				"region": "wild.birchwater",
+				"position": [
+					3400,
+					660
+				]
+			},
+			"prompt_key": "PROMPT_EXIT_CABIN",
+			"position": [
+				364.8,
+				509
+			]
+		},
+		{
+			"id": "wild.birchwater.lakeside.cupboard",
+			"type": "container",
+			"kind": "cupboard",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_CUPBOARD",
+			"art": "world.furniture_cupboard",
+			"art_searched": "world.furniture_cupboard",
+			"loot": {},
+			"pool": "home_kitchen",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				614.4,
+				509
+			]
+		},
+		{
+			"id": "wild.birchwater.lakeside.chest",
+			"type": "container",
+			"kind": "crate",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_CRATE",
+			"art": "int.crate",
+			"art_searched": "int.crate_open",
+			"loot": {},
+			"pool": "hunter_cabin",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				883.2,
+				509
+			]
+		}
+	],
+	"surface": {
+		"region": "wild.birchwater",
+		"position": [
+			3400,
+			600
+		]
+	},
+	"tint": [
+		0.55,
+		0.5,
+		0.46
+	],
+	"climate": {
+		"exposure": 1.0,
+		"fog": 0.0,
+		"shelter": 0.45
+	},
+	"interior": true,
+	"ambience": "amb.wind_muffled"
+}

@@ -203,6 +203,29 @@ static func _portal(world: WorldState, p: PlayerState, region: RegionState, eid:
 	return res
 
 
+## Iteration 015: walking off a region edge into its geographic neighbour (WorldGeo).
+## Host. Returns a result with the transition, or {} when the position does not cross.
+static func edge_travel(world: WorldState, p: PlayerState) -> Dictionary:
+	if p.vehicle_id != "" or p.dead:
+		return {}
+	var cr := WorldGeo.crossing(p.region_id, p.position)
+	if cr.is_empty() or world.region(str(cr["region"])) == null:
+		return {}
+	var from := p.region_id
+	p.region_id = str(cr["region"])
+	p.position = cr["position"]
+	var res := _ok()
+	res["transition"] = {"player_id": p.player_id, "region_id": p.region_id, "position": p.position}
+	res["roster"] = true
+	var key := str(world.region_def(p.region_id).get("discovery", ""))
+	if key != "" and discover(world, key):
+		res["meta"] = true
+		res["notice"] = {"key": "DISCOVERED_REGION", "args": [TranslationServer.translate(str(world.region_def(p.region_id).get("display_key", "")))]}
+	SessionLog.info("world", "edge_travel", {"player": p.player_id.substr(0, 6), "from": from, "to": p.region_id,
+		"at": [roundi(p.position.x), roundi(p.position.y)]})
+	return res
+
+
 ## Records a discovery once. Returns true when it is new.
 static func discover(world: WorldState, key: String) -> bool:
 	var d: Dictionary = world.meta.get("discoveries", {})

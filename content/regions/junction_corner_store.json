@@ -87,7 +87,48 @@
 			]
 		]
 	},
-	"side_props": [],
+	"side_props": [
+		{
+			"asset": "side.bottles",
+			"x": 1648.4,
+			"y": 509
+		},
+		{
+			"asset": "side.stain",
+			"x": 442.2,
+			"y": 415,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.clock",
+			"x": 876.4,
+			"y": 411,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.calendar",
+			"x": 1442.3,
+			"y": 411,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.poster",
+			"x": 1685.8,
+			"y": 399,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.lamp_hanging",
+			"x": 800.2,
+			"y": 260,
+			"hang": true,
+			"light": true
+		}
+	],
 	"spawn_points": [
 		[
 			422.4,

@@ -107,7 +107,11 @@ func _add_props(r: RegionState, parent: Node2D) -> void:
 		var plan := Vector2(float(pr.get("x", 0)), float(pr.get("y", 0)))
 		var sp := Sprite2D.new()
 		Assets.apply_to_sprite(sp, aid)
-		var at := SideSection.hang(r, plan) if bool(pr.get("hang", false)) else SideSection.rest(r, plan)
+		var at := plan
+		if bool(pr.get("hang", false)):
+			at = SideSection.hang(r, plan)
+		elif not bool(pr.get("wall", false)):  # iteration 015: "wall" pieces stay where authored (pictures, clocks)
+			at = SideSection.rest(r, plan)
 		var holder := Node2D.new()
 		holder.position = SideSection.to_screen(r, at)
 		if bool(pr.get("back", false)):

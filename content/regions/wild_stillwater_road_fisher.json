@@ -1,0 +1,202 @@
+{
+	"region_id": "wild.stillwater_road.fisher",
+	"display_key": "REGION_WILD_STILLWATER_ROAD_FISHER",
+	"view": "side",
+	"style": "building",
+	"bounds": [
+		0,
+		0,
+		1344,
+		768
+	],
+	"excavation": {
+		"cell": 64,
+		"origin": [
+			0,
+			0
+		],
+		"cols": 21,
+		"rows": 12,
+		"fixed": true,
+		"initial_open": [
+			[
+				5,
+				4,
+				11,
+				4
+			]
+		],
+		"platforms": [],
+		"_comment": "Authored building cross-section (tools/build_side_interiors.py); fixed, never dug."
+	},
+	"section": {
+		"ground_row": 8,
+		"envelope": [
+			4,
+			3,
+			13,
+			6
+		],
+		"exterior": "side.ext_logs",
+		"basement": "",
+		"rooms": [
+			{
+				"rect": [
+					5,
+					4,
+					11,
+					4
+				],
+				"wall": "side.wall_cabin",
+				"floor": "side.floorboards"
+			}
+		],
+		"windows": [
+			[
+				576.0,
+				363.5
+			],
+			[
+				832.0,
+				363.5,
+				"boarded"
+			]
+		],
+		"dividers": [],
+		"labels": []
+	},
+	"side_props": [
+		{
+			"asset": "world.furniture_stove",
+			"x": 486.4,
+			"y": 509
+		},
+		{
+			"asset": "world.furniture_table",
+			"x": 755.2,
+			"y": 509
+		},
+		{
+			"asset": "world.furniture_bed",
+			"x": 896.0,
+			"y": 509,
+			"back": true
+		},
+		{
+			"asset": "side.jar_shelf",
+			"x": 627.2,
+			"y": 403,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.frame",
+			"x": 865.9,
+			"y": 408,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.lamp_hanging",
+			"x": 632.7,
+			"y": 260,
+			"hang": true,
+			"light": true
+		},
+		{
+			"asset": "side.cobweb",
+			"x": 985.6,
+			"y": 260,
+			"hang": true
+		},
+		{
+			"asset": "side.curtains",
+			"x": 576.0,
+			"y": 423.5,
+			"back": true,
+			"wall": true
+		}
+	],
+	"spawn_points": [
+		[
+			422.4,
+			509
+		]
+	],
+	"entities": [
+		{
+			"id": "wild.stillwater_road.fisher.exit",
+			"type": "portal",
+			"interact_range": 70,
+			"priority": 2,
+			"side_art": "side.door_ext",
+			"target": {
+				"region": "wild.stillwater_road",
+				"position": [
+					4300,
+					3760
+				]
+			},
+			"prompt_key": "PROMPT_EXIT_CABIN",
+			"position": [
+				364.8,
+				509
+			]
+		},
+		{
+			"id": "wild.stillwater_road.fisher.cupboard",
+			"type": "container",
+			"kind": "cupboard",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_CUPBOARD",
+			"art": "world.furniture_cupboard",
+			"art_searched": "world.furniture_cupboard",
+			"loot": {},
+			"pool": "harbor_home_kitchen",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				614.4,
+				509
+			]
+		},
+		{
+			"id": "wild.stillwater_road.fisher.chest",
+			"type": "container",
+			"kind": "crate",
+			"interact_range": 72,
+			"prompt_key": "PROMPT_SEARCH_CRATE",
+			"art": "int.crate",
+			"art_searched": "int.crate_open",
+			"loot": {},
+			"pool": "marine",
+			"initial": {
+				"searched": false
+			},
+			"position": [
+				883.2,
+				509
+			]
+		}
+	],
+	"surface": {
+		"region": "wild.stillwater_road",
+		"position": [
+			4300,
+			3700
+		]
+	},
+	"tint": [
+		0.55,
+		0.5,
+		0.46
+	],
+	"climate": {
+		"exposure": 1.0,
+		"fog": 0.0,
+		"shelter": 0.45
+	},
+	"interior": true,
+	"ambience": "amb.wind_muffled"
+}

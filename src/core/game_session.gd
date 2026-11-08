@@ -687,6 +687,10 @@ func _host_handle_move(peer_id: int, pos: Vector2, facing: int, region_id: Strin
 			ZombieSim.make_noise(world, p.region_id, pos, "run")
 	p.position = pos
 	p.facing = clampi(facing, 0, 3)
+	# Iteration 015: stepping off the edge of an outdoor region carries you into its neighbour.
+	var travel := WorldActions.edge_travel(world, p)
+	if not travel.is_empty():
+		_publish_result(travel)
 
 
 ## Side view (iteration 012): walking is horizontal, steps are one row, climbing

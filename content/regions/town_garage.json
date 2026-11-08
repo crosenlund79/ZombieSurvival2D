@@ -88,6 +88,39 @@
 			"asset": "int.car_lift",
 			"x": 985.6,
 			"y": 509
+		},
+		{
+			"asset": "side.bottles",
+			"x": 1584.7,
+			"y": 509
+		},
+		{
+			"asset": "side.calendar",
+			"x": 1048.8,
+			"y": 410,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.stain",
+			"x": 1196.1,
+			"y": 400,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.jar_shelf",
+			"x": 1337.6,
+			"y": 406,
+			"wall": true,
+			"back": true
+		},
+		{
+			"asset": "side.lamp_hanging",
+			"x": 1089.8,
+			"y": 260,
+			"hang": true,
+			"light": true
 		}
 	],
 	"spawn_points": [

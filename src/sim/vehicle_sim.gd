@@ -3,7 +3,9 @@ extends RefCounted
 ## Host-authoritative vehicles (iteration 011).
 ##
 ## Types: res://content/vehicles.json. Placements: a region's "vehicles" list
-## (created once per world by ensure()). Road exits: a region's
+## (created once per world by ensure()). Iteration 015: driving off any outdoor
+## edge that has a neighbouring region carries the car across (WorldGeo.crossing).
+## Older road exits (still honoured if content has them): a region's
 ## "vehicle_exits" [{"rect": [x, y, w, h], "target": {"region", "position",
 ## "rotation"}}] — driving into the rectangle moves the vehicle, everyone in
 ## it and its trunk to the target region together. Other players are never moved.
@@ -281,6 +283,13 @@ static func submit_pose(world: WorldState, player_id: String, vehicle_id: String
 		var rr: Array = ex.get("rect", [])
 		if rr.size() == 4 and Rect2(float(rr[0]), float(rr[1]), float(rr[2]), float(rr[3])).has_point(front):
 			return transfer(world, v, ex.get("target", {}))
+	# Iteration 015: driving off an outdoor region's edge — on or off the road — continues
+	# into the neighbouring region at the matching point, heading unchanged (WorldGeo).
+	if bounds.has_area() and not bounds.has_point(front):
+		var cr := WorldGeo.crossing(v.region_id, front, WorldGeo.VEHICLE_INSET)
+		if not cr.is_empty():
+			var tp: Vector2 = cr["position"]
+			return transfer(world, v, {"region": cr["region"], "position": [tp.x, tp.y], "rotation": rad_to_deg(v.rotation)})
 	return WorldActions._ok()
 
 
