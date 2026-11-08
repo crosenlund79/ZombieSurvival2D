@@ -102,6 +102,21 @@ static func fire(world: WorldState, p: PlayerState, g: Dictionary, aim: Vector2)
 			events[0]["tx"] = z.position.x
 			events[0]["ty"] = z.position.y - 40.0
 		hits += 1
+	var law: Array = []
+	if hits < pellets and not side:
+		# iteration 015 F: a person in the line of fire
+		var pe := FactionSim.target_for(world, p, aim, reach, cone)
+		if pe != null:
+			var falloff3 := 1.0 - 0.4 * clampf(p.position.distance_to(pe.position) / reach, 0.0, 1.0)
+			if hits == 0:
+				events[0]["tx"] = pe.position.x
+				events[0]["ty"] = pe.position.y - 40.0
+			for fr in FactionSim.damage(world, pe, float(s.get("damage", 60)) * falloff3, p):
+				if fr.has("kind"):
+					events.append(fr)
+				else:
+					law.append(fr)
+			hits += 1
 	if hits < pellets and not side:
 		# iteration 015 E: an animal in the line of fire
 		var an := WildlifeSim.target_for(world, p, aim, reach, cone)
@@ -112,6 +127,12 @@ static func fire(world: WorldState, p: PlayerState, g: Dictionary, aim: Vector2)
 				events[0]["ty"] = an.position.y - 30.0
 			events.append_array(WildlifeSim.damage(world, an, float(s.get("damage", 60)) * falloff2, p))
 	ZombieSim.make_noise(world, p.region_id, p.position, str(s.get("noise", "gunshot")))
+	law.append_array(FactionSim.noted_gunfire(world, p))  # iteration 015 F: gunfire inside a community fence
+	for lr in law:
+		events.append_array(lr.get("events", []))
+		if lr.has("private_notice"):
+			res["private_notice"] = lr["private_notice"]
+		res["meta"] = true
 	res["events"] = events
 	res["players"] = [p.player_id]
 	res["vitals"] = [p.player_id]

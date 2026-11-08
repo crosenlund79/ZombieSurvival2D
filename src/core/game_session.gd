@@ -210,6 +210,7 @@ func _begin() -> void:
 		VehicleSim.ensure(world)
 		WorldActions.ensure_prebuilt_shelters(world)
 		WildlifeSim.ensure(world)
+		FactionSim.ensure(world)  # iteration 015 F
 		# Players who are not here cannot stay in a seat (they rejoin beside the car).
 		for po in world.players.values():
 			if not po.online and po.vehicle_id != "":
@@ -331,6 +332,8 @@ func _broadcast_snapshot() -> void:
 		_rpc_vehicles.rpc(VehicleSim.rows(world))
 	if not world.animals.is_empty():
 		_rpc_animals.rpc(WildlifeSim.rows(world))
+	if not world.people.is_empty():
+		_rpc_people.rpc(FactionSim.rows(world))
 
 
 func _roster_rows() -> Array:
@@ -453,6 +456,24 @@ func request_entity_action(entity_id: String, action: String, arg: Variant = "")
 		_host_handle_entity_action(1, entity_id, action, str(arg))
 	else:
 		_rpc_request_entity_action.rpc_id(1, entity_id, action, str(arg))
+
+
+## Iteration 015 F: trade, repair or a mission with a faction member (host decides).
+func request_faction(person_id: String, action: String, arg: String = "") -> void:
+	if not in_world():
+		return
+	if is_authority():
+		_host_handle_faction(1, person_id, action, arg)
+	else:
+		_rpc_request_faction.rpc_id(1, person_id, action, arg)
+
+
+func _host_handle_faction(peer_id: int, person_id: String, action: String, arg: String) -> void:
+	var pid: String = _peer_to_player.get(peer_id, "")
+	var res := FactionSim.request(world, pid, person_id, action, arg)
+	if res["ok"]:
+		_publish_result(res)
+	_send_action_result(peer_id, 0, res["ok"], res["reason"], res["reason_args"])
 
 
 func request_drink() -> void:
@@ -1253,6 +1274,42 @@ func _host_dev_command(peer_id: int, cmd: String, arg: Variant) -> void:
 			_publish_result({"ok": true, "reason": "", "reason_args": [], "changes": [], "players": [], "bunkers": [],
 				"transition": {}, "notice": {}, "meta": true})
 			_send_notice(peer_id, "DEV_TEST_RIFLE_ON" if world.meta["test_rifle"] else "DEV_TEST_RIFLE_OFF", [])
+		"faction_rep":
+			# Developer (iteration 015 F): +20 standing with Hearth Gate and the Lantern Circle.
+			if pid != "":
+				FactionSim.add_rep(world, pid, "hearth", int(float(arg)) if arg != null else 20)
+				FactionSim.add_rep(world, pid, "lantern", int(float(arg)) if arg != null else 20)
+				_publish_result({"ok": true, "reason": "", "reason_args": [], "changes": [], "players": [], "bunkers": [],
+					"transition": {}, "notice": {}, "meta": true})
+		"faction_credit":
+			if pid != "":
+				FactionSim.store(world)["credit"][pid] = FactionSim.credit(world, pid) + (int(float(arg)) if arg != null else 50)
+				_publish_result({"ok": true, "reason": "", "reason_args": [], "changes": [], "players": [], "bunkers": [],
+					"transition": {}, "notice": {}, "meta": true})
+		"law_clear":
+			if pid != "":
+				(FactionSim.store(world)["law"] as Dictionary).erase(pid)
+				_publish_result({"ok": true, "reason": "", "reason_args": [], "changes": [], "players": [], "bunkers": [],
+					"transition": {}, "notice": {}, "meta": true})
+		"faction_goto":
+			# Developer: to a faction's place ("cinder", "hearth", "lantern").
+			var fd := FactionSim.fdef(str(arg))
+			if pid != "" and not fd.is_empty() and world.players[pid].vehicle_id == "":
+				var pf: PlayerState = world.players[pid]
+				pf.region_id = str(fd["region"])
+				var spot := Vector2.ZERO
+				if fd.has("area"):
+					spot = Content.entity_position(world.region(pf.region_id).entity_def(str(fd["gate"]))) + Vector2(0, -160)
+				elif fd.has("camp"):
+					var cr: Array = fd["camp"]
+					spot = Vector2(float(cr[0]) - 500.0, float(cr[1]) + float(cr[3]) * 0.5)
+				else:
+					var st2: Array = fd["site"]
+					spot = Vector2(float(st2[0]), float(st2[1]) + 260.0)
+				pf.position = spot
+				_move_track[pid] = Time.get_ticks_msec()
+				_send_correction(peer_id, pf.position, pf.region_id)
+				_broadcast_roster()
 		"zombie_at":
 			# Developer (iteration 015): a dormant Burnt One at a point in your region (visibility tests).
 			if pid != "" and arg is Vector2:
@@ -1463,6 +1520,19 @@ func _rpc_request_interact(request_id: int, entity_id: String, expected_rev: int
 func _rpc_action_result(_request_id: int, ok: bool, reason_key: String, args: Array) -> void:
 	if not ok:
 		notice.emit(reason_key, args)
+
+
+@rpc("any_peer", "call_remote", "reliable")
+func _rpc_request_faction(person_id: String, action: String, arg: String) -> void:
+	if mode == Mode.HOST:
+		_host_handle_faction(multiplayer.get_remote_sender_id(), person_id, action, arg)
+
+
+@rpc("authority", "call_remote", "unreliable_ordered")
+func _rpc_people(rows: Array) -> void:
+	if mode != Mode.CLIENT or world == null:
+		return
+	FactionSim.apply_rows(world, rows)
 
 
 @rpc("authority", "call_remote", "reliable")

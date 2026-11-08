@@ -2424,7 +2424,69 @@ def scenario_threats_multi():
             i.kill()
 
 
-SCENARIOS = {"threats_multi": scenario_threats_multi, "locks_multi": scenario_locks_multi, "five_multi": scenario_five_multi, "expedition_multi": scenario_expedition_multi, "progression_multi": scenario_progression_multi, "circuit_multi": scenario_circuit_multi, "side_multi": scenario_side_multi, "blood_multi": scenario_blood_multi, "custom_graphics": scenario_custom_graphics, "wild_multi": scenario_wild_multi, "vehicle_multi": scenario_vehicle_multi, "winter_multi": scenario_winter_multi, "red_thaw_multi": scenario_red_thaw_multi, "perf_multi": scenario_perf_multi, "slice": scenario_slice, "settlement_multi": scenario_settlement_multi, "world_multi": scenario_world_multi, "craft_multi": scenario_craft_multi, "build_multi": scenario_build_multi, "accept": scenario_accept, "infra_multi": scenario_infra_multi, "dig_multi": scenario_dig_multi, "danger_single": scenario_danger_single, "danger_multi": scenario_danger_multi, "settings": scenario_settings, "bunker_single": scenario_bunker_single, "bunker_multi": scenario_bunker_multi, "single": scenario_single, "multiplayer": scenario_multiplayer,
+def scenario_factions_multi():
+    """Iteration 015 F: factions with two real instances — the client trades with the
+    Hearth Gate trader (host decides, shared stock, per-player credit), takes a mission,
+    is warned under community law for gunfire inside the fence; raiders at the Cinder
+    camp shoot the host; everything survives a save and restart."""
+    host = Instance("t_fhost"); c = Instance("t_fclient")
+    for i in (host, c):
+        i.wipe()
+    try:
+        host.start(); c.start()
+        host.cmd("set dev allow_client_dev_commands 1")
+        host.cmd(f"host {PORT} new 415 Hosty"); host.cmd("tips off"); host.cmd("dev time 12")
+        r = c.cmd(f"join 127.0.0.1 {PORT} Cleo"); c.cmd("tips off")
+        check("factions: client joins", r["ok"], r["error"])
+        c.cmd("dev faction_goto hearth"); c.cmd("wait 1.5")
+        cs = c.state()
+        check("factions: the client sees Hearth Gate's people", cs["view"].get("people", 0) >= 6, cs["view"].get("people"))
+        trader = next(pp for pp in cs["people"] if pp["id"] == "hearth.trader")
+        c.cmd(f"dev teleport {trader['x']} {trader['y'] + 60}"); c.cmd("wait 0.5")
+        c.cmd("dev faction_credit 50"); c.cmd("wait 0.4")
+        stock0 = host.state()["factions"].get("stock", {}).get("hearth", {}).get("canned_food", 6)
+        c.cmd("faction hearth.trader buy canned_food"); c.cmd("wait 0.6")
+        hs = host.state()
+        cleo = player(hs, "Cleo")
+        check("factions: the client buys from the trader (host-decided)", cleo["carried"].get("canned_food", 0) == 1, cleo["carried"])
+        check("factions: shared stock went down", hs["factions"]["stock"]["hearth"]["canned_food"] == stock0 - 1, hs["factions"]["stock"]["hearth"])
+        credit = hs["factions"]["credit"].get(cleo["id"], 0)
+        check("factions: per-player credit", 0 < credit < 50 and hs["factions"]["credit"].get(player(hs, "Hosty")["id"], 0) == 0, hs["factions"]["credit"])
+        check("factions: the client sees its credit", c.state()["factions"]["credit"].get(cleo["id"]) == credit, "")
+        elder = next(pp for pp in cs["people"] if pp["id"] == "hearth.elder")
+        c.cmd(f"dev teleport {elder['x']} {elder['y'] + 60}"); c.cmd("wait 0.5")
+        c.cmd("faction hearth.elder accept hearth_food"); c.cmd("wait 0.5")
+        ms = host.state()["factions"]["missions"].get(cleo["id"], {})
+        check("factions: the client takes a mission", ms.get("hearth_food", {}).get("state") == "active", ms)
+        c.cmd("dev grant handgun:1"); c.cmd("dev grant ammo_pistol:8"); c.cmd("wait 0.4")
+        c.cmd("equip_item handgun"); c.cmd("press_key reload"); c.cmd("wait 2.0")
+        c.cmd("press_key attack"); c.cmd("wait 0.8")
+        law = host.state()["factions"]["law"].get(cleo["id"], {}).get("hearth", {})
+        check("factions: gunfire inside the fence, seen by a member, earns a warning", law.get("strikes") == 1, law)
+        host.cmd("dev faction_goto cinder"); host.cmd("wait 1.0")
+        rd = next(pp for pp in host.state()["people"] if pp["id"] == "cinder.raider_1")
+        host.cmd(f"dev teleport {rd['x']} {rd['y'] + 280}"); host.cmd("wait 0.3")   # into their sight, in the open
+        hurt = False
+        for k in range(20):
+            host.cmd("wait 1")
+            if player(host.state(), "Hosty")["health"] < 100:
+                hurt = True
+                break
+        check("factions: Cinder raiders shoot the host on sight", hurt, player(host.state(), "Hosty")["health"])
+        host.cmd("dev heal"); host.cmd("dev faction_goto hearth"); host.cmd("wait 0.5")
+        c.cmd("leave"); host.cmd("save"); host.cmd("leave")
+        host.cmd(f"host {PORT} continue Hosty")
+        hs = host.state()
+        check("factions: credit, missions and law survive a restart",
+              hs["factions"]["credit"].get(cleo["id"]) == credit and hs["factions"]["missions"][cleo["id"]]["hearth_food"]["state"] == "active"
+              and hs["factions"]["law"][cleo["id"]]["hearth"]["strikes"] == 1, "")
+        check("factions: and the trader's stock", hs["factions"]["stock"]["hearth"]["canned_food"] == stock0 - 1, "")
+    finally:
+        for i in (host, c):
+            i.kill()
+
+
+SCENARIOS = {"factions_multi": scenario_factions_multi, "threats_multi": scenario_threats_multi, "locks_multi": scenario_locks_multi, "five_multi": scenario_five_multi, "expedition_multi": scenario_expedition_multi, "progression_multi": scenario_progression_multi, "circuit_multi": scenario_circuit_multi, "side_multi": scenario_side_multi, "blood_multi": scenario_blood_multi, "custom_graphics": scenario_custom_graphics, "wild_multi": scenario_wild_multi, "vehicle_multi": scenario_vehicle_multi, "winter_multi": scenario_winter_multi, "red_thaw_multi": scenario_red_thaw_multi, "perf_multi": scenario_perf_multi, "slice": scenario_slice, "settlement_multi": scenario_settlement_multi, "world_multi": scenario_world_multi, "craft_multi": scenario_craft_multi, "build_multi": scenario_build_multi, "accept": scenario_accept, "infra_multi": scenario_infra_multi, "dig_multi": scenario_dig_multi, "danger_single": scenario_danger_single, "danger_multi": scenario_danger_multi, "settings": scenario_settings, "bunker_single": scenario_bunker_single, "bunker_multi": scenario_bunker_multi, "single": scenario_single, "multiplayer": scenario_multiplayer,
              "netfail": scenario_connection_failure, "assets": scenario_assets}
 
 if __name__ == "__main__":

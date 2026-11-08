@@ -1,0 +1,592 @@
+{
+	"_comment": "Iteration 015 F factions (FactionSim). Written by tools/build_wilderness.py with the places it lays out. Reputation, credit, missions and law standing are per player. EXPLORING prototype values.",
+	"factions": {
+		"cinder": {
+			"name_key": "FACTION_CINDER",
+			"kind": "hostile",
+			"respawn_days": 2,
+			"start_rep": -100,
+			"desc_key": "FACTION_CINDER_DESC",
+			"region": "wild.greyhollow_pass",
+			"camp": [
+				2550,
+				8950,
+				1200,
+				1200
+			]
+		},
+		"hearth": {
+			"name_key": "FACTION_HEARTH",
+			"kind": "community",
+			"start_rep": 0,
+			"desc_key": "FACTION_HEARTH_DESC",
+			"respawn_days": 3,
+			"rep_for_kill": {
+				"cinder": 3
+			},
+			"tiers": [
+				{
+					"min": -100,
+					"key": "REP_HATED"
+				},
+				{
+					"min": -30,
+					"key": "REP_DISTRUSTED"
+				},
+				{
+					"min": 0,
+					"key": "REP_NEUTRAL"
+				},
+				{
+					"min": 15,
+					"key": "REP_WELCOME"
+				},
+				{
+					"min": 40,
+					"key": "REP_TRUSTED"
+				},
+				{
+					"min": 70,
+					"key": "REP_FAMILY",
+					"unlock": {
+						"items": {
+							"insulated_gloves": 1
+						},
+						"notice": "FACTION_GIFT"
+					}
+				}
+			],
+			"trader": {
+				"sell_rate": 0.5,
+				"buy_rate": 1.4,
+				"rep_discount": 0.3,
+				"stock": {
+					"canned_food": 6,
+					"canned_soup": 4,
+					"water_bottle": 6,
+					"bandage": 5,
+					"matches": 4,
+					"fuel": 3,
+					"ammo_pistol": 16,
+					"rifle_rounds": 10,
+					"rope": 2,
+					"lockpick": 1,
+					"batteries": 3,
+					"candles": 4
+				}
+			},
+			"repair": {
+				"base": 2,
+				"rate": 0.6
+			},
+			"law": {
+				"witness_radius": 520,
+				"warning_rep": 5,
+				"fine": 20,
+				"fine_rep": 10,
+				"banish_rep": 30,
+				"banish_days": 1
+			},
+			"missions": [
+				{
+					"id": "hearth_food",
+					"kind": "deliver",
+					"item": "canned_food",
+					"qty": 5,
+					"title_key": "MISSION_HEARTH_FOOD",
+					"desc_key": "MISSION_HEARTH_FOOD_DESC",
+					"reward": {
+						"credit": 30,
+						"rep": 10
+					}
+				},
+				{
+					"id": "hearth_raiders",
+					"kind": "kill",
+					"target": "cinder",
+					"count": 3,
+					"title_key": "MISSION_HEARTH_RAIDERS",
+					"desc_key": "MISSION_HEARTH_RAIDERS_DESC",
+					"min_rep": 10,
+					"reward": {
+						"credit": 60,
+						"rep": 20,
+						"items": {
+							"rifle_rounds": 10
+						}
+					}
+				},
+				{
+					"id": "hearth_scout",
+					"kind": "visit",
+					"discovery": "wild_greyhollow_pass",
+					"title_key": "MISSION_HEARTH_SCOUT",
+					"desc_key": "MISSION_HEARTH_SCOUT_DESC",
+					"reward": {
+						"credit": 15,
+						"rep": 5
+					}
+				}
+			],
+			"region": "wild.stillwater_road",
+			"area": [
+				700,
+				2600,
+				2000,
+				1400
+			],
+			"gate": "wild.stillwater_road.hearth_gate"
+		},
+		"lantern": {
+			"name_key": "FACTION_LANTERN",
+			"kind": "reputation",
+			"start_rep": 0,
+			"desc_key": "FACTION_LANTERN_DESC",
+			"respawn_days": 3,
+			"tiers": [
+				{
+					"min": -100,
+					"key": "REP_SILENT"
+				},
+				{
+					"min": 0,
+					"key": "REP_STRANGER"
+				},
+				{
+					"min": 10,
+					"key": "REP_KNOWN",
+					"unlock": {
+						"discoveries": [
+							"wild_birchwater",
+							"wild_corran_forest",
+							"wild_halden_coast"
+						],
+						"notice": "FACTION_LANTERN_MAPS"
+					}
+				},
+				{
+					"min": 30,
+					"key": "REP_TRUSTED",
+					"unlock": {
+						"items": {
+							"walkie_talkie": 1,
+							"batteries": 2
+						},
+						"notice": "FACTION_GIFT"
+					}
+				},
+				{
+					"min": 60,
+					"key": "REP_CIRCLE"
+				}
+			],
+			"missions": [
+				{
+					"id": "lantern_batteries",
+					"kind": "deliver",
+					"item": "batteries",
+					"qty": 3,
+					"title_key": "MISSION_LANTERN_BATTERIES",
+					"desc_key": "MISSION_LANTERN_BATTERIES_DESC",
+					"reward": {
+						"rep": 12,
+						"items": {
+							"canned_meat": 2
+						}
+					}
+				},
+				{
+					"id": "lantern_parts",
+					"kind": "deliver",
+					"item": "electrical_parts",
+					"qty": 2,
+					"title_key": "MISSION_LANTERN_PARTS",
+					"desc_key": "MISSION_LANTERN_PARTS_DESC",
+					"reward": {
+						"rep": 15,
+						"items": {
+							"first_aid_kit": 1
+						}
+					}
+				},
+				{
+					"id": "lantern_mast",
+					"kind": "visit",
+					"discovery": "wild_greyhollow_pass",
+					"title_key": "MISSION_LANTERN_MAST",
+					"desc_key": "MISSION_LANTERN_MAST_DESC",
+					"min_rep": 10,
+					"reward": {
+						"rep": 20
+					}
+				}
+			],
+			"region": "wild.halden_coast",
+			"site": [
+				11000,
+				1150
+			]
+		}
+	},
+	"values": {
+		"default": 3,
+		"categories": {
+			"food": 4,
+			"drink": 3,
+			"medical": 8,
+			"ammo": 2,
+			"tool": 10,
+			"weapon": 18,
+			"firearm": 45,
+			"clothing": 9,
+			"utility": 5,
+			"material": 2,
+			"fuel": 6,
+			"junk": 1,
+			"electronics": 6,
+			"fire": 3,
+			"frozen": 2,
+			"mechanical": 6,
+			"part": 5
+		},
+		"items": {
+			"canned_food": 4,
+			"water_bottle": 3,
+			"bandage": 5,
+			"first_aid_kit": 16,
+			"fuel": 7,
+			"lockpick": 14,
+			"batteries": 4,
+			"ammo_pistol": 2,
+			"rifle_rounds": 3,
+			"military_rifle": 90,
+			"handgun": 50
+		}
+	},
+	"people": [
+		{
+			"id": "cinder.raider_1",
+			"faction": "cinder",
+			"role": "raider",
+			"region": "wild.greyhollow_pass",
+			"post": [
+				2950,
+				9550
+			],
+			"patrol": [
+				[
+					2950,
+					9550
+				],
+				[
+					3110,
+					9430
+				],
+				[
+					2830,
+					9660
+				]
+			],
+			"weapon": {
+				"damage": 9,
+				"range": 560,
+				"cooldown": 1.9,
+				"accuracy": 0.55,
+				"aim_seconds": 0.9,
+				"sound": "sfx.gun_rifle"
+			},
+			"health": 90,
+			"speed": 55
+		},
+		{
+			"id": "cinder.raider_2",
+			"faction": "cinder",
+			"role": "raider",
+			"region": "wild.greyhollow_pass",
+			"post": [
+				3370,
+				9510
+			],
+			"patrol": [
+				[
+					3370,
+					9510
+				],
+				[
+					3530,
+					9390
+				],
+				[
+					3250,
+					9620
+				]
+			],
+			"weapon": {
+				"damage": 9,
+				"range": 560,
+				"cooldown": 1.9,
+				"accuracy": 0.55,
+				"aim_seconds": 0.9,
+				"sound": "sfx.gun_rifle"
+			},
+			"health": 90,
+			"speed": 55
+		},
+		{
+			"id": "cinder.raider_3",
+			"faction": "cinder",
+			"role": "raider",
+			"region": "wild.greyhollow_pass",
+			"post": [
+				3150,
+				9790
+			],
+			"patrol": [
+				[
+					3150,
+					9790
+				],
+				[
+					3310,
+					9670
+				],
+				[
+					3030,
+					9900
+				]
+			],
+			"weapon": {
+				"damage": 9,
+				"range": 560,
+				"cooldown": 1.9,
+				"accuracy": 0.55,
+				"aim_seconds": 0.9,
+				"sound": "sfx.gun_rifle"
+			},
+			"health": 90,
+			"speed": 55
+		},
+		{
+			"id": "cinder.raider_4",
+			"faction": "cinder",
+			"role": "raider",
+			"region": "wild.greyhollow_pass",
+			"post": [
+				2730,
+				9290
+			],
+			"weapon": {
+				"damage": 9,
+				"range": 560,
+				"cooldown": 1.9,
+				"accuracy": 0.55,
+				"aim_seconds": 0.9,
+				"sound": "sfx.gun_rifle"
+			},
+			"health": 90,
+			"speed": 55
+		},
+		{
+			"id": "cinder.raider_5",
+			"faction": "cinder",
+			"role": "raider",
+			"region": "wild.greyhollow_pass",
+			"post": [
+				3550,
+				9830
+			],
+			"weapon": {
+				"damage": 9,
+				"range": 560,
+				"cooldown": 1.9,
+				"accuracy": 0.55,
+				"aim_seconds": 0.9,
+				"sound": "sfx.gun_rifle"
+			},
+			"health": 90,
+			"speed": 55
+		},
+		{
+			"id": "hearth.guard_gate_w",
+			"faction": "hearth",
+			"role": "guard",
+			"region": "wild.stillwater_road",
+			"post": [
+				1380,
+				2530
+			],
+			"weapon": {
+				"damage": 12,
+				"range": 620,
+				"cooldown": 1.6,
+				"accuracy": 0.65,
+				"aim_seconds": 0.7,
+				"sound": "sfx.gun_rifle"
+			},
+			"health": 120,
+			"speed": 55
+		},
+		{
+			"id": "hearth.guard_gate_e",
+			"faction": "hearth",
+			"role": "guard",
+			"region": "wild.stillwater_road",
+			"post": [
+				1820,
+				2530
+			],
+			"weapon": {
+				"damage": 12,
+				"range": 620,
+				"cooldown": 1.6,
+				"accuracy": 0.65,
+				"aim_seconds": 0.7,
+				"sound": "sfx.gun_rifle"
+			},
+			"health": 120,
+			"speed": 55
+		},
+		{
+			"id": "hearth.guard_tower",
+			"faction": "hearth",
+			"role": "guard",
+			"region": "wild.stillwater_road",
+			"post": [
+				820,
+				2800
+			],
+			"weapon": {
+				"damage": 12,
+				"range": 620,
+				"cooldown": 1.6,
+				"accuracy": 0.65,
+				"aim_seconds": 0.7,
+				"sound": "sfx.gun_rifle"
+			},
+			"health": 120,
+			"speed": 55
+		},
+		{
+			"id": "hearth.guard_patrol",
+			"faction": "hearth",
+			"role": "guard",
+			"region": "wild.stillwater_road",
+			"post": [
+				1700,
+				3700
+			],
+			"patrol": [
+				[
+					1000,
+					3700
+				],
+				[
+					2400,
+					3700
+				],
+				[
+					2400,
+					2900
+				],
+				[
+					1000,
+					2900
+				]
+			],
+			"weapon": {
+				"damage": 12,
+				"range": 620,
+				"cooldown": 1.6,
+				"accuracy": 0.65,
+				"aim_seconds": 0.7,
+				"sound": "sfx.gun_rifle"
+			},
+			"health": 120,
+			"speed": 55
+		},
+		{
+			"id": "hearth.trader",
+			"faction": "hearth",
+			"role": "trader",
+			"region": "wild.stillwater_road",
+			"post": [
+				1360,
+				3040
+			],
+			"health": 100,
+			"speed": 55
+		},
+		{
+			"id": "hearth.mechanic",
+			"faction": "hearth",
+			"role": "mechanic",
+			"region": "wild.stillwater_road",
+			"post": [
+				2060,
+				3060
+			],
+			"health": 100,
+			"speed": 55
+		},
+		{
+			"id": "hearth.elder",
+			"faction": "hearth",
+			"role": "elder",
+			"region": "wild.stillwater_road",
+			"post": [
+				1760,
+				3420
+			],
+			"health": 100,
+			"speed": 55
+		},
+		{
+			"id": "hearth.villager_1",
+			"faction": "hearth",
+			"role": "villager",
+			"region": "wild.stillwater_road",
+			"post": [
+				1200,
+				3400
+			],
+			"health": 100,
+			"speed": 55
+		},
+		{
+			"id": "hearth.villager_2",
+			"faction": "hearth",
+			"role": "villager",
+			"region": "wild.stillwater_road",
+			"post": [
+				2180,
+				3360
+			],
+			"health": 100,
+			"speed": 55
+		},
+		{
+			"id": "hearth.villager_3",
+			"faction": "hearth",
+			"role": "villager",
+			"region": "wild.stillwater_road",
+			"post": [
+				1580,
+				3660
+			],
+			"health": 100,
+			"speed": 55
+		},
+		{
+			"id": "lantern.keeper",
+			"faction": "lantern",
+			"role": "contact",
+			"region": "wild.halden_coast",
+			"post": [
+				10960,
+				1240
+			],
+			"health": 100,
+			"speed": 55
+		}
+	]
+}

@@ -22,6 +22,7 @@ var next_zombie := 0          # id counter (saved, so ids are never reused)
 var meta := {}
 var npcs := {}                # npc_id -> NpcState (survivors; host simulates, saved)
 var vehicles := {}            # vehicle_id -> VehicleState (iteration 011; host-authoritative, saved)
+var people := {}              # person_id -> PersonState (iteration 015 F factions; host simulates, transient)
 var animals := {}             # animal_id -> AnimalState (iteration 011 wildlife; host simulates, transient)
 ## Iteration 012: thawed-blood marks [id, region, x, y, birth_tick, size, cover, wash] (BloodSim; saved).
 var blood: Array = []

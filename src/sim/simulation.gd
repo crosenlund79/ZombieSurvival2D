@@ -43,6 +43,7 @@ static func advance(world: WorldState, ticks: int) -> Array:
 	results.append_array(ScavengeSim.step(world, ticks))
 	results.append_array(HideoutSim.step(world, ticks))
 	results.append_array(HordeSim.step(world, ticks))  # iteration 015 E
+	results.append_array(FactionSim.step(world, ticks))  # iteration 015 F
 	results.append_array(WorldGeo.step(world, ticks))
 	return results
 

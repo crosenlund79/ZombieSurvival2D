@@ -31,10 +31,16 @@ FOOT = {"env.pine_a": (30, 12), "env.pine_b": (30, 12), "env.birch_bare": (20, 1
         "world.cabin_small": (300, 60), "world.cabin_porch": (420, 70), "world.cabin_large": (500, 70),
         "world.cabin_weathered": (420, 60), "world.cabin_ruin": (380, 60), "world.cabin_workshop": (380, 60),
         "world.lean_to": (240, 30), "world.outhouse": (80, 30), "prop.truck_wreck": (180, 40), "prop.car_sedan": (200, 46),
-        "set.sea_ice": (0, 0)}
+        "set.sea_ice": (0, 0),
+        # iteration 015 F: factions
+        "env.fence_corrugated": (300, 18), "env.fence_corrugated_v": (24, 300), "env.watchtower": (150, 40), "env.camp_tent": (230, 50),
+        "env.campfire": (90, 24), "env.barricade": (260, 36), "env.trade_stall": (240, 40), "env.workbench_out": (180, 30),
+        "env.radio_shack": (320, 60)}
 NAV = {"env.rock_a", "env.rock_b", "env.rock_c", "env.fallen_tree", "env.hunting_stand", "env.buried_car", "env.radio_mast",
        "world.cabin_small", "world.cabin_porch", "world.cabin_large", "world.cabin_weathered", "world.cabin_ruin",
-       "world.cabin_workshop", "world.lean_to", "world.outhouse", "prop.truck_wreck", "prop.car_sedan", "env.woodpile", "env.crates"}
+       "world.cabin_workshop", "world.lean_to", "world.outhouse", "prop.truck_wreck", "prop.car_sedan", "env.woodpile", "env.crates",
+       "env.fence_corrugated", "env.fence_corrugated_v", "env.watchtower", "env.camp_tent", "env.barricade", "env.trade_stall",
+       "env.workbench_out", "env.radio_shack"}
 UNDER = ["env.shrub_frozen_a", "env.shrub_frozen_b", "env.dead_grass_a", "env.dead_grass_b", "env.dead_grass_c"]
 
 
@@ -180,7 +186,7 @@ class Wild:
 
     def put(self, asset, x, y, flip=False, sway=False, foot=None):
         fw, fh = foot if foot is not None else FOOT.get(asset, (0, 0))
-        if fw > 0 and asset not in ("env.power_pole", "env.pine_a", "env.pine_b", "env.birch_bare", "env.stump_snow"):
+        if fw > 0 and asset not in ("env.power_pole", "env.pine_a", "env.pine_b", "env.birch_bare", "env.stump_snow") and not asset.startswith("env.fence_corr"):
             x, y = self.clear_of_roads(x, y, fw)
         self.scatter.append([asset, round(x, 1), round(y, 1), 1 if flip else 0, fw, fh, 1 if sway else 0])
         if asset in NAV and fw > 0:
@@ -406,6 +412,112 @@ def corran_forest():
     return w.write()
 
 
+# ====================================================================== factions (iteration 015 F)
+FACTION_PEOPLE = []
+FACTION_SITES = {}
+
+
+def person(pid, faction, role, region, post, patrol=None, weapon=None, health=100, speed=55):
+    FACTION_PEOPLE.append({"id": pid, "faction": faction, "role": role, "region": region, "post": [round(post[0]), round(post[1])],
+                           **({"patrol": [[round(x), round(y)] for x, y in patrol]} if patrol else {}),
+                           **({"weapon": weapon} if weapon else {}), "health": health, "speed": speed})
+
+
+RIFLE = {"damage": 9, "range": 560, "cooldown": 1.9, "accuracy": 0.55, "aim_seconds": 0.9, "sound": "sfx.gun_rifle"}
+GUARD_RIFLE = {"damage": 12, "range": 620, "cooldown": 1.6, "accuracy": 0.65, "aim_seconds": 0.7, "sound": "sfx.gun_rifle"}
+
+
+def cinder_camp(w, cx, cy):
+    """The Cinder Crew: a hostile armed encampment — tents round a fire behind barricades."""
+    w.clear.append((cx, cy, 760))
+    w.put("env.campfire", cx, cy)
+    for k, (dx, dy) in enumerate(((-300, -150), (260, -170), (-340, 160), (300, 170), (0, -330))):
+        w.put("env.camp_tent", cx + dx, cy + dy, flip=k % 2 == 1)
+    for dx, dy in ((-560, -40), (560, 40), (-120, 420), (200, -560)):
+        w.put("env.barricade", cx + dx, cy + dy, flip=dx > 0)
+    w.put("env.barrels", cx + 140, cy + 60)
+    w.put("env.crates", cx - 160, cy + 40)
+    w.entities.append({"id": f"{w.rid}.cinder_cache", "type": "container", "kind": "crate", "position": [cx + 40, cy - 200],
+                       "interact_range": 80, "prompt_key": "PROMPT_SEARCH_CRATE", "art": "", "art_searched": "", "loot": {},
+                       "pool": "police_armory", "extra": {"rifle_rounds": 12}, "lock": {"level": 2},
+                       "initial": {"searched": False}})
+    w.put("env.crates", cx + 40, cy - 216)
+    region = w.rid
+    for i, (dx, dy) in enumerate(((-200, 0), (220, -40), (0, 240), (-420, -260), (400, 280))):
+        patrol = [(cx + dx, cy + dy), (cx + dx + 160, cy + dy - 120), (cx + dx - 120, cy + dy + 110)] if i < 3 else None
+        person(f"cinder.raider_{i + 1}", "cinder", "raider", region, (cx + dx, cy + dy), patrol, RIFLE, health=90)
+    w.map_landmarks.append({"kind": "camp", "position": [cx, cy], "size": [900, 700], "hidden": True, "label_key": "MAP_CINDER_CAMP"})
+    FACTION_SITES["cinder"] = {"region": region, "camp": [cx - 600, cy - 600, 1200, 1200]}
+
+
+def hearth_gate(w, x0, y0, x1, y1, gate_x):
+    """Hearth Gate: a friendly fenced community — corrugated fence, a guarded gate,
+    two watchtowers, cabins, a trader's stall, the mechanic's bench, the elder's fire."""
+    w.clear.append(((x0 + x1) / 2, (y0 + y1) / 2, max(x1 - x0, y1 - y0) * 0.75))
+    gap = 300
+    # north fence (with the gate gap), south fence, west and east fences
+    x = x0
+    while x < x1:
+        if not (gate_x - gap / 2 - 150 < x + 150 < gate_x + gap / 2 + 150 and abs((x + 150) - gate_x) < gap):
+            w.put("env.fence_corrugated", x + 150, y0)
+        x += 300
+    x = x0
+    while x < x1:
+        w.put("env.fence_corrugated", x + 150, y1)
+        x += 300
+    y = y0
+    while y < y1:
+        w.put("env.fence_corrugated_v", x0, y + 300)
+        w.put("env.fence_corrugated_v", x1, y + 300)
+        y += 300
+    gid = f"{w.rid}.hearth_gate"
+    w.entities.append({"id": gid, "type": "door", "position": [gate_x, y0], "interact_range": 110, "gate_of": "hearth",
+                       "art_closed": "env.gate_corrugated_closed", "art_open": "env.gate_corrugated_open", "blocker": [gap, 20],
+                       "prompt_open_key": "PROMPT_OPEN_GATE", "prompt_close_key": "PROMPT_CLOSE_GATE", "initial": {"open": True}})
+    w.put("env.watchtower", x0 + 120, y0 + 140)
+    w.put("env.watchtower", x1 - 120, y0 + 140, flip=True)
+    cabins = [("cabin_porch", x0 + 380, y0 + 560), ("cabin_small", x1 - 380, y0 + 600), ("cabin_large", x0 + 460, y1 - 160),
+              ("cabin_weathered", x1 - 420, y1 - 160)]
+    for k, (v, cx, cy) in enumerate(cabins):
+        w.put("world." + v, cx, cy, flip=k % 2 == 1)
+    mx = (x0 + x1) / 2
+    w.put("env.campfire", mx, y0 + 760)
+    w.put("env.trade_stall", mx - 340, y0 + 380)
+    w.put("env.workbench_out", mx + 360, y0 + 400)
+    w.put("env.woodpile", x1 - 200, y0 + 900)
+    w.put("env.barrels", x0 + 200, y0 + 980)
+    w.entities.append({"id": f"{w.rid}.hearth_store", "type": "container", "kind": "crate", "position": [mx + 120, y1 - 360],
+                       "interact_range": 80, "prompt_key": "PROMPT_SEARCH_CRATE", "art": "", "art_searched": "", "loot": {},
+                       "pool": "grocery_stock", "owner": "hearth", "initial": {"searched": False}})
+    w.put("env.crates", mx + 120, y1 - 376)
+    r = w.rid
+    person("hearth.guard_gate_w", "hearth", "guard", r, (gate_x - 220, y0 - 70), None, GUARD_RIFLE, health=120)
+    person("hearth.guard_gate_e", "hearth", "guard", r, (gate_x + 220, y0 - 70), None, GUARD_RIFLE, health=120)
+    person("hearth.guard_tower", "hearth", "guard", r, (x0 + 120, y0 + 200), None, GUARD_RIFLE, health=120)
+    person("hearth.guard_patrol", "hearth", "guard", r, (mx, y1 - 300), [(x0 + 300, y1 - 300), (x1 - 300, y1 - 300), (x1 - 300, y0 + 300), (x0 + 300, y0 + 300)],
+           GUARD_RIFLE, health=120)
+    person("hearth.trader", "hearth", "trader", r, (mx - 340, y0 + 440))
+    person("hearth.mechanic", "hearth", "mechanic", r, (mx + 360, y0 + 460))
+    person("hearth.elder", "hearth", "elder", r, (mx + 60, y0 + 820))
+    for i, (dx, dy) in enumerate(((-500, 300), (480, 260), (-120, 560))):
+        person(f"hearth.villager_{i + 1}", "hearth", "villager", r, (mx + dx, y0 + 500 + dy))
+    w.road([(gate_x, y0 - 900), (gate_x, y0 - 40)], width=90, kind="track", asset="env.ground_frozen_mud")
+    w.road([(gate_x, y0 + 40), (mx, y0 + 700)], width=70, kind="track", asset="env.ground_frozen_mud")
+    w.map_landmarks.append({"kind": "community", "position": [mx, (y0 + y1) / 2], "size": [x1 - x0, y1 - y0], "hidden": True,
+                            "label_key": "MAP_HEARTH_GATE"})
+    FACTION_SITES["hearth"] = {"region": r, "area": [x0, y0, x1 - x0, y1 - y0], "gate": gid}
+
+
+def lantern_shack(w, x, y):
+    """The Lantern Circle: a radio shack under the coast mast, one keeper."""
+    w.clear.append((x, y, 420))
+    w.put("env.radio_shack", x, y)
+    w.put("env.barrels", x + 230, y + 30)
+    person("lantern.keeper", "lantern", "contact", w.rid, (x - 40, y + 90))
+    w.map_landmarks.append({"kind": "radio", "position": [x, y], "hidden": True, "label_key": "MAP_LANTERN"})
+    FACTION_SITES["lantern"] = {"region": w.rid, "site": [x, y]}
+
+
 def greyhollow_pass():
     w = Wild("wild.greyhollow_pass", "REGION_WILD_GREYHOLLOW_PASS", "wild_greyhollow_pass", 1503, forest=0.34)
     rx = 31400 - w.offset[0]          # the road leaves the junction at world x 31400 and arrives in Greyhollow at the same x
@@ -426,6 +538,8 @@ def greyhollow_pass():
     w.put("env.buried_car", rx + 420, H - 5600, flip=True)
     sign(w, rx + 160, H - 300)
     sign(w, rx - 160, 400, flip=True)
+    cinder_camp(w, 3150, H - 2450)   # iteration 015 F: the hostile camp, off the road on a track
+    w.road([(rx - 250, H - 2300), (2500, H - 2420), (2950, H - 2450)], width=80, kind="track", asset="env.ground_frozen_mud")
     w.spawns = [[1800, H - 5000], [2600, H - 8800]]
     return w.write({"climate": {"exposure": 1.4, "fog": 1.3}})
 
@@ -450,6 +564,7 @@ def stillwater_road():
     w.put("env.buried_car", 1200, ry + 260)
     sign(w, 400, ry - 140)
     sign(w, 11600, ry + 150, flip=True)
+    hearth_gate(w, 700, ry + 1500, 2700, ry + 2900, 1600)   # iteration 015 F: the fenced community
     w.spawns = [[3000, 1000], [8000, 4200], [11000, 3000]]
     return w.write()
 
@@ -471,6 +586,7 @@ def halden_coast():
     w.cabin("watch_cabin", 9800, 900, "cabin_small", dressing=("woodpile",), label="MAP_CABIN")
     w.cabin("ruined_croft", 2400, 3500, "cabin_ruin", dressing=("fence_broken", "belongings"), label="MAP_RUIN")
     w.landmark("env.radio_mast", 11000, 700, "mast", "MAP_RADIO_MAST", clear=320)
+    lantern_shack(w, 11000, 1150)   # iteration 015 F: the reputation faction's small station
     w.put("set.trawler", 7400, 4800) if False else None
     w.put("env.buried_car", 6800, ry + 380, flip=True)
     sign(w, 400, ry - 140)
@@ -479,9 +595,65 @@ def halden_coast():
     return w.write({"climate": {"exposure": 1.35, "fog": 1.35}})
 
 
+FACTIONS = {
+    "cinder": {"name_key": "FACTION_CINDER", "kind": "hostile", "respawn_days": 2, "start_rep": -100,
+               "desc_key": "FACTION_CINDER_DESC"},
+    "hearth": {"name_key": "FACTION_HEARTH", "kind": "community", "start_rep": 0, "desc_key": "FACTION_HEARTH_DESC",
+               "respawn_days": 3, "rep_for_kill": {"cinder": 3},
+               "tiers": [{"min": -100, "key": "REP_HATED"}, {"min": -30, "key": "REP_DISTRUSTED"}, {"min": 0, "key": "REP_NEUTRAL"},
+                         {"min": 15, "key": "REP_WELCOME"}, {"min": 40, "key": "REP_TRUSTED"},
+                         {"min": 70, "key": "REP_FAMILY", "unlock": {"items": {"insulated_gloves": 1}, "notice": "FACTION_GIFT"}}],
+               "trader": {"sell_rate": 0.5, "buy_rate": 1.4, "rep_discount": 0.3,
+                          "stock": {"canned_food": 6, "canned_soup": 4, "water_bottle": 6, "bandage": 5, "matches": 4, "fuel": 3,
+                                    "ammo_pistol": 16, "rifle_rounds": 10, "rope": 2, "lockpick": 1, "batteries": 3, "candles": 4}},
+               "repair": {"base": 2, "rate": 0.6},
+               "law": {"witness_radius": 520, "warning_rep": 5, "fine": 20, "fine_rep": 10, "banish_rep": 30, "banish_days": 1},
+               "missions": [
+                   {"id": "hearth_food", "kind": "deliver", "item": "canned_food", "qty": 5, "title_key": "MISSION_HEARTH_FOOD",
+                    "desc_key": "MISSION_HEARTH_FOOD_DESC", "reward": {"credit": 30, "rep": 10}},
+                   {"id": "hearth_raiders", "kind": "kill", "target": "cinder", "count": 3, "title_key": "MISSION_HEARTH_RAIDERS",
+                    "desc_key": "MISSION_HEARTH_RAIDERS_DESC", "min_rep": 10, "reward": {"credit": 60, "rep": 20, "items": {"rifle_rounds": 10}}},
+                   {"id": "hearth_scout", "kind": "visit", "discovery": "wild_greyhollow_pass", "title_key": "MISSION_HEARTH_SCOUT",
+                    "desc_key": "MISSION_HEARTH_SCOUT_DESC", "reward": {"credit": 15, "rep": 5}}]},
+    "lantern": {"name_key": "FACTION_LANTERN", "kind": "reputation", "start_rep": 0, "desc_key": "FACTION_LANTERN_DESC",
+                "respawn_days": 3,
+                "tiers": [{"min": -100, "key": "REP_SILENT"}, {"min": 0, "key": "REP_STRANGER"},
+                          {"min": 10, "key": "REP_KNOWN", "unlock": {"discoveries": ["wild_birchwater", "wild_corran_forest", "wild_halden_coast"],
+                                                                     "notice": "FACTION_LANTERN_MAPS"}},
+                          {"min": 30, "key": "REP_TRUSTED", "unlock": {"items": {"walkie_talkie": 1, "batteries": 2}, "notice": "FACTION_GIFT"}},
+                          {"min": 60, "key": "REP_CIRCLE"}],
+                "missions": [
+                    {"id": "lantern_batteries", "kind": "deliver", "item": "batteries", "qty": 3, "title_key": "MISSION_LANTERN_BATTERIES",
+                     "desc_key": "MISSION_LANTERN_BATTERIES_DESC", "reward": {"rep": 12, "items": {"canned_meat": 2}}},
+                    {"id": "lantern_parts", "kind": "deliver", "item": "electrical_parts", "qty": 2, "title_key": "MISSION_LANTERN_PARTS",
+                     "desc_key": "MISSION_LANTERN_PARTS_DESC", "reward": {"rep": 15, "items": {"first_aid_kit": 1}}},
+                    {"id": "lantern_mast", "kind": "visit", "discovery": "wild_greyhollow_pass", "title_key": "MISSION_LANTERN_MAST",
+                     "desc_key": "MISSION_LANTERN_MAST_DESC", "min_rep": 10, "reward": {"rep": 20}}]},
+}
+VALUES = {"default": 3, "categories": {"food": 4, "drink": 3, "medical": 8, "ammo": 2, "tool": 10, "weapon": 18, "firearm": 45,
+                                       "clothing": 9, "utility": 5, "material": 2, "fuel": 6, "junk": 1, "electronics": 6, "fire": 3, "frozen": 2, "mechanical": 6, "part": 5},
+          "items": {"canned_food": 4, "water_bottle": 3, "bandage": 5, "first_aid_kit": 16, "fuel": 7, "lockpick": 14, "batteries": 4,
+                    "ammo_pistol": 2, "rifle_rounds": 3, "military_rifle": 90, "handgun": 50}}
+
+
+def write_factions():
+    sites = dict(FACTION_SITES)
+    fac = {}
+    for fid, d in FACTIONS.items():
+        fac[fid] = {**d, **sites.get(fid, {})}
+    dump_json(os.path.join(ROOT, "content", "factions.json"),
+              {"_comment": "Iteration 015 F factions (FactionSim). Written by tools/build_wilderness.py with the places it lays out. "
+                           "Reputation, credit, missions and law standing are per player. EXPLORING prototype values.",
+               "factions": fac, "values": VALUES, "people": FACTION_PEOPLE})
+
+
 def build():
     WL.check()
-    return [birchwater(), corran_forest(), greyhollow_pass(), stillwater_road(), halden_coast()]
+    FACTION_PEOPLE.clear()
+    FACTION_SITES.clear()
+    out = [birchwater(), corran_forest(), greyhollow_pass(), stillwater_road(), halden_coast()]
+    write_factions()
+    return out
 
 
 if __name__ == "__main__":

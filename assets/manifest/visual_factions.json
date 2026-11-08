@@ -1,0 +1,710 @@
+{
+	"kind": "visual",
+	"category": "factions",
+	"assets": [
+		{
+			"id": "char.raider",
+			"name": "Cinder Crew raider \u2014 down",
+			"template": "res://assets/templates/characters/factions/template_raider_down.png",
+			"display_size": [
+				52,
+				84
+			],
+			"source_size": [
+				104,
+				168
+			],
+			"pivot": [
+				0.5,
+				0.9524
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_factions.py) - replace with tablet art."
+		},
+		{
+			"id": "char.raider_up",
+			"name": "Cinder Crew raider \u2014 up",
+			"template": "res://assets/templates/characters/factions/template_raider_up.png",
+			"display_size": [
+				52,
+				84
+			],
+			"source_size": [
+				104,
+				168
+			],
+			"pivot": [
+				0.5,
+				0.9524
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_factions.py) - replace with tablet art."
+		},
+		{
+			"id": "char.raider_side",
+			"name": "Cinder Crew raider \u2014 side",
+			"template": "res://assets/templates/characters/factions/template_raider_side.png",
+			"display_size": [
+				52,
+				84
+			],
+			"source_size": [
+				104,
+				168
+			],
+			"pivot": [
+				0.5,
+				0.9524
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_factions.py) - replace with tablet art."
+		},
+		{
+			"id": "char.guard",
+			"name": "Hearth Gate guard \u2014 down",
+			"template": "res://assets/templates/characters/factions/template_guard_down.png",
+			"display_size": [
+				52,
+				84
+			],
+			"source_size": [
+				104,
+				168
+			],
+			"pivot": [
+				0.5,
+				0.9524
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_factions.py) - replace with tablet art."
+		},
+		{
+			"id": "char.guard_up",
+			"name": "Hearth Gate guard \u2014 up",
+			"template": "res://assets/templates/characters/factions/template_guard_up.png",
+			"display_size": [
+				52,
+				84
+			],
+			"source_size": [
+				104,
+				168
+			],
+			"pivot": [
+				0.5,
+				0.9524
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_factions.py) - replace with tablet art."
+		},
+		{
+			"id": "char.guard_side",
+			"name": "Hearth Gate guard \u2014 side",
+			"template": "res://assets/templates/characters/factions/template_guard_side.png",
+			"display_size": [
+				52,
+				84
+			],
+			"source_size": [
+				104,
+				168
+			],
+			"pivot": [
+				0.5,
+				0.9524
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_factions.py) - replace with tablet art."
+		},
+		{
+			"id": "char.villager",
+			"name": "Hearth Gate villager \u2014 down",
+			"template": "res://assets/templates/characters/factions/template_villager_down.png",
+			"display_size": [
+				52,
+				84
+			],
+			"source_size": [
+				104,
+				168
+			],
+			"pivot": [
+				0.5,
+				0.9524
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_factions.py) - replace with tablet art."
+		},
+		{
+			"id": "char.villager_up",
+			"name": "Hearth Gate villager \u2014 up",
+			"template": "res://assets/templates/characters/factions/template_villager_up.png",
+			"display_size": [
+				52,
+				84
+			],
+			"source_size": [
+				104,
+				168
+			],
+			"pivot": [
+				0.5,
+				0.9524
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_factions.py) - replace with tablet art."
+		},
+		{
+			"id": "char.villager_side",
+			"name": "Hearth Gate villager \u2014 side",
+			"template": "res://assets/templates/characters/factions/template_villager_side.png",
+			"display_size": [
+				52,
+				84
+			],
+			"source_size": [
+				104,
+				168
+			],
+			"pivot": [
+				0.5,
+				0.9524
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_factions.py) - replace with tablet art."
+		},
+		{
+			"id": "char.trader",
+			"name": "Hearth Gate trader \u2014 down",
+			"template": "res://assets/templates/characters/factions/template_trader_down.png",
+			"display_size": [
+				52,
+				84
+			],
+			"source_size": [
+				104,
+				168
+			],
+			"pivot": [
+				0.5,
+				0.9524
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_factions.py) - replace with tablet art."
+		},
+		{
+			"id": "char.trader_up",
+			"name": "Hearth Gate trader \u2014 up",
+			"template": "res://assets/templates/characters/factions/template_trader_up.png",
+			"display_size": [
+				52,
+				84
+			],
+			"source_size": [
+				104,
+				168
+			],
+			"pivot": [
+				0.5,
+				0.9524
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_factions.py) - replace with tablet art."
+		},
+		{
+			"id": "char.trader_side",
+			"name": "Hearth Gate trader \u2014 side",
+			"template": "res://assets/templates/characters/factions/template_trader_side.png",
+			"display_size": [
+				52,
+				84
+			],
+			"source_size": [
+				104,
+				168
+			],
+			"pivot": [
+				0.5,
+				0.9524
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_factions.py) - replace with tablet art."
+		},
+		{
+			"id": "char.mechanic",
+			"name": "Hearth Gate mechanic \u2014 down",
+			"template": "res://assets/templates/characters/factions/template_mechanic_down.png",
+			"display_size": [
+				52,
+				84
+			],
+			"source_size": [
+				104,
+				168
+			],
+			"pivot": [
+				0.5,
+				0.9524
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_factions.py) - replace with tablet art."
+		},
+		{
+			"id": "char.mechanic_up",
+			"name": "Hearth Gate mechanic \u2014 up",
+			"template": "res://assets/templates/characters/factions/template_mechanic_up.png",
+			"display_size": [
+				52,
+				84
+			],
+			"source_size": [
+				104,
+				168
+			],
+			"pivot": [
+				0.5,
+				0.9524
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_factions.py) - replace with tablet art."
+		},
+		{
+			"id": "char.mechanic_side",
+			"name": "Hearth Gate mechanic \u2014 side",
+			"template": "res://assets/templates/characters/factions/template_mechanic_side.png",
+			"display_size": [
+				52,
+				84
+			],
+			"source_size": [
+				104,
+				168
+			],
+			"pivot": [
+				0.5,
+				0.9524
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_factions.py) - replace with tablet art."
+		},
+		{
+			"id": "char.elder",
+			"name": "Hearth Gate elder \u2014 down",
+			"template": "res://assets/templates/characters/factions/template_elder_down.png",
+			"display_size": [
+				52,
+				84
+			],
+			"source_size": [
+				104,
+				168
+			],
+			"pivot": [
+				0.5,
+				0.9524
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_factions.py) - replace with tablet art."
+		},
+		{
+			"id": "char.elder_up",
+			"name": "Hearth Gate elder \u2014 up",
+			"template": "res://assets/templates/characters/factions/template_elder_up.png",
+			"display_size": [
+				52,
+				84
+			],
+			"source_size": [
+				104,
+				168
+			],
+			"pivot": [
+				0.5,
+				0.9524
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_factions.py) - replace with tablet art."
+		},
+		{
+			"id": "char.elder_side",
+			"name": "Hearth Gate elder \u2014 side",
+			"template": "res://assets/templates/characters/factions/template_elder_side.png",
+			"display_size": [
+				52,
+				84
+			],
+			"source_size": [
+				104,
+				168
+			],
+			"pivot": [
+				0.5,
+				0.9524
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_factions.py) - replace with tablet art."
+		},
+		{
+			"id": "char.contact",
+			"name": "Lantern Circle keeper \u2014 down",
+			"template": "res://assets/templates/characters/factions/template_contact_down.png",
+			"display_size": [
+				52,
+				84
+			],
+			"source_size": [
+				104,
+				168
+			],
+			"pivot": [
+				0.5,
+				0.9524
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_factions.py) - replace with tablet art."
+		},
+		{
+			"id": "char.contact_up",
+			"name": "Lantern Circle keeper \u2014 up",
+			"template": "res://assets/templates/characters/factions/template_contact_up.png",
+			"display_size": [
+				52,
+				84
+			],
+			"source_size": [
+				104,
+				168
+			],
+			"pivot": [
+				0.5,
+				0.9524
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_factions.py) - replace with tablet art."
+		},
+		{
+			"id": "char.contact_side",
+			"name": "Lantern Circle keeper \u2014 side",
+			"template": "res://assets/templates/characters/factions/template_contact_side.png",
+			"display_size": [
+				52,
+				84
+			],
+			"source_size": [
+				104,
+				168
+			],
+			"pivot": [
+				0.5,
+				0.9524
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_factions.py) - replace with tablet art."
+		},
+		{
+			"id": "env.fence_corrugated",
+			"name": "Corrugated fence panel",
+			"template": "res://assets/templates/env/factions/template_fence_corrugated.png",
+			"display_size": [
+				320,
+				170
+			],
+			"source_size": [
+				320,
+				170
+			],
+			"pivot": [
+				0.5,
+				0.9294
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_factions.py) - replace with tablet art."
+		},
+		{
+			"id": "env.fence_corrugated_v",
+			"name": "Corrugated fence (running north-south)",
+			"template": "res://assets/templates/env/factions/template_fence_corrugated_v.png",
+			"display_size": [
+				70,
+				380
+			],
+			"source_size": [
+				70,
+				380
+			],
+			"pivot": [
+				0.5,
+				0.9737
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_factions.py) - replace with tablet art."
+		},
+		{
+			"id": "env.gate_corrugated_closed",
+			"name": "Corrugated gate (closed)",
+			"template": "res://assets/templates/env/factions/template_gate_corrugated_closed.png",
+			"display_size": [
+				340,
+				200
+			],
+			"source_size": [
+				340,
+				200
+			],
+			"pivot": [
+				0.5,
+				0.94
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_factions.py) - replace with tablet art."
+		},
+		{
+			"id": "env.gate_corrugated_open",
+			"name": "Corrugated gate (open)",
+			"template": "res://assets/templates/env/factions/template_gate_corrugated_open.png",
+			"display_size": [
+				340,
+				200
+			],
+			"source_size": [
+				340,
+				200
+			],
+			"pivot": [
+				0.5,
+				0.94
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_factions.py) - replace with tablet art."
+		},
+		{
+			"id": "env.watchtower",
+			"name": "Watchtower",
+			"template": "res://assets/templates/env/factions/template_watchtower.png",
+			"display_size": [
+				110,
+				210
+			],
+			"source_size": [
+				220,
+				420
+			],
+			"pivot": [
+				0.5,
+				0.9714
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_factions.py) - replace with tablet art."
+		},
+		{
+			"id": "env.camp_tent",
+			"name": "Camp tent",
+			"template": "res://assets/templates/env/factions/template_camp_tent.png",
+			"display_size": [
+				140,
+				95
+			],
+			"source_size": [
+				280,
+				190
+			],
+			"pivot": [
+				0.5,
+				0.9368
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_factions.py) - replace with tablet art."
+		},
+		{
+			"id": "env.campfire",
+			"name": "Campfire",
+			"template": "res://assets/templates/env/factions/template_campfire.png",
+			"display_size": [
+				70,
+				60
+			],
+			"source_size": [
+				140,
+				120
+			],
+			"pivot": [
+				0.5,
+				0.8833
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_factions.py) - replace with tablet art."
+		},
+		{
+			"id": "env.barricade",
+			"name": "Barricade",
+			"template": "res://assets/templates/env/factions/template_barricade.png",
+			"display_size": [
+				150,
+				75
+			],
+			"source_size": [
+				300,
+				150
+			],
+			"pivot": [
+				0.5,
+				0.92
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_factions.py) - replace with tablet art."
+		},
+		{
+			"id": "env.trade_stall",
+			"name": "Trade stall",
+			"template": "res://assets/templates/env/factions/template_trade_stall.png",
+			"display_size": [
+				140,
+				115
+			],
+			"source_size": [
+				280,
+				230
+			],
+			"pivot": [
+				0.5,
+				0.9478
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_factions.py) - replace with tablet art."
+		},
+		{
+			"id": "env.workbench_out",
+			"name": "Outdoor workbench",
+			"template": "res://assets/templates/env/factions/template_workbench_out.png",
+			"display_size": [
+				110,
+				75
+			],
+			"source_size": [
+				220,
+				150
+			],
+			"pivot": [
+				0.5,
+				0.92
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_factions.py) - replace with tablet art."
+		},
+		{
+			"id": "env.radio_shack",
+			"name": "Radio shack",
+			"template": "res://assets/templates/env/factions/template_radio_shack.png",
+			"display_size": [
+				210,
+				165
+			],
+			"source_size": [
+				420,
+				330
+			],
+			"pivot": [
+				0.5,
+				0.9636
+			],
+			"transparency": "required",
+			"directions": "none",
+			"complexity": "moderate",
+			"status": "READY",
+			"notes": "Generated placeholder (tools/art/gen_factions.py) - replace with tablet art."
+		}
+	]
+}

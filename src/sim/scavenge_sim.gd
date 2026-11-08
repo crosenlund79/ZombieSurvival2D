@@ -269,4 +269,9 @@ static func take(world: WorldState, p: PlayerState, region: RegionState, eid: St
 	var res := WorldActions._changed(region, eid, "taken")
 	res["players"] = [p.player_id]
 	res["vitals"] = [p.player_id]
+	# iteration 015 F: taking from a community's store is theft, if someone sees it
+	for lr in FactionSim.noted_take(world, p, region.entity_def(eid)):
+		res["events"] = (res.get("events", []) as Array) + (lr.get("events", []) as Array)
+		res["private_notice"] = lr["private_notice"]
+		res["meta"] = true
 	return res

@@ -38,6 +38,8 @@ static func request_interact(world: WorldState, player_id: String, entity_id: St
 	var state := region.entity_state(entity_id)
 	if LockSim.is_locked(region, entity_id):
 		return _fail("ACTION_LOCKED")  # iteration 015 D: a key or the lockpick first
+	if FactionSim.gate_denied(world, p, def):
+		return _fail("ACTION_GATE_BARRED")  # iteration 015 F: banished from the community
 	match str(def.get("type", "")):
 		"door":
 			if expected_rev != region.rev(entity_id):
@@ -718,7 +720,17 @@ static func request_attack(world: WorldState, player_id: String, aim: Vector2) -
 			res["vitals"] = [p.player_id]
 	else:
 		# iteration 015 E: wolves and bears can be fought off
-		var an := WildlifeSim.target_for(world, p, aim, float(w["range"]) + 20.0, ARC_COS)
+		var pe := FactionSim.target_for(world, p, aim, float(w["range"]) + 20.0, ARC_COS)
+		var an := WildlifeSim.target_for(world, p, aim, float(w["range"]) + 20.0, ARC_COS) if pe == null else null
+		if pe != null:
+			for fr in FactionSim.damage(world, pe, float(w["damage"]), p):
+				if fr.has("kind"):
+					res["events"].append(fr)
+				else:
+					res["events"].append_array(fr.get("events", []))
+					if fr.has("private_notice"):
+						res["private_notice"] = fr["private_notice"]
+					res["meta"] = true
 		if an != null:
 			res["events"].append_array(WildlifeSim.damage(world, an, float(w["damage"]), p))
 			if wear_hand(p, 1.0):

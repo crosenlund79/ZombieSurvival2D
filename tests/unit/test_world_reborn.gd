@@ -586,3 +586,173 @@ func test_the_test_rifle_start() -> void:
 	var p2 := _player(w2, PID, "homestead", Vector2(420, 1140))
 	WorldActions.request_interact(w2, PID, "homestead.starter_bag", -1)
 	eq(p2.gear.filter(func(g): return str(g.get("item", "")) == WorldActions.TEST_RIFLE).size(), 0, "not without the test switch")
+
+
+# ---------------------------------------------------------------- F: factions
+
+func _faction_world(seed: int) -> WorldState:
+	var w := WorldState.create_new("w_f%d" % seed, seed)
+	w.threat.enabled = true
+	FactionSim.ensure(w)
+	return w
+
+
+func _near(w: WorldState, pid: String, person: String, off := Vector2(0, 60)) -> PlayerState:
+	var p: PersonState = w.people[person]
+	return _player(w, pid, p.region_id, p.position + off)
+
+
+func test_three_factions_with_people_in_their_places() -> void:
+	var w := _faction_world(1531)
+	var kinds := {}
+	for fid in FactionSim.data()["factions"]:
+		kinds[str(FactionSim.fdef(str(fid))["kind"])] = fid
+	check(kinds.has("hostile") and kinds.has("community") and kinds.has("reputation"), "a hostile camp, a community and a reputation faction %s" % str(kinds))
+	var roles := {}
+	for p in w.people.values():
+		roles[p.faction + ":" + p.role] = true
+	for need in ["cinder:raider", "hearth:guard", "hearth:trader", "hearth:mechanic", "hearth:elder", "hearth:villager", "lantern:contact"]:
+		check(roles.has(need), need)
+	var gate := str(FactionSim.fdef("hearth")["gate"])
+	check(w.region("wild.stillwater_road").has_entity(gate), "Hearth Gate has its gate")
+
+
+func test_raiders_shoot_on_sight_and_stay_dead() -> void:
+	var w := _faction_world(1532)
+	var raider: PersonState = w.people["cinder.raider_1"]
+	var p := _near(w, PID, "cinder.raider_1", Vector2(260, 0))
+	var hurt := false
+	for i in 120:
+		Simulation.advance(w, 1)
+		if p.health < 100.0:
+			hurt = true
+			break
+	check(hurt, "a raider opens fire on a player in sight (%.0f)" % p.health)
+	check(FactionSim.hostile_to(w, raider, PID), "always hostile")
+	eq(FactionSim.request(w, PID, "cinder.raider_1", "buy", "canned_food")["reason"], "FACTION_WONT_TALK", "no talking to raiders")
+	for i in 5:
+		FactionSim.damage(w, raider, 30.0, p)
+	check(not w.people.has("cinder.raider_1"), "killed")
+	check(FactionSim.rep(w, PID, "hearth") > 0, "Hearth Gate thinks better of you")
+	var back: WorldState = SaveCodec.decode(JSON.parse_string(JSON.stringify(SaveCodec.encode(w))))["world"]
+	FactionSim.ensure(back)
+	check(not back.people.has("cinder.raider_1"), "and stays dead after a reload")
+	back.tick += int(3.0 * float(EnvSim.c("day_seconds", 1440)) * Simulation.TICK_RATE)
+	FactionSim.ensure(back)
+	check(back.people.has("cinder.raider_1"), "until the camp is reinforced days later")
+
+
+func test_trading_is_persistent_and_shared() -> void:
+	var w := _faction_world(1533)
+	var p := _near(w, PID, "hearth.trader")
+	p.carried["scrap_metal"] = 3
+	var r := FactionSim.request(w, PID, "hearth.trader", "sell", "scrap_metal")
+	check(r["ok"], "sell (%s)" % r.get("reason", ""))
+	eq(p.carrying("scrap_metal"), 2, "one sold")
+	var c0 := FactionSim.credit(w, PID)
+	check(c0 > 0, "for credit (%d)" % c0)
+	eq(int(FactionSim.stock(w, "hearth").get("scrap_metal", 0)), 1, "the trader now has it")
+	eq(FactionSim.request(w, PID, "hearth.trader", "buy", "first_aid_kit")["reason"], "TRADE_OUT_OF_STOCK", "only what is in stock")
+	store_credit(w, PID, 100)
+	var before := int(FactionSim.stock(w, "hearth")["canned_food"])
+	check(FactionSim.request(w, PID, "hearth.trader", "buy", "canned_food")["ok"], "buy a tin")
+	eq(p.carrying("canned_food"), 1, "got it")
+	eq(int(FactionSim.stock(w, "hearth")["canned_food"]), before - 1, "stock went down")
+	# the stock is shared with every player, and saved
+	var q := _near(w, "bbbbbbbbbbbbbbbb", "hearth.trader", Vector2(40, 60))
+	eq(FactionSim.credit(w, q.player_id), 0, "credit is per player")
+	var back: WorldState = SaveCodec.decode(JSON.parse_string(JSON.stringify(SaveCodec.encode(w))))["world"]
+	eq(int(FactionSim.stock(back, "hearth")["canned_food"]), before - 1, "stock persists")
+	eq(FactionSim.credit(back, PID), FactionSim.credit(w, PID), "credit persists")
+	# better standing, better prices
+	var plain := FactionSim.price(w, PID, "hearth", "canned_food", false)
+	FactionSim.add_rep(w, PID, "hearth", 60)
+	check(FactionSim.price(w, PID, "hearth", "canned_food", false) < plain, "trusted customers pay less")
+
+
+func store_credit(w: WorldState, pid: String, n: int) -> void:
+	FactionSim.store(w)["credit"][pid] = n
+
+
+func test_paid_repairs() -> void:
+	var w := _faction_world(1534)
+	var p := _near(w, PID, "hearth.mechanic")
+	var axe := Inv.new_gear(w, "hatchet")
+	axe["cond"] = 10.0
+	p.gear.append(axe)
+	var cost := FactionSim.repair_cost(w, PID, "hearth", axe)
+	check(cost > 0, "a worn axe costs %d to mend" % cost)
+	eq(FactionSim.request(w, PID, "hearth.mechanic", "repair", str(axe["uid"]))["reason"], "TRADE_NOT_ENOUGH", "not without credit")
+	store_credit(w, PID, cost)
+	check(FactionSim.request(w, PID, "hearth.mechanic", "repair", str(axe["uid"]))["ok"], "repaired")
+	eq(float(axe["cond"]), float(Items.info("hatchet")["durability"]), "like new")
+	eq(FactionSim.credit(w, PID), 0, "paid")
+
+
+func test_missions_have_objectives_rewards_and_checks() -> void:
+	var w := _faction_world(1535)
+	var p := _near(w, PID, "hearth.elder")
+	check(FactionSim.request(w, PID, "hearth.elder", "accept", "hearth_food")["ok"], "take the food mission")
+	eq(FactionSim.request(w, PID, "hearth.elder", "accept", "hearth_food")["reason"], "MISSION_ALREADY", "once")
+	eq(FactionSim.request(w, PID, "hearth.elder", "turn_in", "hearth_food")["reason"], "MISSION_NOT_DONE", "checked by the host")
+	p.carried["canned_food"] = 5
+	eq(FactionSim.progress(w, PID, "hearth_food"), [5, 5], "5 of 5")
+	var r0 := FactionSim.rep(w, PID, "hearth")
+	check(FactionSim.request(w, PID, "hearth.elder", "turn_in", "hearth_food")["ok"], "turned in")
+	eq(p.carrying("canned_food"), 0, "the food was handed over")
+	check(FactionSim.rep(w, PID, "hearth") > r0 and FactionSim.credit(w, PID) >= 30, "rewarded")
+	eq(FactionSim.mission_state(w, PID, "hearth_food"), "done", "done")
+	check(FactionSim.request(w, PID, "hearth.elder", "accept", "hearth_raiders")["ok"], "with standing the raider mission opens")
+	# kill objective counts only kills made after taking it
+	var raider: PersonState = w.people["cinder.raider_2"]
+	_player(w, PID, raider.region_id, raider.position + Vector2(40, 0))
+	for i in 5:
+		FactionSim.damage(w, raider, 30.0, p)
+	eq(FactionSim.progress(w, PID, "hearth_raiders")[0], 1, "one raider down")
+	# reputation faction: tiers unlock map knowledge
+	var q := _near(w, "cccccccccccccccc", "lantern.keeper")
+	q.carried["batteries"] = 3
+	check(FactionSim.request(w, q.player_id, "lantern.keeper", "accept", "lantern_batteries")["ok"], "the Lantern keeper's mission")
+	check(FactionSim.request(w, q.player_id, "lantern.keeper", "turn_in", "lantern_batteries")["ok"], "delivered")
+	check(FactionSim.rep(w, q.player_id, "lantern") >= 10, "Lantern reputation (%d)" % FactionSim.rep(w, q.player_id, "lantern"))
+	check((w.meta.get("discoveries", {}) as Dictionary).has("wild_corran_forest"), "known to the Circle: places marked on the map")
+	eq(FactionSim.rep(w, PID, "lantern"), 0, "reputation is per player")
+
+
+func test_community_law_needs_a_witness_and_is_graded() -> void:
+	var w := _faction_world(1536)
+	var f := FactionSim.fdef("hearth")
+	var a: Array = f["area"]
+	var inside := Vector2(float(a[0]) + float(a[2]) * 0.5, float(a[1]) + float(a[3]) * 0.5)
+	var p := _player(w, PID, "wild.stillwater_road", inside)
+	store_credit(w, PID, 50)
+	# unwitnessed: nobody of Hearth near
+	var saved := w.people.duplicate()
+	for id in w.people.keys():
+		if str(id).begins_with("hearth."):
+			w.people.erase(id)
+	eq(FactionSim.noted_gunfire(w, p).size(), 0, "no witness, no consequence")
+	w.people = saved
+	var r1 := FactionSim.noted_gunfire(w, p)
+	check(not r1.is_empty(), "gunfire inside the fence is seen")
+	eq(str(r1[0]["private_notice"]["key"]), "LAW_WARNING", "first: a warning")
+	var r2 := FactionSim.noted_gunfire(w, p)
+	eq(str(r2[0]["private_notice"]["key"]), "LAW_FINE", "second: a fine")
+	eq(FactionSim.credit(w, PID), 30, "20 credit fined")
+	var r3 := FactionSim.noted_gunfire(w, p)
+	eq(str(r3[0]["private_notice"]["key"]), "LAW_BANISHED", "third: banished")
+	check(FactionSim.banished(w, PID, "hearth"), "banished")
+	var gate := str(f["gate"])
+	w.region("wild.stillwater_road").set_fields(gate, {"open": false})
+	p.position = Content.entity_position(w.region("wild.stillwater_road").entity_def(gate)) + Vector2(0, -40)
+	eq(WorldActions.request_interact(w, PID, gate, -1)["reason"], "ACTION_GATE_BARRED", "the gate is barred")
+	check(FactionSim.hostile_to(w, w.people["hearth.guard_gate_w"], PID), "the guards turn on you")
+	# theft from the community store is a crime too
+	var q := _player(w, "dddddddddddddddd", "wild.stillwater_road", inside)
+	var store_id := "wild.stillwater_road.hearth_store"
+	eq(FactionSim.noted_take(w, q, w.region("wild.stillwater_road").entity_def(store_id)).size(), 1, "taking from the store is theft (seen)")
+	eq(FactionSim.banished(w, q.player_id, "hearth"), false, "only the offender is punished")
+	# strikes fade
+	w.tick += int(1.2 * float(EnvSim.c("day_seconds", 1440)) * Simulation.TICK_RATE)
+	FactionSim._law_decay(w)
+	check(int(FactionSim.store(w)["law"][q.player_id]["hearth"]["strikes"]) == 0, "a quiet day forgives a strike")

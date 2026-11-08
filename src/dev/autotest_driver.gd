@@ -111,6 +111,18 @@ func _run(line: String) -> void:
 		"custom_graphics":
 			Assets.set_custom_graphics(a[0] == "on")
 			await get_tree().process_frame
+		"ui_click_text":
+			# ui_click_text <prefix>: press the first button in the open object panel whose text starts so
+			if MachinePanel.current != null and is_instance_valid(MachinePanel.current):
+				for b in MachinePanel.current.find_children("*", "Button", true, false):
+					if (b as Button).text.begins_with(" ".join(a)) and not (b as Button).disabled:
+						(b as Button).pressed.emit()
+						break
+			await get_tree().create_timer(0.4).timeout
+		"faction":
+			# faction <person_id> <action> [arg]: trade / repair / missions (iteration 015 F)
+			Session.request_faction(a[0], a[1], a[2] if a.size() > 2 else "")
+			await get_tree().create_timer(0.4).timeout
 		"equip_item":
 			# equip_item <item>: equip the first gear item of that kind (e.g. club)
 			var mei := Session.local_player()
@@ -206,7 +218,8 @@ func _run(line: String) -> void:
 				main.guide.dismiss()
 		"panel":
 			# Open a UI panel: inventory / guide / settlement (screenshots).
-			var pnl: Control = {"inventory": main.inventory_panel, "guide": main.guide, "settlement": main.settlement_panel, "skills": main.skills_panel}.get(a[0])
+			var pnl: Control = {"inventory": main.inventory_panel, "guide": main.guide, "settlement": main.settlement_panel, "skills": main.skills_panel,
+				"factions": main.factions_panel}.get(a[0])
 			if pnl != null:
 				pnl.visible = a.size() < 2 or a[1] == "on"
 			await get_tree().create_timer(0.4).timeout
@@ -566,6 +579,9 @@ func _state() -> Dictionary:
 				"region": z.region_id, "hp": z.health, "persistent": z.persistent})
 		s["zombies"] = zs
 		s["hordes"] = w.threat.hordes.size()  # iteration 015 E (meaningful on the host)
+		s["people"] = w.people.values().map(func(pp): return {"id": pp.person_id, "faction": pp.faction, "role": pp.role, "region": pp.region_id,
+			"x": pp.position.x, "y": pp.position.y, "activity": pp.activity, "hp": pp.health})
+		s["factions"] = w.meta.get("factions", {})
 		s["ai_lod"] = ZombieSim.lod_counts
 		var me := Session.local_player()
 		if me != null and w.region(me.region_id) != null and Terrain.has_terrain(w.region(me.region_id)):
@@ -616,6 +632,7 @@ func _state() -> Dictionary:
 		v["entities"] = stages
 		v["map_open"] = main.map_panel.visible
 		v["zombies"] = view.zombie_count()
+		v["people"] = view.person_count()
 		# iteration 015: how many of them the local player can actually see (PlayerSight)
 		var seen := 0
 		for zv in view.find_children("*", "ZombieView", true, false):

@@ -72,6 +72,17 @@ func _spawn_entity_views(def: Dictionary) -> void:
 		if v != null:
 			v.entity_id = str(e["id"])
 			_ysort.add_child(v)
+		elif t == "door":
+			# iteration 015 F: a gate in the open (Hearth Gate)
+			var dv := DoorView.new()
+			dv.entity_id = str(e["id"])
+			dv.closed_asset = str(e.get("art_closed", dv.closed_asset))
+			dv.open_asset = str(e.get("art_open", dv.open_asset))
+			var bl: Array = e.get("blocker", [80, 16])
+			dv.blocker_size = Vector2(float(bl[0]), float(bl[1]))
+			dv.prompt_open_key = str(e.get("prompt_open_key", dv.prompt_open_key))
+			dv.prompt_close_key = str(e.get("prompt_close_key", dv.prompt_close_key))
+			_ysort.add_child(dv)
 
 
 func _process(delta: float) -> void:

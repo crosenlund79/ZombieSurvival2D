@@ -81,6 +81,13 @@ func _ready() -> void:
 	for hn in [1, 2, 3]:
 		var hv: int = hn
 		_btn(world_tab, tr("DEV_HIDEOUT_GOTO") % hv, func() -> void: Session.request_dev_command("hideout_goto", float(hv)))
+	# iteration 015 F: factions
+	_btn(world_tab, "DEV_GOTO_CAMP", func() -> void: Session.request_dev_command("faction_goto", "cinder"))
+	_btn(world_tab, "DEV_GOTO_HEARTH", func() -> void: Session.request_dev_command("faction_goto", "hearth"))
+	_btn(world_tab, "DEV_GOTO_LANTERN", func() -> void: Session.request_dev_command("faction_goto", "lantern"))
+	_btn(world_tab, "DEV_FACTION_REP", func() -> void: Session.request_dev_command("faction_rep", 20.0))
+	_btn(world_tab, "DEV_FACTION_CREDIT", func() -> void: Session.request_dev_command("faction_credit", 50.0))
+	_btn(world_tab, "DEV_LAW_CLEAR", func() -> void: Session.request_dev_command("law_clear"))
 	_btn(world_tab, "DEV_TEST_RIFLE", func() -> void:
 		Session.request_dev_command("test_rifle", 0.0 if Session.world != null and bool(Session.world.meta.get("test_rifle", false)) else 1.0))
 	_btn(world_tab, "DEV_AMBIENT", func() -> void:

@@ -4978,5 +4978,385 @@
 	"DEV_TEST_RIFLE_OFF": {
 		"da": "Starttasker er normale igen.",
 		"en": "Starter bags are back to normal."
+	},
+	"FACTION_CINDER": {
+		"da": "Askebanden",
+		"en": "The Cinder Crew"
+	},
+	"FACTION_CINDER_DESC": {
+		"da": "Bevæbnede plyndrere i lejr i Greyhollow-passet. De skyder ved første øjekast.",
+		"en": "Armed raiders camped in the Greyhollow Pass. They shoot on sight."
+	},
+	"FACTION_HEARTH": {
+		"da": "Arneporten",
+		"en": "Hearth Gate"
+	},
+	"FACTION_HEARTH_DESC": {
+		"da": "Et indhegnet fællesskab ved Stillwater-vejen. De handler, reparerer udstyr og holder deres egen lov.",
+		"en": "A fenced community on the Stillwater road. They trade, mend gear and keep their own law."
+	},
+	"FACTION_LANTERN": {
+		"da": "Lygtekredsen",
+		"en": "The Lantern Circle"
+	},
+	"FACTION_LANTERN_DESC": {
+		"da": "Radiovogtere ved masten på Halden-kysten. Vind deres tillid, så deler de det, de hører.",
+		"en": "Radio keepers at the Halden coast mast. Earn their trust and they share what they hear."
+	},
+	"FACTION_ALWAYS_HOSTILE": {
+		"da": "Altid fjendtlige.",
+		"en": "Always hostile."
+	},
+	"FACTION_KILLS": {
+		"da": "Du har dræbt %s af dem.",
+		"en": "You have killed %s of them."
+	},
+	"FACTION_REP_LINE": {
+		"da": "Anseelse: %s (%s)",
+		"en": "Standing: %s (%s)"
+	},
+	"FACTION_STANDING": {
+		"da": "%s: %s (%s)",
+		"en": "%s: %s (%s)"
+	},
+	"FACTION_CREDIT": {
+		"da": "Handelskredit: %s",
+		"en": "Trade credit: %s"
+	},
+	"FACTION_WONT_TALK": {
+		"da": "De vil ikke tale med dig.",
+		"en": "They will not talk to you."
+	},
+	"FACTION_TIER_UP": {
+		"da": "Din anseelse stiger: %s.",
+		"en": "Your standing rises: %s."
+	},
+	"FACTION_GIFT": {
+		"da": "De giver dig en gave — du er nu %s.",
+		"en": "They give you a gift — you are %s now."
+	},
+	"FACTION_LANTERN_MAPS": {
+		"da": "Kredsen deler, hvad de har hørt: steder er markeret på dit kort (%s).",
+		"en": "The Circle shares what they have heard: places are marked on your map (%s)."
+	},
+	"FACTIONS_TITLE": {
+		"da": "Fraktioner",
+		"en": "Factions"
+	},
+	"FACTIONS_HINT": {
+		"da": "Anseelse, kredit, missioner og lovstatus er dine egne (hver spiller har sine). Handlerens lager er fælles.",
+		"en": "Reputation, credit, missions and law standing are your own (each player has their own). The trader's stock is shared."
+	},
+	"REP_HATED": {
+		"da": "hadet",
+		"en": "hated"
+	},
+	"REP_DISTRUSTED": {
+		"da": "mistroet",
+		"en": "distrusted"
+	},
+	"REP_NEUTRAL": {
+		"da": "neutral",
+		"en": "neutral"
+	},
+	"REP_WELCOME": {
+		"da": "velkommen",
+		"en": "welcome"
+	},
+	"REP_TRUSTED": {
+		"da": "betroet",
+		"en": "trusted"
+	},
+	"REP_FAMILY": {
+		"da": "en af os",
+		"en": "one of us"
+	},
+	"REP_SILENT": {
+		"da": "ignoreret",
+		"en": "ignored"
+	},
+	"REP_STRANGER": {
+		"da": "en fremmed",
+		"en": "a stranger"
+	},
+	"REP_KNOWN": {
+		"da": "kendt",
+		"en": "known"
+	},
+	"REP_CIRCLE": {
+		"da": "af Kredsen",
+		"en": "of the Circle"
+	},
+	"ROLE_RAIDER": {
+		"da": "Plyndrer",
+		"en": "Raider"
+	},
+	"ROLE_GUARD": {
+		"da": "Vagt",
+		"en": "Guard"
+	},
+	"ROLE_VILLAGER": {
+		"da": "Beboer",
+		"en": "Villager"
+	},
+	"ROLE_TRADER": {
+		"da": "Handlende",
+		"en": "Trader"
+	},
+	"ROLE_MECHANIC": {
+		"da": "Mekaniker",
+		"en": "Mechanic"
+	},
+	"ROLE_ELDER": {
+		"da": "Ældste",
+		"en": "Elder"
+	},
+	"ROLE_CONTACT": {
+		"da": "Lygtevogter",
+		"en": "Lantern keeper"
+	},
+	"PROMPT_TALK_TO": {
+		"da": "Tal med %s",
+		"en": "Talk to the %s"
+	},
+	"PANEL_BACK": {
+		"da": "Tilbage",
+		"en": "Back"
+	},
+	"TRADE_BUY_TAB": {
+		"da": "Køb",
+		"en": "Buy"
+	},
+	"TRADE_SELL_TAB": {
+		"da": "Sælg",
+		"en": "Sell"
+	},
+	"REPAIR_TAB": {
+		"da": "Reparationer",
+		"en": "Repairs"
+	},
+	"MISSIONS_TAB": {
+		"da": "Arbejd for os",
+		"en": "Work for us"
+	},
+	"TRADE_BUY_LINE": {
+		"da": "Køb %s (%s tilbage) — %s kredit",
+		"en": "Buy %s (%s left) — %s credit"
+	},
+	"TRADE_SELL_LINE": {
+		"da": "Sælg %s (du har %s) — %s kredit",
+		"en": "Sell %s (you have %s) — %s credit"
+	},
+	"TRADE_SOLD": {
+		"da": "Solgte %s for %s kredit.",
+		"en": "Sold %s for %s credit."
+	},
+	"TRADE_BOUGHT": {
+		"da": "Købte %s for %s kredit.",
+		"en": "Bought %s for %s credit."
+	},
+	"TRADE_OUT_OF_STOCK": {
+		"da": "Udsolgt.",
+		"en": "Out of stock."
+	},
+	"TRADE_NOT_ENOUGH": {
+		"da": "Ikke nok kredit (%s påkrævet).",
+		"en": "Not enough credit (%s needed)."
+	},
+	"REPAIR_LINE": {
+		"da": "Reparér %s — %s kredit",
+		"en": "Repair %s — %s credit"
+	},
+	"REPAIR_DONE": {
+		"da": "%s repareret for %s kredit.",
+		"en": "%s repaired for %s credit."
+	},
+	"REPAIR_NOT_NEEDED": {
+		"da": "Det behøver ingen reparation.",
+		"en": "That needs no repair."
+	},
+	"REPAIR_NOTHING": {
+		"da": "Intet af det, du bærer, skal repareres.",
+		"en": "Nothing you carry needs mending."
+	},
+	"MISSION_LINE_OFFER": {
+		"da": "• %s — %s",
+		"en": "• %s — %s"
+	},
+	"MISSION_LINE_ACTIVE": {
+		"da": "▸ %s — %s (%s/%s)",
+		"en": "▸ %s — %s (%s/%s)"
+	},
+	"MISSION_LINE_DONE": {
+		"da": "✓ %s",
+		"en": "✓ %s"
+	},
+	"MISSION_ACCEPT": {
+		"da": "Påtag dig: %s",
+		"en": "Take on: %s"
+	},
+	"MISSION_TURN_IN": {
+		"da": "Aflever: %s",
+		"en": "Report: %s"
+	},
+	"MISSION_NEEDS_REP": {
+		"da": "Kræver anseelse %s",
+		"en": "Needs standing %s"
+	},
+	"MISSION_ACCEPTED": {
+		"da": "Mission påtaget: %s",
+		"en": "Mission taken: %s"
+	},
+	"MISSION_DONE": {
+		"da": "Mission fuldført: %s",
+		"en": "Mission done: %s"
+	},
+	"MISSION_ALREADY": {
+		"da": "Den har du allerede påtaget dig.",
+		"en": "You already took that on."
+	},
+	"MISSION_LOCKED": {
+		"da": "De stoler ikke nok på dig til det endnu.",
+		"en": "They do not trust you with that yet."
+	},
+	"MISSION_NOT_DONE": {
+		"da": "Ikke færdig endnu.",
+		"en": "Not done yet."
+	},
+	"MISSION_HEARTH_FOOD": {
+		"da": "Vinterforråd",
+		"en": "Winter stores"
+	},
+	"MISSION_HEARTH_FOOD_DESC": {
+		"da": "Bring 5 dåser mad til forrådet.",
+		"en": "Bring 5 tins of food for the store."
+	},
+	"MISSION_HEARTH_RAIDERS": {
+		"da": "Askebøvl",
+		"en": "Cinder trouble"
+	},
+	"MISSION_HEARTH_RAIDERS_DESC": {
+		"da": "Dræb 3 af Askebanden.",
+		"en": "Kill 3 of the Cinder Crew."
+	},
+	"MISSION_HEARTH_SCOUT": {
+		"da": "Øjne på passet",
+		"en": "Eyes on the pass"
+	},
+	"MISSION_HEARTH_SCOUT_DESC": {
+		"da": "Nå frem til Greyhollow-passet.",
+		"en": "Reach the Greyhollow Pass."
+	},
+	"MISSION_LANTERN_BATTERIES": {
+		"da": "Strøm til radioen",
+		"en": "Power for the set"
+	},
+	"MISSION_LANTERN_BATTERIES_DESC": {
+		"da": "Bring 3 batterier.",
+		"en": "Bring 3 batteries."
+	},
+	"MISSION_LANTERN_PARTS": {
+		"da": "Reservedele",
+		"en": "Spare parts"
+	},
+	"MISSION_LANTERN_PARTS_DESC": {
+		"da": "Bring 2 elektriske dele.",
+		"en": "Bring 2 electrical parts."
+	},
+	"MISSION_LANTERN_MAST": {
+		"da": "Den anden mast",
+		"en": "The other mast"
+	},
+	"MISSION_LANTERN_MAST_DESC": {
+		"da": "Find masten i Greyhollow-passet.",
+		"en": "Find the mast in the Greyhollow Pass."
+	},
+	"LAW_WARNING": {
+		"da": "En vagt fra Arneporten så det. En advarsel — næste gang bliver det en bøde.",
+		"en": "A Hearth Gate guard saw that. A warning — next time there will be a fine."
+	},
+	"LAW_FINE": {
+		"da": "Set igen. Du får en bøde på %s kredit.",
+		"en": "Seen again. You are fined %s credit."
+	},
+	"LAW_BANISHED": {
+		"da": "Du er forvist fra Arneporten i et døgn. Vagterne skyder.",
+		"en": "You are banished from Hearth Gate for a day. The guards will shoot."
+	},
+	"LAW_YOU_ARE_BANISHED": {
+		"da": "Du er forvist herfra.",
+		"en": "You are banished from here."
+	},
+	"LAW_STRIKES": {
+		"da": "Lov: %s overtrædelse(r) imod dig (de glemmes, én pr. rolig dag).",
+		"en": "Law: %s strike(s) against you (they fade, one per quiet day)."
+	},
+	"ACTION_GATE_BARRED": {
+		"da": "Porten er spærret for dig.",
+		"en": "The gate is barred to you."
+	},
+	"MAP_CINDER_CAMP": {
+		"da": "Plyndrerlejr",
+		"en": "Raider camp"
+	},
+	"MAP_HEARTH_GATE": {
+		"da": "Arneporten",
+		"en": "Hearth Gate"
+	},
+	"MAP_LANTERN": {
+		"da": "Radiohytte",
+		"en": "Radio shack"
+	},
+	"SAY_HEARTH_TRADER": {
+		"da": "\"Kun ærlig handel. Kredit gælder her, ingen andre steder.\"",
+		"en": "\"Fair trades only. Credit's good here, nowhere else.\""
+	},
+	"SAY_HEARTH_MECHANIC": {
+		"da": "\"Kom med det. Jeg får det til at holde en vinter mere — for en pris.\"",
+		"en": "\"Bring it here. I'll make it hold another winter — for a price.\""
+	},
+	"SAY_HEARTH_ELDER": {
+		"da": "\"Vi passer hegnet og ilden. Hjælp os, så er du velkommen her.\"",
+		"en": "\"We keep the fence and the fire. Help us, and you're welcome here.\""
+	},
+	"SAY_HEARTH_GUARD": {
+		"da": "\"Hold våbnet nede inden for hegnet.\"",
+		"en": "\"Keep your gun down inside the fence.\""
+	},
+	"SAY_HEARTH_VILLAGER": {
+		"da": "\"Overhold loven, så lader alle dig være.\"",
+		"en": "\"Mind the law and nobody minds you.\""
+	},
+	"SAY_LANTERN_CONTACT": {
+		"da": "\"Vi lytter. Æteren er aldrig tom, hvis man ved, hvordan man hører.\"",
+		"en": "\"We listen. The air is never empty, if you know how to hear it.\""
+	},
+	"DEV_FACTION_REP": {
+		"da": "Arne +20 / Lygte +20 (mig)",
+		"en": "Hearth +20 / Lantern +20 (me)"
+	},
+	"DEV_FACTION_CREDIT": {
+		"da": "+50 handelskredit (mig)",
+		"en": "+50 trade credit (me)"
+	},
+	"DEV_GOTO_CAMP": {
+		"da": "Gå til plyndrerlejren",
+		"en": "Go to the raider camp"
+	},
+	"DEV_GOTO_HEARTH": {
+		"da": "Gå til Arneporten",
+		"en": "Go to Hearth Gate"
+	},
+	"DEV_GOTO_LANTERN": {
+		"da": "Gå til radiohytten",
+		"en": "Go to the radio shack"
+	},
+	"DEV_LAW_CLEAR": {
+		"da": "Ryd mine lovovertrædelser",
+		"en": "Clear my law strikes"
+	},
+	"ACTION_FACTIONS": {
+		"da": "Fraktioner",
+		"en": "Factions"
 	}
 }

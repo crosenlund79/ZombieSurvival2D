@@ -105,6 +105,34 @@ def wolves(s):
     s.cmd("dev peaceful 1"); s.cmd("dev time 12")
 
 
+def factions(s):
+    s.cmd("dev peaceful 0"); s.cmd("dev time 12")
+    s.cmd("dev faction_goto hearth"); s.cmd("wait 1.5"); s.cmd("zoom 0.8")
+    st = s.state()
+    check("Hearth Gate's people are drawn", st["view"].get("people", 0) >= 6, st["view"].get("people"))
+    shot(s, "community_gate", 0.4)
+    tr = next(p for p in st["people"] if p["id"] == "hearth.trader")
+    s.cmd(f"dev teleport {tr['x'] + 40} {tr['y'] + 70}"); s.cmd("wait 0.6"); s.cmd("zoom 1.0")
+    s.cmd("dev faction_credit 50"); s.cmd("wait 0.3")
+    s.cmd("press_interact"); s.cmd("wait 0.6")
+    s.cmd("ui_click_text Buy")
+    shot(s, "community_trading", 0.4)
+    s.cmd("panel_close")
+    el = next(p for p in st["people"] if p["id"] == "hearth.elder")
+    s.cmd(f"dev teleport {el['x'] + 40} {el['y'] + 70}"); s.cmd("wait 0.6")
+    s.cmd("faction hearth.elder accept hearth_food"); s.cmd("wait 0.4")
+    s.cmd("press_interact"); s.cmd("wait 0.6")
+    s.cmd("ui_click_text Work")
+    shot(s, "community_missions", 0.4)
+    s.cmd("panel_close")
+    s.cmd("panel factions on"); shot(s, "factions_screen", 0.5); s.cmd("panel factions off")
+    s.cmd("dev faction_goto cinder"); s.cmd("wait 1.2")
+    rd = next(p for p in s.state()["people"] if p["id"] == "cinder.raider_1")
+    s.cmd(f"dev teleport {rd['x']} {rd['y'] + 420}"); s.cmd("face up"); s.cmd("zoom 0.85"); s.cmd("wait 1.5")
+    shot(s, "raider_camp", 0.2)
+    s.cmd("dev heal"); s.cmd("dev peaceful 1")
+
+
 if __name__ == "__main__":
     s = session("shots015", 1515)
     try:
@@ -116,5 +144,7 @@ if __name__ == "__main__":
             horde(s)
         if want("wolves"):
             wolves(s)
+        if want("factions"):
+            factions(s)
     finally:
         s.quit()

@@ -50,6 +50,7 @@ var _pointer: TextureRect
 var _grid_box: GridContainer
 var _progress: ProgressBar
 var _grid_sig := ""
+var _scroll: ScrollContainer
 
 
 func _ready() -> void:
@@ -88,6 +89,7 @@ func _ready() -> void:
 	_lines.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	v.add_child(_lines)
 	var scroll := ScrollContainer.new()
+	_scroll = scroll
 	scroll.custom_minimum_size = Vector2(0, 40)
 	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
@@ -172,6 +174,8 @@ func _refresh() -> void:
 	_sig = sig
 	for c in _buttons.get_children():
 		c.queue_free()
+	# show up to about eight rows before scrolling
+	_scroll.custom_minimum_size.y = clampf(float((d.get("buttons", []) as Array).size()) * 40.0, 40.0, 320.0)
 	for b in d.get("buttons", []):
 		var btn := Button.new()
 		btn.text = str(b[0])

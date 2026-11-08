@@ -29,6 +29,7 @@ var _objects := {}  # object_id -> StructureView
 var _npcs := {}     # npc_id -> NpcView
 var _vehicles := {} # vehicle_id -> VehicleView
 var _animals := {}  # animal_id -> AnimalView
+var _people := {}   # person_id -> PersonView (iteration 015 F)
 var _actors: Node2D
 
 
@@ -142,6 +143,7 @@ func _process(_delta: float) -> void:
 	_sync_npcs()
 	_sync_vehicles()
 	_sync_animals()
+	_sync_people()
 
 
 func _sync_animals() -> void:
@@ -158,6 +160,26 @@ func _sync_animals() -> void:
 			if is_instance_valid(_animals[id]):
 				(_animals[id] as Node).queue_free()
 			_animals.erase(id)
+
+
+func _sync_people() -> void:
+	if Session.world == null:
+		return
+	for p in Session.world.people.values():
+		if p.region_id == region_id and not _people.has(p.person_id):
+			var pv := PersonView.create(p)
+			_actors.add_child(pv)
+			_people[p.person_id] = pv
+	for id in _people.keys():
+		var p2: PersonState = Session.world.people.get(id)
+		if p2 == null or p2.region_id != region_id or not is_instance_valid(_people[id]):
+			if is_instance_valid(_people[id]):
+				(_people[id] as Node).queue_free()
+			_people.erase(id)
+
+
+func person_count() -> int:
+	return _people.size()
 
 
 func animal_count() -> int:
@@ -330,6 +352,21 @@ func _on_combat_event(ev: Dictionary) -> void:
 				Audio.play("sfx.struct_hit", at6, -6.0)
 				if str(ev["kind"]) == "animal_killed":
 					Audio.play("sfx.body_drop", at6)
+		"person_shot":
+			# iteration 015 F: a raider or guard fires (sound + a brief tracer)
+			if str(ev.get("region_id", "")) == region_id:
+				var from := Vector2(float(ev.get("x", 0)), float(ev.get("y", 0)))
+				Audio.play(str(ev.get("sound", "sfx.gun_rifle")), from)
+				_muzzle(from, Vector2(float(ev.get("tx", 0)), float(ev.get("ty", 0))))
+		"person_alert":
+			if str(ev.get("region_id", "")) == region_id:
+				Audio.play("sfx.mutter_a", Vector2(float(ev.get("x", 0)), float(ev.get("y", 0))), -4.0)
+		"person_hit", "person_killed":
+			if str(ev.get("region_id", "")) == region_id:
+				var at7 := Vector2(float(ev.get("x", 0)), float(ev.get("y", 0)))
+				Audio.play("sfx.struct_hit", at7, -6.0)
+				if str(ev["kind"]) == "person_killed":
+					Audio.play("sfx.body_drop", at7)
 		"horde_forming":
 			# iteration 015 E: the far-off sound of many coming (everyone in that region hears it)
 			if str(ev.get("region_id", "")) == region_id:
