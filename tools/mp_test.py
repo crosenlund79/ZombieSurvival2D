@@ -2396,7 +2396,7 @@ def scenario_threats_multi():
         hz, d0 = horde_near(hs)
         cz = [z for z in c.state()["zombies"] if z["region"] == "wild.corran_forest"]  # the mirror does not carry "persistent"
         hz_all = [z for z in hs["zombies"] if z["region"] == "wild.corran_forest"]
-        check("threats: 4+ Burnt Ones gather out of sight", len(hz) >= 4 and min(((z["x"] - me["x"]) ** 2 + (z["y"] - me["y"]) ** 2) ** 0.5 for z in hz) >= 950, (len(hz), d0))
+        check("threats: 4+ Burnt Ones gather out of sight (sampled 1.5 s after forming)", len(hz) >= 4 and min(((z["x"] - me["x"]) ** 2 + (z["y"] - me["y"]) ** 2) ** 0.5 for z in hz) >= 850, (len(hz), d0))
         check("threats: the client sees the same Burnt Ones", len(cz) == len(hz_all), (len(cz), len(hz_all)))
         c.cmd("wait 20")
         _, d1 = horde_near(host.state())

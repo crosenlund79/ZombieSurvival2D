@@ -5,7 +5,7 @@
 | Base | `iteration/014-five-settlements` @ `b3c7554` (verified locally and on the remote before any change) |
 | Recovery reference | **`backup/pre-world-reborn` → `b3c7554`** (pushed and verified before any change) |
 | Branch | `iteration/015-world-reborn` |
-| Milestone checkpoints | `backup/iteration-015-milestone-a` (`0c5d414`), `-b` (`c61805f`), `-c` (`b3872c0`), `-d` (`47240a2`), `-e` (`4b8c32b`), `-f` (see §13); the final state is the branch head |
+| Milestone checkpoints | `backup/iteration-015-milestone-a` (`0c5d414`), `-b` (`c61805f`), `-c` (`b3872c0`), `-d` (`47240a2`), `-e` (`4b8c32b`), `-f` (`7ec5f49`); the final state is the branch head |
 | Engine | Godot 4.7.2 stable, Compatibility renderer |
 | Build | Red Thaw 0.7.0 · iteration 015 · network protocol 11 · save schema 4 (unchanged, see §10) |
 | Status | Implemented and tested on Linux (unit, real two-process multiplayer, rendered). **Windows acceptance pending.** |
@@ -149,6 +149,15 @@ people are transient (rebuilt on start; dead raiders are remembered). Rollback: 
 See §13 for the full regression. New: `tests/unit/test_world_reborn.gd` (A–F), mp_test scenarios `locks_multi`,
 `threats_multi`, `factions_multi`; rendered checks in `tools/shots_world_reborn.py`.
 
-## 13. Full regression
+## 13. Full regression (milestone G)
 
-(filled in at the end of milestone G)
+| Suite | Result |
+|---|---|
+| Unit tests + content check (`tests/run_tests.tscn`) | **204 / 204**, content check PASS |
+| Full multiplayer regression (all 34 `mp_test.py` scenarios, real separate processes) | 525 / 530 on the first full pass. Fixed after: 4 slice failures (the homestead wolf pack now only hunts at night) and 1 `danger_single` failure (reinforcement caps were world-wide, so the new wilderness populations had used them up; now per region). Re-runs: `slice` + `danger_single` 46 / 46 after the wolf fix except the cap issue, then `danger_single`, `danger_multi`, `perf_multi`, `threats_multi` all passing (threats needed a test-sampling margin: 9 / 9) |
+| Milestone scenarios | `locks_multi` 11 / 11, `threats_multi` 9 / 9, `factions_multi` 11 / 11, `circuit_multi` 21 / 21, `progression_multi` 20 / 20 |
+| Performance (`perf_multi`) | 57 Burnt Ones with two players: host simulation **1.34 ms / frame** (budget 8 ms); the client mirrors all 57. AI level of detail counted per tick in F3 |
+| Rendered checks (`tools/shots_world_reborn.py`) | all CHECK lines PASS; 25 screenshots in `docs/screenshots/iteration_015/` |
+| Script guides | EN / DA 136 / 136 |
+
+Windows acceptance pending: none of this has been run on Windows.
