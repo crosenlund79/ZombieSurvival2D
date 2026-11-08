@@ -98,10 +98,17 @@ func _state() -> ZombieState:
 	return Session.world.zombies.get(zombie_id) if Session.world != null else null
 
 
+var _sight := 1.0  # iteration 015: how much of it the local player can see (PlayerSight)
+
+
 func _process(delta: float) -> void:
 	var z := _state()
 	if z == null:
 		return
+	if not z.is_dead() and PlayerSight.current != null:
+		# a Burnt One behind a building or outside your view is not drawn at all (you may still hear it)
+		_sight = move_toward(_sight, PlayerSight.current.visibility(global_position), delta * 3.0)
+		modulate.a = _sight
 	_target = _screen(z)
 	if position.distance_to(_target) > 200.0:
 		position = _target

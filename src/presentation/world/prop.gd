@@ -48,6 +48,9 @@ static var _sway_material: ShaderMaterial
 func _ready() -> void:
 	_refresh_art()
 	_rebuild_body()
+	# iteration 015: buildings, cabins, rocks and wrecks block the player's line of sight (PlayerSight)
+	if nav_block and footprint.x >= 60.0 and not Engine.is_editor_hint():
+		add_to_group("sight_occluder")
 	if not Engine.is_editor_hint():
 		Assets.reloaded.connect(_refresh_art)
 	set_process(occlude and not Engine.is_editor_hint())

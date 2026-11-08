@@ -4786,5 +4786,13 @@
 	"SIDE_OUTDOOR_GEAR": {
 		"en": "Outdoor gear",
 		"da": "Friluftsudstyr"
+	},
+	"DEV_SIGHT": {
+		"en": "Sight on/off",
+		"da": "Synsfelt til/fra"
+	},
+	"DEV_VIGNETTE": {
+		"en": "Vignette 0 / ½ / 1",
+		"da": "Vignet 0 / ½ / 1"
 	}
 }

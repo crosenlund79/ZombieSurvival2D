@@ -94,7 +94,24 @@ func _ready() -> void:
 		atm.area = screen_bounds()
 		add_child(atm)
 	super._ready()
+	if r != null:
+		_frame_building(r)
 	SessionLog.info("view", "side_view_built", {"region": region_id})
+
+
+## Iteration 015: a building fills the screen instead of sitting in a thin strip —
+## the camera zooms so the whole cross-section (roof to floor) takes most of the
+## screen height (bounded: never closer than 1.9×, never further than 1×).
+func _frame_building(r: RegionState) -> void:
+	var sec: Dictionary = r.definition().get("section", {})
+	var env: Array = sec.get("envelope", [])
+	if env.size() < 4 or local_avatar == null or local_avatar.camera == null:
+		return
+	var cell := float(r.definition().get("excavation", {}).get("cell", 64))
+	var h := float(env[3]) * cell * SideSection.ROW_SCALE + 140.0
+	var vp := get_viewport().get_visible_rect().size
+	var z := clampf(vp.y * 0.86 / h, 1.0, 1.9) * Settings.camera_zoom()
+	local_avatar.camera.zoom = Vector2(z, z)
 
 
 ## Furniture and dressing that is not an entity: rests on the floor beneath it

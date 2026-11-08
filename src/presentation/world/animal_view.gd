@@ -37,10 +37,16 @@ func _ready() -> void:
 	Assets.reloaded.connect(func() -> void: _shown = "")
 
 
+var _sight := 1.0
+
+
 func _process(delta: float) -> void:
 	var a := state()
 	if a == null:
 		return
+	if PlayerSight.current != null:
+		_sight = move_toward(_sight, PlayerSight.current.visibility(global_position), delta * 3.0)
+		modulate.a = _sight
 	if position.distance_to(a.position) > 300.0:
 		position = a.position
 	position = position.lerp(a.position, 1.0 - exp(-10.0 * delta))

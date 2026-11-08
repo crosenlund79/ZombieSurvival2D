@@ -212,3 +212,39 @@ func test_wilderness_has_cabins_landmarks_and_enterable_interiors() -> void:
 				check(Content.region_def(to).get("view", "") == "side", to + " is a side-view interior")
 	check(cabins >= 15, "isolated cabins across the wilderness (%d)" % cabins)
 	check(enterable >= 10, "many can be entered (%d)" % enterable)
+
+
+# ---------------------------------------------------------------- B: atmosphere
+
+func test_rural_and_residential_buildings_are_timber() -> void:
+	var timber := 0
+	var other_homes := 0
+	for scene in ["res://scenes/regions/town/town.tscn", "res://scenes/regions/service_station/service_station.tscn",
+			"res://scenes/regions/settlements/junction.tscn", "res://scenes/regions/settlements/greyhollow.tscn",
+			"res://scenes/regions/settlements/stillwater.tscn", "res://scenes/regions/settlements/harbor.tscn"]:
+		var txt := FileAccess.get_file_as_string(scene)
+		timber += txt.count('asset_id = "world.cabin_')
+		for old in ["world.house_a", "world.house_b", "set.worker_house", "set.rowhouse", "set.town_house_a", "set.harbor_house", "set.quiet_house"]:
+			other_homes += txt.count('asset_id = "%s"' % old)
+	check(timber >= 20, "timber homes across the settlements (%d)" % timber)
+	eq(other_homes, 0, "no clapboard or brick homes left (industrial, civic and harbour buildings keep their own)")
+
+
+func test_interiors_are_dressed_and_outfitters_reworked() -> void:
+	var w := WorldState.create_new("w_r8", 1508)
+	for rid in ["town.house_west", "stillwater.outfitters", "harbor.cottage", "wild.corran_forest.hollow_house"]:
+		var props: Array = w.region_def(rid).get("side_props", [])
+		var walls := props.filter(func(p): return bool(p.get("wall", false)))
+		var lamps := props.filter(func(p): return str(p.get("asset", "")) == "side.lamp_hanging")
+		check(props.size() >= 8, "%s is furnished (%d props)" % [rid, props.size()])
+		check(walls.size() >= 2, "%s has pictures / signs on its walls" % rid)
+		check(not lamps.is_empty(), "%s has a ceiling lamp" % rid)
+	var o := w.region_def("stillwater.outfitters")
+	check(SideSection.flights(w.region("stillwater.outfitters")).size() >= 1, "the outfitters has an upper floor")
+	for key in ["rack_coats", "rack_b", "boots", "packs", "stock"]:
+		check(Content.entity_ids("stillwater.outfitters").has("stillwater.outfitters." + key), "container %s kept its id" % key)
+	check(str(o.get("section", {}).get("exterior", "")) == "side.ext_logs", "timber walls")
+
+
+func test_camera_cannot_zoom_out_omnisciently() -> void:
+	check(SettingsService.ZOOM_MIN >= 0.8, "zoom-out is limited (%.2f)" % SettingsService.ZOOM_MIN)

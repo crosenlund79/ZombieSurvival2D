@@ -240,7 +240,9 @@ static func step(world: WorldState, ticks: int) -> Array:
 	if bool(world.meta.get("explored_dirty", false)) and world.tick - int(world.meta.get("explored_sent", -1000)) >= 3 * Simulation.TICK_RATE:
 		world.meta.erase("explored_dirty")
 		world.meta["explored_sent"] = world.tick
-		return [{"ok": true, "reason": "", "reason_args": [], "changes": [], "meta": true}]
+		var res := WorldActions._ok()
+		res["meta"] = true
+		return [res]
 	return []
 
 

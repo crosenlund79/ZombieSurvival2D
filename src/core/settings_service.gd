@@ -14,7 +14,7 @@ const RESOLUTIONS: Array[Vector2i] = [
 	Vector2i(2560, 1080), Vector2i(2560, 1440), Vector2i(3440, 1440)]
 const UI_SCALE_MIN := 0.75
 const UI_SCALE_MAX := 2.0
-const ZOOM_MIN := 0.5
+const ZOOM_MIN := 0.8  # iteration 015: no omniscient zoom-out
 const ZOOM_MAX := 2.5
 
 ## Default bindings. Keys are physical keycodes (layout independent).

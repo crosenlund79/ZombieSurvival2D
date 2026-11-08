@@ -57,6 +57,8 @@ func _ready() -> void:
 	Session.combat_event.connect(_on_combat_event)
 	Session.object_changed.connect(_on_object_changed)
 	_rebuild_walls()
+	if not side and not Content.region_def(def_id).has("view"):
+		add_child(PlayerSight.create(self))  # iteration 015: what your character can actually see
 	_sync_avatars()
 	_sync_objects()
 	if Content.region_def(def_id).has("zombies"):

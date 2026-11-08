@@ -63,6 +63,12 @@ func _ready() -> void:
 		Session.request_dev_command("weather", ks[(cur + 1) % ks.size()]))
 	_btn(world_tab, "DEV_PEACEFUL", func() -> void:
 		Session.request_dev_command("peaceful", 1.0 if Session.world != null and Session.world.threat.enabled else 0.0))
+	# iteration 015: player visibility (local presentation only)
+	_btn(world_tab, "DEV_SIGHT", func() -> void:
+		Settings.set_value("dev", "player_sight", Settings.get_value("dev", "player_sight", true) == false))
+	_btn(world_tab, "DEV_VIGNETTE", func() -> void:
+		var vg := float(Settings.get_value("display", "vignette", 0.55))
+		Settings.set_value("display", "vignette", 0.0 if vg >= 0.9 else (0.55 if vg < 0.5 else 1.0)))
 	_btn(world_tab, "DEV_SPAWN_ZOMBIE", func() -> void: Session.request_dev_command("spawn_zombie"))
 	_btn(world_tab, "DEV_SPAWN_GROUP", func() -> void: Session.request_dev_command("spawn_group"))
 	_btn(world_tab, "DEV_NOISE", func() -> void: Session.request_dev_command("noise", 1.0))

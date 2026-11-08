@@ -1201,6 +1201,13 @@ func _host_dev_command(peer_id: int, cmd: String, arg: Variant) -> void:
 				p.position = arg
 				_move_track[pid] = Time.get_ticks_msec()
 				_send_correction(peer_id, p.position, p.region_id)
+		"zombie_at":
+			# Developer (iteration 015): a dormant Burnt One at a point in your region (visibility tests).
+			if pid != "" and arg is Vector2:
+				var pz: PlayerState = world.players[pid]
+				var zz := ZombieSim.spawn(world, pz.region_id, arg, false)
+				zz.ai = ZombieState.AI.WANDER
+				zz.goal = arg
 		"spawn":
 			if pid != "":
 				var p2: PlayerState = world.players[pid]

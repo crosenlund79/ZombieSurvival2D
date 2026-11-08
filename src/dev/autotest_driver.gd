@@ -602,6 +602,13 @@ func _state() -> Dictionary:
 		v["entities"] = stages
 		v["map_open"] = main.map_panel.visible
 		v["zombies"] = view.zombie_count()
+		# iteration 015: how many of them the local player can actually see (PlayerSight)
+		var seen := 0
+		for zv in view.find_children("*", "ZombieView", true, false):
+			if (zv as CanvasItem).modulate.a > 0.5:
+				seen += 1
+		v["zombies_seen"] = seen
+		v["sight"] = PlayerSight.current != null
 		var tv := view.get_node_or_null("Terrain") as TerrainView
 		if tv != null:
 			v["terrain_target"] = [tv._target.x, tv._target.y]

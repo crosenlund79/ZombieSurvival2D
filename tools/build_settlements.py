@@ -107,8 +107,10 @@ class Outdoor:
             fw = CABIN_W.get(kind, FACADE_W.get(kind, 300))
             x, base = pos
             # footpath from the door straight to the nearest road edge
-            self.ground.append((self._name("Path"), [(x - 22, base + 4), (x + 22, base + 4), (x + 26, base + 150), (x - 26, base + 150)],
-                                "env.ground_frozen_mud", None))
+            wob = [R.uniform(-6, 6) for _ in range(6)]
+            self.ground.append((self._name("Path"), [(x - 18 + wob[0], base + 2), (x + 18 + wob[1], base + 2), (x + 24 + wob[2], base + 50),
+                                                     (x + 16 + wob[3], base + 96), (x - 16 + wob[4], base + 96), (x - 26 + wob[5], base + 50)],
+                                "env.ground_frozen_mud", "1, 1, 1, 0.45"))
             pool = sets["residential" if kind in CABIN_W else theme]
             for k in range(R.randint(1, 3)):
                 side = -1 if (k + R.randint(0, 1)) % 2 == 0 else 1
