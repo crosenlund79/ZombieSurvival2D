@@ -27,6 +27,7 @@ var attack_cd := 0.0          # seconds before the next bite / swipe
 var engaged := 0.0            # seconds spent stalking / attacking the current target
 var calm := 0.0               # seconds before it may engage again after giving up
 var warned := false           # a bear has already warned this target
+var day_aggression := -1.0    # per-group override of the species' daytime aggression (-1 = species value)
 
 
 func row() -> Array:

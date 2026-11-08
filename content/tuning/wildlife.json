@@ -1,5 +1,5 @@
 {
-	"_comment": "Wildlife (iteration 011 D, dangerous since iteration 015 E). Wolves hunt in packs (stalk, dart in to bite, give up), bears defend a territory (warn, then charge). Transient: rebuilt from this file whenever a world starts (not saved). Units: px, px/s, seconds, health points. EXPLORING prototype values.",
+	"_comment": "Wildlife (iteration 011 D, dangerous since iteration 015 E). Wolves hunt in packs (stalk, dart in to bite, give up), bears defend a territory (warn, then charge). Transient: rebuilt from this file whenever a world starts (not saved). Units: px, px/s, seconds, health points. EXPLORING prototype values. A group may set its own day_aggression (the homestead pack only hunts at night, near the starting cabin).",
 	"species": {
 		"wolf": {
 			"walk_speed": 70,
@@ -86,7 +86,8 @@
 					980,
 					450,
 					300
-				]
+				],
+				"day_aggression": 0.0
 			}
 		],
 		"service_station": [

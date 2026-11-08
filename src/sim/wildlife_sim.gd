@@ -70,6 +70,7 @@ static func ensure(world: WorldState) -> int:
 				a.species = str(g.get("species", "wolf"))
 				a.region_id = rid
 				a.group = "%s:%s:%d" % [a.species, rid, gi]
+				a.day_aggression = float(g.get("day_aggression", -1.0))
 				a.health = float(spec(a.species).get("health", 60))
 				a.home = home
 				a.position = home.get_center()
@@ -242,7 +243,8 @@ static func _danger(world: WorldState, a: AnimalState, dt: float, night: bool, e
 	if d < float(s.get("stalk_radius", 460)) and _pack_near(world, a) >= int(s.get("pack_min", 2)):
 		var hurt := near.health < 50.0
 		var rng := world.make_rng("wolfmood:%s:%d" % [a.group, world.tick / int(Simulation.TICK_RATE * 20)])
-		if night or hurt or rng.randf() < float(s.get("day_aggression", 0.3)):
+		var day_aggr := a.day_aggression if a.day_aggression >= 0.0 else float(s.get("day_aggression", 0.3))
+		if night or hurt or rng.randf() < day_aggr:
 			for m in world.animals.values():  # the whole pack joins in
 				if m.group == a.group and m.activity not in ["stalk", "attack"] and m.position.distance_to(a.position) < 700.0 and m.health >= float(s.get("health", 60)) * float(s.get("flee_health", 0.35)):
 					m.activity = "stalk"
