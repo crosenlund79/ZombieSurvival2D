@@ -37,6 +37,7 @@ var stuck := 0.0                    # seconds without progress toward a structur
 var trap_time := 0.0                # seconds spent on spikes since the last trap hit
 var siege := false                  # part of a defence event (EventSim)
 var extra := false                  # extra wanderer from regional heat / night (EventSim)
+var horde := ""                     # iteration 015 E: id of the roaming horde it belongs to (HordeSim; transient)
 var hunter := false                 # Red Thaw: a Burnt One hunting one player (ZombieSim.start_hunt)
 var hunt_target := ""               # player id it hunts
 var hunt_until := 0                 # world tick when the hunt gives up

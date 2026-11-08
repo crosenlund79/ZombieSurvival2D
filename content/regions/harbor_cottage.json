@@ -323,6 +323,27 @@
 				1177.6,
 				509
 			]
+		},
+		{
+			"id": "harbor.cottage.hideout",
+			"type": "hideout",
+			"threshold": 1.0,
+			"lairs": [
+				[
+					1164.8,
+					509
+				]
+			],
+			"initial": {
+				"disturbance": 0.0,
+				"triggered": false,
+				"cleared": false,
+				"zombies": []
+			},
+			"position": [
+				832.0,
+				829
+			]
 		}
 	],
 	"surface": {

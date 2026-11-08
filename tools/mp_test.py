@@ -2371,7 +2371,60 @@ def scenario_locks_multi():
             i.kill()
 
 
-SCENARIOS = {"locks_multi": scenario_locks_multi, "five_multi": scenario_five_multi, "expedition_multi": scenario_expedition_multi, "progression_multi": scenario_progression_multi, "circuit_multi": scenario_circuit_multi, "side_multi": scenario_side_multi, "blood_multi": scenario_blood_multi, "custom_graphics": scenario_custom_graphics, "wild_multi": scenario_wild_multi, "vehicle_multi": scenario_vehicle_multi, "winter_multi": scenario_winter_multi, "red_thaw_multi": scenario_red_thaw_multi, "perf_multi": scenario_perf_multi, "slice": scenario_slice, "settlement_multi": scenario_settlement_multi, "world_multi": scenario_world_multi, "craft_multi": scenario_craft_multi, "build_multi": scenario_build_multi, "accept": scenario_accept, "infra_multi": scenario_infra_multi, "dig_multi": scenario_dig_multi, "danger_single": scenario_danger_single, "danger_multi": scenario_danger_multi, "settings": scenario_settings, "bunker_single": scenario_bunker_single, "bunker_multi": scenario_bunker_multi, "single": scenario_single, "multiplayer": scenario_multiplayer,
+def scenario_threats_multi():
+    """Iteration 015 E: a roaming horde formed by the client's developer command is
+    simulated by the host and seen by both; it closes in; hideouts reset and teleport;
+    the test-rifle start hands the client an assault rifle from the starter bag."""
+    host = Instance("t_thost"); c = Instance("t_tclient")
+    for i in (host, c):
+        i.wipe()
+    try:
+        host.start(); c.start()
+        host.cmd("set dev allow_client_dev_commands 1")
+        host.cmd(f"host {PORT} new 315 Hosty"); host.cmd("tips off"); host.cmd("dev time 12")
+        r = c.cmd(f"join 127.0.0.1 {PORT} Cleo"); c.cmd("tips off")
+        check("threats: client joins", r["ok"], r["error"])
+        c.cmd("dev goto wild.corran_forest"); c.cmd("wait 1.5")
+        c.cmd("dev horde"); c.cmd("wait 1.5")
+        hs = host.state()
+        check("threats: the host simulates one horde", hs.get("hordes") == 1, hs.get("hordes"))
+        me = player(c.state(), "Cleo")
+        def horde_near(state):
+            zs = [z for z in state["zombies"] if z["region"] == "wild.corran_forest" and not z["persistent"]]
+            d = [((z["x"] - me["x"]) ** 2 + (z["y"] - me["y"]) ** 2) ** 0.5 for z in zs]
+            return zs, (sum(d) / len(d) if d else 0)
+        hz, d0 = horde_near(hs)
+        cz = [z for z in c.state()["zombies"] if z["region"] == "wild.corran_forest"]  # the mirror does not carry "persistent"
+        hz_all = [z for z in hs["zombies"] if z["region"] == "wild.corran_forest"]
+        check("threats: 4+ Burnt Ones gather out of sight", len(hz) >= 4 and min(((z["x"] - me["x"]) ** 2 + (z["y"] - me["y"]) ** 2) ** 0.5 for z in hz) >= 950, (len(hz), d0))
+        check("threats: the client sees the same Burnt Ones", len(cz) == len(hz_all), (len(cz), len(hz_all)))
+        c.cmd("wait 20")
+        _, d1 = horde_near(host.state())
+        check("threats: the horde closes in on the client", d1 < d0 - 300, (int(d0), int(d1)))
+        c.cmd("dev peaceful 1"); c.cmd("wait 0.5")
+        host.cmd("dev hideout_goto 2"); host.cmd("wait 1.2")
+        hreg = player(host.state(), "Hosty")["region"]
+        check("threats: dev teleport into a hideout", hreg in ("greyhollow.rowhouse", "harbor.cottage", "stillwater.quiet_house"), hreg)
+        for k in range(8):
+            host.cmd("dev noise 1"); host.cmd("wait 0.2")
+        hid = hreg + ".hideout"
+        trig = host.state()["entities"][hid]["state"].get("triggered")
+        host.cmd("dev hideout_reset"); host.cmd("wait 0.5")
+        st = host.state()["entities"][hid]["state"]
+        check("threats: noise disturbs the hideout, dev reset calms it again", trig and not st.get("triggered") and st.get("disturbance") == 0, (trig, st))
+        host.cmd("dev test_rifle 1"); host.cmd("wait 0.4")
+        c.cmd("dev goto homestead"); c.cmd("wait 1.2")
+        c.cmd("dev teleport 420 1140"); c.cmd("wait 0.4")
+        c.cmd("interact homestead.starter_bag"); c.cmd("wait 0.6")
+        cs = player(host.state(), "Cleo")
+        check("threats: the test start puts an assault rifle in the starter bag", "military_rifle" in cs["gear"] and cs["carried"].get("rifle_rounds", 0) >= 60, (cs["gear"], cs["carried"]))
+        check("threats: the client sees its rifle", "military_rifle" in player(c.state(), "Cleo")["gear"], "")
+    finally:
+        for i in (host, c):
+            i.kill()
+
+
+SCENARIOS = {"threats_multi": scenario_threats_multi, "locks_multi": scenario_locks_multi, "five_multi": scenario_five_multi, "expedition_multi": scenario_expedition_multi, "progression_multi": scenario_progression_multi, "circuit_multi": scenario_circuit_multi, "side_multi": scenario_side_multi, "blood_multi": scenario_blood_multi, "custom_graphics": scenario_custom_graphics, "wild_multi": scenario_wild_multi, "vehicle_multi": scenario_vehicle_multi, "winter_multi": scenario_winter_multi, "red_thaw_multi": scenario_red_thaw_multi, "perf_multi": scenario_perf_multi, "slice": scenario_slice, "settlement_multi": scenario_settlement_multi, "world_multi": scenario_world_multi, "craft_multi": scenario_craft_multi, "build_multi": scenario_build_multi, "accept": scenario_accept, "infra_multi": scenario_infra_multi, "dig_multi": scenario_dig_multi, "danger_single": scenario_danger_single, "danger_multi": scenario_danger_multi, "settings": scenario_settings, "bunker_single": scenario_bunker_single, "bunker_multi": scenario_bunker_multi, "single": scenario_single, "multiplayer": scenario_multiplayer,
              "netfail": scenario_connection_failure, "assets": scenario_assets}
 
 if __name__ == "__main__":

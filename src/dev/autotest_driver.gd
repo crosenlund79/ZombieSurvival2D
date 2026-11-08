@@ -565,6 +565,8 @@ func _state() -> Dictionary:
 			zs.append({"id": z.zombie_id, "ai": z.state_name(), "x": z.position.x, "y": z.position.y,
 				"region": z.region_id, "hp": z.health, "persistent": z.persistent})
 		s["zombies"] = zs
+		s["hordes"] = w.threat.hordes.size()  # iteration 015 E (meaningful on the host)
+		s["ai_lod"] = ZombieSim.lod_counts
 		var me := Session.local_player()
 		if me != null and w.region(me.region_id) != null and Terrain.has_terrain(w.region(me.region_id)):
 			var tr := w.region(me.region_id)

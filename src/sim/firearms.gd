@@ -102,6 +102,15 @@ static func fire(world: WorldState, p: PlayerState, g: Dictionary, aim: Vector2)
 			events[0]["tx"] = z.position.x
 			events[0]["ty"] = z.position.y - 40.0
 		hits += 1
+	if hits < pellets and not side:
+		# iteration 015 E: an animal in the line of fire
+		var an := WildlifeSim.target_for(world, p, aim, reach, cone)
+		if an != null:
+			var falloff2 := 1.0 - 0.4 * clampf(p.position.distance_to(an.position) / reach, 0.0, 1.0)
+			if hits == 0:
+				events[0]["tx"] = an.position.x
+				events[0]["ty"] = an.position.y - 30.0
+			events.append_array(WildlifeSim.damage(world, an, float(s.get("damage", 60)) * falloff2, p))
 	ZombieSim.make_noise(world, p.region_id, p.position, str(s.get("noise", "gunshot")))
 	res["events"] = events
 	res["players"] = [p.player_id]

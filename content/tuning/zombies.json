@@ -130,5 +130,33 @@
 	"burst_cooldown": 6.0,
 	"burst_chance": 0.35,
 	"search_points": 2,
-	"search_lead": 90
+	"search_lead": 90,
+	"lod_near": 1400,
+	"lod_far": 3000,
+	"lod_far_stride": 3,
+	"lod_away_stride": 8,
+	"horde": {
+		"_comment": "Iteration 015 E roaming hordes (HordeSim). EXPLORING prototype values.",
+		"enabled": true,
+		"check_seconds": 90,
+		"chance_day": 0.04,
+		"chance_night": 0.16,
+		"chance_per_attention": 0.05,
+		"first_day": 1,
+		"size": [
+			4,
+			6
+		],
+		"growth_per_day": 1,
+		"loud_bonus": 3,
+		"max_size": 12,
+		"max_hordes": 2,
+		"cooldown_seconds": 600,
+		"life_seconds": 420,
+		"min_spawn_distance": 1000,
+		"retarget_seconds": 12,
+		"break_fraction": 0.3,
+		"extra_cap": 12,
+		"gather_distance": 1250
+	}
 }

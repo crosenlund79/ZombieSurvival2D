@@ -402,3 +402,187 @@ func test_locked_doors_and_old_saves() -> void:
 	# keys found where they belong
 	var finds := ScavengeSim.finds(w, w.region("town.garage"), "town.garage.office_desk")
 	eq(str(finds[0]["item"]), "keys", "the garage office desk holds the keys")
+
+
+# ---------------------------------------------------------------- E: hordes, hideouts, wildlife, test rifle
+
+func _night(w: WorldState) -> void:
+	# jump the clock (directly, no simulation) to 23:00 of the current day
+	var day_ticks := int(float(EnvSim.c("day_seconds", 1440)) * Simulation.TICK_RATE)
+	var h := EnvSim.hour(w)
+	w.tick += int(fmod(23.0 - h + 24.0, 24.0) / 24.0 * day_ticks)
+
+
+func test_a_horde_forms_out_of_sight_and_is_bounded() -> void:
+	var w := WorldState.create_new("w_e1", 1521)
+	var p := _player(w, PID, "wild.corran_forest", Vector2(7000, 3300))
+	var r := HordeSim.form(w, "wild.corran_forest", true)
+	check(r["ok"], "a horde forms (%s)" % r.get("reason", ""))
+	eq(w.threat.hordes.size(), 1, "one horde")
+	var h: Dictionary = w.threat.hordes.values()[0]
+	var members: Array = h["members"]
+	check(members.size() >= 4 and members.size() <= int(HordeSim.cfg("max_size")), "%d Burnt Ones" % members.size())
+	for zid in members:
+		var z: ZombieState = w.zombies[zid]
+		check(not z.persistent and z.horde == h["id"], "transient horde member")
+		check(z.position.distance_to(p.position) >= 980.0, "out of sight (%d px)" % z.position.distance_to(p.position))
+	# bounded escalation: days survived never push it past the cap
+	w.tick += int(30.0 * float(EnvSim.c("day_seconds", 1440)) * Simulation.TICK_RATE)
+	check(HordeSim.size_for(w, "wild.corran_forest") <= int(HordeSim.cfg("max_size")), "size capped after 30 days")
+	_player(w, "bbbbbbbbbbbbbbbb", "wild.birchwater", Vector2(4000, 2500))
+	check(HordeSim.form(w, "wild.birchwater", true)["ok"], "a second horde elsewhere")
+	_player(w, "cccccccccccccccc", "wild.stillwater_road", Vector2(6000, 3000))
+	eq(HordeSim.form(w, "wild.stillwater_road", true)["reason"], "DEV_HORDE_LIMIT", "never more than two at once")
+	eq(HordeSim.form(w, "town.grocery", true)["reason"], "DEV_HORDE_NOT_HERE", "never indoors")
+	# not saved
+	var back: WorldState = SaveCodec.decode(JSON.parse_string(JSON.stringify(SaveCodec.encode(w))))["world"]
+	eq(back.zombies.values().filter(func(z): return z.horde != "" or not z.persistent).size(), 0, "hordes are never saved")
+	eq(back.threat.hordes.size(), 0, "a reload starts calm")
+
+
+func test_a_horde_closes_in_then_breaks_up() -> void:
+	var w := WorldState.create_new("w_e2", 1522)
+	var p := _player(w, PID, "wild.corran_forest", Vector2(7000, 3300))
+	check(HordeSim.form(w, "wild.corran_forest", true)["ok"], "forms")
+	var h: Dictionary = w.threat.hordes.values()[0]
+	var dist := func() -> float:
+		var t := 0.0
+		var n := 0
+		for zid in h["members"]:
+			var z: ZombieState = w.zombies.get(zid)
+			if z != null:
+				t += z.position.distance_to(p.position)
+				n += 1
+		return t / maxf(1.0, n)
+	var d0: float = dist.call()
+	_run(w, 25.0)
+	var d1: float = dist.call()
+	check(d1 < d0 - 300.0, "it closes in on the player (%d -> %d px)" % [d0, d1])
+	h["born"] = w.tick - int((float(HordeSim.cfg("life_seconds")) + 1.0) * Simulation.TICK_RATE)
+	_run(w, 1.2)
+	check(bool(h["breaking"]), "after its life it breaks up")
+
+
+func test_ai_level_of_detail_updates_far_zombies_less_often_but_keeps_them_moving() -> void:
+	var w := WorldState.create_new("w_e3", 1523)
+	w.threat.enabled = true
+	_player(w, PID, "homestead", Vector2(600, 1100))
+	var z := ZombieSim.spawn(w, "wild.corran_forest", Vector2(7000, 3300), false)  # nobody there
+	z.goal = Vector2(7400, 3300)
+	var start := z.position
+	_run(w, 0.1)
+	check(ZombieSim.lod_counts["near"] == 0 or ZombieSim.lod_counts["away"] >= 0, "counted")
+	var away_ticks := 0
+	for i in 16:
+		Simulation.advance(w, 1)
+		away_ticks += int(ZombieSim.lod_counts["away"])
+	check(away_ticks <= 4, "a zombie nobody is near is updated about every 8th tick (%d in 16)" % away_ticks)
+	_run(w, 10.0)
+	check(z.position.distance_to(start) > 20.0, "but it still moves")
+
+
+func test_three_hideouts_in_different_places_with_dev_reset() -> void:
+	var w := WorldState.create_new("w_e4", 1524)
+	var hs := HideoutSim.all(w)
+	check(hs.size() >= 3, "%d hideouts" % hs.size())
+	var places := {}
+	for hd in hs:
+		places[str(hd[0]).split(".")[0]] = true
+	check(places.size() >= 3, "in different settlements %s" % str(places.keys()))
+	var rid := "harbor.cottage"
+	var r := w.region(rid)
+	var p := _player(w, PID, rid, Content.entity_position(r.entity_def("harbor.cottage.exit")))
+	SideSection.settle(w, p)
+	for i in 6:
+		ZombieSim.make_noise(w, rid, p.position, "melee")
+	_run(w, 0.5)
+	var st := r.entity_state("harbor.cottage.hideout")
+	check(bool(st.get("triggered", false)), "the harbour hideout can be disturbed")
+	check(not (st.get("zombies", []) as Array).is_empty(), "and its Burnt One emerges")
+	var res := HideoutSim.reset(w, rid, "harbor.cottage.hideout")
+	check(res["ok"], "dev reset")
+	st = r.entity_state("harbor.cottage.hideout")
+	check(not bool(st.get("triggered", true)) and float(st.get("disturbance", 1.0)) == 0.0, "back to calm")
+	eq(w.zombies.values().filter(func(z): return z.region_id == rid).size(), 0, "its Burnt Ones removed")
+
+
+func test_a_wolf_pack_hunts_at_night_and_can_be_escaped() -> void:
+	var w := WorldState.create_new("w_e5", 1525)
+	w.threat.enabled = true
+	WildlifeSim.ensure(w)
+	_night(w)
+	var p := _player(w, PID, "homestead", Vector2(1575, 1130))
+	p.position += Vector2(0, 260)
+	var hurt := false
+	var stalked := false
+	for i in 300:
+		Simulation.advance(w, 1)
+		for a in w.animals.values():
+			if a.species == "wolf" and a.activity in ["stalk", "attack"]:
+				stalked = true
+		if p.health < 100.0:
+			hurt = true
+			break
+	check(stalked, "the pack stalks the player at night")
+	check(hurt, "and bites (health %.0f)" % p.health)
+	# escape: get well away from their home ground
+	p.health = 100.0
+	p.position = Vector2(300, 1700)
+	_run(w, 3.0)
+	var still := w.animals.values().filter(func(a): return a.species == "wolf" and a.activity in ["stalk", "attack"])
+	eq(still.size(), 0, "far from their ground they give up")
+	# peaceful: harmless again
+	w.threat.enabled = false
+	p.position = Vector2(1575, 1250)
+	_run(w, 10.0)
+	eq(p.health, 100.0, "peaceful mode: no attacks")
+
+
+func test_a_bear_warns_before_it_charges_and_can_be_killed() -> void:
+	var w := WorldState.create_new("w_e6", 1526)
+	w.threat.enabled = true
+	WildlifeSim.ensure(w)
+	var bear: AnimalState = null
+	for a in w.animals.values():
+		if a.species == "bear" and a.region_id == "service_station":
+			bear = a
+	check(bear != null, "the station's bear")
+	var p := _player(w, PID, "service_station", bear.position + Vector2(330, 0))
+	_run(w, 0.3)
+	eq(bear.activity, "warn", "entering its ground: it warns first")
+	eq(p.health, 100.0, "a warning, not a hit")
+	p.position = bear.position + Vector2(900, 0)
+	_run(w, 0.5)
+	check(bear.activity != "warn" and bear.activity != "attack", "back off and it lets you go (%s)" % bear.activity)
+	bear.calm = 0.0
+	bear.activity = "idle"
+	p.position = bear.position + Vector2(150, 0)
+	var hit := false
+	for i in 80:
+		Simulation.advance(w, 1)
+		if p.health < 100.0:
+			hit = true
+			break
+	check(hit, "too close: it charges and swipes (%.0f)" % p.health)
+	var id := bear.animal_id
+	for i in 10:
+		WildlifeSim.damage(w, bear, 40.0, p)
+		if not w.animals.has(id):
+			break
+	check(not w.animals.has(id), "it can be killed")
+
+
+func test_the_test_rifle_start() -> void:
+	var w := WorldState.create_new("w_e7", 1527)
+	var p := _player(w, PID, "homestead", Vector2(420, 1140))
+	w.meta["test_rifle"] = true
+	var res := WorldActions.request_interact(w, PID, "homestead.starter_bag", -1)
+	check(res["ok"], "the starter bag opens (%s)" % res.get("reason", ""))
+	var rifle := p.gear.filter(func(g): return str(g.get("item", "")) == WorldActions.TEST_RIFLE)
+	eq(rifle.size(), 1, "an assault rifle in the starter bag")
+	eq(int(rifle[0].get("loaded", 0)), int(Firearms.spec(WorldActions.TEST_RIFLE)["capacity"]), "loaded")
+	eq(p.carrying("rifle_rounds"), 60, "and spare rounds")
+	var w2 := WorldState.create_new("w_e8", 1528)
+	var p2 := _player(w2, PID, "homestead", Vector2(420, 1140))
+	WorldActions.request_interact(w2, PID, "homestead.starter_bag", -1)
+	eq(p2.gear.filter(func(g): return str(g.get("item", "")) == WorldActions.TEST_RIFLE).size(), 0, "not without the test switch")

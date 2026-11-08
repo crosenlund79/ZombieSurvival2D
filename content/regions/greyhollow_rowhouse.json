@@ -344,6 +344,31 @@
 				1177.6,
 				509
 			]
+		},
+		{
+			"id": "greyhollow.rowhouse.hideout",
+			"type": "hideout",
+			"threshold": 0.8,
+			"lairs": [
+				[
+					1126.4,
+					509
+				],
+				[
+					972.8,
+					829
+				]
+			],
+			"initial": {
+				"disturbance": 0.0,
+				"triggered": false,
+				"cleared": false,
+				"zombies": []
+			},
+			"position": [
+				832.0,
+				829
+			]
 		}
 	],
 	"surface": {

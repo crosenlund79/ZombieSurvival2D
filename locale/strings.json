@@ -4926,5 +4926,57 @@
 	"UNLOCKED_PICK": {
 		"da": "Klik — låsen giver efter.",
 		"en": "Click — the lock gives."
+	},
+	"HORDE_COMING": {
+		"da": "Noget kommer gennem træerne — mange af dem.",
+		"en": "Something is coming through the trees — many of them."
+	},
+	"DEV_HORDE": {
+		"da": "Horde nu (her)",
+		"en": "Horde now (here)"
+	},
+	"DEV_HORDES_TOGGLE": {
+		"da": "Automatiske horder til/fra",
+		"en": "Automatic hordes on/off"
+	},
+	"DEV_HORDES_ON": {
+		"da": "Automatiske horder til.",
+		"en": "Automatic hordes on."
+	},
+	"DEV_HORDES_OFF": {
+		"da": "Automatiske horder fra.",
+		"en": "Automatic hordes off."
+	},
+	"DEV_HORDE_NOT_HERE": {
+		"da": "Horder dannes kun udendørs.",
+		"en": "Hordes only form outdoors."
+	},
+	"DEV_HORDE_LIMIT": {
+		"da": "Grænsen for horder er nået.",
+		"en": "Horde limit reached."
+	},
+	"DEV_HIDEOUT_RESET": {
+		"da": "Nulstil skjulesteder",
+		"en": "Reset hideouts"
+	},
+	"DEV_HIDEOUTS_RESET": {
+		"da": "%s skjulesteder nulstillet.",
+		"en": "%s hideouts reset."
+	},
+	"DEV_HIDEOUT_GOTO": {
+		"da": "Gå til skjulested %s",
+		"en": "Go to hideout %s"
+	},
+	"DEV_TEST_RIFLE": {
+		"da": "Testgevær i starttasken til/fra",
+		"en": "Test rifle in starter bag on/off"
+	},
+	"DEV_TEST_RIFLE_ON": {
+		"da": "Starttasker indeholder nu et automatgevær og ammunition.",
+		"en": "Starter bags now hold an assault rifle and ammo."
+	},
+	"DEV_TEST_RIFLE_OFF": {
+		"da": "Starttasker er normale igen.",
+		"en": "Starter bags are back to normal."
 	}
 }

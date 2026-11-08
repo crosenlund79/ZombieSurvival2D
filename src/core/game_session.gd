@@ -178,6 +178,9 @@ func _open_world(world_id: String, new_seed: int) -> Dictionary:
 		if s < 0:
 			s = randi() % 1_000_000_000
 		world = WorldState.create_new(WorldState.new_world_id(), s)
+		# iteration 015 E test start: --test-rifle, or Settings dev/test_rifle_start
+		if Paths.has_arg("test-rifle") or Settings.get_value("dev", "test_rifle_start", false) == true:
+			world.meta["test_rifle"] = true
 		SessionLog.info("session", "world_created", {"world_id": world.world_id, "seed": world.world_seed})
 		return {"ok": true}
 	var res := Saves.load_world(world_id)
@@ -1211,6 +1214,45 @@ func _host_dev_command(peer_id: int, cmd: String, arg: Variant) -> void:
 				p.position = arg
 				_move_track[pid] = Time.get_ticks_msec()
 				_send_correction(peer_id, p.position, p.region_id)
+		"horde":
+			# Developer (iteration 015 E): a roaming horde forms now in your (outdoor) region.
+			if pid != "":
+				var hr := HordeSim.form(world, world.players[pid].region_id, true)
+				if hr["ok"]:
+					_publish_result(hr)
+				else:
+					_send_action_result(peer_id, 0, false, hr["reason"])
+		"hordes":
+			world.threat.hordes_on = float(arg) > 0.5
+			world.threat.hordes_on_set = true
+			_send_notice(peer_id, "DEV_HORDES_ON" if world.threat.hordes_on else "DEV_HORDES_OFF", [])
+		"hideout_reset":
+			for hd in HideoutSim.all(world):
+				_publish_result(HideoutSim.reset(world, hd[0], hd[1]))
+			_send_notice(peer_id, "DEV_HIDEOUTS_RESET", [HideoutSim.all(world).size()])
+		"hideout_goto":
+			# Developer: into hideout n (1-based) at its door.
+			var hs := HideoutSim.all(world)
+			var hn := clampi(int(float(arg)) if arg != null else 1, 1, maxi(1, hs.size())) - 1
+			if pid != "" and not hs.is_empty() and world.players[pid].vehicle_id == "":
+				var ph: PlayerState = world.players[pid]
+				var hreg := world.region(hs[hn][0])
+				ph.region_id = hreg.region_id
+				var door := ""
+				for x in Content.entity_ids(hreg.def_id):
+					if x.ends_with(".exit"):
+						door = x
+				ph.position = Content.entity_position(hreg.entity_def(door)) if door != "" else Content.spawn_point(hreg.def_id, 0)
+				ph.position = SideSection.rest(hreg, ph.position)
+				_move_track[pid] = Time.get_ticks_msec()
+				_send_correction(peer_id, ph.position, ph.region_id)
+				_broadcast_roster()
+		"test_rifle":
+			# Developer / test start (iteration 015 E): starter bags also hold an assault rifle and ammo.
+			world.meta["test_rifle"] = arg == null or float(arg) > 0.5
+			_publish_result({"ok": true, "reason": "", "reason_args": [], "changes": [], "players": [], "bunkers": [],
+				"transition": {}, "notice": {}, "meta": true})
+			_send_notice(peer_id, "DEV_TEST_RIFLE_ON" if world.meta["test_rifle"] else "DEV_TEST_RIFLE_OFF", [])
 		"zombie_at":
 			# Developer (iteration 015): a dormant Burnt One at a point in your region (visibility tests).
 			if pid != "" and arg is Vector2:

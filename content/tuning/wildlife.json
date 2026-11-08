@@ -1,5 +1,5 @@
 {
-	"_comment": "Wildlife (iteration 011 D). Non-aggressive animals: they roam, idle, notice players, back off and call out; they never attack. Transient: rebuilt from this file whenever a world starts (not saved). Units: px, px/s, seconds. EXPLORING prototype values.",
+	"_comment": "Wildlife (iteration 011 D, dangerous since iteration 015 E). Wolves hunt in packs (stalk, dart in to bite, give up), bears defend a territory (warn, then charge). Transient: rebuilt from this file whenever a world starts (not saved). Units: px, px/s, seconds, health points. EXPLORING prototype values.",
 	"species": {
 		"wolf": {
 			"walk_speed": 70,
@@ -19,7 +19,23 @@
 			],
 			"call_sound": "sfx.wolf_howl",
 			"alarm_sound": "sfx.wolf_huff",
-			"night_calls": 2.5
+			"night_calls": 2.5,
+			"aggressive": true,
+			"health": 60,
+			"flee_health": 0.35,
+			"pack_min": 2,
+			"stalk_radius": 460,
+			"day_aggression": 0.3,
+			"circle_radius": 240,
+			"chase_speed": 220,
+			"attack_range": 52,
+			"attack_damage": 8,
+			"attack_cooldown": 1.8,
+			"give_up_seconds": 25,
+			"give_up_distance": 1200,
+			"lose_radius": 900,
+			"calm_seconds": 45,
+			"bite_sound": "sfx.wolf_huff"
 		},
 		"bear": {
 			"walk_speed": 55,
@@ -39,7 +55,25 @@
 			],
 			"call_sound": "sfx.bear_grunt",
 			"alarm_sound": "sfx.bear_huff",
-			"night_calls": 1.0
+			"night_calls": 1.0,
+			"territorial": true,
+			"health": 220,
+			"flee_health": 0.3,
+			"territory_margin": 160,
+			"warn_seconds": 3.0,
+			"charge_radius": 200,
+			"chase_speed": 190,
+			"attack_range": 70,
+			"attack_damage": 22,
+			"attack_cooldown": 2.4,
+			"chase_beyond": 300,
+			"charge_seconds": 6.0,
+			"give_up_seconds": 20,
+			"give_up_distance": 1100,
+			"lose_radius": 800,
+			"calm_seconds": 40,
+			"warn_sound": "sfx.bear_huff",
+			"charge_sound": "sfx.bear_grunt"
 		}
 	},
 	"regions": {
@@ -86,6 +120,86 @@
 					120,
 					1200,
 					300
+				]
+			}
+		],
+		"wild.corran_forest": [
+			{
+				"species": "wolf",
+				"count": 4,
+				"area": [
+					3000,
+					3800,
+					1400,
+					700
+				]
+			},
+			{
+				"species": "bear",
+				"count": 1,
+				"area": [
+					9000,
+					4600,
+					1200,
+					600
+				]
+			}
+		],
+		"wild.birchwater": [
+			{
+				"species": "wolf",
+				"count": 3,
+				"area": [
+					5200,
+					3400,
+					1200,
+					600
+				]
+			}
+		],
+		"wild.greyhollow_pass": [
+			{
+				"species": "bear",
+				"count": 1,
+				"area": [
+					1200,
+					3000,
+					1000,
+					600
+				]
+			},
+			{
+				"species": "wolf",
+				"count": 3,
+				"area": [
+					2200,
+					8000,
+					1000,
+					600
+				]
+			}
+		],
+		"wild.stillwater_road": [
+			{
+				"species": "wolf",
+				"count": 3,
+				"area": [
+					6400,
+					3800,
+					1200,
+					500
+				]
+			}
+		],
+		"wild.halden_coast": [
+			{
+				"species": "bear",
+				"count": 1,
+				"area": [
+					8000,
+					600,
+					1100,
+					500
 				]
 			}
 		]

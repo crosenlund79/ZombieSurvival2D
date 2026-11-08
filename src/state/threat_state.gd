@@ -22,6 +22,13 @@ var enabled := true
 ## what starts a Burnt One hunt. Developer: "dev ambient 1" restores the old loop.
 ## Hunts (ZombieSim.start_hunt) and developer spawns work either way. Transient.
 var ambient := false
+## Iteration 015 E: roaming hordes (HordeSim). Transient like everything here.
+var hordes := {}             # horde id -> {id, region, members, size, goal, born, retarget, breaking}
+var horde_last := {}         # region id -> world tick of the last horde there
+var horde_seq := 0
+var horde_clock := {}        # {"next": tick of the next once-a-second pass, "check": tick of the next formation roll}
+var hordes_on := true        # developer switch ("dev hordes 0/1"), used once set
+var hordes_on_set := false
 
 
 func add_noise(region_id: String, pos: Vector2, radius: float, attention: float, category: String) -> void:

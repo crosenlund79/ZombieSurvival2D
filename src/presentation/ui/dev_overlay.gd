@@ -73,6 +73,16 @@ func _ready() -> void:
 	_btn(world_tab, "DEV_SPAWN_GROUP", func() -> void: Session.request_dev_command("spawn_group"))
 	_btn(world_tab, "DEV_NOISE", func() -> void: Session.request_dev_command("noise", 1.0))
 	_btn(world_tab, "DEV_HUNT", func() -> void: Session.request_dev_command("hunt"))
+	# iteration 015 E: hordes, hideouts, the test rifle
+	_btn(world_tab, "DEV_HORDE", func() -> void: Session.request_dev_command("horde"))
+	_btn(world_tab, "DEV_HORDES_TOGGLE", func() -> void:
+		Session.request_dev_command("hordes", 0.0 if Session.world != null and HordeSim.enabled(Session.world) else 1.0))
+	_btn(world_tab, "DEV_HIDEOUT_RESET", func() -> void: Session.request_dev_command("hideout_reset"))
+	for hn in [1, 2, 3]:
+		var hv: int = hn
+		_btn(world_tab, tr("DEV_HIDEOUT_GOTO") % hv, func() -> void: Session.request_dev_command("hideout_goto", float(hv)))
+	_btn(world_tab, "DEV_TEST_RIFLE", func() -> void:
+		Session.request_dev_command("test_rifle", 0.0 if Session.world != null and bool(Session.world.meta.get("test_rifle", false)) else 1.0))
 	_btn(world_tab, "DEV_AMBIENT", func() -> void:
 		Session.request_dev_command("ambient", 0.0 if Session.world != null and Session.world.threat.ambient else 1.0))
 	_btn(world_tab, "DEV_SIEGE", func() -> void: Session.request_dev_command("siege", 15.0))
@@ -252,6 +262,7 @@ func _process(_delta: float) -> void:
 			lines.append("burnt ones %d %s · ambient %s · attention here %.2f" % [w.zombies.size(), JSON.stringify(counts),
 				str(w.threat.ambient), w.threat.local_attention(me.region_id, me.position)])
 			lines.append_array(ZombieSim.hunt_lines(w))
+			lines.append("hordes %s · %s · ai lod %s" % ["on" if HordeSim.enabled(w) else "off", ", ".join(HordeSim.lines(w)) if not w.threat.hordes.is_empty() else "none", JSON.stringify(ZombieSim.lod_counts)])
 			var hot := []
 			for key in w.threat.zones:
 				hot.append("%s=%.1f" % [key.substr(key.find("|") + 1), w.threat.zones[key]])

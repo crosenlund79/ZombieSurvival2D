@@ -12,6 +12,11 @@ const DT := 1.0 / Simulation.TICK_RATE
 const TUNING_PATH := "res://content/tuning/zombies.json"
 
 static var _cfg: Dictionary = {}
+## Iteration 015 E — AI level of detail: the step length of the zombie being updated
+## (DT, or a multiple when it is far from every player and updated less often).
+static var _dt := DT
+## How many zombies were updated at each detail level on the last tick (diagnostics).
+static var lod_counts := {"near": 0, "far": 0, "away": 0}
 
 
 static func cfg() -> Dictionary:
@@ -126,7 +131,36 @@ static func _tick(world: WorldState) -> Array:
 	_traps(world, results)
 	_hunts(world, results)
 	var dyn_cache := {}
+	var near_d: float = float(c("lod_near", 1400))
+	var far_d: float = float(c("lod_far", 3000))
+	var by_region := {}
+	for p in world.online_players():
+		if not p.dead:
+			if not by_region.has(p.region_id):
+				by_region[p.region_id] = []
+			by_region[p.region_id].append(p.position)
+	lod_counts = {"near": 0, "far": 0, "away": 0}
 	for z in world.zombies.values().duplicate():
+		# level of detail: full rate near players (and whenever fighting), every 3rd
+		# tick further off, every 8th in regions nobody is in — with a longer step,
+		# so they still cover the same ground
+		var stride := 1
+		if not (z.ai in [ZombieState.AI.CHASE, ZombieState.AI.WINDUP, ZombieState.AI.RECOVER, ZombieState.AI.STAGGER] or z.hunter):
+			var ps: Array = by_region.get(z.region_id, [])
+			if ps.is_empty():
+				stride = int(c("lod_away_stride", 8))
+			else:
+				var dmin := INF
+				for pp in ps:
+					dmin = minf(dmin, z.position.distance_to(pp))
+				if dmin > far_d:
+					stride = int(c("lod_away_stride", 8))
+				elif dmin > near_d:
+					stride = int(c("lod_far_stride", 3))
+		if stride > 1 and (world.tick + absi(z.zombie_id.hash())) % stride != 0:
+			continue
+		lod_counts["near" if stride == 1 else ("far" if stride <= 3 else "away")] += 1
+		_dt = DT * stride
 		if not dyn_cache.has(z.region_id):
 			var grid := NavGrid.for_def(world.region(z.region_id).def_id) if world.region(z.region_id) != null else null
 			dyn_cache[z.region_id] = [grid, NavGrid.dynamic_blocked(world, z.region_id, grid) if grid != null else {}]
@@ -134,6 +168,7 @@ static func _tick(world: WorldState) -> Array:
 		if nav[0] == null:
 			continue
 		_update(world, z, nav[0], nav[1], budget, results)
+	_dt = DT
 	if world.tick % int(float(c("replenish_every", 60)) * Simulation.TICK_RATE) == 0:
 		ensure_population(world)
 	return results
@@ -366,24 +401,24 @@ static func _escalate(world: WorldState, results: Array) -> void:
 
 static func _update(world: WorldState, z: ZombieState, grid: NavGrid, dyn: Dictionary, budget: Array, results: Array) -> void:
 	if z.is_dead():
-		z.dead_time += DT
+		z.dead_time += _dt
 		if z.dead_time >= float(c("corpse_time", 6)):
 			world.zombies.erase(z.zombie_id)
 		return
-	z.attack_cooldown = maxf(0.0, z.attack_cooldown - DT)
-	z.screech_cd = maxf(0.0, z.screech_cd - DT)
-	z.burst = maxf(0.0, z.burst - DT)
-	z.burst_cd = maxf(0.0, z.burst_cd - DT)
-	z.posture_timer = maxf(0.0, z.posture_timer - DT)
+	z.attack_cooldown = maxf(0.0, z.attack_cooldown - _dt)
+	z.screech_cd = maxf(0.0, z.screech_cd - _dt)
+	z.burst = maxf(0.0, z.burst - _dt)
+	z.burst_cd = maxf(0.0, z.burst_cd - _dt)
+	z.posture_timer = maxf(0.0, z.posture_timer - _dt)
 	match z.ai:
 		ZombieState.AI.STAGGER:
-			z.timer -= DT
+			z.timer -= _dt
 			if z.timer <= 0.0:
 				z.ai = ZombieState.AI.CHASE if z.target_player != "" else ZombieState.AI.INVESTIGATE
 			return
 		ZombieState.AI.WINDUP:
 			if z.target_struct != "":
-				z.timer -= DT
+				z.timer -= _dt
 				if z.timer <= 0.0:
 					var rect := Build.target_rect(world, z.region_id, z.target_struct)
 					if rect.has_area() and Build.edge_distance(rect, z.position) <= Build.ATTACK_GAP + 12.0:
@@ -395,7 +430,7 @@ static func _update(world: WorldState, z: ZombieState, grid: NavGrid, dyn: Dicti
 			var tp := _target(world, z)
 			if tp != null:
 				z.facing = (tp.position - z.position).normalized()
-			z.timer -= DT
+			z.timer -= _dt
 			if z.timer <= 0.0:
 				if tp != null and tp.position.distance_to(z.position) <= float(c("attack_reach", 66)) \
 						and grid.clear_line(z.position, tp.position, dyn):
@@ -405,7 +440,7 @@ static func _update(world: WorldState, z: ZombieState, grid: NavGrid, dyn: Dicti
 				z.timer = 0.35
 			return
 		ZombieState.AI.RECOVER:
-			z.timer -= DT
+			z.timer -= _dt
 			if z.timer <= 0.0:
 				z.ai = ZombieState.AI.CHASE
 			return
@@ -440,7 +475,7 @@ static func _update(world: WorldState, z: ZombieState, grid: NavGrid, dyn: Dicti
 			var to := z.goal - z.position
 			if to.length() > 1.0:  # turn by angle (a vector lerp stalls on a sound directly behind)
 				z.facing = Vector2.from_angle(lerp_angle(z.facing.angle(), to.angle(), 0.3))
-			z.timer -= DT
+			z.timer -= _dt
 			if z.timer <= 0.0:
 				var at := z.goal
 				if z.listen_level >= float(c("screech_threshold", 0.9)):
@@ -457,7 +492,7 @@ static func _update(world: WorldState, z: ZombieState, grid: NavGrid, dyn: Dicti
 				z.goal = z.last_known
 			else:
 				if seen == null:
-					z.lost_sight += DT
+					z.lost_sight += _dt
 					if z.lost_sight >= float(c("lose_target_after", 3.5)):
 						# Lost them: search where they were heading, then a couple of spots around.
 						z.target_player = ""
@@ -486,7 +521,7 @@ static func _update(world: WorldState, z: ZombieState, grid: NavGrid, dyn: Dicti
 			else:
 				if z.timer <= 0.0:
 					z.timer = float(c("search_time", 3.5))
-				z.timer -= DT
+				z.timer -= _dt
 				if z.timer <= 0.0:
 					if z.search_left > 0:
 						z.search_left -= 1
@@ -504,7 +539,7 @@ static func _update(world: WorldState, z: ZombieState, grid: NavGrid, dyn: Dicti
 					world.zombies.erase(z.zombie_id)  # walked back off the map
 				return
 			if z.timer > 0.0:
-				z.timer -= DT
+				z.timer -= _dt
 				return
 			if z.position.distance_to(z.goal) <= 16.0 or z.goal == Vector2.ZERO:
 				var rng := world.sim_rng()
@@ -579,6 +614,8 @@ static func _after_search(world: WorldState, z: ZombieState) -> void:
 			z.target_struct = t
 			z.stuck = 0.0
 		return
+	if z.horde != "":
+		return  # a roaming horde regroups on its next goal (HordeSim)
 	if not z.persistent and world.threat.local_attention(z.region_id, z.position) < 0.8:
 		# Reinforcements drift back off-map once things calm down.
 		var entries: Array = region_cfg(z.region_id, world).get("entries", [])
@@ -639,7 +676,7 @@ static func _move(world: WorldState, z: ZombieState, grid: NavGrid, dyn: Diction
 	if SideSection.always_side(sreg):
 		# Iteration 014: inside a building — along the floors, up and down the stairs.
 		var before := z.position
-		z.position = SideSection.chase_step(world, sreg, z.position, z.goal, speed * DT)
+		z.position = SideSection.chase_step(world, sreg, z.position, z.goal, speed * _dt)
 		if z.position.distance_to(before) > 0.01:
 			z.facing = (z.position - before).normalized()
 		return
@@ -684,7 +721,7 @@ static func _move(world: WorldState, z: ZombieState, grid: NavGrid, dyn: Diction
 			sep += away / dd * (spacing - dd) / spacing
 	if z.trap_time > 0.0:
 		speed *= _trap_slow()
-	var v := (dir + sep * 1.2).normalized() * speed * DT
+	var v := (dir + sep * 1.2).normalized() * speed * _dt
 	z.facing = z.facing.lerp(dir, 0.35).normalized()
 	var np := z.position + v
 	if not grid.is_blocked(grid.to_cell(np), dyn):
@@ -722,7 +759,7 @@ static func _breach(world: WorldState, z: ZombieState, grid: NavGrid, dyn: Dicti
 	_move(world, z, grid, dyn, float(c("speed_investigate", 62)), budget)
 	z.target_struct = keep
 	if before.distance_to(z.position) < 0.2:
-		z.stuck += DT
+		z.stuck += _dt
 		if z.stuck > 4.0:
 			# Cannot get at it from here: forget it and look around.
 			z.target_struct = ""

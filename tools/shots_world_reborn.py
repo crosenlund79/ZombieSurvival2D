@@ -72,6 +72,39 @@ def lock(s):
     shot(s, "lockpicking", 0.2)
 
 
+def horde(s):
+    s.cmd("dev peaceful 0")
+    s.cmd("dev goto wild.corran_forest"); s.cmd("wait 1.5")
+    s.cmd("dev horde"); s.cmd("wait 1")
+    st = s.state()
+    check("a horde forms", st.get("hordes") == 1, st.get("hordes"))
+    for k in range(30):
+        s.cmd("wait 2")
+        me = next(p for p in s.state()["players"] if p["id"] == s.state()["local_player_id"])
+        near = [z for z in s.state()["zombies"] if z["region"] == me["region"] and not z["persistent"] and ((z["x"] - me["x"]) ** 2 + (z["y"] - me["y"]) ** 2) ** 0.5 < 450]
+        if len(near) >= 3:
+            break
+    check("the horde reaches the player", len(near) >= 3, len(near))
+    if near:  # look toward them (unseen Burnt Ones are not drawn — PlayerSight)
+        cx = sum(z["x"] for z in near) / len(near) - me["x"]; cy = sum(z["y"] for z in near) / len(near) - me["y"]
+        s.cmd("face " + (("right" if cx > 0 else "left") if abs(cx) > abs(cy) else ("down" if cy > 0 else "up")))
+    s.cmd("zoom 0.85")
+    shot(s, "horde_closing_in", 0.6)
+    s.cmd("dev peaceful 1"); s.cmd("wait 0.5")
+
+
+def wolves(s):
+    s.cmd("dev peaceful 0")
+    s.cmd("dev goto homestead"); s.cmd("wait 1.2")
+    s.cmd("dev time 23"); s.cmd("dev weather clear")
+    s.cmd("dev teleport 1575 1390"); s.cmd("wait 5")
+    st = s.state()
+    hunting = [a for a in st["animals"] if a["species"] == "wolf" and a["activity"] in ("stalk", "attack")]
+    check("the wolf pack stalks at night", len(hunting) >= 2, [a["activity"] for a in st["animals"] if a["region"] == "homestead"])
+    shot(s, "wolves_stalking", 0.1)
+    s.cmd("dev peaceful 1"); s.cmd("dev time 12")
+
+
 if __name__ == "__main__":
     s = session("shots015", 1515)
     try:
@@ -79,5 +112,9 @@ if __name__ == "__main__":
             scavenge(s)
         if want("lock"):
             lock(s)
+        if want("horde"):
+            horde(s)
+        if want("wolves"):
+            wolves(s)
     finally:
         s.quit()

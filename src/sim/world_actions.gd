@@ -19,6 +19,7 @@ const CARRY_LIMIT := 30             # wood a player can carry before depositing
 const CHOP_COOLDOWN_TICKS := 3      # 0.3 s between chops per player
 const ARRIVE_OFFSET := Vector2(0, 64)
 const DEFAULT_TEST_LEVEL := "bunker_concrete"
+const TEST_RIFLE := "military_rifle"
 
 
 static func request_interact(world: WorldState, player_id: String, entity_id: String, expected_rev: int) -> Dictionary:
@@ -90,17 +91,27 @@ static func _starter_bag(world: WorldState, p: PlayerState, region: RegionState,
 	var taken: Array = (state.get("taken_by", []) as Array).duplicate()
 	if taken.has(p.player_id):
 		return _fail(str(def.get("empty_key", "ACTION_BAG_EMPTY")))
-	var kit: Dictionary = def.get("kit", {})
+	var kit: Dictionary = (def.get("kit", {}) as Dictionary).duplicate()
+	if bool(world.meta.get("test_rifle", false)):
+		# iteration 015 E test start: an assault rifle (loaded) and spare rounds
+		kit[TEST_RIFLE] = 1
+		kit["rifle_rounds"] = int(kit.get("rifle_rounds", 0)) + 60
 	var need := 0
 	for item in kit:
-		need += int(kit[item])
+		if Items.is_stack(str(item)):
+			need += ceili(float(kit[item]) / float(maxi(1, Items.stack_limit(str(item)))))
+		else:
+			need += int(kit[item])
 	if Inv.free_slots(p) < need:
 		return _fail("ACTION_NEED_SLOTS", [need])
 	var found: Array[String] = []
 	for item in kit:
 		if not Items.is_stack(str(item)):
 			for i in int(kit[item]):
-				p.gear.append(Inv.new_gear(world, str(item)))
+				var ng := Inv.new_gear(world, str(item))
+				if Firearms.is_firearm(str(item)):
+					ng["loaded"] = int(Firearms.spec(str(item)).get("capacity", 0))
+				p.gear.append(ng)
 		else:
 			p.carried[item] = p.carrying(item) + int(kit[item])
 		found.append(TranslationServer.translate(Items.name_key(str(item))))
@@ -705,6 +716,14 @@ static func request_attack(world: WorldState, player_id: String, aim: Vector2) -
 		if wear_hand(p, 1.0):
 			res["players"] = [p.player_id]
 			res["vitals"] = [p.player_id]
+	else:
+		# iteration 015 E: wolves and bears can be fought off
+		var an := WildlifeSim.target_for(world, p, aim, float(w["range"]) + 20.0, ARC_COS)
+		if an != null:
+			res["events"].append_array(WildlifeSim.damage(world, an, float(w["damage"]), p))
+			if wear_hand(p, 1.0):
+				res["players"] = [p.player_id]
+				res["vitals"] = [p.player_id]
 	return res
 
 

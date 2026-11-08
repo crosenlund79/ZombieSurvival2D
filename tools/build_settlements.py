@@ -343,6 +343,16 @@ def _c(c, cx):
     return (key, kind, cx, 0, art, art_s, {}, searched, None, None, pool)
 
 
+def hideout_at(lairs, threshold):
+    """Iteration 015 E: a disturbable Burnt One hideout in an ordinary home (HideoutSim);
+    lairs are (cell x, storey) hiding places."""
+    def extra(s):
+        s.entity({"id": "hideout", "type": "hideout", "threshold": threshold,
+                  "lairs": [[s.x(cx), s.y(st)] for cx, st in lairs],
+                  "initial": {"disturbance": 0.0, "triggered": False, "cleared": False, "zombies": []}}, 8.0, 0)
+    return extra
+
+
 def house(rid, display, town, x, base, wall_a="side.wall_house", wall_b="side.wall_house_b", pool_prefix="home", storeys=2, extra=None,
           layout="a", ext="side.ext_logs"):
     """A home in three layouts (same container ids in each, so saves and pools stay put):
@@ -614,7 +624,8 @@ def greyhollow_interiors(rid, display, x, base, town):
                   C("lamps", "shelf", METAL, "mine_lamps"), C("ropes", "garage", CRATE, "mine_tools")],
                  [C("explosives_locker", "locker", LOCKER, "mine_store", True), C("parts", "garage", METAL, "industrial_parts")], labels=("SIDE_STOCKROOM",))
     elif rid == "greyhollow.rowhouse":
-        s = house(rid, display, town, x, base, wall_a="side.wall_house_b", wall_b="side.wall_house", pool_prefix="miner_home", layout="b", ext="side.ext_brick")
+        s = house(rid, display, town, x, base, wall_a="side.wall_house_b", wall_b="side.wall_house", pool_prefix="miner_home", layout="b", ext="side.ext_brick",
+                  extra=hideout_at([(12.6, 1), (10.2, 0)], 0.8))
     else:
         s = hall(rid, display, town, x, base, "side.ext_concrete", "side.wall_brick_in", "industrial",
                  [C("crate_a", "crate", CRATE, "industrial_materials"), C("shelf_a", "shelf", METAL, "industrial_parts"),
@@ -777,7 +788,8 @@ def harbor(interiors):
 
 def harbor_interiors(rid, display, x, base, town):
     if rid == "harbor.cottage":
-        return house(rid, display, town, x, base, wall_a="side.wall_cabin", wall_b="side.wall_house", pool_prefix="harbor_home", layout="b", ext="side.ext_logs")
+        return house(rid, display, town, x, base, wall_a="side.wall_cabin", wall_b="side.wall_house", pool_prefix="harbor_home", layout="b", ext="side.ext_logs",
+                     extra=hideout_at([(13.2, 1)], 1.0))
     if rid == "harbor.chandlery":
         return shop(rid, display, town, x, base, "side.ext_siding", "side.wall_house_b", "side.floorboards",
                     [C("counter", "drawer", ("int.checkout", "int.checkout"), "store_counter"), C("ropes", "shelf", METAL, "marine"),

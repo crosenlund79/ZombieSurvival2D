@@ -68,8 +68,9 @@ func _process(delta: float) -> void:
 		_shown = id
 		Assets.apply_to_sprite(_sprite, id)
 	# alert: a brief, tense lift; fleeing: a quicker bob
-	_alert = move_toward(_alert, 1.0 if a.activity == "alert" else 0.0, delta * 4.0)
+	# iteration 015 E: a warning bear rears up; stalking / attacking moves like running
+	_alert = move_toward(_alert, (2.2 if a.activity == "warn" else 1.0) if a.activity in ["alert", "warn"] else 0.0, delta * 4.0)
 	var bob := 0.0
 	if moved > 12.0:
-		bob = -absf(sin(_walk * PI)) * (3.0 if a.activity == "flee" else 1.5)
+		bob = -absf(sin(_walk * PI)) * (3.0 if a.activity in ["flee", "attack", "stalk"] else 1.5)
 	_sprite.position.y = bob - _alert * 3.0

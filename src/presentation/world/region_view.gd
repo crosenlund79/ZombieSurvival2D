@@ -323,6 +323,17 @@ func _on_combat_event(ev: Dictionary) -> void:
 		"animal_call":
 			if str(ev.get("region_id", "")) == region_id and str(ev.get("sound", "")) != "":
 				Audio.play(str(ev["sound"]), Vector2(float(ev.get("x", 0)), float(ev.get("y", 0))))
+		"animal_hit", "animal_killed":
+			# iteration 015 E: a wolf or bear struck (a thud; a last cry when killed)
+			if str(ev.get("region_id", "")) == region_id:
+				var at6 := Vector2(float(ev.get("x", 0)), float(ev.get("y", 0)))
+				Audio.play("sfx.struct_hit", at6, -6.0)
+				if str(ev["kind"]) == "animal_killed":
+					Audio.play("sfx.body_drop", at6)
+		"horde_forming":
+			# iteration 015 E: the far-off sound of many coming (everyone in that region hears it)
+			if str(ev.get("region_id", "")) == region_id:
+				Audio.play("sfx.horde_warning")
 		"vehicle_door", "vehicle_engine":
 			if str(ev.get("region_id", "")) != region_id:
 				return

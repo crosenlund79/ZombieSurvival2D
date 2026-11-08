@@ -15,6 +15,33 @@ extends RefCounted
 ##  * The hideout is "cleared" when its Burnt Ones are dead. Its state (disturbance,
 ##    triggered, cleared, ids) is saved; so are the Burnt Ones themselves.
 ## Every other building, the cabin and the bunkers keep the existing rules.
+## Iteration 015 E: three hideouts in different settlements (Stillwater, Harbor,
+## Greyhollow); developer reset ("dev hideout_reset") and teleport ("dev hideout_goto n").
+
+## Iteration 015 E: every hideout in the world, [[region_id, entity_id], ...] (sorted).
+static func all(world: WorldState) -> Array:
+	var out: Array = []
+	var rids := world.regions.keys()
+	rids.sort()
+	for rid in rids:
+		var r := world.region(str(rid))
+		for eid in Content.entity_ids(r.def_id):
+			if is_hideout(r.entity_def(eid)):
+				out.append([str(rid), eid])
+	return out
+
+
+## Developer: puts a hideout back as it was (its Burnt Ones removed, calm again). Host.
+static func reset(world: WorldState, rid: String, eid: String) -> Dictionary:
+	var r := world.region(rid)
+	if r == null or not r.has_entity(eid):
+		return WorldActions._fail("ACTION_UNKNOWN_OBJECT")
+	for zid in r.entity_state(eid).get("zombies", []):
+		world.zombies.erase(str(zid))
+	r.set_fields(eid, {"disturbance": 0.0, "triggered": false, "cleared": false, "zombies": []})
+	SessionLog.info("hideout", "reset", {"region": rid})
+	return WorldActions._changed(r, eid, "hideout_reset")
+
 
 static func is_hideout(def: Dictionary) -> bool:
 	return str(def.get("type", "")) == "hideout"
