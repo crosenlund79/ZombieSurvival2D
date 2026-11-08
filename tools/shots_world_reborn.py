@@ -133,9 +133,32 @@ def factions(s):
     s.cmd("dev heal"); s.cmd("dev peaceful 1")
 
 
+def world(s):
+    s.cmd("dev peaceful 1"); s.cmd("dev time 12"); s.cmd("dev weather clear")
+    shot(s, "hud_homestead", 0.8)
+    s.cmd("panel inventory on"); shot(s, "inventory_grid", 0.5); s.cmd("panel inventory off")
+    s.cmd("ui map_local off"); shot(s, "map_world", 0.8); s.cmd("ui map_local on"); shot(s, "map_local", 0.8); s.cmd("ui map off")
+    s.cmd("dev goto wild.corran_forest"); s.cmd("wait 1.5"); s.cmd("zoom 0.8")
+    shot(s, "wilderness_road", 0.6)
+    door = entity("wild_corran_forest", "wild.corran_forest.hollow_house_door")
+    s.cmd(f"dev teleport {door['position'][0]} {door['position'][1] + 160}"); s.cmd("wait 1.2")
+    shot(s, "isolated_cabin", 0.6)
+    s.cmd("dev goto wild.corran_forest.hollow_house"); s.cmd("wait 1.5"); s.cmd("zoom 1.0")
+    shot(s, "cabin_interior", 0.6)
+    s.cmd("dev goto stillwater.outfitters"); s.cmd("wait 1.5")
+    shot(s, "outfitters_interior", 0.6)
+    s.cmd("dev goto stillwater"); s.cmd("wait 1.5"); s.cmd("zoom 0.8")
+    shot(s, "stillwater_timber", 0.6)
+    s.cmd("dev time 23"); s.cmd("wait 1.0")
+    shot(s, "night_vignette", 0.8)
+    s.cmd("dev time 12")
+
+
 if __name__ == "__main__":
     s = session("shots015", 1515)
     try:
+        if want("world"):
+            world(s)
         if want("scavenge"):
             scavenge(s)
         if want("lock"):

@@ -188,6 +188,23 @@ faster on that level. It works in the side view and the top-down view.
 multiplier (0–25×, quick 1/5/10/25×, reset to 1×), +XP, set level and reset Scavenging. Only the host can use
 it; it is not saved (back to 1× after loading) and is not available in release builds.
 
+## 3x. The World Reborn (iteration 015) — what to try
+
+1. **Travel.** Leave Ashgrove east on foot or by car: the road runs through the Corran Forest to Corran Junction.
+   Walk off any edge of an outdoor area and you continue in the next one. Open the map (M): Tab switches world /
+   local, the mouse wheel zooms, drag to pan; unexplored land is under fog.
+2. **Cabins.** Leave the road on the tracks: isolated cabins (some locked, some enterable) are found by exploring.
+3. **Scavenging.** Press E on a shelf: the grid beside it fills slot by slot; click a revealed item to take it;
+   E again (or Stop) pauses, and it resumes where it stopped.
+4. **Locks.** A locked container or door opens the lock panel. With a key: Use key. With a lockpick: aim with the
+   mouse (or ← →), click / Space to turn. Watch the "how close" hint; a worn pick snaps.
+5. **Threats.** Make noise outdoors (gunfire) and a horde may gather. At night, wolves hunt in packs — run, drive
+   or fight. Bears warn first: back away. Hideouts: Stillwater quiet house, Port Halden cottage, Greyhollow row house.
+6. **Factions.** Hearth Gate is on the Stillwater Road (fenced, gate in the north wall): talk to the trader,
+   mechanic and elder (E). Do not fire a gun inside the fence where someone can see. The raider camp is east of the
+   Greyhollow Pass road — they shoot on sight. The Lantern Circle's radio shack is under the Halden coast mast.
+   J shows your standing, credit, law record and missions.
+
 ## 4. Two players
 
 - **Hosting:** one player chooses **Host Game**.
@@ -221,6 +238,7 @@ crops, weather, discoveries and the survivor. Please report anything that comes 
 | Structures | damage all structures here, repair all |
 | Bunker | create an underground test level |
 | Survivor | recruit the survivor to the shelter, assign her water or farm work |
+| Iteration 015 | sight on/off, vignette; horde now, automatic hordes on/off; reset hideouts, go to hideout 1/2/3; test rifle in starter bag; go to the raider camp / Hearth Gate / radio shack; +20 standing, +50 credit, clear my law strikes |
 | Diagnostics | **write problem report** (includes the hunt state). The overlay shows the hunt line: state, target, distance, time left |
 
 Joining players cannot use these unless the host enables client dev commands in the settings file.

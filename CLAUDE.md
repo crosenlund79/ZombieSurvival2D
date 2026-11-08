@@ -3,13 +3,13 @@
 Single source of permanent project rules. Full design context: `docs/HANDOVER.md`.
 
 ## Status
-Visible working title **Red Thaw**; latest work is iteration 014 "The Five Settlements" (side-view building
-interiors, four new settlements on one road network, the Greyhollow mine, the four-level Stillwater Civic Hall,
-the disturbed Burnt One hideout, a firearms framework with the handgun, single-player time controls, a
-175-item catalogue with icons and tooltips, contextual weighted loot pools) on `iteration/014-five-settlements`
-(recovery branch `backup/pre-five-settlements`), built on iteration 013 "The Scavenger's Circuit" and 012
-"Shadows & Depth". Internal project name and save id remain `Aftergrowth`. Systems from iterations 001–013 are
-preserved. Windows acceptance pending for 001–014.
+Visible working title **Red Thaw**; latest work is iteration 015 "The World Reborn" (a larger world with five
+wilderness regions and edge travel, a geographic world map, timber architecture and dressed interiors, player
+visibility, a dirty-ink UI with object-anchored panels, progressive scavenging, locks and lockpicking, roaming
+hordes with AI level of detail, dangerous wildlife, three hideouts, three factions) on `iteration/015-world-reborn`
+(recovery branch `backup/pre-world-reborn`), built on iteration 014 "The Five Settlements" and 013 "The
+Scavenger's Circuit". Internal project name and save id remain `Aftergrowth`. Systems from iterations 001–014 are
+preserved. Windows acceptance pending for 001–015.
 Gameplay decision register: `docs/DESIGN_DECISIONS.md` (keep it updated each iteration).
 Do not implement anything that has not been explicitly approved as an assignment by the
 creator. Brainstorms are not feature requests.

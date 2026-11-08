@@ -207,6 +207,18 @@ All generated placeholders; replace with a file of the same name without `templa
 
 The gun sounds (`sfx.gun_*`) come from the creator's audio inbox (§8) and are not generated.
 
+## 11. The World Reborn art (iteration 015)
+
+| Folder (under `assets/templates/`) | What | Generator / manifest |
+|---|---|---|
+| `world/cabins/`, `env/wild/` | log cabins (small, porch, large, weathered, ruin, workshop), lean-to, outhouse; rocks, fallen tree, woodpile, signs, power pole, hunting stand, buried car, radio mast, broken fence, bicycle, barrels, bench, crates, rusted stove, belongings | `gen_wilderness.py` / `visual_wilderness.json` |
+| `side/dress/` | 32 interior props (floor and wall furnishings, lamps, cobwebs, curtains) | `gen_interior_dressing.py` / `visual_interior_dressing.json` |
+| `ui/` | panels, paper, buttons, tooltip, slots, pointer, keycap and 34 icons (`ui.icon_<name>`) | `gen_ui.py` / `visual_ui_015.json` |
+| `characters/factions/` | raider, guard, villager, trader, mechanic, elder, Lantern keeper (down / up / side; 104 × 168, pivot like the survivor) | `gen_factions.py` / `visual_factions.json` |
+| `env/factions/` | corrugated fence (two runs), gate (closed / open), watchtower, tent, campfire, barricade, trade stall, workbench, radio shack | `gen_factions.py` / `visual_factions.json` |
+
+Overrides keep the same relative path without `template_` (e.g. `assets/overrides/characters/factions/raider_down.png`).
+
 ## Verified status (iteration 011)
 
 | Check | Result |

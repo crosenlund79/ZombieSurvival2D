@@ -155,6 +155,20 @@ Report: [`../iterations/014_five_settlements.md`](../iterations/014_five_settlem
 (the audit), `python3 tools/art/gen_item_icons.py` (icons + held melee art). The iteration 013 generator
 `tools/build_interiors.py` was replaced by `tools/build_side_interiors.py`.
 
+## 3i. The World Reborn (iteration 015)
+
+Report: [`../iterations/015_world_reborn.md`](../iterations/015_world_reborn.md). Developer helpers: `dev goto
+wild.corran_forest` (or any wilderness region / interior), `dev horde`, `dev hordes 0|1`, `dev hideout_goto 1|2|3`,
+`dev hideout_reset`, `dev test_rifle 1` (or launch with `--test-rifle`), `dev faction_goto cinder|hearth|lantern`,
+`dev faction_rep 20`, `dev faction_credit 50`, `dev law_clear`, `dev grant lockpick`, `dev zombie_at x y`.
+Content: `python3 tools/build_world.py --all` (settlements, wilderness, factions, dressing, locks).
+Art: `tools/art/gen_wilderness.py`, `gen_interior_dressing.py`, `gen_ui.py`, `gen_factions.py`.
+
+```bash
+python3 tools/mp_test.py locks_multi threats_multi factions_multi
+xvfb-run -a -s "-screen 0 1600x900x24" python3 tools/shots_world_reborn.py
+```
+
 ## 4. Saves
 
 Only the host (or single player) saves. Locations (Windows):
