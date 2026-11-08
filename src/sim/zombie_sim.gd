@@ -366,10 +366,12 @@ static func _escalate(world: WorldState, results: Array) -> void:
 		var last := int(world.threat.last_spawn.get(key, -100000))
 		if world.tick - last < int(float(c("reinforcement_cooldown", 5)) * Simulation.TICK_RATE):
 			continue
+		# caps count this region only (iteration 015: the larger world's other regions
+		# have their own populations and must not use up a loud region's reinforcements)
 		var active := 0
 		var transient := 0
 		for z in world.zombies.values():
-			if not z.is_dead():
+			if not z.is_dead() and z.region_id == region_id:
 				active += 1
 				if not z.persistent:
 					transient += 1
