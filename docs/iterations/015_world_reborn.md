@@ -157,7 +157,7 @@ See §13 for the full regression. New: `tests/unit/test_world_reborn.gd` (A–F)
 | Full multiplayer regression (all 34 `mp_test.py` scenarios, real separate processes) | 525 / 530 on the first full pass. Fixed after: 4 slice failures (the homestead wolf pack now only hunts at night) and 1 `danger_single` failure (reinforcement caps were world-wide, so the new wilderness populations had used them up; now per region). Re-runs: `slice` + `danger_single` 46 / 46 after the wolf fix except the cap issue, then `danger_single`, `danger_multi`, `perf_multi`, `threats_multi` all passing (threats needed a test-sampling margin: 9 / 9) |
 | Milestone scenarios | `locks_multi` 11 / 11, `threats_multi` 9 / 9, `factions_multi` 11 / 11, `circuit_multi` 21 / 21, `progression_multi` 20 / 20 |
 | Performance (`perf_multi`) | 57 Burnt Ones with two players: host simulation **1.34 ms / frame** (budget 8 ms); the client mirrors all 57. AI level of detail counted per tick in F3 |
-| Rendered checks (`tools/shots_world_reborn.py`) | all CHECK lines PASS; 25 screenshots in `docs/screenshots/iteration_015/` |
+| Rendered checks (`tools/shots_world_reborn.py`) | all CHECK lines PASS; 20 screenshots in `docs/screenshots/iteration_015/` |
 | Script guides | EN / DA 136 / 136 |
 
 Windows acceptance pending: none of this has been run on Windows.
