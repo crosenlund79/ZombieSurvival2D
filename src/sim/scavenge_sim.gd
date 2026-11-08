@@ -18,8 +18,19 @@ extends RefCounted
 ## (request_entity_action "take" / "take_all", Inv.transfer, so nothing duplicates).
 ## Contents never regenerate — not on re-entry, region change, reload or restart.
 ##
-## Entity state: {"searched", "items", "gear", "by", "from", "until"}. A search that
-## was in progress when the world was saved is simply abandoned on load.
+## Iteration 015 D — progressive discovery: a search reveals one slot at a time
+## (the container's finds, plus a few empty slots), each taking a skill-scaled
+## moment (SkillSim: slower at low Scavenging, faster later, never instant).
+## Revealed finds go straight into the visible contents ("items"/"gear") where
+## anyone can take them, so nothing duplicates; what is not yet revealed is never
+## stored or sent — it is re-derived from the deterministic roll when its slot
+## comes up. A stopped search keeps what it revealed ("revealed"/"total") and
+## resumes there; XP only for completing a search, once. Locked containers
+## (LockSim) must be unlocked first.
+##
+## Entity state: {"searched", "items", "gear", "by", "from", "until", "revealed",
+## "total", "locked"}. A search in progress when the world is saved resumes later
+## from its revealed slots.
 
 const REACH_SLACK := 40.0
 
@@ -46,6 +57,8 @@ static func request(world: WorldState, p: PlayerState, region: RegionState, eid:
 	var st := region.entity_state(eid)
 	if bool(st.get("searched", false)):
 		return WorldActions._fail("ACTION_ALREADY_SEARCHED")
+	if LockSim.is_locked(region, eid):
+		return WorldActions._fail("ACTION_LOCKED")
 	var by := searching(st)
 	if by == p.player_id:
 		return _cancel(region, eid, p.player_id, "SEARCH_CANCELLED")
@@ -59,11 +72,53 @@ static func request(world: WorldState, p: PlayerState, region: RegionState, eid:
 		if other != eid and searching(region.entity_state(other)) == p.player_id:
 			region.set_fields(other, {"by": "", "from": 0, "until": 0})
 			res["changes"].append({"region_id": region.region_id, "entity_id": other, "cause": "search_cancelled"})
-	var secs := SkillSim.search_seconds(p, str(def.get("kind", "shelf")))
-	region.set_fields(eid, {"by": p.player_id, "from": world.tick, "until": world.tick + Simulation.seconds_to_ticks(secs)})
+	var total := int(st.get("total", 0))
+	if total <= 0:
+		total = slot_count(world, region, eid)
+	var secs := slot_seconds(p, def, total)
+	region.set_fields(eid, {"by": p.player_id, "from": world.tick, "until": world.tick + Simulation.seconds_to_ticks(secs),
+		"total": total, "revealed": int(st.get("revealed", 0))})
 	res["changes"].append({"region_id": region.region_id, "entity_id": eid, "cause": "search_started"})
-	SessionLog.info("scavenge", "search_started", {"entity": eid, "player": p.player_id.substr(0, 6), "seconds": snappedf(secs, 0.01)})
+	SessionLog.info("scavenge", "search_started", {"entity": eid, "player": p.player_id.substr(0, 6), "slot_seconds": snappedf(secs, 0.01),
+		"slots": total, "revealed": int(st.get("revealed", 0))})
 	return res
+
+
+## Everything a container holds, in reveal order: authored loot and gear, then its pool.
+static func finds(world: WorldState, region: RegionState, eid: String) -> Array:
+	var def := region.entity_def(eid)
+	var out: Array = []
+	# iteration 015 D: a guaranteed find placed first (a ring of keys, a keycard, a lockpick)
+	var extra: Dictionary = def.get("extra", {})
+	for item in extra:
+		if Items.exists(str(item)) and int(extra[item]) > 0:
+			out.append({"item": str(item), "qty": int(extra[item]), "gear": not Items.is_stack(str(item)), "cond": 1.0, "loaded": 0})
+	var base := out.size()
+	var loot: Dictionary = def.get("loot", {})
+	var keys := loot.keys()
+	keys.sort()
+	for item in keys:
+		if Items.exists(str(item)) and int(loot[item]) > 0:
+			out.append({"item": str(item), "qty": int(loot[item]), "gear": false, "cond": 1.0, "loaded": 0})
+	for g in def.get("gear", []):
+		if Items.exists(str(g)):
+			out.append({"item": str(g), "qty": 1, "gear": true, "cond": 1.0, "loaded": 0})
+	if def.has("pool") and out.size() == base:
+		out.append_array(LootPools.roll_list(world, str(def["pool"]), eid))
+	return out
+
+
+## How many slots the search grid has: the finds plus a few that turn out empty.
+static func slot_count(world: WorldState, region: RegionState, eid: String) -> int:
+	var rng := world.make_rng("slots:" + eid)
+	return clampi(finds(world, region, eid).size() + rng.randi_range(1, 3), 3, 10)
+
+
+## Seconds per revealed slot: the kind's search time spread over its slots (a whole
+## search takes a little longer than the old single bar), scaled by the searcher's level.
+static func slot_seconds(p: PlayerState, def: Dictionary, total: int) -> float:
+	var whole := SkillSim.search_seconds(p, str(def.get("kind", "shelf"))) * 1.4
+	return maxf(0.45, whole / float(maxi(1, total)))
 
 
 ## Is `pid` really still searching this container (online, here, close, on foot)?
@@ -102,45 +157,70 @@ static func step(world: WorldState, _ticks: int) -> Array:
 				continue
 			if not _active(world, region, eid, by):
 				out.append(_cancel(region, eid, by, "SEARCH_INTERRUPTED"))
-			elif world.tick >= int(st.get("until", 0)):
-				out.append(_finish(world, world.players[by], region, eid))
+			else:
+				# every slot whose time has come (a long step can reveal several)
+				for _i in 12:
+					var st2 := region.entity_state(eid)
+					if searching(st2) == "" or bool(st2.get("searched", false)) or world.tick < int(st2.get("until", 0)):
+						break
+					out.append(_reveal(world, world.players[by], region, eid))
 	return out
+
+
+## The next slot of a search comes up: a find (into the visible contents) or nothing.
+static func _reveal(world: WorldState, p: PlayerState, region: RegionState, eid: String) -> Dictionary:
+	var st := region.entity_state(eid)
+	var total := maxi(1, int(st.get("total", 1)))
+	var idx := int(st.get("revealed", 0))
+	var all := finds(world, region, eid)
+	var box := {"items": (st.get("items", {}) as Dictionary).duplicate(), "gear": (st.get("gear", []) as Array).duplicate(true)}
+	var found := ""
+	if idx < all.size():
+		LootPools.add_find(world, box, all[idx])
+		found = str(all[idx]["item"])
+	idx += 1
+	if idx >= total:
+		region.set_fields(eid, {"items": box["items"], "gear": box["gear"], "revealed": total})
+		return _finish(world, p, region, eid)
+	var secs := slot_seconds(p, region.entity_def(eid), total)
+	var due := int(st.get("until", world.tick))
+	region.set_fields(eid, {"items": box["items"], "gear": box["gear"], "revealed": idx, "from": due,
+		"until": due + Simulation.seconds_to_ticks(secs)})
+	var res := WorldActions._changed(region, eid, "search_revealed")
+	res["events"] = [{"kind": "search_reveal", "player_id": p.player_id, "region_id": region.region_id, "entity_id": eid, "item": found}]
+	return res
 
 
 static func _finish(world: WorldState, p: PlayerState, region: RegionState, eid: String) -> Dictionary:
 	var def := region.entity_def(eid)
-	var items := {}
-	var finds := 0
-	var loot: Dictionary = def.get("loot", {})
-	for item in loot:
-		if Items.exists(str(item)) and int(loot[item]) > 0:
-			items[str(item)] = int(loot[item])
-			finds += int(loot[item])
-	var gear: Array = []
-	for g in def.get("gear", []):
-		if Items.exists(str(g)):
-			gear.append(Inv.new_gear(world, str(g)))
-			finds += 1
-	if def.has("pool") and items.is_empty() and gear.is_empty():
-		# Iteration 014 F: a contextual, seeded roll from the container's loot pool (once).
-		var rolled := LootPools.roll(world, str(def["pool"]), eid)
-		items = rolled["items"]
-		gear = rolled["gear"]
-		finds += Items.total(items) + gear.size()
-	region.set_fields(eid, {"searched": true, "items": items, "gear": gear, "by": "", "from": 0, "until": 0})
+	var st := region.entity_state(eid)
+	var items: Dictionary = st.get("items", {})
+	var gear: Array = st.get("gear", [])
+	var all := finds(world, region, eid)
+	var n_finds := 0
+	for f in all:
+		n_finds += int(f.get("qty", 1))  # every piece found counts (as before iteration 015)
+	if not st.has("total"):
+		# an older save or a direct call: reveal everything at once
+		var box := {"items": items.duplicate(), "gear": gear.duplicate(true)}
+		for f in all:
+			LootPools.add_find(world, box, f)
+		items = box["items"]
+		gear = box["gear"]
+	region.set_fields(eid, {"searched": true, "items": items, "gear": gear, "by": "", "from": 0, "until": 0, "revealed": int(st.get("total", 0))})
 	var loud := str(def.get("kind", "")) in (SkillSim.cfg("scavenging").get("loud_kinds", []) as Array)
 	ZombieSim.make_noise(world, region.region_id, Content.entity_position(def), "search_loud" if loud else "search")
-	var aw := SkillSim.award(world, p, "scavenging", SkillSim.search_xp(finds))
+	var aw := SkillSim.award(world, p, "scavenging", SkillSim.search_xp(n_finds))
 	var res := WorldActions._changed(region, eid, "searched")
 	res["players"] = [p.player_id]
 	res["events"] = [{"kind": "search_done", "player_id": p.player_id, "region_id": region.region_id, "entity_id": eid,
 		"xp": int(aw["gained"]), "skill": "scavenging", "level": int(aw["level_after"]),
-		"level_up": int(aw["level_after"]) > int(aw["level_before"]), "finds": finds}]
-	res["private_notice"] = {"player_id": p.player_id, "key": "SEARCH_FOUND" if finds > 0 else "SEARCH_EMPTY",
+		"level_up": int(aw["level_after"]) > int(aw["level_before"]), "finds": n_finds}]
+	res["private_notice"] = {"player_id": p.player_id, "key": "SEARCH_FOUND" if n_finds > 0 else "SEARCH_EMPTY",
 		"args": [describe(items, gear)]}
 	if def.has("discovery") and WorldActions.discover(world, str(def["discovery"])):
 		res["meta"] = true
-	SessionLog.info("scavenge", "searched", {"entity": eid, "player": p.player_id.substr(0, 6), "finds": finds,
+	SessionLog.info("scavenge", "searched", {"entity": eid, "player": p.player_id.substr(0, 6), "finds": n_finds,
 		"xp": aw["gained"], "level": aw["level_after"]})
 	return res
 
@@ -171,7 +251,7 @@ static func describe(items: Dictionary, gear: Array) -> String:
 ## Taking from a searched container (host). what = item id, gear uid, or "*" for everything that fits.
 static func take(world: WorldState, p: PlayerState, region: RegionState, eid: String, what: String) -> Dictionary:
 	var st := region.entity_state(eid)
-	if not bool(st.get("searched", false)):
+	if not bool(st.get("searched", false)) and int(st.get("revealed", 0)) <= 0:
 		return WorldActions._fail("ACTION_SEARCH_FIRST")
 	var box := {"items": (st.get("items", {}) as Dictionary).duplicate(), "gear": (st.get("gear", []) as Array).duplicate(true)}
 	var moved := 0

@@ -151,7 +151,10 @@
 					509
 				]
 			},
-			"prompt_key": "PROMPT_ENTER_BUILDING"
+			"prompt_key": "PROMPT_ENTER_BUILDING",
+			"lock": {
+				"level": 1
+			}
 		},
 		{
 			"id": "harbor.pickup",

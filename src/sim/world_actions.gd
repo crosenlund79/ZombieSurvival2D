@@ -35,6 +35,8 @@ static func request_interact(world: WorldState, player_id: String, entity_id: St
 	if not SideSection.in_reach(region, p.position, Content.entity_position(def), reach):
 		return _fail("ACTION_TOO_FAR")
 	var state := region.entity_state(entity_id)
+	if LockSim.is_locked(region, entity_id):
+		return _fail("ACTION_LOCKED")  # iteration 015 D: a key or the lockpick first
 	match str(def.get("type", "")):
 		"door":
 			if expected_rev != region.rev(entity_id):
@@ -425,6 +427,8 @@ static func request_entity_action(world: WorldState, player_id: String, eid: Str
 	res["players"] = [p.player_id]
 	if b != null:
 		res["bunkers"] = [b.bunker_id]
+	if action == "key" or action == "pick" or action == "status":
+		return LockSim.request(world, p, region, eid, action, arg)
 	if ScavengeSim.is_container(def):
 		if action != "take":
 			return _fail("ACTION_NOT_SUPPORTED")

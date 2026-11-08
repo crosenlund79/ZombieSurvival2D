@@ -118,6 +118,14 @@ Update this file whenever an iteration adds or settles a decision.
 
 ## EXPLORING (prototype choices awaiting a creator decision)
 
+### The World Reborn (iteration 015)
+
+| ID | Topic | Current prototype | Where to tune |
+|---|---|---|---|
+| WX-28 | Search grid | Slots = finds + 1–3 empty (3–10); seconds per slot = kind's search time × 1.4 ÷ slots, min 0.45 s; Scavenging level shortens it with diminishing returns; revealed finds are visible/takeable at once; XP only on completing | `src/sim/scavenge_sim.gd` (`slot_count`, `slot_seconds`), `content/tuning/skills.json` |
+| WX-29 | Lockpicking | Pins = level + 1; sweet window 0.13 / 0.085 / 0.055 of the dial; a miss costs 8–43 % of pick condition (more the further off, more on harder locks); a snapped pick drops the pins; ≥ 0.2 s between turns; no lockpicking skill or XP | `src/sim/lock_sim.gd` (`WINDOW`, `_turn`) |
+| WX-30 | Locks and keys | 15 locked containers + 4 locked doors (`LOCKS` in `tools/build_world.py`); keys are generic items ("keys" = a ring of building keys, "keycard"), found first in a few nearby containers (`EXTRA`); keys are never used up; lockpicks added to toolbox, worker-locker, hunter-cabin, attic and parts pools | `tools/build_world.py`, `tools/build_loot_pools.py` |
+
 ### The Five Settlements (iteration 014)
 
 | ID | Topic | Current prototype | Where to tune |

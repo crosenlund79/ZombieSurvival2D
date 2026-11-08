@@ -171,6 +171,17 @@ func _run(line: String) -> void:
 			ku.pressed = false
 			Input.parse_input_event(ku)
 			await get_tree().create_timer(0.5).timeout
+		"tap_key":
+			# Tap a physical key (e.g. Left, Space) — for panels that read keys directly.
+			var kk := InputEventKey.new()
+			kk.keycode = OS.find_keycode_from_string(a[0])
+			kk.pressed = true
+			Input.parse_input_event(kk)
+			await get_tree().create_timer(0.05).timeout
+			var kr := kk.duplicate() as InputEventKey
+			kr.pressed = false
+			Input.parse_input_event(kr)
+			await get_tree().create_timer(0.3).timeout
 		"build":
 			Session.request_build(a[0], Vector2(float(a[1]), float(a[2])))
 			await get_tree().create_timer(0.5).timeout
@@ -215,6 +226,7 @@ func _run(line: String) -> void:
 			await get_tree().create_timer(0.3).timeout
 		"panel_close":
 			MachinePanel.close_current()
+			LockpickPanel.close_current()
 			await get_tree().create_timer(0.2).timeout
 		"terrain":
 			Session.request_terrain(a[0], Vector2i(int(a[1]), int(a[2])))

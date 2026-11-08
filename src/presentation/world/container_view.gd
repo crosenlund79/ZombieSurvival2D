@@ -6,6 +6,9 @@ extends EntityView
 ##    so every player sees the same search)
 ##  * E: start / stop searching; once searched, E opens a small panel to take
 ##    what is left. Every action is a host request.
+##  * iteration 015 D: E opens the discovery grid (MachinePanel "grid") that fills
+##    slot by slot as the host reveals them; locked containers open the
+##    LockpickPanel first (Interactable).
 
 const BAR_W := 90.0
 var _bar: Node2D
@@ -31,9 +34,14 @@ func _ready() -> void:
 func _activate() -> void:
 	var st := state()
 	if bool(st.get("searched", false)):
-		MachinePanel.open(self, region_id, entity_id, panel_data)
-	else:
-		Session.request_interact(entity_id)
+		MachinePanel.open(self, region_id, entity_id, panel_data, _panel_request)
+		return
+	# Iteration 015 D: E starts (or resumes) the search and opens the discovery grid
+	# beside the container; E on your own running search stops it (progress kept).
+	var mine := ScavengeSim.searching(st) == Session.local_player_id
+	Session.request_interact(entity_id)
+	if not mine:
+		MachinePanel.open(self, region_id, entity_id, panel_data, _panel_request)
 
 
 func _refresh(cause: String) -> void:
@@ -63,6 +71,10 @@ func _refresh(cause: String) -> void:
 			Audio.play("sfx.rummage", global_position)
 		"searched":
 			Audio.play("sfx.rummage", global_position)
+		"search_revealed":
+			Audio.play("sfx.rummage", global_position, -4.0)
+		"unlocked":
+			Audio.play("sfx.door_open" if AssetCatalog.has("sfx.door_open") else "ui.click", global_position)
 	set_process(true)
 
 
@@ -97,9 +109,70 @@ func _draw_bar() -> void:
 	_bar.draw_rect(Rect2(r.position, Vector2(r.size.x * p, r.size.y)), Color(0.86, 0.8, 0.62, 0.95))
 
 
-## Panel: what is left in a searched container; take one or everything.
+## Panel: the discovery grid while searching / once searched (iteration 015 D),
+## what is visible can be taken (one stack, or everything).
 func panel_data() -> Dictionary:
 	var st := state()
+	var total := int(st.get("total", 0))
+	if total > 0 or not bool(st.get("searched", false)):
+		return _grid_data(st, total)
+	return _list_data(st)
+
+
+func _grid_data(st: Dictionary, total: int) -> Dictionary:
+	var me := Session.local_player()
+	var items: Dictionary = st.get("items", {})
+	var gear: Array = st.get("gear", [])
+	var searched := bool(st.get("searched", false))
+	var by := ScavengeSim.searching(st)
+	var revealed := total if searched else int(st.get("revealed", 0))
+	var cells: Array = []
+	var keys := items.keys()
+	keys.sort()
+	for item in keys:
+		cells.append({"item": str(item), "qty": int(items[item]), "state": "revealed", "take": str(item)})
+	for g in gear:
+		cells.append({"item": str(g.get("item", "")), "qty": 1, "state": "revealed", "take": str(g.get("uid", "")), "gear": g})
+	for _i in maxi(0, revealed - cells.size()):
+		cells.append({"state": "empty"})
+	var shown := maxi(total, cells.size())
+	if not searched:
+		if by != "" and cells.size() < shown:
+			cells.append({"state": "searching"})
+		while cells.size() < shown:
+			cells.append({"state": "unknown"})
+	var lines: Array[String] = []
+	var free := Inv.free_slots(me) if me != null else 0
+	lines.append(UITheme.fmt("PANEL_CARRY", [Inv.slots_used(me) if me != null else 0, Inv.capacity(me) if me != null else Items.carry_slots()]))
+	var buttons := []
+	if not items.is_empty() or not gear.is_empty():
+		buttons.append([TranslationServer.translate("CONTAINER_TAKE_ALL"), "take", "*", free > 0])
+	var d := {"title": TranslationServer.translate("CONTAINER_" + str(def.get("kind", "shelf")).to_upper()), "grid": cells, "grid_action": "take"}
+	if searched:
+		lines.append(TranslationServer.translate("SEARCH_GRID_DONE" if not cells.filter(func(c: Dictionary) -> bool: return c["state"] == "revealed").is_empty() else "CONTAINER_NOTHING_LEFT"))
+	elif by == Session.local_player_id:
+		d["progress"] = (float(revealed) + ScavengeSim.progress(Session.world, st)) / float(maxi(1, total))
+		lines.append(UITheme.fmt("SEARCH_GRID_PROGRESS", [revealed, total]))
+		buttons.append([TranslationServer.translate("SEARCH_STOP"), "__stop", "", true])
+	elif by != "":
+		lines.append(TranslationServer.translate("PROMPT_BEING_SEARCHED"))
+	else:
+		lines.append(UITheme.fmt("SEARCH_GRID_PAUSED", [revealed, total]) if revealed > 0 else TranslationServer.translate("SEARCH_GRID_START"))
+		buttons.append([TranslationServer.translate("SEARCH_RESUME" if revealed > 0 else "SEARCH_START"), "__stop", "", true])
+	d["lines"] = lines
+	d["buttons"] = buttons
+	return d
+
+
+## Grid button actions: "__stop" toggles the search (host request_interact).
+func _panel_request(action: String, arg: String) -> void:
+	if action == "__stop":
+		Session.request_interact(entity_id)
+	else:
+		Session.request_entity_action(entity_id, action, arg)
+
+
+func _list_data(st: Dictionary) -> Dictionary:
 	var me := Session.local_player()
 	var lines: Array[String] = []
 	var buttons := []

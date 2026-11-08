@@ -40,6 +40,9 @@ signal vehicle_changed(vehicle_id: String)
 signal vehicle_corrected(vehicle_id: String)
 ## Iteration 012: thawed-blood marks were added, changed or erased.
 signal blood_changed
+## Iteration 015 D: the host's answer to one of the local player's lock actions
+## ({entity_id, set, pins, closeness, result: set|open|miss|broken}).
+signal lock_feedback(info: Dictionary)
 
 enum Mode { NONE, SINGLE, HOST, CLIENT }
 
@@ -841,6 +844,13 @@ func _publish_result(res: Dictionary) -> void:
 		notice.emit(str(bn["key"]), bn.get("args", []))
 		if mode == Mode.HOST and not multiplayer.get_peers().is_empty():
 			_rpc_notice.rpc(str(bn["key"]), bn.get("args", []))
+	var lk: Dictionary = res.get("lock", {})
+	if not lk.is_empty() and not (res.get("players", []) as Array).is_empty():
+		var lpeer := _peer_of(str(res["players"][0]))
+		if lpeer == 1:
+			lock_feedback.emit(lk)
+		elif lpeer != 0:
+			_rpc_lock_feedback.rpc_id(lpeer, lk)
 	var pn: Dictionary = res.get("private_notice", {})
 	if not pn.is_empty():
 		var peer := _peer_of(str(pn["player_id"]))
@@ -1411,6 +1421,11 @@ func _rpc_request_interact(request_id: int, entity_id: String, expected_rev: int
 func _rpc_action_result(_request_id: int, ok: bool, reason_key: String, args: Array) -> void:
 	if not ok:
 		notice.emit(reason_key, args)
+
+
+@rpc("authority", "call_remote", "reliable")
+func _rpc_lock_feedback(info: Dictionary) -> void:
+	lock_feedback.emit(info)
 
 
 @rpc("any_peer", "call_remote", "reliable")

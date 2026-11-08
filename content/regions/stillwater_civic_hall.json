@@ -585,7 +585,10 @@
 			"position": [
 				1049.6,
 				829
-			]
+			],
+			"lock": {
+				"level": 2
+			}
 		},
 		{
 			"id": "stillwater.civic_hall.mayor_desk",

@@ -248,3 +248,157 @@ func test_interiors_are_dressed_and_outfitters_reworked() -> void:
 
 func test_camera_cannot_zoom_out_omnisciently() -> void:
 	check(SettingsService.ZOOM_MIN >= 0.8, "zoom-out is limited (%.2f)" % SettingsService.ZOOM_MIN)
+
+
+# ---------------------------------------------------------------- D: scavenging grid, locks
+
+func _run(w: WorldState, seconds: float) -> Array:
+	var out: Array = []
+	for i in int(ceilf(seconds * Simulation.TICK_RATE)):
+		out.append_array(Simulation.advance(w, 1))
+	return out
+
+
+func _at(w: WorldState, p: PlayerState, eid: String) -> void:
+	p.position = Content.entity_position(w.region(p.region_id).entity_def(eid)) + Vector2(0, 40)
+
+
+func test_a_search_reveals_slot_by_slot_and_resumes() -> void:
+	var w := WorldState.create_new("w_d1", 1511)
+	var p := _player(w, PID, "town.grocery", Vector2.ZERO)
+	var eid := "town.grocery.aisle_a"
+	var g := w.region("town.grocery")
+	_at(w, p, eid)
+	var all := ScavengeSim.finds(w, g, eid)
+	check(WorldActions.request_interact(w, PID, eid, -1)["ok"], "the search starts")
+	var total := int(g.entity_state(eid).get("total", 0))
+	check(total >= all.size() + 1 and total >= 3, "a grid of %d slots for %d finds" % [total, all.size()])
+	var slot := ScavengeSim.slot_seconds(p, g.entity_def(eid), total)
+	check(slot >= 0.45, "never instant (%.2f s a slot)" % slot)
+	eq(Items.total(g.entity_state(eid).get("items", {})), 0, "nothing shown before the first slot comes up")
+	_run(w, slot + 0.15)
+	eq(int(g.entity_state(eid).get("revealed", 0)), 1, "one slot revealed")
+	eq(Items.total(g.entity_state(eid).get("items", {})), int(all[0]["qty"]), "exactly the first find is visible")
+	# stop: what was revealed stays, the rest is not stored anywhere
+	check(WorldActions.request_interact(w, PID, eid, -1)["ok"], "E stops")
+	_run(w, 6.0)
+	eq(int(g.entity_state(eid).get("revealed", 0)), 1, "no progress while stopped")
+	eq(SkillSim.xp(p, "scavenging"), 0, "no XP for a partial search")
+	check(WorldActions.request_entity_action(w, PID, eid, "take", str(all[0]["item"]))["ok"], "a revealed find can be taken mid-search")
+	# resume from the same slot, same grid
+	check(WorldActions.request_interact(w, PID, eid, -1)["ok"], "resumes")
+	eq(int(g.entity_state(eid).get("total", 0)), total, "the same grid")
+	_run(w, slot * total + 0.5)
+	check(bool(g.entity_state(eid).get("searched", false)), "finishes")
+	var xp := SkillSim.xp(p, "scavenging")
+	check(xp > 0, "XP once, for completing")
+	var left := Items.total(g.entity_state(eid).get("items", {}))
+	var expect := 0
+	for i in range(1, all.size()):
+		expect += int(all[i]["qty"])
+	eq(left, expect, "the rest of the finds, nothing doubled")
+	eq(WorldActions.request_interact(w, PID, eid, -1)["reason"], "ACTION_ALREADY_SEARCHED", "never again")
+	eq(SkillSim.xp(p, "scavenging"), xp, "and no more XP")
+
+
+func test_skill_speeds_the_search_with_diminishing_returns() -> void:
+	var p := PlayerState.new()
+	var def := {"kind": "shelf"}
+	var t1 := ScavengeSim.slot_seconds(p, def, 5)
+	SkillSim.set_level(p, "scavenging", 5)
+	var t5 := ScavengeSim.slot_seconds(p, def, 5)
+	SkillSim.set_level(p, "scavenging", SkillSim.max_level("scavenging"))
+	var tmax := ScavengeSim.slot_seconds(p, def, 5)
+	check(t1 > t5 and t5 >= tmax, "faster with skill (%.2f > %.2f >= %.2f)" % [t1, t5, tmax])
+	check(tmax >= 0.45, "never instant")
+	check(t1 - t5 >= t5 - tmax - 0.001, "diminishing returns")
+
+
+func test_locked_containers_need_a_key_or_a_pick() -> void:
+	var w := WorldState.create_new("w_d2", 1512)
+	var p := _player(w, PID, "stillwater.police", Vector2.ZERO)
+	var eid := "stillwater.police.armory"
+	var r := w.region("stillwater.police")
+	_at(w, p, eid)
+	check(LockSim.is_locked(r, eid), "the armory starts locked")
+	eq(WorldActions.request_interact(w, PID, eid, -1)["reason"], "ACTION_LOCKED", "no search while locked")
+	eq(WorldActions.request_entity_action(w, PID, eid, "key", "")["reason"], "ACTION_NO_KEY", "no keycard, no key")
+	eq(WorldActions.request_entity_action(w, PID, eid, "pick", "0.5")["reason"], "ACTION_NO_LOCKPICK", "no pick without a lockpick")
+	p.carried["keycard"] = 1
+	var res := WorldActions.request_entity_action(w, PID, eid, "key", "")
+	check(res["ok"], "the keycard opens it")
+	check(not LockSim.is_locked(r, eid), "unlocked")
+	eq(p.carrying("keycard"), 1, "keys are not used up")
+	check(WorldActions.request_interact(w, PID, eid, -1)["ok"], "now it can be searched")
+	# persistent
+	var back: WorldState = SaveCodec.decode(JSON.parse_string(JSON.stringify(SaveCodec.encode(w))))["world"]
+	check(not LockSim.is_locked(back.region("stillwater.police"), eid), "stays unlocked after a save")
+	check(LockSim.is_locked(back.region("stillwater.police"), "stillwater.police.evidence"), "the evidence locker is still locked")
+
+
+func test_lockpicking_is_decided_by_the_host() -> void:
+	var w := WorldState.create_new("w_d3", 1513)
+	var p := _player(w, PID, "town.hardware", Vector2.ZERO)
+	var eid := "town.hardware.locked_case"
+	var r := w.region("town.hardware")
+	_at(w, p, eid)
+	p.gear.append(Inv.new_gear(w, "lockpick"))
+	var def := r.entity_def(eid)
+	eq(LockSim.pins(def), 2, "a level 1 lock has two pins")
+	# a miss: wear, closeness feedback, no pin
+	var s0 := LockSim.sweet(w, eid, 0)
+	var far := 0.0 if s0 > 0.5 else 1.0
+	var miss := WorldActions.request_entity_action(w, PID, eid, "pick", str(far))
+	check(miss["ok"] and str(miss["lock"]["result"]) == "miss", "far off misses")
+	check(float(miss["lock"]["closeness"]) < 0.5, "and says it was not close")
+	check(float(p.gear[0]["cond"]) < float(Items.info("lockpick").get("durability", 100)), "the pick wears")
+	eq(WorldActions.request_entity_action(w, PID, eid, "pick", str(s0))["reason"], "ACTION_TOO_FAST", "no spamming turns")
+	_run(w, 0.3)
+	var hit := WorldActions.request_entity_action(w, PID, eid, "pick", str(s0))
+	eq(str(hit["lock"]["result"]), "set", "the sweet spot sets the pin")
+	eq(int(hit["lock"]["set"]), 1, "one of two")
+	_run(w, 0.3)
+	var st := WorldActions.request_entity_action(w, PID, eid, "status", "")
+	eq(int(st["lock"]["set"]), 1, "the host remembers progress for this player")
+	var open := WorldActions.request_entity_action(w, PID, eid, "pick", str(LockSim.sweet(w, eid, 1)))
+	eq(str(open["lock"]["result"]), "open", "second pin opens it")
+	check(not LockSim.is_locked(r, eid), "the real container is unlocked")
+	check(WorldActions.request_interact(w, PID, eid, -1)["ok"], "and can be searched")
+
+
+func test_a_worn_pick_snaps_and_the_pins_drop() -> void:
+	var w := WorldState.create_new("w_d4", 1514)
+	var p := _player(w, PID, "stillwater.police", Vector2.ZERO)
+	var eid := "stillwater.police.evidence"
+	_at(w, p, eid)
+	p.gear.append(Inv.new_gear(w, "lockpick"))
+	check(WorldActions.request_entity_action(w, PID, eid, "pick", str(LockSim.sweet(w, eid, 0)))["ok"], "one pin set")
+	var s1 := LockSim.sweet(w, eid, 1)
+	var far := 0.0 if s1 > 0.5 else 1.0
+	var broke := false
+	for i in 30:
+		_run(w, 0.3)
+		var res := WorldActions.request_entity_action(w, PID, eid, "pick", str(far))
+		if str(res.get("lock", {}).get("result", "")) == "broken":
+			broke = true
+			break
+	check(broke, "repeated bad turns snap the pick")
+	check(not p.has_gear_item("lockpick"), "the pick is gone")
+	eq(LockSim.progress(w, PID, eid), 0, "and the pins dropped")
+	check(LockSim.is_locked(w.region("stillwater.police"), eid), "still locked")
+
+
+func test_locked_doors_and_old_saves() -> void:
+	var w := WorldState.create_new("w_d5", 1515)
+	var p := _player(w, PID, "wild.corran_forest", Vector2.ZERO)
+	var door := "wild.corran_forest.trapper_door"
+	_at(w, p, door)
+	eq(WorldActions.request_interact(w, PID, door, -1)["reason"], "ACTION_LOCKED", "a locked cabin door does not open")
+	eq(p.region_id, "wild.corran_forest", "you stay outside")
+	# a container searched in an older save (before it had a lock) counts as opened
+	var r := w.region("town.pharmacy")
+	r.set_fields("town.pharmacy.wall_cabinet", {"searched": true})
+	check(not LockSim.is_locked(r, "town.pharmacy.wall_cabinet"), "already searched: not locked")
+	# keys found where they belong
+	var finds := ScavengeSim.finds(w, w.region("town.garage"), "town.garage.office_desk")
+	eq(str(finds[0]["item"]), "keys", "the garage office desk holds the keys")

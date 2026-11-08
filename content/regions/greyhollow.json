@@ -115,7 +115,11 @@
 					509
 				]
 			},
-			"prompt_key": "PROMPT_ENTER_BUILDING"
+			"prompt_key": "PROMPT_ENTER_BUILDING",
+			"lock": {
+				"level": 2,
+				"key": "keys"
+			}
 		},
 		{
 			"id": "greyhollow.ore_truck",

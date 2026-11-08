@@ -220,7 +220,10 @@
 			"position": [
 				985.6,
 				509
-			]
+			],
+			"lock": {
+				"level": 1
+			}
 		},
 		{
 			"id": "town.pharmacy.counter",

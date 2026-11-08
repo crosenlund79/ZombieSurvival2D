@@ -2021,7 +2021,7 @@ def scenario_circuit_multi():
         st = _enter_shop(host, "pharmacy", (1112, 880))
         check("circuit: the host walks into the pharmacy", st["region"] == "town.pharmacy", st["region"])
         _search(c, "town.grocery", "aisle_a")
-        _search(host, "town.pharmacy", "dispensary_a", 6.5)
+        _search(host, "town.pharmacy", "dispensary_a", 9.0)
         c.cmd("wait 1")
         hs = host.state()
         g = hs["entities"]["town.grocery.aisle_a"]["state"]
@@ -2040,7 +2040,7 @@ def scenario_circuit_multi():
         time.sleep(0.3)
         st = host.state()["entities"]["town.grocery.aisle_b"]["state"]
         check("circuit: only the first player searches a container", st.get("by") and player(host.state(), "Cleo")["id"] == st.get("by"), st)
-        _search(host, "town.grocery", "aisle_d", 6.0)
+        _search(host, "town.grocery", "aisle_d", 8.5)
         hs = host.state()
         check("circuit: meanwhile the host searched another shelf", hs["entities"]["town.grocery.aisle_d"]["state"].get("searched"), hs["entities"]["town.grocery.aisle_d"]["state"])
         check("circuit: and the client finished its own", hs["entities"]["town.grocery.aisle_b"]["state"].get("searched"), hs["entities"]["town.grocery.aisle_b"]["state"])
@@ -2060,6 +2060,7 @@ def scenario_circuit_multi():
         c.cmd("leave"); time.sleep(1.0)
         host.cmd("wait 6")
         st = host.state()["entities"]["town.grocery.storeroom_shelf"]["state"]
+        # iteration 015 D: slots revealed before the disconnect stay visible; the search itself is abandoned
         check("circuit: a disconnect abandons the search", busy != "" and not st.get("searched") and st.get("by", "") == "", (busy, st))
         check("circuit: and gives no XP", player(host.state(), "Cleo")["scav_xp"] == cx2, player(host.state(), "Cleo")["scav_xp"])
         r = c.cmd(f"join 127.0.0.1 {PORT} Cleo"); c.cmd("tips off")
@@ -2103,15 +2104,15 @@ def scenario_progression_multi():
         _enter_shop(c, "grocery", (632, 880)); _enter_shop(host, "grocery", (632, 880))
         host.cmd("dev xp_multiplier 5"); time.sleep(0.3)
         check("prog: the client sees the active multiplier", c.state()["xp_multiplier"] == 5.0, c.state()["xp_multiplier"])
-        _search(c, "town.grocery", "aisle_a", 6.0)
+        _search(c, "town.grocery", "aisle_a", 8.5)
         x5 = player(host.state(), "Cleo")["scav_xp"]
         check("prog: 5x multiplies newly earned XP", x5 == 90, x5)
         host.cmd("dev xp_multiplier 0"); time.sleep(0.2)
-        _search(c, "town.grocery", "aisle_b", 6.0)
+        _search(c, "town.grocery", "aisle_b", 8.5)
         check("prog: 0x gives no XP", player(host.state(), "Cleo")["scav_xp"] == x5, player(host.state(), "Cleo")["scav_xp"])
         check("prog: earlier XP is not changed by a new multiplier", player(host.state(), "Cleo")["scav_xp"] == 90, "")
         host.cmd("dev xp_multiplier 10"); time.sleep(0.2)
-        _search(host, "town.grocery", "aisle_d", 6.0)
+        _search(host, "town.grocery", "aisle_d", 8.5)
         hx = player(host.state(), "Hosty")["scav_xp"]
         check("prog: 10x on the host's own search", hx == 160, hx)   # 12 + 2*2 = 16 -> 160
         host.cmd("dev xp_multiplier 25"); time.sleep(0.2)
@@ -2129,12 +2130,12 @@ def scenario_progression_multi():
         host.cmd("dev set_skill_level 5"); time.sleep(0.3)
         check("prog: set level 5 (host)", player(host.state(), "Hosty")["scav_level"] == 5, player(host.state(), "Hosty")["scav_level"])
         check("prog: the client's level is untouched (100 XP = level 3)", player(host.state(), "Cleo")["scav_level"] == 3, player(host.state(), "Cleo")["scav_level"])
-        _search(host, "town.grocery", "storeroom_shelf", 3.0)
-        check("prog: at level 5 a shelf takes under 3 s", host.state()["entities"]["town.grocery.storeroom_shelf"]["state"].get("searched"), "")
+        _search(host, "town.grocery", "storeroom_shelf", 4.0)
+        check("prog: at level 5 a shelf takes under 4 s (iteration 015: slot by slot)", host.state()["entities"]["town.grocery.storeroom_shelf"]["state"].get("searched"), "")
         _search(c, "town.grocery", "storeroom_crate", 3.0)
         check("prog: at level 3 a crate is not done in 3 s", not host.state()["entities"]["town.grocery.storeroom_crate"]["state"].get("searched"), "")
-        c.cmd("wait 1.6")
-        check("prog: ... but is done soon after (4.1 s)", host.state()["entities"]["town.grocery.storeroom_crate"]["state"].get("searched"), "")
+        c.cmd("wait 3.4")
+        check("prog: ... but is done soon after (iteration 015: slot by slot, ~5.8 s)", host.state()["entities"]["town.grocery.storeroom_crate"]["state"].get("searched"), "")
         host.cmd("dev xp_multiplier 10"); c.cmd("leave"); host.cmd("save"); host.cmd("leave")
         host.cmd(f"host {PORT} continue Hosty")
         check("prog: after a restart the multiplier is 1x again", host.state()["xp_multiplier"] == 1.0, host.state()["xp_multiplier"])
@@ -2319,7 +2320,58 @@ def scenario_five_multi():
             i.kill()
 
 
-SCENARIOS = {"five_multi": scenario_five_multi, "expedition_multi": scenario_expedition_multi, "progression_multi": scenario_progression_multi, "circuit_multi": scenario_circuit_multi, "side_multi": scenario_side_multi, "blood_multi": scenario_blood_multi, "custom_graphics": scenario_custom_graphics, "wild_multi": scenario_wild_multi, "vehicle_multi": scenario_vehicle_multi, "winter_multi": scenario_winter_multi, "red_thaw_multi": scenario_red_thaw_multi, "perf_multi": scenario_perf_multi, "slice": scenario_slice, "settlement_multi": scenario_settlement_multi, "world_multi": scenario_world_multi, "craft_multi": scenario_craft_multi, "build_multi": scenario_build_multi, "accept": scenario_accept, "infra_multi": scenario_infra_multi, "dig_multi": scenario_dig_multi, "danger_single": scenario_danger_single, "danger_multi": scenario_danger_multi, "settings": scenario_settings, "bunker_single": scenario_bunker_single, "bunker_multi": scenario_bunker_multi, "single": scenario_single, "multiplayer": scenario_multiplayer,
+def scenario_locks_multi():
+    """Iteration 015 D: progressive search + locks with two real instances — the client's
+    search reveals slot by slot on both screens, the client picks a lock (every turn a host
+    decision), the unlock replicates to the host and survives a save and restart."""
+    CIRCUIT_POS.update(_load_circuit_positions())
+    host = Instance("t_lhost"); c = Instance("t_lclient")
+    for i in (host, c):
+        i.wipe()
+    try:
+        host.start(); c.start()
+        host.cmd("set dev allow_client_dev_commands 1")
+        host.cmd(f"host {PORT} new 215 Hosty"); host.cmd("tips off"); host.cmd("dev peaceful 1"); host.cmd("dev time 12")
+        r = c.cmd(f"join 127.0.0.1 {PORT} Cleo"); c.cmd("tips off")
+        check("locks: client joins", r["ok"], r["error"])
+        c.cmd("dev goto town.grocery"); c.cmd("wait 1")
+        _search(c, "town.grocery", "aisle_a", 2.4)
+        hs = host.state()["entities"]["town.grocery.aisle_a"]["state"]
+        cs = c.state()["entities"]["town.grocery.aisle_a"]["state"]
+        check("locks: the search reveals slot by slot (host)", 0 < int(hs.get("revealed", 0)) < int(hs.get("total", 0)) and not hs.get("searched"), hs)
+        check("locks: the client sees the same revealed slots", cs.get("revealed") == hs.get("revealed") or abs(int(cs.get("revealed", 0)) - int(hs.get("revealed", 0))) <= 1, (cs, hs))
+        c.cmd("wait 6")
+        check("locks: and it completes", host.state()["entities"]["town.grocery.aisle_a"]["state"].get("searched"), "")
+        eid = "town.hardware.locked_case"
+        c.cmd("dev goto town.hardware"); c.cmd("wait 1")
+        c.cmd(f"dev teleport {CIRCUIT_POS[eid][0]} {CIRCUIT_POS[eid][1]}"); c.cmd("wait 0.3")
+        c.cmd(f"interact {eid}"); time.sleep(0.4)
+        st = host.state()["entities"][eid]["state"]
+        check("locks: a locked case cannot be searched", not st.get("by") and st.get("locked", True) is not False, st)
+        c.cmd(f"entity_action {eid} pick 0.5"); time.sleep(0.3)
+        check("locks: no lockpick, no picking", host.state()["entities"][eid]["state"].get("locked", True) is not False, "")
+        c.cmd("dev grant lockpick:4"); c.cmd("wait 0.5")
+        opened = False
+        for k in range(40):
+            c.cmd(f"entity_action {eid} pick {[0.12, 0.32, 0.5, 0.68, 0.88][k % 5]}")
+            if host.state()["entities"][eid]["state"].get("locked") is False:
+                opened = True
+                break
+        check("locks: the client picks the lock (host-decided turns)", opened, k)
+        time.sleep(0.4)
+        check("locks: the unlock replicates to the client", c.state()["entities"][eid]["state"].get("locked") is False, "")
+        _search(c, "town.hardware", "locked_case", 0.6)
+        check("locks: now it can be searched", host.state()["entities"][eid]["state"].get("by", "") != "", host.state()["entities"][eid]["state"])
+        c.cmd("leave"); host.cmd("save"); host.cmd("leave")
+        host.cmd(f"host {PORT} continue Hosty")
+        check("locks: the lock stays open after a restart", host.state()["entities"][eid]["state"].get("locked") is False, "")
+        check("locks: other locks are untouched", host.state()["entities"].get("town.pharmacy.wall_cabinet", {"state": {}})["state"].get("locked", True) is not False, "")
+    finally:
+        for i in (host, c):
+            i.kill()
+
+
+SCENARIOS = {"locks_multi": scenario_locks_multi, "five_multi": scenario_five_multi, "expedition_multi": scenario_expedition_multi, "progression_multi": scenario_progression_multi, "circuit_multi": scenario_circuit_multi, "side_multi": scenario_side_multi, "blood_multi": scenario_blood_multi, "custom_graphics": scenario_custom_graphics, "wild_multi": scenario_wild_multi, "vehicle_multi": scenario_vehicle_multi, "winter_multi": scenario_winter_multi, "red_thaw_multi": scenario_red_thaw_multi, "perf_multi": scenario_perf_multi, "slice": scenario_slice, "settlement_multi": scenario_settlement_multi, "world_multi": scenario_world_multi, "craft_multi": scenario_craft_multi, "build_multi": scenario_build_multi, "accept": scenario_accept, "infra_multi": scenario_infra_multi, "dig_multi": scenario_dig_multi, "danger_single": scenario_danger_single, "danger_multi": scenario_danger_multi, "settings": scenario_settings, "bunker_single": scenario_bunker_single, "bunker_multi": scenario_bunker_multi, "single": scenario_single, "multiplayer": scenario_multiplayer,
              "netfail": scenario_connection_failure, "assets": scenario_assets}
 
 if __name__ == "__main__":

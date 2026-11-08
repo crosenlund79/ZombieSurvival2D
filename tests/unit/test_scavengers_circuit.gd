@@ -111,8 +111,8 @@ func test_a_search_takes_time_then_reveals_the_contents() -> void:
 	_run(w, 4.0)
 	check(not bool(region.entity_state(eid).get("searched", false)), "not done after 4 s at level 1")
 	eq(p.carrying("canned_food"), 0, "nothing handed out early")
-	var out := _run(w, 1.2)
-	check(bool(region.entity_state(eid).get("searched", false)), "done after about 5 s")
+	var out := _run(w, 3.4)
+	check(bool(region.entity_state(eid).get("searched", false)), "done after about 7 s (iteration 015: slot by slot, 1.4x)")
 	eq((region.entity_state(eid).get("items", {}) as Dictionary), {"canned_food": 2, "crackers": 1}, "the real contents are revealed")
 	check(out.any(func(x): return not (x.get("events", []) as Array).is_empty() and str(x["events"][0].get("kind", "")) == "search_done"), "a search_done event")
 	check(SkillSim.xp(p, "scavenging") > 0, "Scavenging XP for a completed search")
@@ -158,7 +158,7 @@ func test_one_searcher_per_container_but_two_containers_at_once() -> void:
 	check(_start(w, a, "town.garage.tool_chest")["ok"], "A searches the tool chest")
 	eq(_start(w, b, "town.garage.tool_chest")["reason"], "ACTION_SOMEONE_SEARCHING", "B must wait")
 	check(_start(w, b, "town.garage.parts_shelf")["ok"], "B searches the shelf meanwhile")
-	_run(w, 8.0)
+	_run(w, 11.0)
 	var g := w.region("town.garage")
 	check(bool(g.entity_state("town.garage.tool_chest").get("searched", false)), "A finished")
 	check(bool(g.entity_state("town.garage.parts_shelf").get("searched", false)), "B finished")
@@ -232,7 +232,7 @@ func test_containers_and_skills_survive_a_save() -> void:
 	var w := WorldState.create_new("w_i9", 139)
 	var p := _player(w, PID, "town.clothing", Vector2.ZERO)
 	_start(w, p, "town.clothing.rack_coats")
-	_run(w, 6.0)
+	_run(w, 9.0)
 	_start(w, p, "town.clothing.stock_boxes")
 	_run(w, 2.0)  # mid-search when saved
 	w.meta["xp_multiplier"] = 10.0

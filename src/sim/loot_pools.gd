@@ -32,6 +32,16 @@ static func pool(name: String) -> Dictionary:
 ## Rolls a pool for one container: {"items": {item: n}, "gear": [gear dicts]}.
 static func roll(world: WorldState, pool_name: String, container_id: String) -> Dictionary:
 	var out := {"items": {}, "gear": []}
+	for f in roll_list(world, pool_name, container_id):
+		add_find(world, out, f)
+	return out
+
+
+## The roll as an ordered list of finds, without creating anything (iteration 015 D:
+## a search reveals them one by one): [{"item", "qty", "gear": bool, "cond": 0..1, "loaded": n}].
+## Deterministic: the same world and container always give the same list.
+static func roll_list(world: WorldState, pool_name: String, container_id: String) -> Array:
+	var out: Array = []
 	var pl := pool(pool_name)
 	if pl.is_empty():
 		return out
@@ -42,7 +52,7 @@ static func roll(world: WorldState, pool_name: String, container_id: String) -> 
 		var junk: Array = data().get("junk", [])
 		for _i in rng.randi_range(1, 2):
 			if not junk.is_empty():
-				_add(world, out, str(junk[rng.randi_range(0, junk.size() - 1)]), rng.randi_range(1, 2), rng, 0.0)
+				_push(out, str(junk[rng.randi_range(0, junk.size() - 1)]), rng.randi_range(1, 2), rng, 0.0)
 		return out
 	var entries: Dictionary = pl.get("items", {})
 	var keys := entries.keys()
@@ -59,23 +69,41 @@ static func roll(world: WorldState, pool_name: String, container_id: String) -> 
 			pick -= float(entries[k][0])
 			if pick <= 0.0:
 				var e: Array = entries[k]
-				_add(world, out, str(k), rng.randi_range(int(e[1]), int(e[2])), rng, float(pl.get("loaded", 0.0)))
+				_push(out, str(k), rng.randi_range(int(e[1]), int(e[2])), rng, float(pl.get("loaded", 0.0)))
 				break
 	return out
 
 
-static func _add(world: WorldState, out: Dictionary, item: String, n: int, rng: RandomNumberGenerator, loaded_chance: float) -> void:
+static func _push(out: Array, item: String, n: int, rng: RandomNumberGenerator, loaded_chance: float) -> void:
 	if not Items.exists(item) or n <= 0:
 		return
 	if not Items.is_stack(item):
+		var f := {"item": item, "qty": 1, "gear": true, "cond": rng.randf_range(0.35, 1.0) if Items.info(item).has("durability") else 1.0, "loaded": 0}
+		if Firearms.is_firearm(item) and rng.randf() < loaded_chance:
+			f["loaded"] = rng.randi_range(1, maxi(1, int(Firearms.spec(item).get("capacity", 1)) / 2))
+		out.append(f)
+		return
+	for f2 in out:  # stacks of one item merge
+		if not bool(f2["gear"]) and str(f2["item"]) == item:
+			f2["qty"] = int(f2["qty"]) + n
+			return
+	out.append({"item": item, "qty": n, "gear": false, "cond": 1.0, "loaded": 0})
+
+
+## Puts one find into a container's contents ({"items", "gear"}), creating gear records.
+static func add_find(world: WorldState, out: Dictionary, f: Dictionary) -> void:
+	var item := str(f.get("item", ""))
+	if not Items.exists(item):
+		return
+	if bool(f.get("gear", false)):
 		var g := Inv.new_gear(world, item)
 		if Items.info(item).has("durability"):
-			g["cond"] = snappedf(float(g["cond"]) * rng.randf_range(0.35, 1.0), 0.1)  # found worn
-		if Firearms.is_firearm(item) and rng.randf() < loaded_chance:
-			g["loaded"] = rng.randi_range(1, maxi(1, int(Firearms.spec(item).get("capacity", 1)) / 2))
-		out["gear"].append(g)
-		return
-	out["items"][item] = Items.amount(out["items"], item) + n
+			g["cond"] = snappedf(float(g["cond"]) * float(f.get("cond", 1.0)), 0.1)  # found worn
+		if Firearms.is_firearm(item):
+			g["loaded"] = int(f.get("loaded", 0))
+		(out["gear"] as Array).append(g)
+	else:
+		out["items"][item] = Items.amount(out["items"], item) + int(f.get("qty", 1))
 
 
 ## Every item a pool can yield (for the acquisition audit).

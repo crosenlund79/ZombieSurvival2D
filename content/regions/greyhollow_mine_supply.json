@@ -270,7 +270,11 @@
 			"position": [
 				1510.4,
 				509
-			]
+			],
+			"lock": {
+				"level": 2,
+				"key": "keys"
+			}
 		},
 		{
 			"id": "greyhollow.mine_supply.parts",

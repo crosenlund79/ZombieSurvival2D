@@ -40,7 +40,12 @@ func prompt_text() -> String:
 	var key_names := []
 	for code in Settings.action_keys("interact"):
 		key_names.append(Settings.key_label(code))
-	var text := "[%s] %s" % [" / ".join(key_names), UITheme.fmt(prompt_key, prompt_args)]
+	var pk := prompt_key
+	var pa := prompt_args
+	if _locked_region() != "":
+		pk = "PROMPT_LOCKED"
+		pa = [LockSim.level(Session.world.region(_locked_region()).entity_def(entity_id))]
+	var text := "[%s] %s" % [" / ".join(key_names), UITheme.fmt(pk, pa)]
 	if on_repair.is_valid() and secondary_key != "":
 		var rk := []
 		for code in Settings.action_keys("repair"):
@@ -50,10 +55,26 @@ func prompt_text() -> String:
 
 
 func activate() -> void:
+	# Iteration 015 D: anything locked (door, portal, container) opens the lock panel first.
+	var rs := _locked_region()
+	if rs != "":
+		LockpickPanel.open(get_parent() as Node2D if get_parent() is Node2D else self, rs, entity_id)
+		return
 	if on_activate.is_valid():
 		on_activate.call()
 	else:
 		Session.request_interact(entity_id)
+
+
+## The local player's region id when this entity is locked there, else "".
+func _locked_region() -> String:
+	var me := Session.local_player()
+	if me == null or Session.world == null or entity_id == "":
+		return ""
+	var r := Session.world.region(me.region_id)
+	if r == null or not r.has_entity(entity_id) or not LockSim.is_locked(r, entity_id):
+		return ""
+	return me.region_id
 
 
 func set_focused(value: bool) -> void:

@@ -37,7 +37,10 @@
 					509
 				]
 			},
-			"prompt_key": "PROMPT_ENTER_CABIN"
+			"prompt_key": "PROMPT_ENTER_CABIN",
+			"lock": {
+				"level": 2
+			}
 		},
 		{
 			"id": "wild.corran_forest.logging_camp_door",
@@ -73,7 +76,11 @@
 					829
 				]
 			},
-			"prompt_key": "PROMPT_ENTER_CABIN"
+			"prompt_key": "PROMPT_ENTER_CABIN",
+			"lock": {
+				"level": 1,
+				"key": "keys"
+			}
 		},
 		{
 			"id": "wild.corran_forest.cache_truck",
@@ -91,6 +98,9 @@
 			"pool": "vehicle_truck",
 			"initial": {
 				"searched": false
+			},
+			"extra": {
+				"keys": 1
 			}
 		}
 	],

@@ -224,7 +224,10 @@
 			"position": [
 				550.4,
 				829
-			]
+			],
+			"extra": {
+				"keys": 1
+			}
 		},
 		{
 			"id": "greyhollow.mine_office.files",
@@ -306,7 +309,11 @@
 			"position": [
 				768.0,
 				509
-			]
+			],
+			"lock": {
+				"level": 1,
+				"key": "keys"
+			}
 		},
 		{
 			"id": "greyhollow.mine_office.storage",

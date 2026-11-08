@@ -167,7 +167,10 @@
 			"position": [
 				537.6,
 				509
-			]
+			],
+			"extra": {
+				"lockpick": 1
+			}
 		},
 		{
 			"id": "town.garage.parts_shelf",
@@ -263,7 +266,10 @@
 			"position": [
 				1689.6,
 				509
-			]
+			],
+			"extra": {
+				"keys": 1
+			}
 		},
 		{
 			"id": "town.garage.office_locker",
@@ -280,7 +286,11 @@
 			"position": [
 				1881.6,
 				509
-			]
+			],
+			"lock": {
+				"level": 1,
+				"key": "keys"
+			}
 		}
 	],
 	"surface": {

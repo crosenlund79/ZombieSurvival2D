@@ -344,7 +344,11 @@
 			"position": [
 				896.0,
 				509
-			]
+			],
+			"lock": {
+				"level": 1,
+				"key": "keys"
+			}
 		}
 	],
 	"surface": {

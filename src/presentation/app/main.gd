@@ -86,7 +86,7 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	var focus := get_viewport().gui_get_focus_owner()
 	PlayerAvatar.input_blocked = pause_menu.visible or settings_panel != null or menu.visible or map_panel.visible \
-		or (MachinePanel.current != null and is_instance_valid(MachinePanel.current)) \
+		or (MachinePanel.current != null and is_instance_valid(MachinePanel.current)) or LockpickPanel.is_open() \
 		or (focus is LineEdit) or (build_mode != null and build_mode.menu_open()) \
 		or (guide != null and guide.visible) or (settlement_panel != null and settlement_panel.visible) \
 		or (skills_panel != null and skills_panel.visible)

@@ -4810,5 +4810,121 @@
 	"SETTINGS_VIGNETTE": {
 		"en": "Vignette",
 		"da": "Vignet"
+	},
+	"ACTION_LOCKED": {
+		"da": "Den er låst.",
+		"en": "It's locked."
+	},
+	"ACTION_NOT_LOCKED": {
+		"da": "Den er ikke låst.",
+		"en": "It isn't locked."
+	},
+	"ACTION_NO_KEY": {
+		"da": "Du har ikke nøglen.",
+		"en": "You don't have the key."
+	},
+	"ACTION_NO_LOCKPICK": {
+		"da": "Du skal bruge en dirk.",
+		"en": "You need a lockpick."
+	},
+	"LOCKPICK_BROKE": {
+		"da": "Dirken knækkede — stifterne faldt.",
+		"en": "The lockpick snapped — the pins dropped."
+	},
+	"LOCK_CLOSE_0": {
+		"da": "Intet — langt fra.",
+		"en": "Nothing — way off."
+	},
+	"LOCK_CLOSE_1": {
+		"da": "En svag skraben. Ikke tæt på.",
+		"en": "A faint scrape. Not close."
+	},
+	"LOCK_CLOSE_2": {
+		"da": "Noget rykker sig. Tættere på.",
+		"en": "Something shifts. Getting closer."
+	},
+	"LOCK_CLOSE_3": {
+		"da": "Næsten — den greb næsten.",
+		"en": "Almost — it nearly caught."
+	},
+	"LOCK_HOW": {
+		"da": "Mus eller ← → sigter dirken · klik eller mellemrum drejer",
+		"en": "Mouse or ← → to aim the pick · click or Space to turn"
+	},
+	"LOCK_LEVEL_1": {
+		"da": "simpel lås",
+		"en": "simple lock"
+	},
+	"LOCK_LEVEL_2": {
+		"da": "solid lås",
+		"en": "sturdy lock"
+	},
+	"LOCK_LEVEL_3": {
+		"da": "sikkerhedslås",
+		"en": "security lock"
+	},
+	"LOCK_NEED_KEY": {
+		"da": "Åbnes med: %s (ikke på dig)",
+		"en": "Opens with: %s (not carried)"
+	},
+	"LOCK_NO_PICK": {
+		"da": "Du skal have en dirk for at dirke låsen.",
+		"en": "You need a lockpick to pick this lock."
+	},
+	"LOCK_PICK_INFO": {
+		"da": "Dirk %s%%. Find hver stifts rette punkt.",
+		"en": "Lockpick %s%%. Find each pin's sweet spot."
+	},
+	"LOCK_PIN_SET": {
+		"da": "Stift sat (%s af %s).",
+		"en": "Pin set (%s of %s)."
+	},
+	"LOCK_TITLE": {
+		"da": "Låst — %s",
+		"en": "Locked — %s"
+	},
+	"LOCK_USE_KEY": {
+		"da": "Brug nøgle: %s",
+		"en": "Use key: %s"
+	},
+	"PROMPT_LOCKED": {
+		"da": "Låst (%s) — nøgle eller dirk",
+		"en": "Locked (%s) — key or lockpick"
+	},
+	"SEARCH_GRID_DONE": {
+		"da": "Gennemsøgt. Tag hvad du skal bruge.",
+		"en": "Searched. Take what you need."
+	},
+	"SEARCH_GRID_PAUSED": {
+		"da": "Afbrudt: %s af %s steder tjekket.",
+		"en": "Left off: %s of %s places checked."
+	},
+	"SEARCH_GRID_PROGRESS": {
+		"da": "Søger… %s af %s steder tjekket.",
+		"en": "Searching… %s of %s places checked."
+	},
+	"SEARCH_GRID_START": {
+		"da": "Ikke gennemsøgt endnu.",
+		"en": "Not searched yet."
+	},
+	"SEARCH_RESUME": {
+		"da": "Søg videre",
+		"en": "Keep searching"
+	},
+	"SEARCH_START": {
+		"da": "Gennemsøg",
+		"en": "Search"
+	},
+	"SEARCH_STOP": {
+		"da": "Stop søgningen",
+		"en": "Stop searching"
+	},
+	"UNLOCKED_KEY": {
+		"da": "Låst op med nøglen.",
+		"en": "Unlocked with the key."
+	},
+	"UNLOCKED_PICK": {
+		"da": "Klik — låsen giver efter.",
+		"en": "Click — the lock gives."
 	}
 }

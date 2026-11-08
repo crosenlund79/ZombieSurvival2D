@@ -75,6 +75,50 @@ def timber_and_dressing():
     print("  timber houses and dressing in the hand-made scenes")
 
 
+# Iteration 015 D: locked doors and containers (LockSim). id -> (level 1..3, key item or "").
+# A key opens every lock that names it ("keys" = a ring of building keys, "keycard" = a
+# security card). EXTRA puts a guaranteed find first in a container's search.
+LOCKS = {
+    "stillwater.police.armory": (3, "keycard"), "stillwater.police.evidence": (2, "keycard"),
+    "stillwater.clinic.drug_store": (2, ""), "stillwater.civic_hall.council_cabinet": (2, ""),
+    "stillwater.house.wardrobe": (1, "keys"), "junction.utility.desk": (1, ""),
+    "junction.machine_shop.tool_chest": (1, ""), "greyhollow.mine_supply.explosives_locker": (2, "keys"),
+    "greyhollow.mine_office.cabinet": (1, "keys"), "harbor.chandlery.flares": (1, ""),
+    "harbor.warehouse.tool_chest": (2, ""), "town.hardware.locked_case": (1, ""),
+    "town.garage.office_locker": (1, "keys"), "town.pharmacy.wall_cabinet": (1, ""),
+    "wild.corran_forest.logging_camp.bench": (1, ""),
+    # doors: a storage building, a net shed and two isolated cabins
+    "greyhollow.store_shed_entrance": (2, "keys"), "harbor.net_shed_entrance": (1, ""),
+    "wild.corran_forest.trapper_door": (2, ""), "wild.corran_forest.hollow_house_door": (1, "keys"),
+}
+EXTRA = {"greyhollow.mine_office.reception": {"keys": 1}, "town.garage.office_desk": {"keys": 1},
+         "stillwater.police.desk": {"keycard": 1}, "wild.corran_forest.cache_truck": {"keys": 1},
+         "stillwater.apartments.dresser": {"keys": 1}, "town.garage.tool_chest": {"lockpick": 1}}
+
+
+def locks():
+    import glob
+    found = set()
+    for f in sorted(glob.glob(os.path.join(ROOT, "content", "regions", "*.json"))):
+        d = json.load(open(f))
+        hit = False
+        for e in d.get("entities", []):
+            if e["id"] in LOCKS:
+                lvl, key = LOCKS[e["id"]]
+                e["lock"] = {"level": lvl, **({"key": key} if key else {})}
+                hit = True
+                found.add(e["id"])
+            if e["id"] in EXTRA:
+                e["extra"] = EXTRA[e["id"]]
+                hit = True
+                found.add(e["id"])
+        if hit:
+            dump_json(f, d)
+    missing = (set(LOCKS) | set(EXTRA)) - found
+    assert not missing, missing
+    print("  locks:", len(LOCKS), "extra finds:", len(EXTRA))
+
+
 def check():
     WL.check()
     for rid, (x, y, w, h) in WL.REGIONS.items():
@@ -95,4 +139,5 @@ if __name__ == "__main__":
         build_wilderness.build()
     patch_handmade()
     timber_and_dressing()
+    locks()
     check()

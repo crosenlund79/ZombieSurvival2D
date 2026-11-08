@@ -135,7 +135,10 @@
 			"position": [
 				524.8,
 				509
-			]
+			],
+			"lock": {
+				"level": 1
+			}
 		},
 		{
 			"id": "wild.corran_forest.logging_camp.shelf",

@@ -210,6 +210,10 @@ P = {
                                                  "shotgun": (0.6, 1, 1), "shotgun_shells": (2, 2, 6), "ammo_pistol": (2, 3, 8)}, loaded=0.4),
 }
 
+# Iteration 015 D: lockpicks turn up in toolboxes, workers' lockers and old cabins.
+for _n, _w in {"workshop_tools": 2, "worker_locker": 1.5, "hunter_cabin": 1.5, "attic": 1, "industrial_parts": 1}.items():
+    P[_n]["items"]["lockpick"] = (_w, 1, 1)
+
 
 if __name__ == "__main__":
     items = json.load(open(os.path.join(ROOT, "content", "items.json")))["items"]

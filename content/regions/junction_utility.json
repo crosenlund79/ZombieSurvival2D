@@ -305,7 +305,10 @@
 			"position": [
 				550.4,
 				509
-			]
+			],
+			"lock": {
+				"level": 1
+			}
 		},
 		{
 			"id": "junction.utility.cabinet",

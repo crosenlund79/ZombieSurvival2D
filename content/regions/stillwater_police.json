@@ -304,7 +304,11 @@
 			"position": [
 				1088.0,
 				829
-			]
+			],
+			"lock": {
+				"level": 2,
+				"key": "keycard"
+			}
 		},
 		{
 			"id": "stillwater.police.stairs_0",
@@ -332,7 +336,10 @@
 			"position": [
 				550.4,
 				509
-			]
+			],
+			"extra": {
+				"keycard": 1
+			}
 		},
 		{
 			"id": "stillwater.police.cabinet",
@@ -386,7 +393,11 @@
 			"position": [
 				1216.0,
 				509
-			]
+			],
+			"lock": {
+				"level": 3,
+				"key": "keycard"
+			}
 		}
 	],
 	"surface": {

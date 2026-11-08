@@ -106,7 +106,7 @@ func test_containers_keep_their_ids_and_state_in_the_side_view() -> void:
 	check(g.has_entity(eid), "same container id as before")
 	var p := _player(w, PID, "town.grocery", Content.entity_position(g.entity_def(eid)))
 	check(WorldActions.request_interact(w, PID, eid, -1)["ok"], "search starts in the side view")
-	for i in 60:
+	for i in 90:
 		Simulation.advance(w, 1)
 	check(bool(g.entity_state(eid).get("searched", false)), "and finishes")
 	check(SkillSim.xp(p, "scavenging") > 0, "with XP")
@@ -204,6 +204,9 @@ func test_every_entrance_leads_in_and_back_out() -> void:
 				continue
 			p.region_id = s
 			p.position = Content.entity_position(e)
+			if LockSim.is_locked(w.region(s), eid):
+				eq(WorldActions.request_interact(w, PID, eid, -1)["reason"], "ACTION_LOCKED", eid + " is locked (iteration 015 D)")
+				w.region(s).set_fields(eid, {"locked": false})
 			check(WorldActions.request_interact(w, PID, eid, -1)["ok"], eid + " opens")
 			var inside := w.region(p.region_id)
 			check(SideSection.open_at(inside, p.position + Vector2(0, -6)), eid + ": you stand inside a room")

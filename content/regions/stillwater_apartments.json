@@ -339,7 +339,10 @@
 			"position": [
 				742.4,
 				509
-			]
+			],
+			"extra": {
+				"keys": 1
+			}
 		},
 		{
 			"id": "stillwater.apartments.wardrobe",

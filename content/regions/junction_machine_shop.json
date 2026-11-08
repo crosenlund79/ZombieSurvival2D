@@ -152,7 +152,10 @@
 			"position": [
 				512.0,
 				509
-			]
+			],
+			"lock": {
+				"level": 1
+			}
 		},
 		{
 			"id": "junction.machine_shop.parts_shelf",
